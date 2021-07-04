@@ -1,0 +1,91 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+def urlPropertiesFile = rootProject.file("url.properties")
+def urlProperties = new Properties()
+urlProperties.load(new FileReader(urlPropertiesFile))
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.github.af2905.movieland"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'THE_MOVIE_DATABASE_API', keystoreProperties['THE_MOVIE_DATABASE_API']
+        buildConfigField 'String', 'BASE_URL', urlProperties['BASE_URL']
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8 }
+
+    dataBinding { enabled = true }
+}
+
+ext {
+    coreKtxVersion = '1.6.0'
+    appcompatVersion = '1.3.0'
+    materialVersion = '1.4.0'
+    constraintlayoutVersion = '2.0.4'
+    junitVersion = '4.13.2'
+    junitExtVersion = '1.1.3'
+    espressoVersion = '3.4.0'
+    timberVersion = '4.7.1'
+    glideVersion = '4.11.0'
+    coroutinesVersion = '1.3.9'
+    retrofitVersion = '2.9.0'
+    okHttpVersion = '4.8.1'
+    daggerVersion = '2.34'
+    gsonVersion = '2.8.6'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    //Dagger
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    //OkHttp
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    //Gson
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+    //Glide
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    //Timber
+    implementation "com.jakewharton.timber:timber:${timberVersion}"
+}
