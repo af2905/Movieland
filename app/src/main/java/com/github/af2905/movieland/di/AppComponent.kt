@@ -2,7 +2,9 @@ package com.github.af2905.movieland.di
 
 import android.content.Context
 import com.github.af2905.movieland.App
+import com.github.af2905.movieland.di.module.AppModule
 import com.github.af2905.movieland.di.module.NetworkModule
+import com.github.af2905.movieland.di.module.RepositoryModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -13,7 +15,9 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        NetworkModule::class
+        NetworkModule::class,
+        RepositoryModule::class,
+        AppModule::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.di.module
 
 import com.github.af2905.movieland.BuildConfig
+import com.github.af2905.movieland.data.api.MoviesApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -19,6 +20,10 @@ const val KEEP_ALIVE_DURATION = 30L
 
 @Module
 class NetworkModule {
+
+    @Singleton
+    @Provides
+    fun provideMoviesApi(retrofit: Retrofit) = retrofit.create(MoviesApi::class.java)
 
     @Singleton
     @Provides
