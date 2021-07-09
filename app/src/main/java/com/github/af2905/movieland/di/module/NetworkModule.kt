@@ -2,6 +2,8 @@ package com.github.af2905.movieland.di.module
 
 import com.github.af2905.movieland.BuildConfig
 import com.github.af2905.movieland.data.api.MoviesApi
+import com.github.af2905.movieland.data.interceptor.ApiKeyInterceptor
+import com.github.af2905.movieland.data.interceptor.HttpLoggerInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -10,7 +12,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -42,29 +43,35 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor, apiKeyInterceptor: ApiKeyInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectionPool(
                 ConnectionPool(
-                    MAX_IDLE_CONNECTION,
-                    KEEP_ALIVE_DURATION,
-                    TimeUnit.SECONDS
+                    MAX_IDLE_CONNECTION, KEEP_ALIVE_DURATION, TimeUnit.SECONDS
                 )
             )
             .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(interceptor)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
     }
 
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) = Timber.tag("OkHttp").d(message)
-        })
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideApiKeyInterceptor(): ApiKeyInterceptor = ApiKeyInterceptor()
+
+    @Singleton
+    @Provides
+    fun provideHttpLoggingInterceptor(logger: HttpLoggingInterceptor.Logger): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor(logger).setLevel(HttpLoggingInterceptor.Level.BODY)
     }
+
+    @Singleton
+    @Provides
+    fun provideHttpLoggerInterceptor(): HttpLoggingInterceptor.Logger = HttpLoggerInterceptor()
 }
 
