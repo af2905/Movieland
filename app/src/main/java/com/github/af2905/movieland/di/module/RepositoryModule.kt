@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.di.module
 
 import com.github.af2905.movieland.data.repository.MoviesRepository
-import com.github.af2905.movieland.domain.IMoviesRepository
+import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import dagger.Binds
 import dagger.Module
 

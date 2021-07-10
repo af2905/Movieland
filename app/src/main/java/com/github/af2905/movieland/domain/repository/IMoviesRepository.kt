@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.domain
+package com.github.af2905.movieland.domain.repository
 
 import com.github.af2905.movieland.data.entities.MovieResponseDto
 

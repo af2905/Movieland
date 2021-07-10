@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseNavigator {
 
-    protected abstract fun forwardTo(fragment: Fragment, tag: String)
-    protected abstract fun backTo(tag: String)
+    protected abstract fun forward(fragment: Fragment, tag: String)
     protected abstract fun back()
+    protected abstract fun backTo(tag: String)
 }

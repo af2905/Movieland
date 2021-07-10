@@ -3,6 +3,7 @@ package com.github.af2905.movieland.di
 import android.content.Context
 import com.github.af2905.movieland.App
 import com.github.af2905.movieland.di.module.AppModule
+import com.github.af2905.movieland.di.module.CoroutinesModule
 import com.github.af2905.movieland.di.module.NetworkModule
 import com.github.af2905.movieland.di.module.RepositoryModule
 import dagger.BindsInstance
@@ -17,7 +18,8 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         NetworkModule::class,
         RepositoryModule::class,
-        AppModule::class
+        AppModule::class,
+        CoroutinesModule::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

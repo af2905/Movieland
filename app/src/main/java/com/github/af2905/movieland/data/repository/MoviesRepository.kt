@@ -2,7 +2,7 @@ package com.github.af2905.movieland.data.repository
 
 import com.github.af2905.movieland.data.api.MoviesApi
 import com.github.af2905.movieland.data.entities.MovieResponseDto
-import com.github.af2905.movieland.domain.IMoviesRepository
+import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(

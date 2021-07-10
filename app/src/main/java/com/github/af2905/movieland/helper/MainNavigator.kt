@@ -10,7 +10,7 @@ class MainNavigator @Inject constructor(
     private val fragmentManager: FragmentManager
 ) : BaseNavigator() {
 
-    override fun forwardTo(fragment: Fragment, tag: String) {
+    override fun forward(fragment: Fragment, tag: String) {
         fragmentManager.beginTransaction()
             .replace(R.id.baseContainer, fragment, tag)
             .addToBackStack(tag)
@@ -18,7 +18,7 @@ class MainNavigator @Inject constructor(
             .commit()
     }
 
-    override fun backTo(tag: String) = fragmentManager.popBackStack(tag, 0)
-
     public override fun back() = fragmentManager.popBackStack()
+
+    override fun backTo(tag: String) = fragmentManager.popBackStack(tag, 0)
 }
