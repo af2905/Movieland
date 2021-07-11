@@ -19,7 +19,7 @@ import javax.inject.Singleton
         NetworkModule::class,
         RepositoryModule::class,
         AppModule::class,
-        CoroutinesModule::class
+        CoroutinesModule::class,
     ]
 )
 interface AppComponent : AndroidInjector<App> {

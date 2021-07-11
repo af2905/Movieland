@@ -1,9 +1,9 @@
-package com.github.af2905.movieland.data.entities
+package com.github.af2905.movieland.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResponseDto(
-    @SerializedName("dates") val dates: DatesDto,
+data class MoviesResponseDto(
+    @SerializedName("dates") val dates: DatesDto?,
     @SerializedName("page") val page: Int,
     @SerializedName("results") val movies: List<MovieDto>,
     @SerializedName("total_pages") val totalPages: Int,
@@ -18,13 +18,13 @@ data class DatesDto(
 data class MovieDto(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean,
-    @SerializedName("backdrop_path") val backdropPath: String,
+    @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("genre_ids") val genreIds: List<Int> = listOf(),
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_title") val originalTitle: String,
     @SerializedName("overview") val overview: String,
     @SerializedName("popularity") val popularity: Double,
-    @SerializedName("poster_path") val posterPath: String,
+    @SerializedName("poster_path") val posterPath: String?,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("title") val title: String,
     @SerializedName("video") val video: Boolean,
