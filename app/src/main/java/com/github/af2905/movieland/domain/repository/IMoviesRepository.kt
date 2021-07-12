@@ -15,4 +15,9 @@ interface IMoviesRepository {
     suspend fun getUpcomingMovies(language: String?, page: Int?, region: String?): MoviesResponseDto
 
     suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsDto
+
+    suspend fun getRecommendedMovies(movieId: Int, language: String?, page: Int?): MoviesResponseDto
+
+    suspend fun getSimilarMovies(movieId: Int, language: String?, page: Int?): MoviesResponseDto
+
 }

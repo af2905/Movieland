@@ -26,4 +26,12 @@ class MoviesRepository @Inject constructor(
 
     override suspend fun getMovieDetails(movieId: Int, language: String?) =
         moviesApi.getMovieDetails(movieId = movieId, language = language)
+
+    override suspend fun getRecommendedMovies(
+        movieId: Int, language: String?, page: Int?
+    ) = moviesApi.getRecommendedMovies(movieId, language, page)
+
+    override suspend fun getSimilarMovies(
+        movieId: Int, language: String?, page: Int?
+    ) = moviesApi.getSimilarMovies(movieId, language, page)
 }

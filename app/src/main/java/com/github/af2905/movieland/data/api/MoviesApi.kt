@@ -45,6 +45,20 @@ interface MoviesApi {
         @Query(LANGUAGE) language: String? = null
     ): MovieDetailsDto
 
+    @GET("movie/{$PATH_MOVIE_ID}/recommendations")
+    suspend fun getRecommendedMovies(
+        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Query(LANGUAGE) language: String? = null,
+        @Query(PAGE) page: Int? = null
+    ): MoviesResponseDto
+
+    @GET("movie/{$PATH_MOVIE_ID}/similar")
+    suspend fun getSimilarMovies(
+        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Query(LANGUAGE) language: String? = null,
+        @Query(PAGE) page: Int? = null
+    ): MoviesResponseDto
+
     companion object {
         private const val PATH_MOVIE_ID = "movie_id"
     }

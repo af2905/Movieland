@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.github.af2905.movieland.databinding.ActivityMainBinding
-import com.github.af2905.movieland.domain.usecase.movies.GetMovieDetails
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
+import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     @Inject
     lateinit var getPopularMovies: GetPopularMovies
     @Inject
-    lateinit var getMovieDetails: GetMovieDetails
+    lateinit var getSimilarMovies: GetSimilarMovies
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,13 +46,13 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
             launch {
                 getPopularMovies().movies.let {
-                    Timber.tag("GET_MOVIES").d("Popular movies: $it \n --------------")
+                    //Timber.tag("GET_MOVIES").d("Popular movies: $it \n --------------")
                     channel.send(it.first().id)
                 }
             }
            launch {
-               getMovieDetails(channel.receive()).let {
-                   Timber.tag("GET_MOVIES").d("Movie details: $it")
+               getSimilarMovies(channel.receive()).let {
+                   Timber.tag("GET_MOVIES").d("Similar movies: $it")
                }
            }
         }
