@@ -3,8 +3,10 @@ package com.github.af2905.movieland.data.api
 import com.github.af2905.movieland.data.ApiParams.LANGUAGE
 import com.github.af2905.movieland.data.ApiParams.PAGE
 import com.github.af2905.movieland.data.ApiParams.REGION
+import com.github.af2905.movieland.data.dto.MovieDetailsDto
 import com.github.af2905.movieland.data.dto.MoviesResponseDto
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesApi {
@@ -37,4 +39,13 @@ interface MoviesApi {
         @Query(REGION) region: String? = null
     ): MoviesResponseDto
 
+    @GET("movie/{$PATH_MOVIE_ID}")
+    suspend fun getMovieDetails(
+        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Query(LANGUAGE) language: String? = null
+    ): MovieDetailsDto
+
+    companion object {
+        private const val PATH_MOVIE_ID = "movie_id"
+    }
 }

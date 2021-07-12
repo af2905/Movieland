@@ -48,9 +48,7 @@ class NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectionPool(
-                ConnectionPool(
-                    MAX_IDLE_CONNECTION, KEEP_ALIVE_DURATION, TimeUnit.SECONDS
-                )
+                ConnectionPool(MAX_IDLE_CONNECTION, KEEP_ALIVE_DURATION, TimeUnit.SECONDS)
             )
             .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)

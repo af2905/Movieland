@@ -4,16 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.github.af2905.movieland.databinding.ActivityMainBinding
-import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
+import com.github.af2905.movieland.domain.usecase.movies.GetMovieDetails
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetTopRatedMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,15 +27,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     //todo remove later
     @Inject
     lateinit var getPopularMovies: GetPopularMovies
-    //todo remove later
     @Inject
-    lateinit var getNowPlayingMovies: GetNowPlayingMovies
-    //todo remove later
-    @Inject
-    lateinit var getUpcomingMovies: GetUpcomingMovies
-    //todo remove later
-    @Inject
-    lateinit var getTopRatedMovies: GetTopRatedMovies
+    lateinit var getMovieDetails: GetMovieDetails
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -49,27 +42,19 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         val scope = CoroutineScope(Job())
         //todo remove later
         scope.launch {
-            getPopularMovies().movies.let {
-                Timber.tag("GET_MOVIES").d("Popular movies: $it")
+            val channel = Channel<Int>()
+
+            launch {
+                getPopularMovies().movies.let {
+                    Timber.tag("GET_MOVIES").d("Popular movies: $it \n --------------")
+                    channel.send(it.first().id)
+                }
             }
-        }
-        //todo remove later
-        scope.launch {
-            getNowPlayingMovies().movies.let {
-                Timber.tag("GET_MOVIES").d("Now playing movies: $it")
-            }
-        }
-        //todo remove later
-        scope.launch {
-            getUpcomingMovies().movies.let {
-                Timber.tag("GET_MOVIES").d("Upcoming movies: $it")
-            }
-        }
-        //todo remove later
-        scope.launch {
-            getTopRatedMovies().movies.let {
-                Timber.tag("GET_MOVIES").d("Top rated movies: $it")
-            }
+           launch {
+               getMovieDetails(channel.receive()).let {
+                   Timber.tag("GET_MOVIES").d("Movie details: $it")
+               }
+           }
         }
     }
 

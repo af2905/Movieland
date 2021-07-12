@@ -13,16 +13,17 @@ import javax.inject.Inject
 class MoviesResponseDtoToEntityMapper @Inject constructor(
     private val datesMapper: DatesDtoToEntityMapper,
     private val movieMapper: MovieDtoToEntityListMapper
-) :
-    IMapper<MoviesResponseDto, MoviesResponseEntity> {
+) : IMapper<MoviesResponseDto, MoviesResponseEntity> {
     override fun map(input: MoviesResponseDto) =
-        MoviesResponseEntity(
-            dates = input.dates?.let { datesMapper.map(it) },
-            page = input.page,
-            movies = movieMapper.map(input.movies),
-            totalPages = input.totalPages,
-            totalResults = input.totalResults
-        )
+        with(input) {
+            MoviesResponseEntity(
+                dates = dates?.let { datesMapper.map(it) },
+                page = page,
+                movies = movieMapper.map(movies),
+                totalPages = totalPages,
+                totalResults = totalResults
+            )
+        }
 }
 
 class MovieDtoToEntityListMapper @Inject constructor(mapper: MovieDtoToEntityMapper) :

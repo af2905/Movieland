@@ -5,8 +5,8 @@ import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import javax.inject.Inject
 
 class GetNowPlayingMovies @Inject constructor(
-    private val mapper: MoviesResponseDtoToEntityMapper,
-    private val moviesRepository: IMoviesRepository
+    private val moviesRepository: IMoviesRepository,
+    private val mapper: MoviesResponseDtoToEntityMapper
 ) {
 
     suspend operator fun invoke(
