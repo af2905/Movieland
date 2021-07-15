@@ -1,19 +1,15 @@
 package com.github.af2905.movieland.domain.usecase
 
 import com.github.af2905.movieland.data.error.Result
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.invoke
 import timber.log.Timber
 
-abstract class CoroutineUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
+abstract class CoroutineUseCase<in P, R> {
 
     @ExperimentalCoroutinesApi
-    suspend operator fun invoke(parameters: P): Result<R> {
+    suspend operator fun invoke(params: P): Result<R> {
         return try {
-            coroutineDispatcher {
-                execute(parameters).let { Result.Success(it) }
-            }
+            execute(params)
         } catch (e: Exception) {
             Timber.d(e)
             Result.Error(e)
@@ -21,6 +17,6 @@ abstract class CoroutineUseCase<in P, R>(private val coroutineDispatcher: Corout
     }
 
     @Throws(RuntimeException::class)
-    protected abstract suspend fun execute(parameters: P): R
+    protected abstract suspend fun execute(params: P): Result<R>
 
 }

@@ -1,62 +1,55 @@
 package com.github.af2905.movieland
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
 import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import com.github.af2905.movieland.domain.usecase.parameters.PopularMoviesParams
+import com.github.af2905.movieland.domain.usecase.parameters.SimilarMoviesParams
+import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+class MainActivity : DaggerAppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
     //todo remove later
     @Inject
     lateinit var getPopularMovies: GetPopularMovies
+
     @Inject
     lateinit var getSimilarMovies: GetSimilarMovies
 
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        AndroidInjection.inject(this)
 
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         //todo remove later
-        val scope = CoroutineScope(Job())
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
         //todo remove later
         scope.launch {
             val channel = Channel<Int>()
 
             launch {
-                getPopularMovies().movies.let {
-                    //Timber.tag("GET_MOVIES").d("Popular movies: $it \n --------------")
-                    channel.send(it.first().id)
+                getPopularMovies(PopularMoviesParams())
+                    .let {
+                        it.extractData?.let { entity ->
+                            channel.send(entity.movies.first().id)
+                        }
+                    }
+            }
+            launch {
+                getSimilarMovies(SimilarMoviesParams(channel.receive())).let {
+                    Timber.tag("GET_MOVIES").d("Similar movies: ${it.extractData}")
                 }
             }
-           launch {
-               getSimilarMovies(channel.receive()).let {
-                   Timber.tag("GET_MOVIES").d("Similar movies: $it")
-               }
-           }
         }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 }

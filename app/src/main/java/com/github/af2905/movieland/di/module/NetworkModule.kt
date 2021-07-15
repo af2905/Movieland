@@ -4,6 +4,7 @@ import com.github.af2905.movieland.BuildConfig
 import com.github.af2905.movieland.data.api.MoviesApi
 import com.github.af2905.movieland.data.interceptor.ApiKeyInterceptor
 import com.github.af2905.movieland.data.interceptor.HttpLoggerInterceptor
+import com.github.af2905.movieland.di.scope.AppScope
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 const val DEFAULT_TIMEOUT = 30L
 const val MAX_IDLE_CONNECTION = 5
@@ -22,11 +22,11 @@ const val KEEP_ALIVE_DURATION = 30L
 @Module
 class NetworkModule {
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create(MoviesApi::class.java)
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideRetrofitClient(client: OkHttpClient, converter: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
@@ -36,12 +36,12 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideConverterFactory(): GsonConverterFactory =
         GsonConverterFactory.create(GsonBuilder().create())
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor, apiKeyInterceptor: ApiKeyInterceptor
@@ -58,17 +58,17 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideApiKeyInterceptor(): ApiKeyInterceptor = ApiKeyInterceptor()
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideHttpLoggingInterceptor(logger: HttpLoggingInterceptor.Logger): HttpLoggingInterceptor {
         return HttpLoggingInterceptor(logger).setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideHttpLoggerInterceptor(): HttpLoggingInterceptor.Logger = HttpLoggerInterceptor()
 }

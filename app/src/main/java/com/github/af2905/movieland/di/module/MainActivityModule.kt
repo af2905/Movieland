@@ -3,6 +3,12 @@ package com.github.af2905.movieland.di.module
 import dagger.Module
 
 @Module
-class MainActivityModule {
+abstract class MainActivityModule {
+
+/*
+@FragmentScope
+@ContributesAndroidInjector
+    abstract fun provideBaseFragment() : BaseFragment*/
+
 
 }
