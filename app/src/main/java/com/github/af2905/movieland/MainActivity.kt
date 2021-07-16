@@ -45,6 +45,7 @@ class MainActivity : DaggerAppCompatActivity() {
                         }
                     }
             }
+
             launch {
                 getSimilarMovies(SimilarMoviesParams(channel.receive())).let {
                     Timber.tag("GET_MOVIES").d("Similar movies: ${it.extractData}")
