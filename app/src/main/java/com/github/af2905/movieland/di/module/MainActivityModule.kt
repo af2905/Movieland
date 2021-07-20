@@ -1,0 +1,14 @@
+package com.github.af2905.movieland.di.module
+
+import dagger.Module
+
+@Module
+abstract class MainActivityModule {
+
+/*
+@FragmentScope
+@ContributesAndroidInjector
+    abstract fun provideBaseFragment() : BaseFragment*/
+
+
+}
