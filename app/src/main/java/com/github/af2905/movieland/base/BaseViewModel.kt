@@ -5,16 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.data.error.Result
 import com.github.af2905.movieland.helper.ICoroutineDispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
-abstract class BaseViewModel @Inject constructor(
-    private val coroutineDispatcherProvider: ICoroutineDispatcherProvider
-) : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
+    @Inject
+    lateinit var coroutineDispatcherProvider: ICoroutineDispatcherProvider
     val scope = viewModelScope
 
     private fun <P, R> launch(
