@@ -4,7 +4,7 @@ import com.github.af2905.movieland.data.entity.MoviesResponseEntity
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
-import com.github.af2905.movieland.domain.usecase.parameters.RecommendedMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.RecommendedMoviesParams
 import javax.inject.Inject
 
 class GetRecommendedMovies @Inject constructor(

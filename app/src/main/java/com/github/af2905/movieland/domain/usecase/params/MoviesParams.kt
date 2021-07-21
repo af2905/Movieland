@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.domain.usecase.parameters
+package com.github.af2905.movieland.domain.usecase.params
 
 data class NowPlayingMoviesParams(
     val language: String? = null, val page: Int? = null, val region: String? = null

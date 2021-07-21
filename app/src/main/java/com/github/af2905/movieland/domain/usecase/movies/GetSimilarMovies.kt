@@ -4,7 +4,7 @@ import com.github.af2905.movieland.data.entity.MoviesResponseEntity
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
-import com.github.af2905.movieland.domain.usecase.parameters.SimilarMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
 import javax.inject.Inject
 
 class GetSimilarMovies @Inject constructor(

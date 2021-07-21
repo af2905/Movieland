@@ -5,8 +5,8 @@ import androidx.databinding.DataBindingUtil
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
 import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
-import com.github.af2905.movieland.domain.usecase.parameters.PopularMoviesParams
-import com.github.af2905.movieland.domain.usecase.parameters.SimilarMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
