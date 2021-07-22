@@ -3,7 +3,7 @@ package com.github.af2905.movieland.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.data.error.Result
-import com.github.af2905.movieland.helper.ICoroutineDispatcherProvider
+import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -12,7 +12,7 @@ import javax.inject.Inject
 abstract class BaseViewModel : ViewModel() {
 
     @Inject
-    lateinit var coroutineDispatcherProvider: ICoroutineDispatcherProvider
+    lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
     val scope = viewModelScope
 
     private fun <P, R> launch(
