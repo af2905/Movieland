@@ -5,10 +5,4 @@ import dagger.Module
 @Module
 abstract class MainActivityModule {
 
-/*
-@FragmentScope
-@ContributesAndroidInjector
-    abstract fun provideBaseFragment() : BaseFragment*/
-
-
 }

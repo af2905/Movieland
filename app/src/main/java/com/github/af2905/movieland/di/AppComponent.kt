@@ -5,6 +5,7 @@ import com.github.af2905.movieland.App
 import com.github.af2905.movieland.di.module.AppModule
 import com.github.af2905.movieland.di.module.NetworkModule
 import com.github.af2905.movieland.di.module.RepositoryModule
+import com.github.af2905.movieland.di.module.ViewModelModule
 import com.github.af2905.movieland.di.scope.AppScope
 import dagger.BindsInstance
 import dagger.Component
@@ -17,6 +18,7 @@ import dagger.android.AndroidInjector
         AndroidInjectionModule::class,
         NetworkModule::class,
         RepositoryModule::class,
+        ViewModelModule::class,
         AppModule::class
     ]
 )

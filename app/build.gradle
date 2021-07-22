@@ -68,7 +68,7 @@ ext {
     daggerVersion = '2.34'
     gsonVersion = '2.8.6'
     lifecycleVersion = '2.3.1'
-    navigationVersion = '1.0.0'
+    navigationVersion = '2.3.5'
 }
 
 dependencies {
@@ -101,5 +101,6 @@ dependencies {
     //Timber
     implementation "com.jakewharton.timber:timber:${timberVersion}"
     //Navigation
-    implementation "android.arch.navigation:navigation-ui:${navigationVersion}"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 }
