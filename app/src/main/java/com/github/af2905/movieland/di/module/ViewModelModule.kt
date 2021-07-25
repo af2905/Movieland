@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.af2905.movieland.di.ViewModelFactory
 import com.github.af2905.movieland.di.ViewModelKey
 import com.github.af2905.movieland.presentation.MainViewModel
+import com.github.af2905.movieland.presentation.detail.moviedetail.MovieDetailViewModel
 import com.github.af2905.movieland.presentation.home.HomeViewModel
 import com.github.af2905.movieland.presentation.profile.ProfileViewModel
 import com.github.af2905.movieland.presentation.search.SearchViewModel
@@ -38,4 +39,8 @@ interface ViewModelModule {
     @ViewModelKey(ProfileViewModel::class)
     fun profileViewModel(viewModel: ProfileViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
+    fun movieDetailViewModel(viewModel: MovieDetailViewModel): ViewModel
 }

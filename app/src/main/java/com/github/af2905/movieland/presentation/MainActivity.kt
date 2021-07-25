@@ -26,11 +26,14 @@ class MainActivity : DaggerAppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         binding.viewModel = viewModel
+        navController = findNavController()
+        setupBottomNavMenu(navController)
+    }
 
+    fun findNavController(): NavController {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-        setupBottomNavMenu(navController)
+        return navHostFragment.navController
     }
 
     private fun setupBottomNavMenu(navController: NavController) {
