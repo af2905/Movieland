@@ -22,6 +22,8 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel> : DaggerFr
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    //lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(viewModelClass())
@@ -38,6 +40,11 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel> : DaggerFr
         }
         onBind()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //navController = this.findNavController()
     }
 
     open fun onBind() {}
