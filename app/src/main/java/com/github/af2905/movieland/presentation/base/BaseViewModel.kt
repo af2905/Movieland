@@ -1,37 +1,36 @@
-package com.github.af2905.movieland.base
+package com.github.af2905.movieland.presentation.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.data.error.Result
-import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import javax.inject.Inject
 
 abstract class BaseViewModel : ViewModel() {
 
-    @Inject
-    lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider
+    /*@Inject
+    lateinit var coroutineDispatcherProvider: CoroutineDispatcherProvider*/
     val scope = viewModelScope
 
     private fun <P, R> launch(
-        dispatcher: CoroutineDispatcher, params: P, execute: suspend (P) -> Result<R>
+        dispatcher: CoroutineDispatcher, params: P, execute: suspend (P) -> Result<R>, success : (R) -> Unit
     ) {
         scope.launch(dispatcher) {
             when (val result = execute(params)) {
-                is Result.Success -> Result.Success(result.data)
+                is Result.Success -> success(result.data)
                 is Result.Error -> handleError<Result.Error>(result)
             }
         }
     }
 
-    fun <P, R> launchIO(params: P, execute: suspend (P) -> Result<R>) {
-        launch(coroutineDispatcherProvider.io(), params, execute)
+    fun <P, R> launchIO(params: P, execute: suspend (P) -> Result<R>, success : (R) -> Unit) {
+        launch(Dispatchers.IO, params, execute, success)
     }
 
-    fun <P, R> launchMain(params: P, execute: suspend (P) -> Result<R>) {
-        launch(coroutineDispatcherProvider.main(), params, execute)
+    fun <P, R> launchMain(params: P, execute: suspend (P) -> Result<R>, success : (R) -> Unit) {
+        launch(Dispatchers.Main, params, execute, success)
     }
 
     //todo add error handling

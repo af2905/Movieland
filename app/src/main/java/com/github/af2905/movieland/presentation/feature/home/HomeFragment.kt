@@ -1,10 +1,13 @@
-package com.github.af2905.movieland.presentation.home
+package com.github.af2905.movieland.presentation.feature.home
 
 import android.os.Bundle
 import android.view.View
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.base.BaseFragment
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
+import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ListAdapter
+import com.github.af2905.movieland.presentation.feature.home.item.MovieItem
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
@@ -17,7 +20,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
         binding.buttonNext.setOnClickListener {
             //viewModel.openMovieDetail()
+        }
 
+        binding.homeRecyclerView.apply {
+            adapter = ListAdapter(
+                ItemAdapter(MovieItem.VIEW_TYPE)
+            )
         }
     }
 }

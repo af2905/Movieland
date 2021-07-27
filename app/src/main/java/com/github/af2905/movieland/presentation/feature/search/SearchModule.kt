@@ -1,13 +1,13 @@
-package com.github.af2905.movieland.presentation.profile
+package com.github.af2905.movieland.presentation.feature.search
 
 import com.github.af2905.movieland.di.scope.FragmentScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class ProfileModule {
+abstract class SearchModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    abstract fun profileFragment(): ProfileFragment
+    abstract fun searchFragment(): SearchFragment
 }

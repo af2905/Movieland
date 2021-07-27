@@ -1,13 +1,13 @@
-package com.github.af2905.movieland.presentation.home
+package com.github.af2905.movieland.presentation.feature.profile
 
 import com.github.af2905.movieland.di.scope.FragmentScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class HomeModule {
+abstract class ProfileModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    abstract fun homeFragment(): HomeFragment
+    abstract fun profileFragment(): ProfileFragment
 }

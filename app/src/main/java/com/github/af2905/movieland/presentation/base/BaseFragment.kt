@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.base
+package com.github.af2905.movieland.presentation.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
