@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.af2905.movieland.di.ViewModelFactory
 import com.github.af2905.movieland.di.ViewModelKey
 import com.github.af2905.movieland.presentation.MainViewModel
-import com.github.af2905.movieland.presentation.detail.moviedetail.MovieDetailViewModel
-import com.github.af2905.movieland.presentation.home.HomeViewModel
-import com.github.af2905.movieland.presentation.profile.ProfileViewModel
-import com.github.af2905.movieland.presentation.search.SearchViewModel
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailViewModel
+import com.github.af2905.movieland.presentation.feature.home.HomeViewModel
+import com.github.af2905.movieland.presentation.feature.profile.ProfileViewModel
+import com.github.af2905.movieland.presentation.feature.search.SearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.home
+package com.github.af2905.movieland.presentation.feature.home
 
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
@@ -10,6 +10,7 @@ class HomeNavigator @Inject constructor(
     @Global navController: NavController
 ) : Navigator(navController) {
 
-    fun forwardMovieDetail() = navController.navigate(R.id.action_homeFragment_to_movieDetailFragment)
+    fun forwardMovieDetail() =
+        navController.navigate(R.id.action_homeFragment_to_movieDetailFragment)
 
 }
