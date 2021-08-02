@@ -7,5 +7,4 @@ import com.github.af2905.movieland.presentation.base.BaseFragment
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetailViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_movie_detail
     override fun viewModelClass(): Class<MovieDetailViewModel> = MovieDetailViewModel::class.java
-
 }
