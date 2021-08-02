@@ -2,12 +2,11 @@ package com.github.af2905.movieland.presentation.feature.home
 
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.di.qualifier.Global
-import com.github.af2905.movieland.helper.Navigator
+import com.github.af2905.movieland.helper.navigator.Navigator
 import javax.inject.Inject
 
 class HomeNavigator @Inject constructor(
-    @Global navController: NavController
+    navController: NavController
 ) : Navigator(navController) {
 
     fun forwardMovieDetail() =

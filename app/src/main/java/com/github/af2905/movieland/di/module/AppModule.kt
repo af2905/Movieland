@@ -20,7 +20,6 @@ abstract class AppModule {
             HomeModule::class,
             ProfileModule::class,
             SearchModule::class,
-            //NavigationModule::class
         ]
     )
     abstract fun mainActivity(): MainActivity

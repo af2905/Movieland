@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.helper
+package com.github.af2905.movieland.helper.navigator
 
 import androidx.navigation.NavController
 
