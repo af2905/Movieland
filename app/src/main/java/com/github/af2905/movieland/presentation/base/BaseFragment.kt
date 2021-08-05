@@ -1,6 +1,5 @@
 package com.github.af2905.movieland.presentation.base
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +51,6 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel<out Navigat
         return binding.root
     }
 
-    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = this.findNavController()
