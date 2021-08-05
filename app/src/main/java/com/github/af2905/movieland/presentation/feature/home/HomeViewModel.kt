@@ -8,6 +8,7 @@ import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.feature.home.item.MovieItem
 import com.github.af2905.movieland.presentation.model.Model
+import com.github.af2905.movieland.presentation.widget.LoadingItem
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -18,7 +19,11 @@ class HomeViewModel @Inject constructor(
     private val _items = MutableLiveData<List<Model>>(listOf())
     val items: LiveData<List<Model>> = _items
 
+    private fun starter() = listOf(LoadingItem())
+
     init {
+        _items.postValue(starter())
+
         launchIO(
             params = PopularMoviesParams(),
             execute = getPopularMovies::invoke
