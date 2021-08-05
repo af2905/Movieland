@@ -18,15 +18,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(::HomeNavi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-/*        binding.buttonNext.setOnClickListener {
-
-            (navigator as HomeNavigator).forwardMovieDetail()
-
-            //navController.navigate(R.id.action_homeFragment_to_movieDetailFragment)
-
-            //viewModel.openMovieDetail()
-        }*/
-
         binding.homeRecyclerView.apply {
             adapter = ListAdapter(
                 ItemAdapter(MovieItem.VIEW_TYPE),
