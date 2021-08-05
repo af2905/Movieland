@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.widget
+package com.github.af2905.movieland.presentation.widget.item
 
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.model.Model
