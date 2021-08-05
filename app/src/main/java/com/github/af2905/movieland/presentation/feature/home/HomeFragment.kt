@@ -8,7 +8,7 @@ import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.ItemAdapter
 import com.github.af2905.movieland.presentation.common.ListAdapter
 import com.github.af2905.movieland.presentation.feature.home.item.MovieItem
-import com.github.af2905.movieland.presentation.widget.item.LoadingItem
+import com.github.af2905.movieland.presentation.model.item.LoadingItem
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(::HomeNavigator) {
 
