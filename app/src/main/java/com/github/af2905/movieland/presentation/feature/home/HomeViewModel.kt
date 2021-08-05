@@ -8,7 +8,7 @@ import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.feature.home.item.MovieItem
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.widget.item.LoadingItem
+import com.github.af2905.movieland.presentation.model.item.LoadingItem
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
