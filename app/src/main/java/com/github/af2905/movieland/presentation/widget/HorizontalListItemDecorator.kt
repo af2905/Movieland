@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.widget.shared
+package com.github.af2905.movieland.presentation.widget
 
 import android.graphics.Rect
 import android.view.View
