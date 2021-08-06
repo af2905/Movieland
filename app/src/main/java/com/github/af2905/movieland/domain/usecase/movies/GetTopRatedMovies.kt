@@ -16,7 +16,6 @@ class GetTopRatedMovies @Inject constructor(
     override suspend fun execute(params: TopRatedMoviesParams): Result<MoviesResponseEntity> {
         val response =
             moviesRepository.getTopRatedMovies(params.language, params.page, params.region)
-                .let { mapper.map(it) }
-        return Result.Success(response)
+        return Result.Success(mapper.map(response))
     }
 }
