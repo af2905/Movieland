@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.base
+package com.github.af2905.movieland.presentation.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,20 +7,26 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.github.af2905.movieland.BR
+import com.github.af2905.movieland.helper.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel> : DaggerFragment() {
+abstract class BaseFragment<NV: Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> : DaggerFragment() {
 
     protected abstract fun layoutRes(): Int
     protected abstract fun viewModelClass(): Class<VM>
+    protected abstract fun getNavigator(navController: NavController): NV
 
     lateinit var binding: DB
     lateinit var viewModel: VM
 
     @Inject
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,12 @@ abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel> : DaggerFr
         }
         onBind()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = this.findNavController()
+        viewModel.subscribeNavigator { navigate -> navigate(getNavigator(navController)) }
     }
 
     open fun onBind() {}
