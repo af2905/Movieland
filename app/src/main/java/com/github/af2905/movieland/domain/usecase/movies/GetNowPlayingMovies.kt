@@ -14,8 +14,8 @@ class GetNowPlayingMovies @Inject constructor(
 ) : CoroutineUseCase<NowPlayingMoviesParams, MoviesResponseEntity>() {
 
     override suspend fun execute(params: NowPlayingMoviesParams): Result<MoviesResponseEntity> {
-        val response = moviesRepository.getNowPlayingMovies(params.language, params.page, params.region)
-            .let { mapper.map(it) }
-        return Result.Success(response)
+        val response =
+            moviesRepository.getNowPlayingMovies(params.language, params.page, params.region)
+        return Result.Success(mapper.map(response))
     }
 }

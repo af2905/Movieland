@@ -14,8 +14,8 @@ class GetSimilarMovies @Inject constructor(
 ) : CoroutineUseCase<SimilarMoviesParams, MoviesResponseEntity>() {
 
     override suspend fun execute(params: SimilarMoviesParams): Result<MoviesResponseEntity> {
-        val response = moviesRepository.getRecommendedMovies(params.movieId, params.language, params.page)
-            .let { mapper.map(it) }
-        return Result.Success(response)
+        val response =
+            moviesRepository.getRecommendedMovies(params.movieId, params.language, params.page)
+        return Result.Success(mapper.map(response))
     }
 }

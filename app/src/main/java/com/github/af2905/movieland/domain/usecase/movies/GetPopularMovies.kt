@@ -14,8 +14,8 @@ class GetPopularMovies @Inject constructor(
 ) : CoroutineUseCase<PopularMoviesParams, MoviesResponseEntity>() {
 
     override suspend fun execute(params: PopularMoviesParams): Result<MoviesResponseEntity> {
-        val response = moviesRepository.getPopularMovies(params.language, params.page, params.region)
-            .let { mapper.map(it) }
-        return Result.Success(response)
+        val response =
+            moviesRepository.getPopularMovies(params.language, params.page, params.region)
+        return Result.Success(mapper.map(response))
     }
 }

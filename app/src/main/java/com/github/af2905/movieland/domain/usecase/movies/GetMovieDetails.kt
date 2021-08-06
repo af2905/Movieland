@@ -15,7 +15,6 @@ class GetMovieDetails @Inject constructor(
 
     override suspend fun execute(params: MovieDetailsParams): Result<MovieDetailsEntity> {
         val response = moviesRepository.getMovieDetails(params.movieId, params.language)
-            .let { mapper.map(it) }
-        return Result.Success(response)
+        return Result.Success(mapper.map(response))
     }
 }

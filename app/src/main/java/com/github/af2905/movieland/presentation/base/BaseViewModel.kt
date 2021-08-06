@@ -16,7 +16,7 @@ import retrofit2.HttpException
 abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: CoroutineDispatcherProvider) :
     ViewModel() {
 
-    private val _navigator = MutableSharedFlow<((Navigator) -> Unit)>()
+    private val _navigator = MutableSharedFlow<((N) -> Unit)>()
     val navigator = _navigator.asSharedFlow()
 
     private var navigatorCollection: Job? = null
@@ -24,13 +24,12 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
     protected fun navigate(invoke: N.() -> Unit) {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
             _navigator.emit { navigator ->
-                @Suppress("UNCHECKED_CAST")
-                (navigator as N).invoke()
+                navigator.invoke()
             }
         }
     }
 
-    fun subscribeNavigator(collector: suspend ((Navigator) -> Unit) -> Unit) {
+    fun subscribeNavigator(collector: suspend ((N) -> Unit) -> Unit) {
         navigatorCollection?.cancel()
         navigatorCollection = viewModelScope.launch(coroutineDispatcherProvider.main()) {
             navigator.collect { collector(it) }
