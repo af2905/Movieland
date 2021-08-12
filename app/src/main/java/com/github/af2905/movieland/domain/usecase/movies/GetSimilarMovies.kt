@@ -1,8 +1,9 @@
 package com.github.af2905.movieland.domain.usecase.movies
 
-import com.github.af2905.movieland.data.entity.MoviesResponseEntity
-import com.github.af2905.movieland.data.error.Result
+import com.github.af2905.movieland.data.database.entity.MovieType
+import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
+import com.github.af2905.movieland.data.result.Result
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
 import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
@@ -16,6 +17,6 @@ class GetSimilarMovies @Inject constructor(
     override suspend fun execute(params: SimilarMoviesParams): Result<MoviesResponseEntity> {
         val response =
             moviesRepository.getRecommendedMovies(params.movieId, params.language, params.page)
-        return Result.Success(mapper.map(response))
+        return Result.Success(mapper.map(response, MovieType.SIMILAR.name))
     }
 }

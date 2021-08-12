@@ -5,6 +5,7 @@ import com.github.af2905.movieland.data.api.MoviesApi
 import com.github.af2905.movieland.data.interceptor.ApiKeyInterceptor
 import com.github.af2905.movieland.data.interceptor.HttpLoggerInterceptor
 import com.github.af2905.movieland.di.scope.AppScope
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -38,8 +39,12 @@ class NetworkModule {
 
     @AppScope
     @Provides
-    fun provideConverterFactory(): GsonConverterFactory =
-        GsonConverterFactory.create(GsonBuilder().create())
+    fun provideConverterFactory(gson: Gson): GsonConverterFactory =
+        GsonConverterFactory.create(gson)
+
+    @AppScope
+    @Provides
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @AppScope
     @Provides

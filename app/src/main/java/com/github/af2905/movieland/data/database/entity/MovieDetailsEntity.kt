@@ -1,11 +1,15 @@
-package com.github.af2905.movieland.data.entity
+package com.github.af2905.movieland.data.database.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class MovieDetailsEntity(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val adult: Boolean,
     val backdropPath: String?,
     val budget: Int,
-    val genres: List<GenreEntity>?,
+    //@Embedded val genres: List<GenreEntity>?,
     val homepage: String,
     val imdbId: String,
     val originalLanguage: String,
@@ -13,8 +17,8 @@ data class MovieDetailsEntity(
     val overview: String,
     val popularity: Double,
     val posterPath: String?,
-    val productionCompanies: List<ProductionCompanyEntity>?,
-    val productionCountries: List<ProductionCountryEntity>?,
+    //@Embedded val productionCompanies: List<ProductionCompanyEntity>?,
+    //@Embedded val productionCountries: List<ProductionCountryEntity>?,
     val releaseDate: String,
     val revenue: Int,
     val runtime: Int,
@@ -25,7 +29,6 @@ data class MovieDetailsEntity(
     val voteAverage: Double,
     val voteCount: Int
 )
-
 
 data class GenreEntity(
     val id: Int,

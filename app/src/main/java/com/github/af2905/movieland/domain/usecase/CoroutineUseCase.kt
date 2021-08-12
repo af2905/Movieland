@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.domain.usecase
 
-import com.github.af2905.movieland.data.error.Result
+import com.github.af2905.movieland.data.result.Result
 import timber.log.Timber
 
 abstract class CoroutineUseCase<in P, R> {

@@ -5,7 +5,6 @@ import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
-import com.github.af2905.movieland.presentation.feature.home.item.MovieItem
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.LoadingItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +29,7 @@ class HomeViewModel @Inject constructor(
             params = PopularMoviesParams(),
             execute = getPopularMovies::invoke
         ) {
-            MovieItem.map(it.movies).let { list -> _items.tryEmit(list) }
+            _items.tryEmit(it.movies)
         }
     }
 
