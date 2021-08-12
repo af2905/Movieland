@@ -2,6 +2,8 @@ package com.github.af2905.movieland.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.github.af2905.movieland.data.database.converter.ListIntConverter
 import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.data.database.entity.MovieEntity
@@ -13,6 +15,7 @@ import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
     version = 1,
     exportSchema = false
 )
+@TypeConverters(ListIntConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieResponseDao(): MovieResponseDao

@@ -37,7 +37,7 @@ class MovieDtoToEntityMapper @Inject constructor() :
                 id = id,
                 adult = adult,
                 backdropPath = backdropPath,
-                //genreIds = genreIds,
+                genreIds = genreIds,
                 originalLanguage = originalLanguage,
                 originalTitle = originalTitle,
                 overview = overview,

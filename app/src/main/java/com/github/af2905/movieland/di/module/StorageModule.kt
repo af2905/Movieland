@@ -3,6 +3,7 @@ package com.github.af2905.movieland.di.module
 import android.content.Context
 import androidx.room.Room
 import com.github.af2905.movieland.data.database.AppDatabase
+import com.github.af2905.movieland.data.database.converter.ListIntConverter
 import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.di.qualifier.AppContext
@@ -29,7 +30,9 @@ class StorageModule {
 
         @AppScope
         @Provides
-        fun provideRoomDatabase(@AppContext context: Context): AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "database").build()
+        fun provideRoomDatabase(@AppContext context: Context, listIntConverter: ListIntConverter): AppDatabase =
+            Room.databaseBuilder(context, AppDatabase::class.java, "database")
+                .addTypeConverter(listIntConverter)
+                .build()
     }
 }
