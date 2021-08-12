@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.data.error
+package com.github.af2905.movieland.data.result
 
 enum class HttpResponseCode(val errorCode: IntRange) {
     OK(200..299),

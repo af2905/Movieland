@@ -2,7 +2,7 @@ package com.github.af2905.movieland.presentation.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.data.error.Result
+import com.github.af2905.movieland.data.result.Result
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.navigator.Navigator
 import kotlinx.coroutines.CoroutineDispatcher

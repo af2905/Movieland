@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.data.error
+package com.github.af2905.movieland.data.result
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()

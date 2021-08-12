@@ -1,13 +1,13 @@
 package com.github.af2905.movieland.data.mapper
 
+import com.github.af2905.movieland.data.database.entity.GenreEntity
+import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
+import com.github.af2905.movieland.data.database.entity.ProductionCompanyEntity
+import com.github.af2905.movieland.data.database.entity.ProductionCountryEntity
 import com.github.af2905.movieland.data.dto.GenreDto
 import com.github.af2905.movieland.data.dto.MovieDetailsDto
 import com.github.af2905.movieland.data.dto.ProductionCompanyDto
 import com.github.af2905.movieland.data.dto.ProductionCountryDto
-import com.github.af2905.movieland.data.entity.GenreEntity
-import com.github.af2905.movieland.data.entity.MovieDetailsEntity
-import com.github.af2905.movieland.data.entity.ProductionCompanyEntity
-import com.github.af2905.movieland.data.entity.ProductionCountryEntity
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
                 adult = adult,
                 backdropPath = backdropPath,
                 budget = budget,
-                genres = genres?.let { genreMapper.map(it) },
+                //genres = genres?.let { genreMapper.map(it) },
                 homepage = homepage,
                 imdbId = imdbId,
                 originalLanguage = originalLanguage,
@@ -32,8 +32,8 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
                 overview = overview,
                 popularity = popularity,
                 posterPath = posterPath,
-                productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
-                productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
+                /*productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
+                productionCountries = productionCountries?.let { productionCountryMapper.map(it) },*/
                 releaseDate = releaseDate,
                 revenue = revenue,
                 runtime = runtime,

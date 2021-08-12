@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.github.af2905.movieland.presentation.feature.home.item.MovieItem" />
+            type="com.github.af2905.movieland.presentation.model.item.MovieItem" />
 
     </data>
 
