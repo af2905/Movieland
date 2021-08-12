@@ -27,7 +27,7 @@ data class MovieEntity(
     @PrimaryKey val id: Int,
     val adult: Boolean,
     val backdropPath: String?,
-    //@TypeConverters(GenreIdsConverter::class) val genreIds: List<Int> = listOf(),
+    val genreIds: List<Int>?,
     val originalLanguage: String,
     val originalTitle: String,
     val overview: String,

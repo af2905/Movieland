@@ -10,7 +10,7 @@ import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.model.item.MoviesResponse
 import javax.inject.Inject
 
-class MoviesResponseEntityMapper @Inject constructor(
+class MoviesResponseEntityToUIMapper @Inject constructor(
     private val datesMapper: DatesEntityToUIMapper,
     private val movieMapper: MovieEntityToUIListMapper,
 ) : IMapper<ResponseWithMovies, MoviesResponse> {
@@ -38,7 +38,7 @@ class MovieEntityToUIMapper @Inject constructor() :
                 id = id,
                 adult = adult,
                 backdropPath = backdropPath,
-                //genreIds = genreIds,
+                genreIds = genreIds,
                 originalLanguage = originalLanguage,
                 originalTitle = originalTitle,
                 overview = overview,

@@ -19,7 +19,7 @@ data class MovieDto(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String?,
-    @SerializedName("genre_ids") val genreIds: List<Int> = listOf(),
+    @SerializedName("genre_ids") val genreIds: List<Int>?,
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_title") val originalTitle: String,
     @SerializedName("overview") val overview: String,
