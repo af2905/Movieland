@@ -3,7 +3,10 @@ package com.github.af2905.movieland.di.module
 import android.content.Context
 import androidx.room.Room
 import com.github.af2905.movieland.data.database.AppDatabase
+import com.github.af2905.movieland.data.database.converter.GenreConverter
 import com.github.af2905.movieland.data.database.converter.ListIntConverter
+import com.github.af2905.movieland.data.database.converter.ProductionCompanyConverter
+import com.github.af2905.movieland.data.database.converter.ProductionCountryConverter
 import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.di.qualifier.AppContext
@@ -14,9 +17,9 @@ import dagger.Provides
 @Module
 class StorageModule {
 
-/*    @AppScope
+    @AppScope
     @Provides
-    fun provideMovieDetailsDao(database: AppDatabase) = database.movieDetailsDao()*/
+    fun provideMovieDetailsDao(database: AppDatabase) = database.movieDetailsDao()
 
     companion object {
         @AppScope
@@ -30,9 +33,18 @@ class StorageModule {
 
         @AppScope
         @Provides
-        fun provideRoomDatabase(@AppContext context: Context, listIntConverter: ListIntConverter): AppDatabase =
+        fun provideRoomDatabase(
+            @AppContext context: Context,
+            listIntConverter: ListIntConverter,
+            genreConverter: GenreConverter,
+            productionCompanyConverter: ProductionCompanyConverter,
+            productionCountryConverter: ProductionCountryConverter
+        ): AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, "database")
                 .addTypeConverter(listIntConverter)
+                .addTypeConverter(genreConverter)
+                .addTypeConverter(productionCompanyConverter)
+                .addTypeConverter(productionCountryConverter)
                 .build()
     }
 }
