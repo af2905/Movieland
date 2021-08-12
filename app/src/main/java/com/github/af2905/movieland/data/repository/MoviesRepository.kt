@@ -27,16 +27,14 @@ class MoviesRepository @Inject constructor(
     override suspend fun getPopularMovies(
         language: String?, page: Int?, region: String?
     ): MoviesResponse {
-        val countNullOrEmpty =
-            checkCountNullOrEmpty(movieResponseDao.getTotalResultsByType(MovieType.POPULAR.name))
+        val count = movieResponseDao.getTotalResultsByType(MovieType.POPULAR.name)
 
-        if (countNullOrEmpty) {
+        if (checkCountNullOrEmpty(count)) {
             val dto = moviesApi.getPopularMovies(language = language, page = page, region = region)
             val response = responseDtoMapper.map(dto, MovieType.POPULAR.name)
             movieResponseDao.save(response)
 
-            val movies = movieDtoMapper.map(dto.movies, MovieType.POPULAR.name)
-            movies.map { movieDao.insert(it) }
+            movieDtoMapper.map(dto.movies, MovieType.POPULAR.name).map { movieDao.save(it) }
         }
         return responseEntityMapper.map(movieResponseDao.getByType(MovieType.POPULAR.name)!!)
     }
