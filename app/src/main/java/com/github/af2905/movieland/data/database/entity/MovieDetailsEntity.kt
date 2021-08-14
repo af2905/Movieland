@@ -2,6 +2,7 @@ package com.github.af2905.movieland.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.github.af2905.movieland.helper.extension.getFullPathToImage
 
 @Entity
 data class MovieDetailsEntity(
@@ -16,7 +17,6 @@ data class MovieDetailsEntity(
     val originalTitle: String,
     val overview: String,
     val popularity: Double,
-    val posterPath: String?,
     val productionCompanies: List<ProductionCompanyEntity>?,
     val productionCountries: List<ProductionCountryEntity>?,
     val releaseDate: String,
@@ -28,21 +28,16 @@ data class MovieDetailsEntity(
     val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int
-)
+) {
+    var posterPath: String? = null
+        get() = field.getFullPathToImage()
+}
 
-data class GenreEntity(
-    val id: Int,
-    val name: String
-)
+data class GenreEntity(val id: Int, val name: String)
 
-data class ProductionCompanyEntity(
-    val id: Int,
-    val logoPath: String?,
-    val name: String,
-    val originCountry: String
-)
+data class ProductionCompanyEntity(val id: Int, val name: String, val originCountry: String) {
+    var logoPath: String? = null
+        get() = field.getFullPathToImage()
+}
 
-data class ProductionCountryEntity(
-    val iso: String,
-    val name: String,
-)
+data class ProductionCountryEntity(val iso: String, val name: String)

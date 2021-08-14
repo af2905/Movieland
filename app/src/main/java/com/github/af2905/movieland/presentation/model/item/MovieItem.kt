@@ -18,7 +18,8 @@ data class MovieItem(
     val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int,
-    val responseMovieType: String
+    val responseMovieType: String,
+    val voteAverageBackground: Int
 ) : Model(VIEW_TYPE) {
 
     companion object {

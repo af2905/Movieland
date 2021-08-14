@@ -31,7 +31,6 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
                 originalTitle = originalTitle,
                 overview = overview,
                 popularity = popularity,
-                posterPath = posterPath,
                 productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
                 productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
                 releaseDate = releaseDate,
@@ -44,7 +43,7 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
                 voteAverage = voteAverage,
                 voteCount = voteCount
             )
-        }
+        }.also { it.posterPath = input.posterPath }
 }
 
 class ProductionCountryDtoToEntityListMapper @Inject constructor(mapper: ProductionCountryDtoToEntityMapper) :
@@ -61,7 +60,8 @@ class ProductionCompanyDtoToEntityListMapper @Inject constructor(mapper: Product
 class ProductionCompanyDtoToEntityMapper @Inject constructor() :
     IMapper<ProductionCompanyDto, ProductionCompanyEntity> {
     override fun map(input: ProductionCompanyDto) =
-        ProductionCompanyEntity(input.id, input.logoPath, input.name, input.originCountry)
+        ProductionCompanyEntity(input.id, input.name, input.originCountry)
+            .also { it.logoPath = input.logoPath }
 }
 
 class GenreDtoToEntityListMapper @Inject constructor(mapper: GenreDtoToEntityMapper) :
