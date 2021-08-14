@@ -49,7 +49,8 @@ class MovieEntityToUIMapper @Inject constructor() :
                 video = video,
                 voteAverage = voteAverage,
                 voteCount = voteCount,
-                responseMovieType = responseMovieType
+                responseMovieType = responseMovieType,
+                voteAverageBackground = voteAverageBackground
             )
         }
 }

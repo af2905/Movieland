@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.github.af2905.movieland.presentation.model.item.MovieItem" />
@@ -10,18 +12,47 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/movie_card_width"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/movieImage"
+            android:layout_width="@dimen/movie_card_width"
+            android:layout_height="@dimen/movie_card_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{item.title}"/>
+            app:src="@{item.posterPath}"
+            tools:src="@drawable/ic_placeholder"
+            tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/movieRating"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_small"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin_tiny"
+            android:paddingEnd="@dimen/default_margin_tiny"
+            android:text="@{String.valueOf(item.voteAverage)}"
+            app:background="@{item.voteAverageBackground}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/bg_green_corners_8"
+            tools:text="7.6" />
+
+        <TextView
+            android:id="@+id/_movieDescription"
+            style="@style/TextView.Bold"
+            android:layout_width="@dimen/movie_card_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_tiny"
+            android:ellipsize="end"
+            android:maxLines="@integer/max_lines_2"
+            android:text="@{item.title}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieImage"
+            tools:text="Игра на понижение" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

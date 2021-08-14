@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextView">
+        <item name="android:textSize">@dimen/default_text_normal</item>
+    </style>
+
+    <style name="TextView.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Small">
+        <item name="android:textSize">@dimen/default_text_small</item>
+    </style>
+
+    <style name="TextView.Small.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Medium">
+        <item name="android:textSize">@dimen/default_text_medium</item>
+    </style>
+
+    <style name="TextView.Medium.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>
+

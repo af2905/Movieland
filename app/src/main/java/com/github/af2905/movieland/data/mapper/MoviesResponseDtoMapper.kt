@@ -42,7 +42,6 @@ class MovieDtoToEntityMapper @Inject constructor() :
                 originalTitle = originalTitle,
                 overview = overview,
                 popularity = popularity,
-                posterPath = posterPath,
                 releaseDate = releaseDate,
                 title = title,
                 video = video,
@@ -50,7 +49,7 @@ class MovieDtoToEntityMapper @Inject constructor() :
                 voteCount = voteCount,
                 responseMovieType = type
             )
-        }
+        }.also { it.posterPath = input.posterPath }
 }
 
 class DatesDtoToEntityMapper @Inject constructor() : IMapper<DatesDto, DatesEntity> {
