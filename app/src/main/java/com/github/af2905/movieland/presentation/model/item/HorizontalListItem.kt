@@ -1,7 +1,8 @@
-package com.github.af2905.movieland.presentation.widget
+package com.github.af2905.movieland.presentation.model.item
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.common.BindingViewHolder
@@ -25,6 +26,7 @@ class HorizontalListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup): BindingViewHolder {
         return super.onCreateViewHolder(parent).apply {
             binding.root.findViewById<RecyclerView>(R.id.recyclerView).apply {
+                layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = adapter()
                 decoration?.let {
                     addItemDecoration(decoration.invoke(this.context))

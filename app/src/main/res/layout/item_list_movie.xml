@@ -9,11 +9,20 @@
             name="item"
             type="com.github.af2905.movieland.presentation.model.item.MovieItem" />
 
+        <variable
+            name="listener"
+            type="com.github.af2905.movieland.presentation.model.item.MovieItem.Listener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/movie_card_width"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.click(item, position)}">
 
         <ImageView
             android:id="@+id/movieImage"
@@ -22,8 +31,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:src="@{item.posterPath}"
-            tools:src="@drawable/ic_placeholder"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_placeholder" />
 
         <TextView
             android:id="@+id/movieRating"
@@ -32,10 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_small"
             android:layout_marginEnd="@dimen/default_margin"
+            android:background="@{item.voteAverageBackground}"
             android:paddingStart="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin_tiny"
             android:text="@{String.valueOf(item.voteAverage)}"
-            app:background="@{item.voteAverageBackground}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/bg_green_corners_8"

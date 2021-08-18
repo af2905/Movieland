@@ -6,12 +6,14 @@ import com.github.af2905.movieland.data.result.Result
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.navigator.Navigator
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 
 abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: CoroutineDispatcherProvider) :
     ViewModel() {
@@ -61,6 +63,35 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
         val exception = result.exception
 
         if (exception is HttpException) {
+
+        }
+    }
+
+    fun launch(dispatcher: CoroutineDispatcher, action: suspend () -> Unit) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                action()
+            } catch (throwable: Throwable) {
+                handleError(throwable)
+            }
+        }
+    }
+
+    fun launchUI(action: suspend () -> Unit) {
+        launch(Dispatchers.Main) {
+            action()
+        }
+    }
+
+    fun launchIO(action: suspend () -> Unit) {
+        launch(Dispatchers.IO) {
+            action()
+        }
+    }
+
+    open fun handleError(throwable: Throwable) {
+        Timber.e(throwable)
+        when (throwable) {
 
         }
     }
