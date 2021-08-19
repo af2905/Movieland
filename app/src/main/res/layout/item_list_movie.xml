@@ -24,19 +24,21 @@
         android:layout_height="wrap_content"
         android:onClick="@{() -> listener.click(item, position)}">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/movieImage"
             android:layout_width="@dimen/movie_card_width"
             android:layout_height="@dimen/movie_card_height"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
             app:src="@{item.posterPath}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_placeholder" />
 
         <TextView
             android:id="@+id/movieRating"
-            style="@style/TextView.Bold"
+            style="@style/TextView.Bold.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_small"
@@ -56,8 +58,11 @@
             android:layout_width="@dimen/movie_card_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_tiny"
+            android:paddingStart="@dimen/default_margin_tiny"
+            android:paddingEnd="@dimen/default_margin_tiny"
             android:ellipsize="end"
             android:maxLines="@integer/max_lines_2"
+            android:lines="@integer/max_lines_2"
             android:text="@{item.title}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movieImage"

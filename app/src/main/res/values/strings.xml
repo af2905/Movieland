@@ -13,5 +13,6 @@
     <string name="upcoming">Upcoming</string>
     <string name="recommended">Recommended</string>
     <string name="similar">Similar</string>
+    <string name="adult">Adult</string>
 
 </resources>

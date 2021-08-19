@@ -7,7 +7,7 @@ abstract class CoroutineUseCase<in P, R> {
 
     suspend operator fun invoke(params: P): Result<R> {
         return try {
-            execute(params)
+            Result.Success(execute(params))
         } catch (e: Exception) {
             Timber.d(e)
             Result.Error(e)
@@ -15,6 +15,6 @@ abstract class CoroutineUseCase<in P, R> {
     }
 
     @Throws(RuntimeException::class)
-    protected abstract suspend fun execute(params: P): Result<R>
+    protected abstract suspend fun execute(params: P): R
 
 }
