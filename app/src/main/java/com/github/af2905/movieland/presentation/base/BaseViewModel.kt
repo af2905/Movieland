@@ -2,12 +2,14 @@ package com.github.af2905.movieland.presentation.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.af2905.movieland.data.result.ApiException
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.navigator.Navigator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,6 +20,12 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
 
     private val _navigator = MutableSharedFlow<((N) -> Unit)>()
     val navigator = _navigator.asSharedFlow()
+
+    private val _exceptionMessage = MutableStateFlow("")
+    val exceptionMessage = _exceptionMessage
+
+    private val _failedToConnect = MutableStateFlow(Unit)
+    val failedToConnect = _failedToConnect
 
     private var navigatorCollection: Job? = null
 
@@ -57,7 +65,8 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
     open fun handleError(throwable: Throwable) {
         Timber.e(throwable)
         when (throwable) {
-
+            is ApiException.ConnectionException -> _failedToConnect.tryEmit(Unit)
+            is ApiException -> throwable.message?.let { _exceptionMessage.tryEmit(it) }
         }
     }
 }
