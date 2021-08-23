@@ -3,6 +3,7 @@ package com.github.af2905.movieland.presentation.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.data.result.ApiException
+import com.github.af2905.movieland.data.result.ConnectionException
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.navigator.Navigator
 import kotlinx.coroutines.CoroutineDispatcher
@@ -65,7 +66,7 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
     open fun handleError(throwable: Throwable) {
         Timber.e(throwable)
         when (throwable) {
-            is ApiException.ConnectionException -> _failedToConnect.tryEmit(Unit)
+            is ConnectionException -> _failedToConnect.tryEmit(Unit)
             is ApiException -> throwable.message?.let { _exceptionMessage.tryEmit(it) }
         }
     }

@@ -32,7 +32,7 @@ class ListAdapter(vararg adapters: ItemAdapter) : RecyclerView.Adapter<BindingVi
             }
         }
 
-    val differ: AsyncListDiffer<Model> = AsyncListDiffer(this, diffCallback)
+    private val differ: AsyncListDiffer<Model> = AsyncListDiffer(this, diffCallback)
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         items[position].let { item -> holder.bind(item, delegateAdapters[item.viewType]?.listener) }
