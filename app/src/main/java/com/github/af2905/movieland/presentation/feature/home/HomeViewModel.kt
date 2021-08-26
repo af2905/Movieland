@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
             list.addAll(loadPopularMovies(this))
             list.addAll(loadTopRatedMovies(this))
             list.addAll(loadUpcomingMovies(this))
-            list.addAll(listOf(emptySpaceBig, emptySpaceBig))
+            list.addAll(listOf(emptySpaceBig))
             _items.emit(list)
         }
     }
