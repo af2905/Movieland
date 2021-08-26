@@ -10,5 +10,4 @@ class SearchFragment : BaseFragment<AppNavigator, FragmentSearchBinding, SearchV
     override fun layoutRes(): Int = R.layout.fragment_search
     override fun viewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
     override fun getNavigator(navController: NavController) = AppNavigator (navController)
-
 }

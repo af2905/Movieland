@@ -14,7 +14,8 @@ import com.github.af2905.movieland.helper.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<NV: Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> : DaggerFragment() {
+abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> :
+    DaggerFragment() {
 
     protected abstract fun layoutRes(): Int
     protected abstract fun viewModelClass(): Class<VM>
