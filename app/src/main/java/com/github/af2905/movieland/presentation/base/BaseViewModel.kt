@@ -6,15 +6,13 @@ import com.github.af2905.movieland.data.result.ApiException
 import com.github.af2905.movieland.data.result.ConnectionException
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.navigator.Navigator
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: CoroutineDispatcherProvider) :
     ViewModel() {
@@ -45,6 +43,14 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
         }
     }
 
+    open fun handleError(throwable: Throwable) {
+        Timber.e(throwable)
+        when (throwable) {
+            is ConnectionException -> _failedToConnect.tryEmit(Unit)
+            is ApiException -> throwable.message?.let { _exceptionMessage.tryEmit(it) }
+        }
+    }
+
     private fun launch(dispatcher: CoroutineDispatcher, action: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(dispatcher) {
             try {
@@ -63,11 +69,29 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
         launch(coroutineDispatcherProvider.io(), action)
     }
 
-    open fun handleError(throwable: Throwable) {
-        Timber.e(throwable)
-        when (throwable) {
-            is ConnectionException -> _failedToConnect.tryEmit(Unit)
-            is ApiException -> throwable.message?.let { _exceptionMessage.tryEmit(it) }
+    private fun <T> CoroutineScope.internalAsync(
+        context: CoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        action: suspend CoroutineScope.() -> T
+    ): Deferred<Result<T>> {
+        return async(context, start) {
+            try {
+                Result.success(action())
+            } catch (throwable: Throwable) {
+                Result.failure(throwable)
+            }
         }
     }
+
+    fun <T> CoroutineScope.uIAsync(
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        action: suspend CoroutineScope.() -> T
+    ) =
+        internalAsync(coroutineDispatcherProvider.main(), start, action)
+
+    fun <T> CoroutineScope.iOAsync(
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        action: suspend CoroutineScope.() -> T
+    ) =
+        internalAsync(coroutineDispatcherProvider.io(), start, action)
 }

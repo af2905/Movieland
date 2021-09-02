@@ -12,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.ActivityMainBinding
+import com.github.af2905.movieland.di.ViewModelFactory
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
@@ -19,8 +20,11 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
 
+    /*@Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory*/
+
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
 
     lateinit var viewModel: MainViewModel
     lateinit var binding: ActivityMainBinding
@@ -33,7 +37,10 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        //viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         binding.viewModel = viewModel
 
         navController = findNavController()
