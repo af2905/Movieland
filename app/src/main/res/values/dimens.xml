@@ -11,9 +11,15 @@
     <dimen name="default_text_normal">14sp</dimen>
     <dimen name="default_text_medium">18sp</dimen>
 
+    <dimen name="collapsed_title_text">18sp</dimen>
+    <dimen name="expanded_title_text">48sp</dimen>
+
     <dimen name="default_corners_radius">8dp</dimen>
 
     <dimen name="movie_card_width">130dp</dimen>
     <dimen name="movie_card_height">170dp</dimen>
+
+    <dimen name="backdrop_height">220dp</dimen>
+    <dimen name="collapsing_toolbar_min_height">100dp</dimen>
 
 </resources>

@@ -29,7 +29,7 @@ data class MovieItem(
     } }
 
     companion object {
-        const val VIEW_TYPE = R.layout.item_list_movie
+        const val VIEW_TYPE = R.layout.list_item_movie
         val RAD_RANGE = 0.0..5.0
         val GRAY_RANGE = 5.1..6.9
     }

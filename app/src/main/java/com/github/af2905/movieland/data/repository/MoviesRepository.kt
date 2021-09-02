@@ -5,6 +5,7 @@ import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.data.database.entity.MovieType
 import com.github.af2905.movieland.data.database.entity.ResponseWithMovies
+import com.github.af2905.movieland.data.mapper.MovieDetailsDtoToEntityMapper
 import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
@@ -14,7 +15,7 @@ class MoviesRepository @Inject constructor(
     private val moviesApi: MoviesApi,
     private val movieDtoMapper: MovieDtoToEntityListMapper,
     private val responseDtoMapper: MoviesResponseDtoToEntityMapper,
-
+    private val movieDetailsDtoMapper: MovieDetailsDtoToEntityMapper,
     private val movieDao: MovieDao,
     private val movieResponseDao: MovieResponseDao
 ) : IMoviesRepository {
@@ -44,7 +45,7 @@ class MoviesRepository @Inject constructor(
     ) = loadMovies(MovieType.SIMILAR.name, movieId = movieId, language = language, page = page)
 
     override suspend fun getMovieDetails(movieId: Int, language: String?) =
-        moviesApi.getMovieDetails(movieId = movieId, language = language)
+        movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
 
     private fun checkCountNullOrEmpty(count: Int?) = (count == null || count == 0)
 

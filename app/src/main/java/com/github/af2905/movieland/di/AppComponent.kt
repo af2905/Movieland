@@ -16,7 +16,7 @@ import dagger.android.AndroidInjector
         AppModule::class,
         NetworkModule::class,
         RepositoryModule::class,
-        ViewModelModule::class,
+        //ViewModelModule::class,
         ViewModule::class,
         StorageModule::class
     ]

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    //TextView
     <style name="TextView">
         <item name="android:textSize">@dimen/default_text_normal</item>
     </style>
@@ -27,6 +28,15 @@
 
     <style name="TextView.Medium.Bold">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    //TextAppearance
+    <style name="AppTheme.Title.Collapsed" parent="android:TextAppearance">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppTheme.Title.Expanded" parent="android:TextAppearance">
+        <item name="android:textSize">48sp</item>
     </style>
 
 </resources>

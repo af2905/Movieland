@@ -1,22 +1,11 @@
 package com.github.af2905.movieland.di.module
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.github.af2905.movieland.di.ViewModelFactory
-import com.github.af2905.movieland.di.ViewModelKey
-import com.github.af2905.movieland.presentation.MainViewModel
-import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailViewModel
-import com.github.af2905.movieland.presentation.feature.home.HomeViewModel
-import com.github.af2905.movieland.presentation.feature.profile.ProfileViewModel
-import com.github.af2905.movieland.presentation.feature.search.SearchViewModel
-import dagger.Binds
 import dagger.Module
-import dagger.multibindings.IntoMap
 
 @Module
 interface ViewModelModule {
 
-    @Binds
+    /*@Binds
     fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
@@ -41,6 +30,6 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MovieDetailViewModel::class)
-    fun movieDetailViewModel(viewModel: MovieDetailViewModel): ViewModel
+    @ViewModelKey(MovieDetailsViewModel::class)
+    fun movieDetailViewModel(viewModel: MovieDetailsViewModel): ViewModel*/
 }

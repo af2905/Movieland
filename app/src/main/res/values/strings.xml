@@ -7,6 +7,7 @@
     <string name="bottom_nav_menu_profile_title">Profile</string>
 
     //Headers
+    <string name="header">Header</string>
     <string name="popular">Popular</string>
     <string name="now_playing">Now playing</string>
     <string name="top_rated">Top rated</string>
