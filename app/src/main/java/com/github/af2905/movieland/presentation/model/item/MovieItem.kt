@@ -35,6 +35,6 @@ data class MovieItem(
     }
 
     fun interface Listener : ItemAdapter.Listener {
-        fun click(item: MovieItem, position: Int)
+        fun onItemClicked(item: MovieItem, position: Int)
     }
 }

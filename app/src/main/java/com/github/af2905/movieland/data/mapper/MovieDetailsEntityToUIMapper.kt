@@ -4,6 +4,7 @@ import com.github.af2905.movieland.data.database.entity.GenreEntity
 import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
 import com.github.af2905.movieland.data.database.entity.ProductionCompanyEntity
 import com.github.af2905.movieland.data.database.entity.ProductionCountryEntity
+import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
 import com.github.af2905.movieland.presentation.model.item.Genre
@@ -41,6 +42,7 @@ class MovieDetailsEntityToUIMapper @Inject constructor(
                 title = title,
                 video = video,
                 voteAverage = voteAverage,
+                voteAverageStar = voteAverage.fiveStarRating().toFloat(),
                 voteCount = voteCount,
                 posterPath = input.posterPath
             )

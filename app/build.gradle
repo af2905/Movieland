@@ -106,6 +106,7 @@ dependencies {
     implementation "com.google.code.gson:gson:${gsonVersion}"
     //Glide
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
     //Timber
     implementation "com.jakewharton.timber:timber:${timberVersion}"
     //Navigation

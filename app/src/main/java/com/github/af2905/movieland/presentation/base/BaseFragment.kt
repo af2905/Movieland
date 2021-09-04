@@ -25,24 +25,8 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewM
     lateinit var binding: DB
     lateinit var viewModel: VM
 
-    /*@Inject
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory*/
-
     @Inject
     protected lateinit var viewModelFactory: ViewModelFactory<VM>
-
-
-    /*
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(viewModelClass)
-        viewModel.exceptionMessage.observe(this, Observer {
-            SimpleDialogFragment.newInstance(
-                message = it,
-                closeButtonRes = R.string.any_screen_close
-            ).show(parentFragmentManager, SimpleDialogFragment.TAG)
-        })*/
 
     lateinit var navController: NavController
 

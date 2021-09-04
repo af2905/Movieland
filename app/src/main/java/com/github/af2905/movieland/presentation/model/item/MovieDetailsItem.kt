@@ -1,8 +1,8 @@
 package com.github.af2905.movieland.presentation.model.item
 
-import com.github.af2905.movieland.R
+import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.presentation.common.ItemAdapter
-import com.github.af2905.movieland.presentation.model.Model
+import java.util.*
 
 data class MovieDetailsItem(
     val id: Int,
@@ -26,16 +26,25 @@ data class MovieDetailsItem(
     val title: String,
     val video: Boolean,
     val voteAverage: Double,
+    val voteAverageStar: Float,
     val voteCount: Int,
-    val posterPath: String?
-) : Model(VIEW_TYPE) {
-
-    companion object {
-        const val VIEW_TYPE = R.layout.list_item_movie_details
+    val posterPath: String?,
+    val liked: Boolean = false,
+) {
+    private val releaseYear = releaseDate.getYearFromReleaseDate()
+    private val genreList = genres?.map { genre -> genre.name }
+        ?.map { it.lowercase(Locale.getDefault()) }.orEmpty().joinToString(COMMA_SEPARATOR)
+    val titleNextInfo = StringBuilder().apply {
+        append(releaseYear); append(COMMA_SEPARATOR); append(genreList)
     }
 
-    fun interface Listener : ItemAdapter.Listener {
-        fun click(item: MovieDetailsItem)
+    interface Listener : ItemAdapter.Listener {
+        fun onLikedClick(item: MovieDetailsItem)
+        fun onBackClicked()
+    }
+
+    companion object {
+        private const val COMMA_SEPARATOR = ", "
     }
 }
 
