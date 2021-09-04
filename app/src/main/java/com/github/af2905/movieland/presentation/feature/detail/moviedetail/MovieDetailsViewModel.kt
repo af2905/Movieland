@@ -47,8 +47,10 @@ class MovieDetailsViewModel @Inject constructor(
 
     private fun loadData() {
         launchUI {
+            loading.emit(true)
             val movieDetails = getMovieDetails(MovieDetailsParams(movieId))
             movieDetails.extractData?.let { movieDetailsItem.postValue(it) }
+            loading.emit(false)
         }
     }
 }
