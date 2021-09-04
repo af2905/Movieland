@@ -19,81 +19,91 @@
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_details"
             app:item="@{viewModel.movieDetailsItem}"
-            app:listener="@{viewModel.movieDetailsItemClickListener}"/>
+            app:listener="@{viewModel.movieDetailsItemClickListener}"
+            app:visible="@{!viewModel.loading}" />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/movieDetailsSwipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:refreshing="@{viewModel.loading}">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:visible="@{!viewModel.loading}">
 
-                <androidx.appcompat.widget.AppCompatRatingBar
-                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:isIndicator="true"
-                    android:paddingBottom="@dimen/default_margin"
-                    android:minWidth="@dimen/default_margin"
-                    android:numStars="5"
-                    android:progressBackgroundTint="@color/gold_700"
-                    android:stepSize="0.5"
-                    android:rating="@{viewModel.movieDetailsItem.voteAverageStar}"
-                    tools:rating="3.2" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/lightGrey"
-                    android:text="@{viewModel.movieDetailsItem.titleNextInfo}"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    tools:text="2021" />
+                    android:layout_margin="@dimen/default_margin"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextView.Medium.Bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.movieDetailsItem.tagline}"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    tools:text="«Два мира - одна судьба»" />
+                    <androidx.appcompat.widget.AppCompatRatingBar
+                        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:isIndicator="true"
+                        android:minWidth="@dimen/default_margin"
+                        android:numStars="5"
+                        android:paddingBottom="@dimen/default_margin"
+                        android:progressBackgroundTint="@color/gold_700"
+                        android:rating="@{viewModel.movieDetailsItem.voteAverageStar}"
+                        android:stepSize="0.5"
+                        tools:rating="3.2" />
 
-                <TextView
-                    style="@style/TextView.LineSpacingMultiplier"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.movieDetailsItem.overview}"
-                    android:layout_marginBottom="@dimen/default_margin_small"
-                    tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:text="@{viewModel.movieDetailsItem.titleNextInfo}"
+                        android:textColor="@color/darkGrey"
+                        tools:text="2021" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/actorsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/default_margin_small"
-                    android:overScrollMode="never"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    <TextView
+                        style="@style/TextView.Medium.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:text="@{viewModel.movieDetailsItem.tagline}"
+                        tools:text="«Два мира - одна судьба»" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/companiesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/default_margin_small"
-                    android:overScrollMode="never"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    <TextView
+                        style="@style/TextView.LineSpacingMultiplier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/default_margin_small"
+                        android:text="@{viewModel.movieDetailsItem.overview}"
+                        tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
 
-            </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/actorsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/default_margin_small"
+                        android:overScrollMode="never"
+                        android:scrollbars="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        </androidx.core.widget.NestedScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/companiesRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/default_margin_small"
+                        android:overScrollMode="never"
+                        android:scrollbars="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

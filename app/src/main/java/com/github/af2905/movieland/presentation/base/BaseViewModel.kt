@@ -26,6 +26,9 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
     private val _failedToConnect = MutableStateFlow(Unit)
     val failedToConnect = _failedToConnect
 
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading
+
     private var navigatorCollection: Job? = null
 
     protected fun navigate(invoke: N.() -> Unit) {
