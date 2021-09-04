@@ -10,13 +10,13 @@ import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
-import com.github.af2905.movieland.presentation.model.item.LoadingItem
+import com.github.af2905.movieland.presentation.model.item.MovieDetailsItem
 import javax.inject.Inject
 
 class MovieDetailsViewModel @Inject constructor(
     args: MovieDetailsFragmentArgs,
     coroutineDispatcherProvider: CoroutineDispatcherProvider,
-    private val getMovieDetails: GetMovieDetails
+    private val getMovieDetails: GetMovieDetails,
 ) : BaseViewModel<AppNavigator>(coroutineDispatcherProvider) {
 
     private val movieId = args.movieId
@@ -29,20 +29,26 @@ class MovieDetailsViewModel @Inject constructor(
     private val _items = MutableLiveData<List<Model>>()
     val items: LiveData<List<Model>> = _items
 
-    private fun starter() = listOf(LoadingItem())
+    var movieDetailsItem = MutableLiveData<MovieDetailsItem>()
+
+    val movieDetailsItemClickListener = object : MovieDetailsItem.Listener {
+        override fun onLikedClick(item: MovieDetailsItem) {
+            movieDetailsItem.postValue(
+                movieDetailsItem.value?.copy(liked = !movieDetailsItem.value!!.liked)
+            )
+        }
+
+        override fun onBackClicked() = navigate { back() }
+    }
 
     init {
-        _items.postValue(starter())
         loadData()
     }
 
     private fun loadData() {
         launchUI {
             val movieDetails = getMovieDetails(MovieDetailsParams(movieId))
-            val result = movieDetails.extractData?.let {
-                listOf(it, emptySpaceMedium)
-            }
-            _items.postValue(result ?: emptyList())
+            movieDetails.extractData?.let { movieDetailsItem.postValue(it) }
         }
     }
 }

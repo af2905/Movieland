@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,17 +11,89 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRecyclerView"
-            linearLayoutManager="@{false}"
-            recyclerSetData="@{viewModel.items}"
+        <include
+            android:id="@+id/movieDetailsToolbar"
+            layout="@layout/toolbar_movie_details"
+            app:item="@{viewModel.movieDetailsItem}"
+            app:listener="@{viewModel.movieDetailsItemClickListener}"/>
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:orientation="vertical">
 
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:isIndicator="true"
+                    android:paddingBottom="@dimen/default_margin"
+                    android:minWidth="@dimen/default_margin"
+                    android:numStars="5"
+                    android:progressBackgroundTint="@color/gold_700"
+                    android:stepSize="0.5"
+                    android:rating="@{viewModel.movieDetailsItem.voteAverageStar}"
+                    tools:rating="3.2" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/lightGrey"
+                    android:text="@{viewModel.movieDetailsItem.titleNextInfo}"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    tools:text="2021" />
+
+                <TextView
+                    style="@style/TextView.Medium.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.movieDetailsItem.tagline}"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    tools:text="«Два мира - одна судьба»" />
+
+                <TextView
+                    style="@style/TextView.LineSpacingMultiplier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.movieDetailsItem.overview}"
+                    android:layout_marginBottom="@dimen/default_margin_small"
+                    tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/actorsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/default_margin_small"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/companiesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/default_margin_small"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
