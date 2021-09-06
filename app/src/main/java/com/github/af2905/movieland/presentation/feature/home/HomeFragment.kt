@@ -44,5 +44,8 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                 )
             )
         }
+        binding.homeSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+        }
     }
 }

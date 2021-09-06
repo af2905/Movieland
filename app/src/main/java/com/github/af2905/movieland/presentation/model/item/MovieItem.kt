@@ -5,7 +5,7 @@ import com.github.af2905.movieland.presentation.common.ItemAdapter
 import com.github.af2905.movieland.presentation.model.Model
 
 data class MovieItem(
-    val id: Int,
+    override val id: Int,
     val adult: Boolean?,
     val backdropPath: String?,
     val genreIds: List<Int>?,
