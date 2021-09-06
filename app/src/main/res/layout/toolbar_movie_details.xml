@@ -64,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> listener.onBackClicked()}"
                         android:src="@drawable/ic_arrow"
+                        android:background="?selectableItemBackgroundBorderless"
                         tools:ignore="ContentDescription" />
                 </androidx.appcompat.widget.Toolbar>
 
