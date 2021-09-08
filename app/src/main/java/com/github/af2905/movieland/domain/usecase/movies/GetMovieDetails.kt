@@ -4,7 +4,7 @@ import com.github.af2905.movieland.data.mapper.MovieDetailsEntityToUIMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
 import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
-import com.github.af2905.movieland.presentation.model.item.MovieDetailsItem
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import javax.inject.Inject
 
 class GetMovieDetails @Inject constructor(

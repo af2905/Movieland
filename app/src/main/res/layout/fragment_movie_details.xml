@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -29,95 +28,14 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:refreshing="@{viewModel.loading}">
 
-            <androidx.core.widget.NestedScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/actorsRecyclerView"
+                linearLayoutManager="@{false}"
+                recyclerSetData="@{viewModel.items}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:visible="@{!viewModel.loading}">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatRatingBar
-                        style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center"
-                        android:layout_margin="@dimen/default_margin"
-                        android:isIndicator="true"
-                        android:minWidth="@dimen/default_margin"
-                        android:numStars="5"
-                        android:progressBackgroundTint="@color/gold_700"
-                        android:rating="@{viewModel.movieDetailsItem.voteAverageStar}"
-                        android:stepSize="0.5"
-                        tools:rating="3.2" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginBottom="@dimen/default_margin"
-                        android:text="@{viewModel.movieDetailsItem.titleNextInfo}"
-                        android:textColor="@color/darkGrey"
-                        tools:text="2021" />
-
-                    <TextView
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginBottom="@dimen/default_margin"
-                        android:text="@{viewModel.movieDetailsItem.tagline}"
-                        tools:text="«Два мира - одна судьба»" />
-
-                    <TextView
-                        style="@style/TextView.LineSpacingMultiplier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginBottom="@dimen/default_margin"
-                        android:text="@{viewModel.movieDetailsItem.overview}"
-                        tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
-
-                    <TextView
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginBottom="@dimen/default_margin"
-                        app:visible="@{viewModel.items.size() > 0}"
-                        android:text="@string/actors_and_crew_title" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/actorsRecyclerView"
-                        linearLayoutManager="@{false}"
-                        recyclerSetData="@{viewModel.items}"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/default_margin"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/companiesRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/default_margin_small"
-                        android:overScrollMode="never"
-                        android:scrollbars="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-                </LinearLayout>
-
-            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

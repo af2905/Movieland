@@ -46,7 +46,7 @@
             android:background="@{item.voteAverageBackground}"
             android:paddingStart="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin_tiny"
-            android:text="@{String.valueOf(item.voteAverage)}"
+            app:voteAverage="@{item.voteAverage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/bg_green_corners_8"

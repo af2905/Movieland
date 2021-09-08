@@ -19,7 +19,7 @@ data class MovieItem(
     val video: Boolean?,
     val voteAverage: Double?,
     val voteCount: Int?,
-    val responseMovieType: String?,
+    val responseMovieType: String? = null
 ) : Model(VIEW_TYPE) {
 
     var voteAverageBackground = voteAverage?.let { when (voteAverage) {
