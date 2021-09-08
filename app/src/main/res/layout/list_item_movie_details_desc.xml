@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:layout_margin="@dimen/default_margin"
+            android:isIndicator="true"
+            android:minWidth="@dimen/default_margin"
+            android:numStars="5"
+            android:progressBackgroundTint="@color/gold_700"
+            android:rating="@{item.movieDetailsItem.voteAverageStar}"
+            android:stepSize="0.5"
+            tools:rating="3.2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@{item.movieDetailsItem.titleNextInfo}"
+            android:textColor="@color/darkGrey"
+            tools:text="2021" />
+
+        <TextView
+            style="@style/TextView.Medium.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@{item.movieDetailsItem.tagline}"
+            tools:text="«Два мира - одна судьба»" />
+
+        <TextView
+            style="@style/TextView.LineSpacingMultiplier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@{item.movieDetailsItem.overview}"
+            tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
+
+    </LinearLayout>
+
+</layout>

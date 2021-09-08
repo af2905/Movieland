@@ -5,13 +5,12 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.presentation.widget.HorizontalListItem" />
+            type="com.github.af2905.movieland.presentation.model.item.HorizontalListItem" />
 
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        linearLayoutManager="@{true}"
         recyclerSetData="@{item.list}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

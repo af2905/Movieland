@@ -5,8 +5,12 @@ import androidx.annotation.LayoutRes
 abstract class Model(
     @LayoutRes val viewType: Int
 ) : SameItem {
-    override fun areItemsTheSame(item: Model): Boolean {
-        return item === this
+
+    abstract val id: Int
+
+    override fun areItemsTheSame(item: Model): Boolean = when{
+        this::class != item::class -> false
+        else -> this.id == item.id
     }
 
     override fun areContentsTheSame(item: Model): Boolean {
