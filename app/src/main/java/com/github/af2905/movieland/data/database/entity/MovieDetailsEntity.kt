@@ -8,7 +8,6 @@ import com.github.af2905.movieland.helper.extension.getFullPathToImage
 data class MovieDetailsEntity(
     @PrimaryKey val id: Int,
     val adult: Boolean,
-    val backdropPath: String?,
     val budget: Int,
     val genres: List<GenreEntity>?,
     val homepage: String,
@@ -29,6 +28,9 @@ data class MovieDetailsEntity(
     val voteAverage: Double,
     val voteCount: Int
 ) {
+    var backdropPath: String? = null
+        get() = field.getFullPathToImage()
+
     var posterPath: String? = null
         get() = field.getFullPathToImage()
 }

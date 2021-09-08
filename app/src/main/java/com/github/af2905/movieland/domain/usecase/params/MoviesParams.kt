@@ -26,4 +26,6 @@ data class SimilarMoviesParams(
     val movieId: Int, val language: String? = null, val page: Int? = null
 )
 
+data class MovieActorsParams(val movieId: Int, val language: String? = null)
+
 

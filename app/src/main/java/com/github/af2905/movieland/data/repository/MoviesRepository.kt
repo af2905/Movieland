@@ -44,6 +44,9 @@ class MoviesRepository @Inject constructor(
         movieId: Int, language: String?, page: Int?
     ) = loadMovies(MovieType.SIMILAR.name, movieId = movieId, language = language, page = page)
 
+    override suspend fun getMovieActors(movieId: Int, language: String?) =
+        moviesApi.getMovieActors(movieId = movieId, language = language)
+
     override suspend fun getMovieDetails(movieId: Int, language: String?) =
         movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
 

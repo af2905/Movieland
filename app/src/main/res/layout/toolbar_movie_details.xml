@@ -47,7 +47,7 @@
                         android:layout_gravity="center"
                         android:minHeight="@dimen/backdrop_height"
                         android:scaleType="center"
-                        app:src="@{item.posterPath}"
+                        app:src="@{item.backdropPath}"
                         tools:background="@color/white"
                         tools:src="@drawable/ic_placeholder" />
 
