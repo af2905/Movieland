@@ -23,7 +23,6 @@ class MovieDetailsEntityToUIMapper @Inject constructor(
             MovieDetailsItem(
                 id = id,
                 adult = adult,
-                backdropPath = backdropPath,
                 budget = budget,
                 genres = genres?.let { genreMapper.map(it) },
                 homepage = homepage,
@@ -44,6 +43,7 @@ class MovieDetailsEntityToUIMapper @Inject constructor(
                 voteAverage = voteAverage,
                 voteAverageStar = voteAverage.fiveStarRating().toFloat(),
                 voteCount = voteCount,
+                backdropPath = backdropPath,
                 posterPath = input.posterPath
             )
         }

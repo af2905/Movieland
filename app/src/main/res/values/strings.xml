@@ -16,4 +16,7 @@
     <string name="similar">Similar</string>
     <string name="adult">Adult</string>
 
+    //Movie detail
+    <string name="actors_and_crew_title">Actors and crew</string>
+
 </resources>

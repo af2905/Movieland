@@ -7,7 +7,6 @@ import java.util.*
 data class MovieDetailsItem(
     val id: Int,
     val adult: Boolean,
-    val backdropPath: String?,
     val budget: Int,
     val genres: List<Genre>?,
     val homepage: String,
@@ -28,6 +27,7 @@ data class MovieDetailsItem(
     val voteAverage: Double,
     val voteAverageStar: Float,
     val voteCount: Int,
+    val backdropPath: String?,
     val posterPath: String?,
     val liked: Boolean = false,
 ) {

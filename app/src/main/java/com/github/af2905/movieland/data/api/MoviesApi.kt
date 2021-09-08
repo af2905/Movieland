@@ -1,8 +1,10 @@
 package com.github.af2905.movieland.data.api
 
 import com.github.af2905.movieland.data.ApiParams.LANGUAGE
+import com.github.af2905.movieland.data.ApiParams.MOVIE_ID
 import com.github.af2905.movieland.data.ApiParams.PAGE
 import com.github.af2905.movieland.data.ApiParams.REGION
+import com.github.af2905.movieland.data.dto.MovieActorsResponseDto
 import com.github.af2905.movieland.data.dto.MovieDetailsDto
 import com.github.af2905.movieland.data.dto.MoviesResponseDto
 import retrofit2.http.GET
@@ -39,27 +41,29 @@ interface MoviesApi {
         @Query(REGION) region: String? = null
     ): MoviesResponseDto
 
-    @GET("movie/{$PATH_MOVIE_ID}")
+    @GET("movie/{$MOVIE_ID}")
     suspend fun getMovieDetails(
-        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String? = null
     ): MovieDetailsDto
 
-    @GET("movie/{$PATH_MOVIE_ID}/recommendations")
+    @GET("movie/{$MOVIE_ID}/recommendations")
     suspend fun getRecommendedMovies(
-        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String? = null,
         @Query(PAGE) page: Int? = null
     ): MoviesResponseDto
 
-    @GET("movie/{$PATH_MOVIE_ID}/similar")
+    @GET("movie/{$MOVIE_ID}/similar")
     suspend fun getSimilarMovies(
-        @Path(PATH_MOVIE_ID) movieId: Int,
+        @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String? = null,
         @Query(PAGE) page: Int? = null
     ): MoviesResponseDto
 
-    companion object {
-        private const val PATH_MOVIE_ID = "movie_id"
-    }
+    @GET("movie/{$MOVIE_ID}/credits")
+    suspend fun getMovieActors(
+        @Path(MOVIE_ID) movieId: Int,
+        @Query(LANGUAGE) language: String? = null
+    ): MovieActorsResponseDto
 }

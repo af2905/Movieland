@@ -22,7 +22,6 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
             MovieDetailsEntity(
                 id = id,
                 adult = adult ?: true,
-                backdropPath = backdropPath,
                 budget = budget,
                 genres = genres?.let { genreMapper.map(it) },
                 homepage = homepage.orEmpty(),
@@ -43,7 +42,7 @@ class MovieDetailsDtoToEntityMapper @Inject constructor(
                 voteAverage = voteAverage,
                 voteCount = voteCount
             )
-        }.also { it.posterPath = input.posterPath }
+        }.also { it.backdropPath = input.backdropPath; it.posterPath = input.posterPath }
 }
 
 class ProductionCountryDtoToEntityListMapper @Inject constructor(mapper: ProductionCountryDtoToEntityMapper) :
