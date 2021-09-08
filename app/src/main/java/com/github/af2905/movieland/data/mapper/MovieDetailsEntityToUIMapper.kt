@@ -7,10 +7,10 @@ import com.github.af2905.movieland.data.database.entity.ProductionCountryEntity
 import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
-import com.github.af2905.movieland.presentation.model.item.Genre
-import com.github.af2905.movieland.presentation.model.item.MovieDetailsItem
-import com.github.af2905.movieland.presentation.model.item.ProductionCompany
-import com.github.af2905.movieland.presentation.model.item.ProductionCountry
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.Genre
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.ProductionCompany
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.ProductionCountry
 import javax.inject.Inject
 
 class MovieDetailsEntityToUIMapper @Inject constructor(

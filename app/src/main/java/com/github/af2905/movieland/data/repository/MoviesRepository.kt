@@ -5,6 +5,7 @@ import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.data.database.entity.MovieType
 import com.github.af2905.movieland.data.database.entity.ResponseWithMovies
+import com.github.af2905.movieland.data.dto.MoviesResponseDto
 import com.github.af2905.movieland.data.mapper.MovieDetailsDtoToEntityMapper
 import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
@@ -42,7 +43,9 @@ class MoviesRepository @Inject constructor(
 
     override suspend fun getSimilarMovies(
         movieId: Int, language: String?, page: Int?
-    ) = loadMovies(MovieType.SIMILAR.name, movieId = movieId, language = language, page = page)
+    ): MoviesResponseDto {
+       return moviesApi.getSimilarMovies(movieId, language, page)
+    }
 
     override suspend fun getMovieActors(movieId: Int, language: String?) =
         moviesApi.getMovieActors(movieId = movieId, language = language)
@@ -62,7 +65,7 @@ class MoviesRepository @Inject constructor(
                 MovieType.POPULAR.name -> moviesApi.getPopularMovies(language, page, region)
                 MovieType.TOP_RATED.name -> moviesApi.getTopRatedMovies(language, page, region)
                 MovieType.UPCOMING.name -> moviesApi.getUpcomingMovies(language, page, region)
-                MovieType.SIMILAR.name -> moviesApi.getSimilarMovies(movieId!!, language, page)
+
                 else -> moviesApi.getRecommendedMovies(movieId!!, language, page)
             }
             val response = responseDtoMapper.map(dto, type)

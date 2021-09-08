@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.model.item
+package com.github.af2905.movieland.presentation.feature.detail.moviedetail.item
 
 import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.presentation.common.ItemAdapter
@@ -29,7 +29,7 @@ data class MovieDetailsItem(
     val voteCount: Int,
     val backdropPath: String?,
     val posterPath: String?,
-    val liked: Boolean = false,
+    val liked: Boolean = false
 ) {
     private val releaseYear = releaseDate.getYearFromReleaseDate()
     private val genreList = genres?.map { genre -> genre.name }

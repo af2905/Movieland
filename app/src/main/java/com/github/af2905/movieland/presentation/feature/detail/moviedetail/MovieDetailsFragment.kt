@@ -26,9 +26,7 @@ class MovieDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.movieDetailsSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.refresh()
-        }
+        binding.movieDetailsSwipeRefreshLayout.isEnabled = false
 
         binding.actorsRecyclerView.apply {
             adapter = ListAdapter(

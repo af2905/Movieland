@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.presentation.model.item.MovieDetailsItem" />
+            type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem" />
 
         <variable
             name="listener"
-            type="com.github.af2905.movieland.presentation.model.item.MovieDetailsItem.Listener" />
+            type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem.Listener" />
 
     </data>
 
@@ -45,7 +45,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:minHeight="@dimen/backdrop_height"
                         android:scaleType="center"
                         app:src="@{item.backdropPath}"
                         tools:background="@color/white"
