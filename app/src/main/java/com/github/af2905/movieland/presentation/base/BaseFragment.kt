@@ -10,11 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.github.af2905.movieland.BR
+import com.github.af2905.movieland.di.ViewModelFactory
 import com.github.af2905.movieland.helper.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<NV: Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> : DaggerFragment() {
+abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> :
+    DaggerFragment() {
 
     protected abstract fun layoutRes(): Int
     protected abstract fun viewModelClass(): Class<VM>
@@ -24,7 +26,7 @@ abstract class BaseFragment<NV: Navigator, DB : ViewDataBinding, VM : BaseViewMo
     lateinit var viewModel: VM
 
     @Inject
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    protected lateinit var viewModelFactory: ViewModelFactory<VM>
 
     lateinit var navController: NavController
 

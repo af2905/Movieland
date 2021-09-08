@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -70,6 +71,8 @@ ext {
     lifecycleVersion = '2.3.1'
     navigationVersion = '2.3.5'
     recyclerViewVersion = '1.2.1'
+    roomVersion = '2.3.0'
+    swipeRefreshLayoutVersion = "1.1.0"
 }
 
 dependencies {
@@ -104,9 +107,16 @@ dependencies {
     implementation "com.google.code.gson:gson:${gsonVersion}"
     //Glide
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
     //Timber
     implementation "com.jakewharton.timber:timber:${timberVersion}"
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    //Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    //SwipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
 }

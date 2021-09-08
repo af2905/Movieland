@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.domain.usecase
 
-import com.github.af2905.movieland.data.error.Result
+import com.github.af2905.movieland.data.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

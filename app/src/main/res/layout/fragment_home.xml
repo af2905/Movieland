@@ -3,46 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.github.af2905.movieland.presentation.feature.home.HomeViewModel" />
 
-        <variable
-            name="position"
-            type="Integer" />
-
-        <variable
-            name="item"
-            type="com.github.af2905.movieland.presentation.model.Model" />
-
-        <variable
-            name="listener"
-            type="com.github.af2905.movieland.presentation.common.ItemAdapter.Listener" />
-
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/buttonNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="next"
-            android:onClick="@{() -> viewModel.openDetail()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/homeRecyclerView"
-            linearLayoutManager="@{false}"
-            recyclerSetData="@{viewModel.items}"
-            app:layout_constraintTop_toBottomOf="@+id/buttonNext"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/homeSwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:refreshing="@{viewModel.loading}">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeRecyclerView"
+                linearLayoutManager="@{false}"
+                recyclerSetData="@{viewModel.items}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    </FrameLayout>
 </layout>

@@ -6,4 +6,5 @@ object ApiParams {
     const val LANGUAGE = "language"
     const val PAGE = "page"
     const val REGION = "region"
+    const val MOVIE_ID = "movie_id"
 }
