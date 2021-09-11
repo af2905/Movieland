@@ -10,15 +10,12 @@ import com.github.af2905.movieland.domain.usecase.params.MovieActorsParams
 import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
 import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
-import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.BaseViewModel
+import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
-import com.github.af2905.movieland.presentation.model.item.HeaderItem
-import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
-import com.github.af2905.movieland.presentation.model.item.MovieActorItem
+import com.github.af2905.movieland.presentation.model.item.*
 import javax.inject.Inject
 
 class MovieDetailsViewModel @Inject constructor(
@@ -27,7 +24,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetails: GetMovieDetails,
     private val getMovieActors: GetMovieActors,
     private val getSimilarMovies: GetSimilarMovies
-) : BaseViewModel<AppNavigator>(coroutineDispatcherProvider) {
+) : BaseViewModel<DetailNavigator>(coroutineDispatcherProvider) {
 
     private val movieId = args.movieId
 
@@ -100,5 +97,6 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     fun openActorDetail(item: MovieActorItem, position: Int) {}
-
+    fun openSimilarMovieDetail(item: MovieItem, position: Int) =
+        navigate { forwardMovieDetail(item.id) }
 }
