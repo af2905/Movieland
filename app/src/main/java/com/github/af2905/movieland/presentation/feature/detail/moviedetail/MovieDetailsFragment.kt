@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.presentation.feature.detail.moviedetail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
@@ -42,13 +43,7 @@ class MovieDetailsFragment :
                                 })
                         )
                     },
-                    decoration = {
-                        HorizontalListItemDecorator(
-                            marginStart = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            marginEnd = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            spacing = it.resources.getDimensionPixelSize(R.dimen.default_margin_small)
-                        )
-                    }
+                    decoration = { getHorizontalListItemDecoration(it) }
                 ),
                 HorizontalListAdapter(
                     layout = HorizontalListItem.VIEW_TYPE,
@@ -61,15 +56,17 @@ class MovieDetailsFragment :
                                 })
                         )
                     },
-                    decoration = {
-                        HorizontalListItemDecorator(
-                            marginStart = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            marginEnd = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            spacing = it.resources.getDimensionPixelSize(R.dimen.default_margin_small)
-                        )
-                    }
+                    decoration = { getHorizontalListItemDecoration(it) }
                 )
             )
         }
+    }
+
+    private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {
+        return HorizontalListItemDecorator(
+            marginStart = context.resources.getDimensionPixelSize(R.dimen.default_margin),
+            marginEnd = context.resources.getDimensionPixelSize(R.dimen.default_margin),
+            spacing = context.resources.getDimensionPixelSize(R.dimen.default_margin_small)
+        )
     }
 }
