@@ -6,6 +6,9 @@
     <string name="bottom_nav_menu_search_title">Search</string>
     <string name="bottom_nav_menu_profile_title">Profile</string>
 
+    <string name="action_search">Search</string>
+
+
     //Headers
     <string name="header">Header</string>
     <string name="popular">Popular</string>

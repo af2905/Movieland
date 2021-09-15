@@ -18,4 +18,8 @@
     <style name="Theme.Movieland.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Movieland.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+<!--    <style name="ButtonBackground">
+        <item name="android:backgroundTint">@color/gold_700</item>
+    </style>-->
 </resources>
