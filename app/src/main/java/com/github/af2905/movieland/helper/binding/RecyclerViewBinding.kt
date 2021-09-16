@@ -5,7 +5,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.af2905.movieland.presentation.CustomLinearLayoutManager
 import com.github.af2905.movieland.presentation.common.ListAdapter
 import com.github.af2905.movieland.presentation.model.Model
 
@@ -23,7 +22,7 @@ fun RecyclerView.setLinearLayoutManager(horizontal: Boolean, reverseLayout: Bool
     } else {
         LinearLayoutManager.VERTICAL
     }
-    layoutManager = CustomLinearLayoutManager(context, orientation, reverseLayout)
+    layoutManager = LinearLayoutManager(context, orientation, reverseLayout)
 }
 
 @BindingAdapter("gridLayoutManager")
