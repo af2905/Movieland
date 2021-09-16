@@ -6,5 +6,6 @@ object ItemIds {
     const val HORIZONTAL_ITEM_LIST_ID = -101
     const val EMPTY_SPACE_ITEM_ID = -102
     const val LOADING_ITEM_ID = -103
+    const val SEARCH_ITEM_ID = -104
 
 }
