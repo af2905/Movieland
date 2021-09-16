@@ -2,6 +2,7 @@ package com.github.af2905.movieland.di.module
 
 import com.github.af2905.movieland.BuildConfig
 import com.github.af2905.movieland.data.api.MoviesApi
+import com.github.af2905.movieland.data.api.SearchApi
 import com.github.af2905.movieland.data.interceptor.ApiKeyInterceptor
 import com.github.af2905.movieland.data.interceptor.HttpLoggerInterceptor
 import com.github.af2905.movieland.di.scope.AppScope
@@ -22,6 +23,10 @@ const val KEEP_ALIVE_DURATION = 30L
 
 @Module
 class NetworkModule {
+
+    @AppScope
+    @Provides
+    fun provideSearchApi(retrofit: Retrofit): SearchApi = retrofit.create(SearchApi::class.java)
 
     @AppScope
     @Provides

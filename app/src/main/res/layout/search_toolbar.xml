@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchContainer"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchbar_height"
+    android:layout_marginLeft="@dimen/default_margin_big"
+    android:layout_marginRight="@dimen/default_margin_big"
+    android:orientation="horizontal">
 
-
-
-    <FrameLayout
-        android:id="@+id/searchContainer"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/searchbar_height"
-        android:layout_marginLeft="@dimen/default_margin_big"
-        android:layout_marginRight="@dimen/default_margin_big"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_margin_small"
+        android:background="@drawable/bg_search"
+        tools:ignore="UselessParent">
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/default_margin_small"
+            android:layout_toStartOf="@+id/deleteTextButton"
+            android:autofillHints="@string/action_search"
             android:background="@drawable/bg_search"
-            tools:ignore="UselessParent">
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/default_margin_small"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="textShortMessage"
+            android:labelFor="@+id/search"
+            android:maxLines="1"
+            android:paddingStart="@dimen/default_margin_small"
+            android:paddingEnd="@dimen/default_margin_small"
+            android:singleLine="true"
+            android:textColorHint="@color/darkGrey"
+            android:textSize="@dimen/default_text_normal"
+            tools:hint="Поиск"
+            tools:ignore="LabelFor" />
 
-            <EditText
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toStartOf="@+id/deleteTextButton"
-                android:autofillHints="@string/action_search"
-                android:background="@drawable/bg_search"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="@dimen/default_margin_small"
-                android:gravity="center_vertical"
-                android:imeOptions="actionDone"
-                android:inputType="textShortMessage"
-                android:labelFor="@+id/search"
-                android:maxLines="1"
-                android:paddingStart="@dimen/default_margin_small"
-                android:paddingEnd="@dimen/default_margin_small"
-                android:singleLine="true"
-                android:textColorHint="@color/darkGrey"
-                android:textSize="@dimen/default_text_normal"
-                tools:hint="Поиск"
-                tools:ignore="LabelFor" />
-
-            <ImageView
-                android:id="@+id/deleteTextButton"
-                android:layout_width="@dimen/default_button_size_small"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:src="@drawable/ic_delete"
-                tools:visibility="visible"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
-    </FrameLayout>
-
-</layout>
+        <ImageView
+            android:id="@+id/deleteTextButton"
+            android:layout_width="@dimen/default_button_size_small"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:src="@drawable/ic_delete"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
+    </RelativeLayout>
+</FrameLayout>

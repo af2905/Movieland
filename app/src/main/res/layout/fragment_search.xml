@@ -2,18 +2,33 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.af2905.movieland.presentation.feature.search.SearchViewModel" />
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/searchSwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello, search fragment!"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:refreshing="@{viewModel.loading}">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchRecyclerView"
+                linearLayoutManager="@{false}"
+                recyclerSetData="@{viewModel.items}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
 </layout>
