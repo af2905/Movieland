@@ -15,7 +15,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-   <!-- <style name="ButtonBackground">
-        <item name="android:backgroundTint">#F6F6F6</item>
-    </style>-->
+    <style name="SearchBarBackground">
+        <item name="android:backgroundTint">@drawable/bg_search_night</item>
+    </style>
 </resources>

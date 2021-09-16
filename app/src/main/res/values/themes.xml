@@ -19,7 +19,7 @@
 
     <style name="Theme.Movieland.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-<!--    <style name="ButtonBackground">
-        <item name="android:backgroundTint">@color/gold_700</item>
-    </style>-->
+    <style name="SearchBarBackground">
+        <item name="android:backgroundTint">@drawable/bg_search</item>
+    </style>
 </resources>
