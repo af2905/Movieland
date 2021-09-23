@@ -10,6 +10,7 @@ import com.github.af2905.movieland.data.mapper.MovieDetailsDtoToEntityMapper
 import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
+import com.github.af2905.movieland.helper.extension.isNullOrEmpty
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
@@ -53,13 +54,11 @@ class MoviesRepository @Inject constructor(
     override suspend fun getMovieDetails(movieId: Int, language: String?) =
         movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
 
-    private fun checkCountNullOrEmpty(count: Int?) = (count == null || count == 0)
-
     private suspend fun loadMovies(
         type: String, language: String?, page: Int?, region: String? = null, movieId: Int? = null
     ): ResponseWithMovies {
         val count = movieResponseDao.getByType(type)?.movies?.size
-        if (checkCountNullOrEmpty(count)) {
+        if (count.isNullOrEmpty()) {
             val dto = when (type) {
                 MovieType.NOW_PLAYING.name -> moviesApi.getNowPlayingMovies(language, page, region)
                 MovieType.POPULAR.name -> moviesApi.getPopularMovies(language, page, region)
