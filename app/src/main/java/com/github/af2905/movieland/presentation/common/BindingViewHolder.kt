@@ -11,5 +11,6 @@ open class BindingViewHolder(open val binding: ViewDataBinding) :
         binding.setVariable(BR.item, item)
         binding.setVariable(BR.listener, listener)
         binding.setVariable(BR.position, bindingAdapterPosition)
+        binding.executePendingBindings()
     }
 }

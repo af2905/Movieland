@@ -42,7 +42,6 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewM
         binding.let {
             it.setVariable(BR.viewModel, viewModel)
             it.lifecycleOwner = viewLifecycleOwner
-            it.executePendingBindings()
         }
         onBind()
         return binding.root
