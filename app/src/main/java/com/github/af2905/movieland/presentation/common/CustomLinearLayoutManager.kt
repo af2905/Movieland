@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation
+package com.github.af2905.movieland.presentation.common
 
 import android.content.Context
 import android.os.Parcelable
