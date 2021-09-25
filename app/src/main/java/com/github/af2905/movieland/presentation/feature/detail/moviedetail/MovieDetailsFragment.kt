@@ -8,8 +8,8 @@ import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailsBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemAdapter
-import com.github.af2905.movieland.presentation.common.ListAdapter
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
@@ -31,11 +31,11 @@ class MovieDetailsFragment :
         binding.movieDetailsSwipeRefreshLayout.isEnabled = false
 
         binding.movieDetailsRecyclerView.apply {
-            adapter = ListAdapter(
+            adapter = BaseAdapter(
                 HorizontalListAdapter(
                     layout = HorizontalListItem.VIEW_TYPE,
                     adapter = {
-                        ListAdapter(
+                        BaseAdapter(
                             ItemAdapter(
                                 MovieActorItem.VIEW_TYPE,
                                 listener = MovieActorItem.Listener { item, position ->
@@ -48,7 +48,7 @@ class MovieDetailsFragment :
                 HorizontalListAdapter(
                     layout = HorizontalListItem.VIEW_TYPE,
                     adapter = {
-                        ListAdapter(
+                        BaseAdapter(
                             ItemAdapter(
                                 MovieItem.VIEW_TYPE,
                                 listener = MovieItem.Listener { item, position ->

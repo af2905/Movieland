@@ -7,7 +7,7 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
 import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.BaseFragment
-import com.github.af2905.movieland.presentation.common.ListAdapter
+import com.github.af2905.movieland.presentation.common.BaseAdapter
 
 class SearchFragment : BaseFragment<AppNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -17,6 +17,6 @@ class SearchFragment : BaseFragment<AppNavigator, FragmentSearchBinding, SearchV
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.searchRecyclerView.apply { adapter = ListAdapter() }
+        binding.searchRecyclerView.apply { adapter = BaseAdapter() }
     }
 }

@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/movieDetailsAppBar"
+            android:id="@+id/homeAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
@@ -52,180 +52,12 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:refreshing="@{viewModel.loading}">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/homeNestedScroll"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeRecyclerView"
+                linearLayoutManager="@{false}"
+                recyclerSetData="@{viewModel.items}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/popularMoviesTitle"
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/popular"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:visible="@{viewModel.popularTitleVisible}" />
-
-                    <TextView
-                        android:id="@+id/popularMoviesMore"
-                        style="@style/TextView.Small.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/any_screen_more"
-                        app:layout_constraintBottom_toBottomOf="@+id/popularMoviesBarrier"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:visible="@{viewModel.popularTitleVisible}" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/popularMoviesBarrier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="popularMoviesTitle, popularMoviesMore"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/popularMoviesRecyclerView"
-                        linearLayoutManager="@{true}"
-                        recyclerSetData="@{viewModel.popularMovies}"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/popularMoviesBarrier" />
-
-                    <TextView
-                        android:id="@+id/topRatedMoviesTitle"
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/top_rated"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/popularMoviesRecyclerView"
-                        app:visible="@{viewModel.topRatedTitleVisible}" />
-
-                    <TextView
-                        android:id="@+id/topRatedMoviesMore"
-                        style="@style/TextView.Small.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/any_screen_more"
-                        app:layout_constraintBottom_toBottomOf="@+id/topRatedMoviesBarrier"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/popularMoviesRecyclerView"
-                        app:visible="@{viewModel.topRatedTitleVisible}" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/topRatedMoviesBarrier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="topRatedMoviesTitle, topRatedMoviesMore"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/topRatedMoviesRecyclerView"
-                        linearLayoutManager="@{true}"
-                        recyclerSetData="@{viewModel.topRatedMovies}"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/topRatedMoviesBarrier" />
-
-                    <TextView
-                        android:id="@+id/nowPlayingMoviesTitle"
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/now_playing"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/topRatedMoviesRecyclerView"
-                        app:visible="@{viewModel.nowPlayingTitleVisible}" />
-
-                    <TextView
-                        android:id="@+id/nowPlayingMoviesMore"
-                        style="@style/TextView.Small.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/any_screen_more"
-                        app:layout_constraintBottom_toBottomOf="@+id/nowPlayingMoviesBarrier"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/topRatedMoviesRecyclerView"
-                        app:visible="@{viewModel.nowPlayingTitleVisible}" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/nowPlayingMoviesBarrier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="nowPlayingMoviesTitle, nowPlayingMoviesMore"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/nowPlayingMoviesRecyclerView"
-                        linearLayoutManager="@{true}"
-                        recyclerSetData="@{viewModel.nowPlayingMovies}"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/nowPlayingMoviesBarrier" />
-
-                    <TextView
-                        android:id="@+id/upcomingMoviesTitle"
-                        style="@style/TextView.Medium.Bold"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/upcoming"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/nowPlayingMoviesRecyclerView"
-                        app:visible="@{viewModel.upcomingTitleVisible}" />
-
-                    <TextView
-                        android:id="@+id/upcomingMoviesMore"
-                        style="@style/TextView.Small.Bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_margin"
-                        android:text="@string/any_screen_more"
-                        app:layout_constraintBottom_toBottomOf="@+id/upcomingMoviesBarrier"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/nowPlayingMoviesRecyclerView"
-                        app:visible="@{viewModel.upcomingTitleVisible}" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/upcomingMoviesBarrier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="upcomingMoviesTitle, upcomingMoviesMore"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/upcomingMoviesRecyclerView"
-                        linearLayoutManager="@{true}"
-                        recyclerSetData="@{viewModel.upcomingMovies}"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toBottomOf="@+id/upcomingMoviesBarrier" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
+                android:layout_height="wrap_content" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

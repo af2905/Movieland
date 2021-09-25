@@ -3,7 +3,7 @@ package com.github.af2905.movieland.presentation.widget
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.github.af2905.movieland.presentation.common.ListAdapter
+import com.github.af2905.movieland.presentation.common.BaseAdapter
 
 class HorizontalListItemDecorator(
     val marginTop: Int = 0,
@@ -20,7 +20,7 @@ class HorizontalListItemDecorator(
         with(outRect) {
             val pos = parent.getChildAdapterPosition(view)
             val lastPos = kotlin.math.min(
-                lastPosition, (parent.adapter as ListAdapter).itemCount - 1
+                lastPosition, (parent.adapter as BaseAdapter).itemCount - 1
             )
             if (pos == startPosition) left = marginStart
             right = if (pos == lastPos) marginEnd else spacing
