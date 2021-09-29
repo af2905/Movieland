@@ -7,7 +7,8 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieItem
@@ -19,30 +20,32 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun viewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
 
+    private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
+        HorizontalListAdapter(
+            layout = HorizontalListItem.VIEW_TYPE,
+            adapter = {
+                BaseAdapter(
+                    ItemDelegate(MovieItem.VIEW_TYPE,
+                        listener = MovieItem.Listener { item, position ->
+                            viewModel.openDetail(item, position)
+                        })
+                )
+            },
+            decoration = {
+                HorizontalListItemDecorator(
+                    marginStart = it.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    marginEnd = it.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    spacing = it.resources.getDimensionPixelSize(R.dimen.default_margin_small)
+                )
+            }
+        )
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.homeRecyclerView.apply {
-            adapter = BaseAdapter(
-                HorizontalListAdapter(
-                    layout = HorizontalListItem.VIEW_TYPE,
-                    adapter = {
-                        BaseAdapter(
-                            ItemAdapter(MovieItem.VIEW_TYPE,
-                                listener = MovieItem.Listener { item, position ->
-                                    viewModel.openDetail(item, position)
-                                })
-                        )
-                    },
-                    decoration = {
-                        HorizontalListItemDecorator(
-                            marginStart = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            marginEnd = it.resources.getDimensionPixelSize(R.dimen.default_margin),
-                            spacing = it.resources.getDimensionPixelSize(R.dimen.default_margin_small)
-                        )
-                    }
-                )
-            )
+        binding.recyclerView.apply {
+            adapter = baseAdapter
         }
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.refresh()

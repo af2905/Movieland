@@ -2,7 +2,7 @@ package com.github.af2905.movieland.presentation.model.item
 
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
-import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.Model
 
 data class MovieActorItem(
@@ -27,7 +27,7 @@ data class MovieActorItem(
 
     }
 
-    fun interface Listener : ItemAdapter.Listener {
+    fun interface Listener : ItemDelegate.Listener {
         fun onItemClicked(item: MovieActorItem, position: Int)
     }
 }
