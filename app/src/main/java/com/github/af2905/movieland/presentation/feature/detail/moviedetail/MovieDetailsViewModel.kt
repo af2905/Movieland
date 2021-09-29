@@ -14,6 +14,7 @@ import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
+import com.github.af2905.movieland.presentation.model.ItemIds
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
 import javax.inject.Inject
@@ -71,7 +72,10 @@ class MovieDetailsViewModel @Inject constructor(
                         listOf(
                             HeaderItem(R.string.actors_and_crew_title),
                             emptySpaceNormal,
-                            HorizontalListItem(actors),
+                            HorizontalListItem(
+                                actors,
+                                id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
+                            ),
                             emptySpaceNormal
                         )
                     )
@@ -85,7 +89,10 @@ class MovieDetailsViewModel @Inject constructor(
                             listOf(
                                 HeaderItem(R.string.similar),
                                 emptySpaceNormal,
-                                HorizontalListItem(similar)
+                                HorizontalListItem(
+                                    similar,
+                                    id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
+                                )
                             )
                         )
                     }

@@ -26,40 +26,42 @@ class MovieDetailsFragment :
 
     val args: MovieDetailsFragmentArgs by navArgs()
 
+    private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
+        HorizontalListAdapter(
+            layout = HorizontalListItem.VIEW_TYPE,
+            adapter = {
+                BaseAdapter(
+                    ItemDelegate(
+                        MovieActorItem.VIEW_TYPE,
+                        listener = MovieActorItem.Listener { item, position ->
+                            viewModel.openActorDetail(item, position)
+                        })
+                )
+            },
+            decoration = { getHorizontalListItemDecoration(it) }
+        ),
+        HorizontalListAdapter(
+            layout = HorizontalListItem.VIEW_TYPE,
+            adapter = {
+                BaseAdapter(
+                    ItemDelegate(
+                        MovieItem.VIEW_TYPE,
+                        listener = MovieItem.Listener { item, position ->
+                            viewModel.openSimilarMovieDetail(item, position)
+                        })
+                )
+            },
+            decoration = { getHorizontalListItemDecoration(it) }
+        )
+    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.movieDetailsSwipeRefreshLayout.isEnabled = false
 
         binding.movieDetailsRecyclerView.apply {
-            adapter = BaseAdapter(
-                HorizontalListAdapter(
-                    layout = HorizontalListItem.VIEW_TYPE,
-                    adapter = {
-                        NestedRecyclerViewStateAdapter(
-                            ItemDelegate(
-                                MovieActorItem.VIEW_TYPE,
-                                listener = MovieActorItem.Listener { item, position ->
-                                    viewModel.openActorDetail(item, position)
-                                })
-                        )
-                    },
-                    decoration = { getHorizontalListItemDecoration(it) }
-                ),
-                HorizontalListAdapter(
-                    layout = HorizontalListItem.VIEW_TYPE,
-                    adapter = {
-                        NestedRecyclerViewStateAdapter(
-                            ItemDelegate(
-                                MovieItem.VIEW_TYPE,
-                                listener = MovieItem.Listener { item, position ->
-                                    viewModel.openSimilarMovieDetail(item, position)
-                                })
-                        )
-                    },
-                    decoration = { getHorizontalListItemDecoration(it) }
-                )
-            )
+            adapter = baseAdapter
         }
     }
 
