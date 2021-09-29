@@ -9,7 +9,8 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailsBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
@@ -35,8 +36,8 @@ class MovieDetailsFragment :
                 HorizontalListAdapter(
                     layout = HorizontalListItem.VIEW_TYPE,
                     adapter = {
-                        BaseAdapter(
-                            ItemAdapter(
+                        NestedRecyclerViewStateAdapter(
+                            ItemDelegate(
                                 MovieActorItem.VIEW_TYPE,
                                 listener = MovieActorItem.Listener { item, position ->
                                     viewModel.openActorDetail(item, position)
@@ -48,8 +49,8 @@ class MovieDetailsFragment :
                 HorizontalListAdapter(
                     layout = HorizontalListItem.VIEW_TYPE,
                     adapter = {
-                        BaseAdapter(
-                            ItemAdapter(
+                        NestedRecyclerViewStateAdapter(
+                            ItemDelegate(
                                 MovieItem.VIEW_TYPE,
                                 listener = MovieItem.Listener { item, position ->
                                     viewModel.openSimilarMovieDetail(item, position)

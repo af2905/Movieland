@@ -14,6 +14,7 @@ import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
+import com.github.af2905.movieland.presentation.model.ItemIds.HORIZONTAL_ITEM_LIST_ID
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
 import com.github.af2905.movieland.presentation.model.item.HeaderItem
@@ -39,7 +40,6 @@ class HomeViewModel @Inject constructor(
 
     private val _items = MutableLiveData<List<Model>>()
     val items: LiveData<List<Model>> = _items
-
 
     private val _header = MutableLiveData<List<Model>>()
 
@@ -89,7 +89,7 @@ class HomeViewModel @Inject constructor(
             if (nowPlaying.isNotEmpty()) {
                 listOf(
                     HeaderItem(R.string.now_playing), emptySpaceMedium,
-                    HorizontalListItem(nowPlaying), emptySpaceMedium
+                    HorizontalListItem(nowPlaying, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 1), emptySpaceMedium
                 )
             } else emptyList()
         }
@@ -103,7 +103,7 @@ class HomeViewModel @Inject constructor(
             if (popularMovies.isNotEmpty()) {
                 listOf(
                     HeaderItem(R.string.popular), emptySpaceMedium,
-                    HorizontalListItem(popularMovies), emptySpaceMedium
+                    HorizontalListItem(popularMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 2), emptySpaceMedium
                 )
             } else emptyList()
         }
@@ -117,7 +117,7 @@ class HomeViewModel @Inject constructor(
             if (topRatedMovies.isNotEmpty()) {
                 listOf(
                     HeaderItem(R.string.top_rated), emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies), emptySpaceMedium
+                    HorizontalListItem(topRatedMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 3), emptySpaceMedium
 
                 )
             } else emptyList()
@@ -133,7 +133,7 @@ class HomeViewModel @Inject constructor(
             if (upcomingMovies.isNotEmpty()) {
                 listOf(
                     HeaderItem(R.string.upcoming), emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies), emptySpaceMedium
+                    HorizontalListItem(upcomingMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 4), emptySpaceMedium
                 )
             } else emptyList()
         }

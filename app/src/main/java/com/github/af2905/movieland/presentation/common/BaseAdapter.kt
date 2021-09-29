@@ -8,15 +8,14 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.github.af2905.movieland.presentation.model.Model
 
-class BaseAdapter(vararg adapters: ItemAdapter) : ListAdapter<Model, BindingViewHolder>(ItemDiffCallback()) {
+open class BaseAdapter(vararg delegates: ItemDelegate) :
+    ListAdapter<Model, BindingViewHolder>(ItemDiffCallback()) {
 
-    private val delegateAdapters = adapters.associateBy { it.viewType }
+    private val delegateAdapters = delegates.associateBy { it.viewType }
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         currentList[position].let { item -> holder.bind(item, delegateAdapters[item.viewType]?.listener) }
     }
-
-    override fun getItemCount(): Int = currentList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
         return delegateAdapters[viewType]?.onCreateViewHolder(parent)

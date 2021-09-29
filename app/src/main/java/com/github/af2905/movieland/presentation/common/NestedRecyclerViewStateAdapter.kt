@@ -1,25 +1,23 @@
 package com.github.af2905.movieland.presentation.common
 
 import android.os.Parcelable
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.model.Model
 import java.lang.ref.WeakReference
 
-class NestedRecyclerViewStateAdapter() : ListAdapter<Model, BindingViewHolder>(ItemDiffCallback()) {
+class NestedRecyclerViewStateAdapter(vararg delegates: ItemDelegate) : BaseAdapter(*delegates) {
 
-    private val layoutManagerStates = hashMapOf<Long, Parcelable?>()
+    private val layoutManagerStates = hashMapOf<Int, Parcelable?>()
     private val visibleScrollableViews = hashMapOf<Int, ViewHolderRef>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
-        TODO("Not yet implemented")
-    }
-
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
-        (holder.binding.root as RecyclerView).layoutManager?.let {
-            val state: Parcelable? = layoutManagerStates[holder.itemId]
+        super.onBindViewHolder(holder, position)
+
+        (holder.binding.root).findViewById<RecyclerView>(R.id.recyclerView)?.layoutManager?.let {
+
+            val state: Parcelable? = layoutManagerStates[holder.id]
             if (state != null) {
                 it.onRestoreInstanceState(state)
             } else {
@@ -27,15 +25,16 @@ class NestedRecyclerViewStateAdapter() : ListAdapter<Model, BindingViewHolder>(I
             }
         }
         visibleScrollableViews[holder.hashCode()] =
-            ViewHolderRef(holder.itemId, WeakReference(holder))
+            ViewHolderRef(holder.id, WeakReference(holder))
     }
 
     @CallSuper
     override fun onViewRecycled(holder: BindingViewHolder) {
-        val state = (holder.binding.root as RecyclerView).layoutManager?.onSaveInstanceState()
-        layoutManagerStates[holder.itemId] = state
-        visibleScrollableViews.remove(holder.hashCode())
         super.onViewRecycled(holder)
+        val state =
+            (holder.binding.root).findViewById<RecyclerView>(R.id.recyclerView)?.layoutManager?.onSaveInstanceState()
+        layoutManagerStates[holder.id] = state
+        visibleScrollableViews.remove(holder.hashCode())
     }
 
     @CallSuper
@@ -46,9 +45,9 @@ class NestedRecyclerViewStateAdapter() : ListAdapter<Model, BindingViewHolder>(I
 
     private fun saveState() {
         visibleScrollableViews.values.forEach { item ->
-            item.reference.get()?.let {
+            item.reference.get()?.let { holder ->
                 layoutManagerStates[item.id] =
-                    (it.binding.root as RecyclerView).layoutManager?.onSaveInstanceState()
+                    (holder.binding.root).findViewById<RecyclerView>(R.id.recyclerView)?.layoutManager?.onSaveInstanceState()
             }
         }
         visibleScrollableViews.clear()
@@ -60,7 +59,7 @@ class NestedRecyclerViewStateAdapter() : ListAdapter<Model, BindingViewHolder>(I
     }
 
     private data class ViewHolderRef(
-        val id: Long,
+        val id: Int,
         val reference: WeakReference<BindingViewHolder>
     )
 }

@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.presentation.model.item
 
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.Model
 
 data class MovieItem(
@@ -34,7 +34,7 @@ data class MovieItem(
         val GRAY_RANGE = 5.1..6.9
     }
 
-    fun interface Listener : ItemAdapter.Listener {
+    fun interface Listener : ItemDelegate.Listener {
         fun onItemClicked(item: MovieItem, position: Int)
     }
 }
