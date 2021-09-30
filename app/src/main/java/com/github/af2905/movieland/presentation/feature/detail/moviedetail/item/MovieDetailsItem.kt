@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.presentation.feature.detail.moviedetail.item
 
 import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
-import com.github.af2905.movieland.presentation.common.ItemAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
 import java.util.*
 
 data class MovieDetailsItem(
@@ -38,7 +38,7 @@ data class MovieDetailsItem(
         append(releaseYear); append(COMMA_SEPARATOR); append(genreList)
     }
 
-    interface Listener : ItemAdapter.Listener {
+    interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: MovieDetailsItem)
         fun onBackClicked()
     }

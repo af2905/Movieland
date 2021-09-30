@@ -27,7 +27,6 @@ data class DatesEntity(val maximum: String, val minimum: String)
 data class MovieEntity(
     @PrimaryKey val id: Int,
     val adult: Boolean?,
-    val backdropPath: String?,
     val genreIds: List<Int>?,
     val originalLanguage: String?,
     val originalTitle: String?,
@@ -40,6 +39,8 @@ data class MovieEntity(
     val voteCount: Int?,
     val responseMovieType: String = ""
 ) {
+    var backdropPath: String? = null
+        get() = field.getFullPathToImage()
     var posterPath: String? = null
         get() = field.getFullPathToImage()
 }
