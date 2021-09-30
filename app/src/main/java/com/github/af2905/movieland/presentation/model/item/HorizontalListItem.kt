@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.BindingViewHolder
-import com.github.af2905.movieland.presentation.common.ItemAdapter
-import com.github.af2905.movieland.presentation.common.ListAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.ItemIds.HORIZONTAL_ITEM_LIST_ID
 import com.github.af2905.movieland.presentation.model.Model
 
@@ -31,9 +31,9 @@ data class HorizontalListItem(
 
 class HorizontalListAdapter(
     layout: Int,
-    val adapter: () -> ListAdapter,
+    val adapter: () -> BaseAdapter,
     val decoration: ((Context) -> RecyclerView.ItemDecoration)? = null
-) : ItemAdapter(layout) {
+) : ItemDelegate(layout) {
 
     override fun onCreateViewHolder(parent: ViewGroup): BindingViewHolder {
         return super.onCreateViewHolder(parent).apply {

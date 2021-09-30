@@ -6,6 +6,10 @@
     <string name="bottom_nav_menu_search_title">Search</string>
     <string name="bottom_nav_menu_profile_title">Profile</string>
 
+    <string name="action_search">Search</string>
+
+    <string name="any_screen_more">more…</string>
+
     //Headers
     <string name="header">Header</string>
     <string name="popular">Popular</string>

@@ -36,6 +36,9 @@
         android:name="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailsFragment"
         android:label="MovieDetailFragment"
         tools:layout="@layout/fragment_movie_details">
+        <action
+            android:id="@+id/openMovieDetails"
+            app:destination="@id/movieDetailsFragment" />
 
         <argument
             android:name="movieId"

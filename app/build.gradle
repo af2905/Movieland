@@ -9,10 +9,6 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-def urlPropertiesFile = rootProject.file("url.properties")
-def urlProperties = new Properties()
-urlProperties.load(new FileReader(urlPropertiesFile))
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -27,7 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'THE_MOVIE_DATABASE_API_KEY', keystoreProperties['THE_MOVIE_DATABASE_API_KEY']
-        buildConfigField 'String', 'BASE_URL', urlProperties['BASE_URL']
+        buildConfigField 'String', 'BASE_URL', '"https://api.themoviedb.org/3/"'
     }
 
     buildTypes {

@@ -7,4 +7,7 @@ object ApiParams {
     const val PAGE = "page"
     const val REGION = "region"
     const val MOVIE_ID = "movie_id"
+    const val QUERY = "query"
+    const val INCLUDE_ADULT = "include_adult"
+    const val YEAR = "year"
 }
