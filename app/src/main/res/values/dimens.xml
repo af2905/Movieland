@@ -14,6 +14,8 @@
     <dimen name="default_stroke">2dp</dimen>
     <dimen name="default_corners_radius">8dp</dimen>
 
+    <dimen name="default_divider_height">2dp</dimen>
+
     <dimen name="movie_card_width">130dp</dimen>
     <dimen name="movie_card_height">170dp</dimen>
     <dimen name="default_button_size_small">20dp</dimen>
