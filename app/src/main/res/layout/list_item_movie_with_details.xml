@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.github.af2905.movieland.presentation.model.item.MovieItemWithDetails" />
+
+        <variable
+            name="listener"
+            type="com.github.af2905.movieland.presentation.model.item.MovieItemWithDetails.Listener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.onItemClicked(item.movieDetailsItem, position)}"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/default_margin_small"
+        android:paddingBottom="@dimen/default_margin_small">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/movie_card_width"
+            android:layout_height="@dimen/movie_card_height"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:scaleType="centerCrop"
+            app:src="@{item.movieDetailsItem.backdropPath}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_placeholder" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:gravity="top"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:isIndicator="true"
+                android:minWidth="@dimen/default_margin"
+                android:numStars="@integer/default_num_stars"
+                android:progressBackgroundTint="@color/gold_700"
+                android:rating="@{item.movieDetailsItem.voteAverageStar}"
+                android:stepSize="0.5"
+                tools:rating="3.2" />
+
+            <TextView
+                style="@style/TextView.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_small"
+                android:ellipsize="end"
+                android:maxLines="@integer/max_lines_2"
+                android:text="@{item.movieDetailsItem.title}"
+                tools:text="Мир дикого запада" />
+
+            <TextView
+                style="@style/TextView.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_small"
+                android:ellipsize="end"
+                android:maxLines="@integer/max_lines_2"
+                android:text="@{item.movieDetailsItem.titleNextInfo}"
+                android:textColor="@color/darkGrey"
+                tools:text="2021" />
+
+            <TextView
+                style="@style/TextView.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin_small"
+                android:ellipsize="end"
+                android:maxLines="@integer/max_lines_4"
+                android:paddingBottom="@dimen/default_margin_small"
+                android:text="@{item.movieDetailsItem.overview}"
+                tools:text="Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>
+

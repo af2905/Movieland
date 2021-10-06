@@ -12,8 +12,8 @@ import com.github.af2905.movieland.presentation.widget.SearchViewBar
 
 @BindingAdapter("app:queryListener")
 fun SearchViewBar.queryListener(listener: SearchItem.Listener) {
-    val search = this.findViewById<EditText>(R.id.searchEditText)
-    val delete = this.findViewById<ImageView>(R.id.deleteTextButton)
+    val search = this.findViewById<EditText>(R.id.searchInput)
+    val delete = this.findViewById<ImageView>(R.id.deleteIcon)
 
     search.afterTextChanged { text ->
         if (!text.isNullOrEmpty() && !delete.isVisible) {

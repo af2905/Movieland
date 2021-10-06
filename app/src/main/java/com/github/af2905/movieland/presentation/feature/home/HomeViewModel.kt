@@ -4,24 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.adult.GetAdultMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetTopRatedMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
-import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
-import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
-import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
-import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
+import com.github.af2905.movieland.domain.usecase.movies.*
+import com.github.af2905.movieland.domain.usecase.params.*
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.model.ItemIds.HORIZONTAL_ITEM_LIST_ID
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
-import com.github.af2905.movieland.presentation.model.item.HeaderItem
-import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
-import com.github.af2905.movieland.presentation.model.item.MovieItem
+import com.github.af2905.movieland.presentation.model.item.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import timber.log.Timber
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -30,6 +23,7 @@ class HomeViewModel @Inject constructor(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getUpcomingMovies: GetUpcomingMovies,
     private val getAdultMovies: GetAdultMovies,
+    private val getMovieDetails: GetMovieDetails,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -42,6 +36,8 @@ class HomeViewModel @Inject constructor(
     val items: LiveData<List<Model>> = _items
 
     private val _header = MutableLiveData<List<Model>>()
+
+    private var horizontalItemListId: AtomicInteger = AtomicInteger(HORIZONTAL_ITEM_LIST_ID * 10000)
 
 /*    private val listItems = CopyOnWriteArrayList<Model>()
     val items = MediatorLiveData<List<Model>>().apply {
@@ -57,6 +53,7 @@ class HomeViewModel @Inject constructor(
     }*/
 
     init {
+        horizontalItemListId.getAndIncrement()
         loadData()
     }
 
@@ -71,8 +68,13 @@ class HomeViewModel @Inject constructor(
             val topRated = loadTopRatedMoviesAsync(this)
             val upcoming = loadUpcomingMoviesAsync(this)
 
+            val top3 = loadTop3Async(this)
+
             list.addAll(header)
             list.addAll(nowPlaying.await().getOrDefault(emptyList()))
+
+            list.addAll(top3.await().getOrDefault(emptyList()))
+
             list.addAll(popular.await().getOrDefault(emptyList()))
             list.addAll(topRated.await().getOrDefault(emptyList()))
             list.addAll(upcoming.await().getOrDefault(emptyList()))
@@ -88,11 +90,14 @@ class HomeViewModel @Inject constructor(
                 getNowPlayingMovies(NowPlayingMoviesParams()).extractData?.movies ?: listOf()
             if (nowPlaying.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.now_playing), emptySpaceMedium,
-                    HorizontalListItem(nowPlaying, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 1), emptySpaceMedium
+                    HeaderItem(R.string.now_playing),
+                    emptySpaceMedium,
+                    HorizontalListItem(nowPlaying, id = horizontalItemListId.getAndIncrement()),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
+        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredNowPlaying
     }
 
@@ -102,11 +107,14 @@ class HomeViewModel @Inject constructor(
                 getPopularMovies(PopularMoviesParams()).extractData?.movies ?: listOf()
             if (popularMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.popular), emptySpaceMedium,
-                    HorizontalListItem(popularMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 2), emptySpaceMedium
+                    HeaderItem(R.string.popular),
+                    emptySpaceMedium,
+                    HorizontalListItem(popularMovies, id = horizontalItemListId.getAndIncrement()),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
+        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredPopular
     }
 
@@ -116,12 +124,15 @@ class HomeViewModel @Inject constructor(
                 getTopRatedMovies(TopRatedMoviesParams()).extractData?.movies ?: listOf()
             if (topRatedMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.top_rated), emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 3), emptySpaceMedium
+                    HeaderItem(R.string.top_rated),
+                    emptySpaceMedium,
+                    HorizontalListItem(topRatedMovies, id = horizontalItemListId.getAndIncrement()),
+                    emptySpaceMedium
 
                 )
             } else emptyList()
         }
+        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredTopRated
     }
 
@@ -132,12 +143,37 @@ class HomeViewModel @Inject constructor(
                     ?: listOf()
             if (upcomingMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.upcoming), emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 4), emptySpaceMedium
+                    HeaderItem(R.string.upcoming),
+                    emptySpaceMedium,
+                    HorizontalListItem(upcomingMovies, id = horizontalItemListId.getAndIncrement()),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
+        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredUpcoming
+    }
+
+    private suspend fun loadTop3Async(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
+        val deferredTop3 = coroutineScope.iOAsync {
+            val top3Movies =
+                getPopularMovies(PopularMoviesParams()).extractData?.movies?.take(3) ?: listOf()
+            if (top3Movies.isNotEmpty() && top3Movies.size == 3) {
+                val top3 = top3Movies.mapNotNull { movieItem ->
+                    getMovieDetails(MovieDetailsParams(movieItem.id)).extractData
+                }
+                mutableListOf<Model>().apply {
+                    add(HeaderItem(R.string.top_3_rated))
+                    addAll(listOf(emptySpaceMedium, DividerItem()))
+                    top3.map {
+                        addAll(listOf(MovieItemWithDetails(it), DividerItem()))
+                    }
+                    add(emptySpaceMedium)
+                }
+
+            } else emptyList()
+        }
+        return deferredTop3
     }
 
 /*    private fun loadData() {
@@ -228,7 +264,7 @@ class HomeViewModel @Inject constructor(
         }
     }*/
 
-    fun openDetail(item: MovieItem, position: Int) = navigate { forwardMovieDetail(item.id) }
+    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
     fun refresh() {
         //listItems.clear()
         //_items.value = emptyList()
