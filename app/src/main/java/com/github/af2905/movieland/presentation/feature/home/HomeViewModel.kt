@@ -13,7 +13,6 @@ import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import timber.log.Timber
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
@@ -92,12 +91,11 @@ class HomeViewModel @Inject constructor(
                 listOf(
                     HeaderItem(R.string.now_playing),
                     emptySpaceMedium,
-                    HorizontalListItem(nowPlaying, id = horizontalItemListId.getAndIncrement()),
+                    HorizontalListItem(nowPlaying, id = NOW_PLAYING_HORIZONTAL_LIST_ITEM_ID),
                     emptySpaceMedium
                 )
             } else emptyList()
         }
-        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredNowPlaying
     }
 
@@ -109,12 +107,12 @@ class HomeViewModel @Inject constructor(
                 listOf(
                     HeaderItem(R.string.popular),
                     emptySpaceMedium,
-                    HorizontalListItem(popularMovies, id = horizontalItemListId.getAndIncrement()),
+                    HorizontalListItem(popularMovies, id = POPULAR_HORIZONTAL_LIST_ITEM_ID),
                     emptySpaceMedium
                 )
+
             } else emptyList()
         }
-        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredPopular
     }
 
@@ -126,38 +124,37 @@ class HomeViewModel @Inject constructor(
                 listOf(
                     HeaderItem(R.string.top_rated),
                     emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies, id = horizontalItemListId.getAndIncrement()),
+                    HorizontalListItem(topRatedMovies, id = TOP_RATED_HORIZONTAL_LIST_ITEM_ID),
                     emptySpaceMedium
-
                 )
             } else emptyList()
         }
-        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredTopRated
     }
 
     private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
         val deferredUpcoming = coroutineScope.iOAsync {
             val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams()).extractData?.movies
-                    ?: listOf()
+                getUpcomingMovies(UpcomingMoviesParams()).extractData?.movies ?: listOf()
             if (upcomingMovies.isNotEmpty()) {
                 listOf(
                     HeaderItem(R.string.upcoming),
                     emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies, id = horizontalItemListId.getAndIncrement()),
+                    HorizontalListItem(upcomingMovies, id = UPCOMING_HORIZONTAL_LIST_ITEM_ID),
                     emptySpaceMedium
                 )
             } else emptyList()
         }
-        Timber.tag("ATOMIC_INT_VALUE").i("$horizontalItemListId")
         return deferredUpcoming
     }
 
     private suspend fun loadTop3Async(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
         val deferredTop3 = coroutineScope.iOAsync {
             val top3Movies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies?.take(3) ?: listOf()
+                getPopularMovies(PopularMoviesParams()).extractData?.movies
+                    ?.filterNot { it.voteAverage == null }
+                    ?.filter { it.voteAverage!! > 7.0 }
+                    ?.take(3) ?: listOf()
             if (top3Movies.isNotEmpty() && top3Movies.size == 3) {
                 val top3 = top3Movies.mapNotNull { movieItem ->
                     getMovieDetails(MovieDetailsParams(movieItem.id)).extractData
@@ -176,99 +173,13 @@ class HomeViewModel @Inject constructor(
         return deferredTop3
     }
 
-/*    private fun loadData() {
-        launchUI {
-            loading.emit(true)
-            listOf(
-                loadHeaderAsync(this),
-                loadNowPlayingMoviesAsync(this),
-                loadPopularMoviesAsync(this),
-                loadTopRatedMoviesAsync(this),
-                loadUpcomingMoviesAsync(this)
-            ).awaitAll()
-            loading.emit(false)
-        }
-    }
-    private suspend fun loadHeaderAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val header =
-                listOf(HeaderItem(R.string.header), emptySpaceMedium)
-            _header.postValue(header)
-        }
-    }
-    private suspend fun loadNowPlayingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val nowPlaying =
-                getNowPlayingMovies(NowPlayingMoviesParams()).extractData?.movies ?: listOf()
-            val movies = if (nowPlaying.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.now_playing), emptySpaceMedium,
-                    HorizontalListItem(nowPlaying), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadPopularMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val popularMovies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (popularMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.popular), emptySpaceMedium,
-                    HorizontalListItem(popularMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadTopRatedMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val topRatedMovies =
-                getTopRatedMovies(TopRatedMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (topRatedMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.top_rated), emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (upcomingMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.upcoming), emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }*/
-
     fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
-    fun refresh() {
-        //listItems.clear()
-        //_items.value = emptyList()
-        loadData()
-    }
+    fun refresh() = loadData()
 
+    companion object {
+        const val UPCOMING_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 1
+        const val TOP_RATED_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 2
+        const val POPULAR_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 3
+        const val NOW_PLAYING_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 4
+    }
 }
