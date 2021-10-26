@@ -3,6 +3,8 @@ package com.github.af2905.movieland.data.mapper
 import com.github.af2905.movieland.data.database.entity.DatesEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
 import com.github.af2905.movieland.data.database.entity.ResponseWithMovies
+import com.github.af2905.movieland.helper.extension.fiveStarRating
+import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
 import com.github.af2905.movieland.presentation.model.item.Dates
@@ -48,8 +50,10 @@ class MovieEntityToUIMapper @Inject constructor() :
                 title = title,
                 video = video,
                 voteAverage = voteAverage,
+                voteAverageStar = voteAverage?.fiveStarRating()?.toFloat(),
                 voteCount = voteCount,
                 responseMovieType = responseMovieType,
+                releaseYear = releaseDate?.getYearFromReleaseDate()
             )
         }
 }

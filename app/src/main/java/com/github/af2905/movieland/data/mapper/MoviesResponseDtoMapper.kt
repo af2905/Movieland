@@ -6,7 +6,9 @@ import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 import com.github.af2905.movieland.data.dto.DatesDto
 import com.github.af2905.movieland.data.dto.MovieDto
 import com.github.af2905.movieland.data.dto.MoviesResponseDto
+import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
+import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.IMovieResponseMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
@@ -36,7 +38,7 @@ class MovieDtoToEntityListMapper @Inject constructor(mapper: MovieDtoToEntityMap
     MovieResponseListMapper<MovieDto, String, Long, MovieEntity>(mapper)
 
 class MovieDtoToEntityMapper @Inject constructor() :
-    IMovieResponseMapper<MovieDto, String, Long,MovieEntity> {
+    IMovieResponseMapper<MovieDto, String, Long, MovieEntity> {
     override fun map(input: MovieDto, type: String, timeStamp: Long) =
         with(input) {
             MovieEntity(
@@ -97,9 +99,11 @@ class MovieDtoToUiMapper @Inject constructor() :
                 overview = overview,
                 popularity = popularity,
                 releaseDate = releaseDate,
+                releaseYear = releaseDate?.getYearFromReleaseDate(),
                 title = title,
                 video = video,
                 voteAverage = voteAverage,
+                voteAverageStar = voteAverage.fiveStarRating().toFloat(),
                 voteCount = voteCount,
                 posterPath = input.posterPath.getFullPathToImage()
             )
