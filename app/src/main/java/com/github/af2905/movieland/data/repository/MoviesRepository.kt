@@ -67,17 +67,16 @@ class MoviesRepository @Inject constructor(
 
         val count = movieResponseDao.getByType(type)?.movies?.size
 
-        val timeStamp = count?.let {
-            movieResponseDao.getByType(type)!!.moviesResponseEntity.timeStamp
-        }
+        val timeStamp =
+            count?.let { movieResponseDao.getByType(type)!!.moviesResponseEntity.timeStamp }
 
         val currentTime = Calendar.getInstance().timeInMillis
 
         val timeDiff = timeStamp?.let {
-            periodOfTimeInMin(timeStamp = it, currentTime = currentTime)
+            periodOfTimeInHours(timeStamp = it, currentTime = currentTime)
         }
 
-        val needToUpdate = timeDiff?.let { it > 3 }
+        val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
 
         if (count.isNullOrEmpty() || forced || needToUpdate == true) {
             val dto = when (type) {
@@ -102,5 +101,9 @@ class MoviesRepository @Inject constructor(
 
     private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =
         TimeUnit.MILLISECONDS.toHours(currentTime - timeStamp)
+
+    companion object {
+        const val DEFAULT_UPDATE_MOVIE_HOURS = 24
+    }
 
 }

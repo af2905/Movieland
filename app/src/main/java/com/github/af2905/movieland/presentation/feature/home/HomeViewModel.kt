@@ -153,17 +153,14 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadTop3Async(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
         val deferredTop3 = coroutineScope.iOAsync {
-            val top3Movies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies
-                    ?.filterNot { it.voteAverage == null }
-                    ?.filter { it.voteAverage!! > 7.0 }
-                    ?.take(3) ?: listOf()
-            if (top3Movies.isNotEmpty() && top3Movies.size == 3) {
 
+            val top3 = getTop3Movies { getPopularMovies(PopularMoviesParams()) }.extractData?.movies
+
+            if (!top3.isNullOrEmpty()) {
                 mutableListOf<Model>().apply {
                     add(HeaderItem(R.string.top_3_rated))
                     addAll(listOf(emptySpaceMedium, DividerItem()))
-                    top3Movies.map { addAll(listOf(MovieItemVariant(it), DividerItem())) }
+                    top3.map { addAll(listOf(MovieItemVariant(it), DividerItem())) }
                     add(emptySpaceMedium)
                 }
             } else emptyList()
