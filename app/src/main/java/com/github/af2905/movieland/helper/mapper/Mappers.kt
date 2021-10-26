@@ -5,9 +5,10 @@ open class ListMapper<I, O>(private val mapper: IMapper<I, O>) : IListMapper<I, 
 
 }
 
-open class MovieResponseListMapper<I, T, O>(private val mapper: IMovieResponseMapper<I, T, O>) :
-    IMovieResponseListMapper<I, T, O> {
-    override fun map(input: List<I>, type: T): List<O> = input.map { mapper.map(it, type) }
+open class MovieResponseListMapper<I, T, D, O>(private val mapper: IMovieResponseMapper<I, T, D, O>) :
+    IMovieResponseListMapper<I, T, D, O> {
+    override fun map(input: List<I>, type: T, timeStamp: D): List<O> =
+        input.map { mapper.map(it, type, timeStamp) }
 }
 
 open class NullableInputListMapper<I, O>(private val mapper: IMapper<I, O>) :
