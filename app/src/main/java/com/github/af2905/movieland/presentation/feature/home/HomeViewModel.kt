@@ -16,7 +16,6 @@ import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -37,25 +36,7 @@ class HomeViewModel @Inject constructor(
     private val _items = MutableLiveData<List<Model>>()
     val items: LiveData<List<Model>> = _items
 
-    private val _header = MutableLiveData<List<Model>>()
-
-    private var horizontalItemListId: AtomicInteger = AtomicInteger(HORIZONTAL_ITEM_LIST_ID * 10000)
-
-/*    private val listItems = CopyOnWriteArrayList<Model>()
-    val items = MediatorLiveData<List<Model>>().apply {
-        addSource(_items) {
-            val headerValue = _header.value
-            if (headerValue?.isNotEmpty() == true) {
-                value = headerValue + it + emptySpaceBig
-            }
-        }
-        addSource(_header) {
-            value = it + (_items.value ?: emptyList()) + emptySpaceBig
-        }
-    }*/
-
     init {
-        horizontalItemListId.getAndIncrement()
         loadData()
     }
 

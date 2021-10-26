@@ -31,7 +31,7 @@
             android:layout_height="@dimen/movie_card_height"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
-            app:src="@{item.movieItem.backdropPath}"
+            app:src="@{item.movieItem.posterPath}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_placeholder" />
 
