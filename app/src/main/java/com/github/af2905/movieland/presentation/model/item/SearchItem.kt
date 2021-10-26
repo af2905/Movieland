@@ -10,14 +10,18 @@ data class SearchItem(
     override val id: Int = SEARCH_ITEM_ID,
     var searchString: String = "",
     var queryHint: String = "",
-    @StringRes var queryHintRes: Int = 0
+    @StringRes var queryHintRes: Int = R.string.hint_search_query,
+    var loading: Boolean = false
 ) : Model(VIEW_TYPE) {
+
+    val deleteIconVisible = !loading && searchString.isNotEmpty()
+    val searchProgressVisible = loading
 
     companion object {
         const val VIEW_TYPE = R.layout.list_item_search
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: MovieItem, position: Int)
+        fun textChanged(text: String)
     }
 }

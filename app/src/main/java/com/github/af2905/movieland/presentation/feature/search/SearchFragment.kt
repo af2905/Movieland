@@ -5,18 +5,33 @@ import android.view.View
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
+import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
+import com.github.af2905.movieland.presentation.model.item.SearchItem
 
-class SearchFragment : BaseFragment<AppNavigator, FragmentSearchBinding, SearchViewModel>() {
+class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
     override fun viewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
-    override fun getNavigator(navController: NavController) = AppNavigator(navController)
+    override fun getNavigator(navController: NavController) = SearchNavigator(navController)
+
+    private val baseAdapter: BaseAdapter = BaseAdapter(
+        ItemDelegate(
+            SearchItem.VIEW_TYPE, SearchItem.Listener { text -> viewModel.onNewQuery(text) }
+        ),
+        ItemDelegate(
+            MovieItemVariant.VIEW_TYPE,
+            listener = MovieItemVariant.Listener { item, position ->
+                viewModel.openDetail(item.id, position)
+            }
+        )
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.searchRecyclerView.apply { adapter = BaseAdapter() }
+        binding.searchSwipeRefreshLayout.isEnabled = false
+        binding.searchRecyclerView.apply { adapter = baseAdapter }
     }
 }
