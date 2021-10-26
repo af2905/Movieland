@@ -25,20 +25,24 @@ class MoviesRepository @Inject constructor(
 ) : IMoviesRepository {
 
     override suspend fun getNowPlayingMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region, forced = forced)
 
     override suspend fun getPopularMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.POPULAR.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.POPULAR.name, language, page, region = region, forced = forced)
 
     override suspend fun getTopRatedMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.TOP_RATED.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.TOP_RATED.name, language, page, region = region, forced = forced)
 
     override suspend fun getUpcomingMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.UPCOMING.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.UPCOMING.name, language, page, region = region, forced = forced)
 
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?

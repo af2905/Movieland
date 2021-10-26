@@ -14,7 +14,12 @@ class GetUpcomingMovies @Inject constructor(
 
     override suspend fun execute(params: UpcomingMoviesParams): MoviesResponse {
         return responseEntityMapper.map(
-            moviesRepository.getUpcomingMovies(params.language, params.page, params.region)
+            moviesRepository.getUpcomingMovies(
+                params.language,
+                params.page,
+                params.region,
+                forced = params.forced
+            )
         )
     }
 }
