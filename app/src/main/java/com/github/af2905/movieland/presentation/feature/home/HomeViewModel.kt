@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.adult.GetAdultMovies
 import com.github.af2905.movieland.domain.usecase.movies.*
-import com.github.af2905.movieland.domain.usecase.params.*
+import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.model.ItemIds.HORIZONTAL_ITEM_LIST_ID
@@ -22,7 +25,7 @@ class HomeViewModel @Inject constructor(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getUpcomingMovies: GetUpcomingMovies,
     private val getAdultMovies: GetAdultMovies,
-    private val getMovieDetails: GetMovieDetails,
+    private val getTop3Movies: GetTop3Movies,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -156,18 +159,13 @@ class HomeViewModel @Inject constructor(
                     ?.filter { it.voteAverage!! > 7.0 }
                     ?.take(3) ?: listOf()
             if (top3Movies.isNotEmpty() && top3Movies.size == 3) {
-                val top3 = top3Movies.mapNotNull { movieItem ->
-                    getMovieDetails(MovieDetailsParams(movieItem.id)).extractData
-                }
+
                 mutableListOf<Model>().apply {
                     add(HeaderItem(R.string.top_3_rated))
                     addAll(listOf(emptySpaceMedium, DividerItem()))
-                    top3.map {
-                        addAll(listOf(MovieItemWithDetails(it), DividerItem()))
-                    }
+                    top3Movies.map { addAll(listOf(MovieItemVariant(it), DividerItem())) }
                     add(emptySpaceMedium)
                 }
-
             } else emptyList()
         }
         return deferredTop3

@@ -12,7 +12,7 @@ import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAd
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieItem
-import com.github.af2905.movieland.presentation.model.item.MovieItemWithDetails
+import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
@@ -41,8 +41,8 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             }
         ),
         ItemDelegate(
-            MovieItemWithDetails.VIEW_TYPE,
-            listener = MovieItemWithDetails.Listener { item, position ->
+            MovieItemVariant.VIEW_TYPE,
+            listener = MovieItemVariant.Listener { item, position ->
                 viewModel.openDetail(item.id, position)
             }
         )
