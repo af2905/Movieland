@@ -18,25 +18,26 @@ import javax.inject.Inject
 
 class MoviesResponseDtoToEntityMapper @Inject constructor(
     private val datesMapper: DatesDtoToEntityMapper
-) : IMovieResponseMapper<MoviesResponseDto, String, MoviesResponseEntity> {
-    override fun map(input: MoviesResponseDto, type: String) =
+) : IMovieResponseMapper<MoviesResponseDto, String, Long, MoviesResponseEntity> {
+    override fun map(input: MoviesResponseDto, type: String, timeStamp: Long) =
         with(input) {
             MoviesResponseEntity(
                 dates = dates?.let { datesMapper.map(it) },
                 page = page,
                 totalPages = totalPages,
                 totalResults = totalResults,
-                movieType = type
+                movieType = type,
+                timeStamp = timeStamp
             )
         }
 }
 
 class MovieDtoToEntityListMapper @Inject constructor(mapper: MovieDtoToEntityMapper) :
-    MovieResponseListMapper<MovieDto, String, MovieEntity>(mapper)
+    MovieResponseListMapper<MovieDto, String, Long, MovieEntity>(mapper)
 
 class MovieDtoToEntityMapper @Inject constructor() :
-    IMovieResponseMapper<MovieDto, String, MovieEntity> {
-    override fun map(input: MovieDto, type: String) =
+    IMovieResponseMapper<MovieDto, String, Long,MovieEntity> {
+    override fun map(input: MovieDto, type: String, timeStamp: Long) =
         with(input) {
             MovieEntity(
                 id = id,
