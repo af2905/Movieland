@@ -15,18 +15,22 @@ data class MovieItem(
     val popularity: Double?,
     val posterPath: String?,
     val releaseDate: String?,
+    val releaseYear: String?,
     val title: String?,
     val video: Boolean?,
     val voteAverage: Double?,
+    val voteAverageStar: Float?,
     val voteCount: Int?,
-    val responseMovieType: String? = null
+    val responseMovieType: String? = null,
 ) : Model(VIEW_TYPE) {
 
-    var voteAverageBackground = voteAverage?.let { when (voteAverage) {
-        in RAD_RANGE -> R.drawable.bg_red_corners_8
-        in GRAY_RANGE -> R.drawable.bg_grey_corner_8
-        else -> R.drawable.bg_green_corners_8
-    } }
+    var voteAverageBackground = voteAverage?.let {
+        when (voteAverage) {
+            in RAD_RANGE -> R.drawable.bg_red_corners_8
+            in GRAY_RANGE -> R.drawable.bg_grey_corner_8
+            else -> R.drawable.bg_green_corners_8
+        }
+    }
 
     companion object {
         const val VIEW_TYPE = R.layout.list_item_movie

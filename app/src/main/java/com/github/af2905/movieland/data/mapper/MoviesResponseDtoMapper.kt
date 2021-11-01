@@ -6,7 +6,9 @@ import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 import com.github.af2905.movieland.data.dto.DatesDto
 import com.github.af2905.movieland.data.dto.MovieDto
 import com.github.af2905.movieland.data.dto.MoviesResponseDto
+import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
+import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.IMovieResponseMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
@@ -18,25 +20,26 @@ import javax.inject.Inject
 
 class MoviesResponseDtoToEntityMapper @Inject constructor(
     private val datesMapper: DatesDtoToEntityMapper
-) : IMovieResponseMapper<MoviesResponseDto, String, MoviesResponseEntity> {
-    override fun map(input: MoviesResponseDto, type: String) =
+) : IMovieResponseMapper<MoviesResponseDto, String, Long, MoviesResponseEntity> {
+    override fun map(input: MoviesResponseDto, type: String, timeStamp: Long) =
         with(input) {
             MoviesResponseEntity(
                 dates = dates?.let { datesMapper.map(it) },
                 page = page,
                 totalPages = totalPages,
                 totalResults = totalResults,
-                movieType = type
+                movieType = type,
+                timeStamp = timeStamp
             )
         }
 }
 
 class MovieDtoToEntityListMapper @Inject constructor(mapper: MovieDtoToEntityMapper) :
-    MovieResponseListMapper<MovieDto, String, MovieEntity>(mapper)
+    MovieResponseListMapper<MovieDto, String, Long, MovieEntity>(mapper)
 
 class MovieDtoToEntityMapper @Inject constructor() :
-    IMovieResponseMapper<MovieDto, String, MovieEntity> {
-    override fun map(input: MovieDto, type: String) =
+    IMovieResponseMapper<MovieDto, String, Long, MovieEntity> {
+    override fun map(input: MovieDto, type: String, timeStamp: Long) =
         with(input) {
             MovieEntity(
                 id = id,
@@ -96,9 +99,11 @@ class MovieDtoToUiMapper @Inject constructor() :
                 overview = overview,
                 popularity = popularity,
                 releaseDate = releaseDate,
+                releaseYear = releaseDate?.getYearFromReleaseDate(),
                 title = title,
                 video = video,
                 voteAverage = voteAverage,
+                voteAverageStar = voteAverage.fiveStarRating().toFloat(),
                 voteCount = voteCount,
                 posterPath = input.posterPath.getFullPathToImage()
             )

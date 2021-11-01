@@ -11,6 +11,8 @@ import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
 import com.github.af2905.movieland.data.mapper.MoviesResponseDtoToEntityMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
 import com.github.af2905.movieland.helper.extension.isNullOrEmpty
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
@@ -23,20 +25,24 @@ class MoviesRepository @Inject constructor(
 ) : IMoviesRepository {
 
     override suspend fun getNowPlayingMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region, forced = forced)
 
     override suspend fun getPopularMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.POPULAR.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.POPULAR.name, language, page, region = region, forced = forced)
 
     override suspend fun getTopRatedMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.TOP_RATED.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.TOP_RATED.name, language, page, region = region, forced = forced)
 
     override suspend fun getUpcomingMovies(
-        language: String?, page: Int?, region: String?
-    ): ResponseWithMovies = loadMovies(MovieType.UPCOMING.name, language, page, region = region)
+        language: String?, page: Int?, region: String?, forced: Boolean
+    ): ResponseWithMovies =
+        loadMovies(MovieType.UPCOMING.name, language, page, region = region, forced = forced)
 
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?
@@ -45,7 +51,7 @@ class MoviesRepository @Inject constructor(
     override suspend fun getSimilarMovies(
         movieId: Int, language: String?, page: Int?
     ): MoviesResponseDto {
-       return moviesApi.getSimilarMovies(movieId, language, page)
+        return moviesApi.getSimilarMovies(movieId, language, page)
     }
 
     override suspend fun getMovieActors(movieId: Int, language: String?) =
@@ -55,10 +61,28 @@ class MoviesRepository @Inject constructor(
         movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
 
     private suspend fun loadMovies(
-        type: String, language: String?, page: Int?, region: String? = null, movieId: Int? = null
+        type: String,
+        language: String?,
+        page: Int?,
+        region: String? = null,
+        movieId: Int? = null,
+        forced: Boolean = false
     ): ResponseWithMovies {
+
         val count = movieResponseDao.getByType(type)?.movies?.size
-        if (count.isNullOrEmpty()) {
+
+        val timeStamp =
+            count?.let { movieResponseDao.getByType(type)!!.moviesResponseEntity.timeStamp }
+
+        val currentTime = Calendar.getInstance().timeInMillis
+
+        val timeDiff = timeStamp?.let {
+            periodOfTimeInHours(timeStamp = it, currentTime = currentTime)
+        }
+
+        val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
+
+        if (count.isNullOrEmpty() || forced || needToUpdate == true) {
             val dto = when (type) {
                 MovieType.NOW_PLAYING.name -> moviesApi.getNowPlayingMovies(language, page, region)
                 MovieType.POPULAR.name -> moviesApi.getPopularMovies(language, page, region)
@@ -67,10 +91,23 @@ class MoviesRepository @Inject constructor(
 
                 else -> moviesApi.getRecommendedMovies(movieId!!, language, page)
             }
-            val response = responseDtoMapper.map(dto, type)
+
+            val response = responseDtoMapper.map(dto, type, currentTime)
             movieResponseDao.save(response)
-            movieDtoMapper.map(dto.movies, type).map { movieDao.save(it) }
+            movieDtoMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
         }
+
         return movieResponseDao.getByType(type)!!
     }
+
+    private fun periodOfTimeInMin(timeStamp: Long, currentTime: Long) =
+        TimeUnit.MILLISECONDS.toMinutes(currentTime - timeStamp)
+
+    private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =
+        TimeUnit.MILLISECONDS.toHours(currentTime - timeStamp)
+
+    companion object {
+        const val DEFAULT_UPDATE_MOVIE_HOURS = 24
+    }
+
 }

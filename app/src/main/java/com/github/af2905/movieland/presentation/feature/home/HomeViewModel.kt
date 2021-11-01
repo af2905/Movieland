@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.adult.GetAdultMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetTopRatedMovies
-import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
+import com.github.af2905.movieland.domain.usecase.movies.*
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
@@ -16,10 +13,7 @@ import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.model.ItemIds.HORIZONTAL_ITEM_LIST_ID
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
-import com.github.af2905.movieland.presentation.model.item.HeaderItem
-import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
-import com.github.af2905.movieland.presentation.model.item.MovieItem
+import com.github.af2905.movieland.presentation.model.item.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import javax.inject.Inject
@@ -30,6 +24,7 @@ class HomeViewModel @Inject constructor(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getUpcomingMovies: GetUpcomingMovies,
     private val getAdultMovies: GetAdultMovies,
+    private val getTop3Movies: GetTop3Movies,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -41,38 +36,28 @@ class HomeViewModel @Inject constructor(
     private val _items = MutableLiveData<List<Model>>()
     val items: LiveData<List<Model>> = _items
 
-    private val _header = MutableLiveData<List<Model>>()
-
-/*    private val listItems = CopyOnWriteArrayList<Model>()
-    val items = MediatorLiveData<List<Model>>().apply {
-        addSource(_items) {
-            val headerValue = _header.value
-            if (headerValue?.isNotEmpty() == true) {
-                value = headerValue + it + emptySpaceBig
-            }
-        }
-        addSource(_header) {
-            value = it + (_items.value ?: emptyList()) + emptySpaceBig
-        }
-    }*/
-
     init {
         loadData()
     }
 
-    private fun loadData() {
+    private fun loadData(forced: Boolean = false) {
         launchUI {
             loading.emit(true)
             val list = mutableListOf<Model>()
             val header = listOf(HeaderItem(R.string.header), emptySpaceMedium)
 
-            val nowPlaying = loadNowPlayingMoviesAsync(this)
-            val popular = loadPopularMoviesAsync(this)
-            val topRated = loadTopRatedMoviesAsync(this)
-            val upcoming = loadUpcomingMoviesAsync(this)
+            val nowPlaying = loadNowPlayingMoviesAsync(this, forced)
+            val popular = loadPopularMoviesAsync(this, forced)
+            val topRated = loadTopRatedMoviesAsync(this, forced)
+            val upcoming = loadUpcomingMoviesAsync(this, forced)
+
+            val top3 = loadTop3Async(this, forced)
 
             list.addAll(header)
             list.addAll(nowPlaying.await().getOrDefault(emptyList()))
+
+            list.addAll(top3.await().getOrDefault(emptyList()))
+
             list.addAll(popular.await().getOrDefault(emptyList()))
             list.addAll(topRated.await().getOrDefault(emptyList()))
             list.addAll(upcoming.await().getOrDefault(emptyList()))
@@ -82,157 +67,115 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadNowPlayingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
+    private suspend fun loadNowPlayingMoviesAsync(
+        coroutineScope: CoroutineScope,
+        forced: Boolean
+    ): Deferred<Result<List<Model>>> {
         val deferredNowPlaying = coroutineScope.iOAsync {
             val nowPlaying =
-                getNowPlayingMovies(NowPlayingMoviesParams()).extractData?.movies ?: listOf()
+                getNowPlayingMovies(NowPlayingMoviesParams(forced = forced)).extractData?.movies
+                    ?: listOf()
             if (nowPlaying.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.now_playing), emptySpaceMedium,
-                    HorizontalListItem(nowPlaying, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 1), emptySpaceMedium
+                    HeaderItem(R.string.now_playing),
+                    emptySpaceMedium,
+                    HorizontalListItem(nowPlaying, id = NOW_PLAYING_HORIZONTAL_LIST_ITEM_ID),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
         return deferredNowPlaying
     }
 
-    private suspend fun loadPopularMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
+    private suspend fun loadPopularMoviesAsync(
+        coroutineScope: CoroutineScope,
+        forced: Boolean
+    ): Deferred<Result<List<Model>>> {
         val deferredPopular = coroutineScope.iOAsync {
             val popularMovies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies ?: listOf()
+                getPopularMovies(PopularMoviesParams(forced = forced)).extractData?.movies
+                    ?: listOf()
             if (popularMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.popular), emptySpaceMedium,
-                    HorizontalListItem(popularMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 2), emptySpaceMedium
+                    HeaderItem(R.string.popular),
+                    emptySpaceMedium,
+                    HorizontalListItem(popularMovies, id = POPULAR_HORIZONTAL_LIST_ITEM_ID),
+                    emptySpaceMedium
                 )
+
             } else emptyList()
         }
         return deferredPopular
     }
 
-    private suspend fun loadTopRatedMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
+    private suspend fun loadTopRatedMoviesAsync(
+        coroutineScope: CoroutineScope,
+        forced: Boolean
+    ): Deferred<Result<List<Model>>> {
         val deferredTopRated = coroutineScope.iOAsync {
             val topRatedMovies =
-                getTopRatedMovies(TopRatedMoviesParams()).extractData?.movies ?: listOf()
+                getTopRatedMovies(TopRatedMoviesParams(forced = forced)).extractData?.movies
+                    ?: listOf()
             if (topRatedMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.top_rated), emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 3), emptySpaceMedium
-
+                    HeaderItem(R.string.top_rated),
+                    emptySpaceMedium,
+                    HorizontalListItem(topRatedMovies, id = TOP_RATED_HORIZONTAL_LIST_ITEM_ID),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
         return deferredTopRated
     }
 
-    private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
+    private suspend fun loadUpcomingMoviesAsync(
+        coroutineScope: CoroutineScope,
+        forced: Boolean
+    ): Deferred<Result<List<Model>>> {
         val deferredUpcoming = coroutineScope.iOAsync {
             val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams()).extractData?.movies
+                getUpcomingMovies(UpcomingMoviesParams(forced = forced)).extractData?.movies
                     ?: listOf()
             if (upcomingMovies.isNotEmpty()) {
                 listOf(
-                    HeaderItem(R.string.upcoming), emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies, id = HORIZONTAL_ITEM_LIST_ID * 1000 + 4), emptySpaceMedium
+                    HeaderItem(R.string.upcoming),
+                    emptySpaceMedium,
+                    HorizontalListItem(upcomingMovies, id = UPCOMING_HORIZONTAL_LIST_ITEM_ID),
+                    emptySpaceMedium
                 )
             } else emptyList()
         }
         return deferredUpcoming
     }
 
-/*    private fun loadData() {
-        launchUI {
-            loading.emit(true)
-            listOf(
-                loadHeaderAsync(this),
-                loadNowPlayingMoviesAsync(this),
-                loadPopularMoviesAsync(this),
-                loadTopRatedMoviesAsync(this),
-                loadUpcomingMoviesAsync(this)
-            ).awaitAll()
-            loading.emit(false)
-        }
-    }
-    private suspend fun loadHeaderAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val header =
-                listOf(HeaderItem(R.string.header), emptySpaceMedium)
-            _header.postValue(header)
-        }
-    }
-    private suspend fun loadNowPlayingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val nowPlaying =
-                getNowPlayingMovies(NowPlayingMoviesParams()).extractData?.movies ?: listOf()
-            val movies = if (nowPlaying.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.now_playing), emptySpaceMedium,
-                    HorizontalListItem(nowPlaying), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadPopularMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val popularMovies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (popularMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.popular), emptySpaceMedium,
-                    HorizontalListItem(popularMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadTopRatedMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val topRatedMovies =
-                getTopRatedMovies(TopRatedMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (topRatedMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.top_rated), emptySpaceMedium,
-                    HorizontalListItem(topRatedMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }
-    private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<Unit>> {
-        return coroutineScope.iOAsync {
-            val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams()).extractData?.movies
-                    ?: listOf()
-            val movies = if (upcomingMovies.isNotEmpty()) {
-                listOf(
-                    HeaderItem(R.string.upcoming), emptySpaceMedium,
-                    HorizontalListItem(upcomingMovies), emptySpaceMedium
-                )
-            } else {
-                emptyList()
-            }
-            listItems.addAll(movies)
-            _items.postValue(listItems)
-        }
-    }*/
+    private suspend fun loadTop3Async(
+        coroutineScope: CoroutineScope,
+        forced: Boolean
+    ): Deferred<Result<List<Model>>> {
+        val deferredTop3 = coroutineScope.iOAsync {
 
-    fun openDetail(item: MovieItem, position: Int) = navigate { forwardMovieDetail(item.id) }
-    fun refresh() {
-        //listItems.clear()
-        //_items.value = emptyList()
-        loadData()
+            val top3 =
+                getTop3Movies { getPopularMovies(PopularMoviesParams(forced = forced)) }.extractData?.movies
+
+            if (!top3.isNullOrEmpty()) {
+                mutableListOf<Model>().apply {
+                    add(HeaderItem(R.string.top_3_rated))
+                    addAll(listOf(emptySpaceMedium, DividerItem()))
+                    top3.map { addAll(listOf(MovieItemVariant(it), DividerItem())) }
+                    add(emptySpaceMedium)
+                }
+            } else emptyList()
+        }
+        return deferredTop3
     }
 
+    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
+    fun refresh() = loadData(forced = true)
+
+    companion object {
+        const val UPCOMING_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 1
+        const val TOP_RATED_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 2
+        const val POPULAR_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 3
+        const val NOW_PLAYING_HORIZONTAL_LIST_ITEM_ID = HORIZONTAL_ITEM_LIST_ID * 10000 + 4
+    }
 }

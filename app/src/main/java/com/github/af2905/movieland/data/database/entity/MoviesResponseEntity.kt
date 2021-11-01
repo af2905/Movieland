@@ -9,7 +9,7 @@ import com.github.af2905.movieland.helper.extension.getFullPathToImage
 data class ResponseWithMovies(
     @Embedded val moviesResponseEntity: MoviesResponseEntity,
     @Relation(parentColumn = "movieType", entityColumn = "responseMovieType")
-    val movies: List<MovieEntity> = listOf()
+    val movies: List<MovieEntity> = listOf(),
 )
 
 @Entity
@@ -18,7 +18,8 @@ data class MoviesResponseEntity(
     val page: Int,
     val totalPages: Int,
     val totalResults: Int,
-    @PrimaryKey val movieType: String = ""
+    @PrimaryKey val movieType: String = "",
+    val timeStamp: Long? = null
 )
 
 data class DatesEntity(val maximum: String, val minimum: String)

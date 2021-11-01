@@ -15,7 +15,12 @@ class GetPopularMovies @Inject constructor(
 
     override suspend fun execute(params: PopularMoviesParams): MoviesResponse {
         return responseEntityMapper.map(
-            moviesRepository.getPopularMovies(params.language, params.page, params.region)
+            moviesRepository.getPopularMovies(
+                params.language,
+                params.page,
+                params.region,
+                forced = params.forced
+            )
         )
     }
 }
