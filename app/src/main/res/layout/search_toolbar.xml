@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/searchContainer"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/searchbar_height"
-    android:layout_marginLeft="@dimen/default_margin_big"
-    android:layout_marginRight="@dimen/default_margin_big"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginRight="@dimen/default_margin"
     android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/default_margin_small"
-        android:background="@drawable/bg_search"
-        tools:ignore="UselessParent">
+    <EditText
+        android:id="@+id/searchInput"
+        style="@style/SearchStyle"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="textShortMessage"
+        tools:ignore="LabelFor" />
 
-        <EditText
+    <ImageView
+        android:id="@+id/deleteIcon"
+        style="@style/SearchIconsStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@id/searchInput"
+        app:layout_constraintTop_toTopOf="@id/searchInput"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/searchProgress"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:indeterminate="true"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@id/searchInput"
+        app:layout_constraintTop_toTopOf="@id/searchInput"
+        tools:visibility="gone"/>
+
+ <!--       <EditText
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,6 +75,6 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:src="@drawable/ic_delete"
             tools:ignore="ContentDescription"
-            tools:visibility="visible" />
-    </RelativeLayout>
-</FrameLayout>
+            tools:visibility="visible" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

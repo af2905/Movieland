@@ -9,6 +9,7 @@
     <string name="action_search">Search</string>
 
     <string name="any_screen_more">more…</string>
+    <string name="hint_search_query">Enter search query…</string>
 
     //Headers
     <string name="header">Header</string>
@@ -19,8 +20,12 @@
     <string name="recommended">Recommended</string>
     <string name="similar">Similar</string>
     <string name="adult">Adult</string>
+    <string name="top_3_rated">Top 3 rated</string>
 
     //Movie detail
     <string name="actors_and_crew_title">Actors and crew</string>
+
+    //Search
+    <string name="search_empty_result">No results matching your query</string>
 
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,16 +16,51 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/searchContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:orientation="horizontal">
 
-        <com.github.af2905.movieland.presentation.widget.SearchViewBar
+        <EditText
+            android:id="@+id/searchInput"
+            style="@style/SearchStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="?actionBarSize"
+            android:importantForAutofill="no"
+            android:inputType="textShortMessage"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryListener="@{listener}"
+            tools:hint="@string/hint_search_query"
+            tools:ignore="LabelFor" />
 
+        <ImageView
+            android:id="@+id/deleteIcon"
+            style="@style/SearchIconsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/searchInput"
+            app:layout_constraintTop_toTopOf="@id/searchInput"
+            app:visible="@{item.deleteIconVisible}"
+            tools:ignore="ContentDescription" />
+
+        <ProgressBar
+            android:id="@+id/searchProgress"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/searchInput"
+            app:layout_constraintTop_toTopOf="@id/searchInput"
+            app:visible="@{item.searchProgressVisible}"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

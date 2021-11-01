@@ -59,10 +59,7 @@ class MovieDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.movieDetailsSwipeRefreshLayout.isEnabled = false
-
-        binding.movieDetailsRecyclerView.apply {
-            adapter = baseAdapter
-        }
+        binding.movieDetailsRecyclerView.apply { adapter = baseAdapter }
     }
 
     private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {
