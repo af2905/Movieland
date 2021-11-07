@@ -20,12 +20,13 @@
             app:item="@{viewModel.searchItem}"
             app:listener="@{viewModel.searchListener}" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchRecyclerView"
-                linearLayoutManager="@{false}"
-                recyclerSetData="@{viewModel.items}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            linearLayoutManager="@{false}"
+            recyclerSetData="@{viewModel.items}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin" />
 
     </LinearLayout>
 

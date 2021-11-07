@@ -34,6 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryListener="@{listener}"
+            app:clearQuery="@{item.clearText}"
             tools:hint="@string/hint_search_query"
             tools:ignore="LabelFor" />
 
@@ -47,6 +48,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="@id/searchInput"
             app:layout_constraintTop_toTopOf="@id/searchInput"
+            android:onClick="@{() -> listener.deleteTextClicked()}"
             app:visible="@{item.deleteVisible}"
             tools:ignore="ContentDescription" />
 
