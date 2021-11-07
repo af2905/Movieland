@@ -89,12 +89,10 @@ abstract class BaseViewModel<N : Navigator>(val coroutineDispatcherProvider: Cor
     fun <T> CoroutineScope.uIAsync(
         start: CoroutineStart = CoroutineStart.DEFAULT,
         action: suspend CoroutineScope.() -> T
-    ) =
-        internalAsync(coroutineDispatcherProvider.main(), start, action)
+    ) = internalAsync(coroutineDispatcherProvider.main(), start, action)
 
     fun <T> CoroutineScope.iOAsync(
         start: CoroutineStart = CoroutineStart.DEFAULT,
         action: suspend CoroutineScope.() -> T
-    ) =
-        internalAsync(coroutineDispatcherProvider.io(), start, action)
+    ) = internalAsync(coroutineDispatcherProvider.io(), start, action)
 }

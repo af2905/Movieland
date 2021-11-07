@@ -11,14 +11,13 @@ data class SearchItem(
     var searchString: String = "",
     var queryHint: String = "",
     @StringRes var queryHintRes: Int = R.string.hint_search_query,
-    var loading: Boolean = false
+    var loading: Boolean = false,
+    var deleteVisible: Boolean = false
 ) : Model(VIEW_TYPE) {
-
-    val deleteIconVisible = !loading && searchString.isNotEmpty()
-    val searchProgressVisible = loading
 
     companion object {
         const val VIEW_TYPE = R.layout.list_item_search
+        const val TEXT_ENTERED_DEBOUNCE_MILLIS = 500L
     }
 
     fun interface Listener : ItemDelegate.Listener {

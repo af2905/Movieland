@@ -44,7 +44,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8 }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+    }
 
     buildFeatures { dataBinding true }
 }

@@ -9,7 +9,6 @@ import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
-import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -17,9 +16,6 @@ class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, Sea
     override fun getNavigator(navController: NavController) = SearchNavigator(navController)
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
-        ItemDelegate(
-            SearchItem.VIEW_TYPE, SearchItem.Listener { text -> viewModel.onNewQuery(text) }
-        ),
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, position ->
@@ -31,7 +27,8 @@ class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, Sea
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.searchSwipeRefreshLayout.isEnabled = false
         binding.searchRecyclerView.apply { adapter = baseAdapter }
+
+        viewModel.searchResult.observe(viewLifecycleOwner, viewModel::handleMoviesList)
     }
 }

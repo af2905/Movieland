@@ -27,5 +27,6 @@
 
     //Search
     <string name="search_empty_result">No results matching your query</string>
+    <string name="search_popular_search_queries">Popular movie search queries</string>
 
 </resources>
