@@ -2,67 +2,165 @@ package com.github.af2905.movieland.presentation.feature.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.data.result.Result
+import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
+import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
+import com.github.af2905.movieland.helper.Constant.MIN_TIME_REFRESH_DELAY
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
+import com.github.af2905.movieland.helper.extension.notifyObserver
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
+import com.github.af2905.movieland.presentation.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val getSearchMovie: GetSearchMovie,
+    private val getPopularMovies: GetPopularMovies,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<SearchNavigator>(coroutineDispatcherProvider) {
 
-    private val _items = MutableLiveData<List<Model>>()
-    val items: LiveData<List<Model>> = _items
+    private val _items = MutableLiveData<MutableList<Model>>()
+    val items: LiveData<MutableList<Model>> = _items
 
     private val emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
     private val emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
     private val emptySpaceMedium = EmptySpaceItem(R.dimen.default_margin_medium)
     private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
 
-    private fun starter() = listOf<Model>(SearchItem())
+    private val queryFlow = MutableStateFlow("")
+
+    var searchItem = MutableLiveData(SearchItem())
+    val searchListener = SearchItem.Listener { query -> queryFlow.value = query }
+
+    private val _searchResult = MutableStateFlow<SearchResult>(SearchResult.EmptyQuery)
+    val searchResult: LiveData<SearchResult>
+        get() = _searchResult.asLiveData(viewModelScope.coroutineContext)
 
     init {
-        launchUI { _items.value = starter() }
-    }
-
-    fun onNewQuery(query: String) = loadData(query = query)
-
-    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
-
-    private fun loadData(init: Boolean = false, query: String = "") {
         launchUI {
-            if (init) {
-                _items.value = starter()
-            } else {
-                val movies =
-                    getSearchMovie(SearchMovieParams(query = query)).extractData?.movies
-                        ?.filterNot { it.backdropPath == null }
-
-                val list = mutableListOf<Model>()
-
-                if (movies.isNullOrEmpty()) {
-                    list.apply {
-                        add(SearchItem())
-                        add(emptySpaceMedium)
-                        add(SimpleTextItem(R.string.search_empty_result))
-                    }
-                } else {
-                    list.apply {
-                        add(SearchItem())
-                        add(emptySpaceMedium)
-                        movies.map {
-                            add(MovieItemVariant(it))
-                            add(DividerItem())
-                        }
+            queryFlow
+                .sample(TEXT_ENTERED_DEBOUNCE_MILLIS)
+                .onEach {
+                    if (_searchResult.value != SearchResult.EmptyQuery) {
+                        _searchResult.value = SearchResult.Loading
                     }
                 }
-                _items.value = list
+                .mapLatest(::handleQuery)
+                .collect { state -> _searchResult.value = state }
+        }
+    }
+
+    private suspend fun handleQuery(query: String): SearchResult {
+        return if (query.isEmpty()) SearchResult.EmptyQuery else handleSearchMovie(query)
+    }
+
+    private suspend fun handleSearchMovie(query: String): SearchResult {
+        return when (val response = getSearchMovie(SearchMovieParams(query = query))) {
+            is Result.Error -> SearchResult.ErrorResult(response.exception)
+            is Result.Success -> {
+                response.extractData?.movies.orEmpty().let { movies ->
+                    if (movies.isEmpty()) SearchResult.EmptyResult
+                    else SearchResult.SuccessResult(movies)
+                }
             }
         }
     }
+
+    fun handleMoviesList(state: SearchResult) {
+        val list = mutableListOf<Model>()
+
+        when (state) {
+            is SearchResult.SuccessResult -> {
+                hideLoadingWithDelay()
+                list.add(emptySpaceMedium)
+                state.result.map {
+                    if (it is MovieItem) list.addAll(listOf(MovieItemVariant(it), DividerItem()))
+                }
+                launchUI {
+                    _items.value = list
+                    _items.notifyObserver()
+                }
+            }
+            is SearchResult.ErrorResult -> {
+                hideLoading(true)
+            }
+            is SearchResult.EmptyResult -> {
+                hideLoading(true)
+                list.addAll(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
+                launchUI {
+                    _items.value = list
+                    _items.notifyObserver()
+                }
+            }
+            is SearchResult.EmptyQuery -> {
+                launchUI {
+                    hideLoading(false)
+                    val popular = loadPopularMoviesAsync(this)
+                    list.addAll(popular.await().getOrDefault(emptyList()))
+                    _items.value = list
+                    _items.notifyObserver()
+                }
+            }
+            is SearchResult.Loading -> showLoading()
+        }
+    }
+
+    private fun showLoading() {
+        if (searchItem.value?.loading == false) {
+            searchItem.postValue(searchItem.value?.copy(loading = true, deleteVisible = false))
+        }
+    }
+
+    private fun hideLoading(deleteVisible: Boolean) {
+        if (searchItem.value?.loading == true) {
+            searchItem.postValue(
+                searchItem.value?.copy(loading = false, deleteVisible = deleteVisible)
+            )
+        }
+    }
+
+    private fun hideLoadingWithDelay() {
+        launchUI {
+            delay(MIN_TIME_REFRESH_DELAY)
+            searchItem.postValue(
+                searchItem.value?.copy(
+                    loading = false, deleteVisible = queryFlow.value.isNotEmpty()
+                )
+            )
+        }
+    }
+
+    private suspend fun loadPopularMoviesAsync(
+        coroutineScope: CoroutineScope
+    ): Deferred<kotlin.Result<List<Model>>> {
+        val deferredPopular = coroutineScope.iOAsync {
+            val popularMovies =
+                getPopularMovies(PopularMoviesParams()).extractData?.movies ?: listOf()
+            if (popularMovies.isNotEmpty()) {
+                mutableListOf<Model>().apply {
+                    add(emptySpaceMedium)
+                    add(HeaderItem(R.string.search_popular_search_queries))
+                    add(emptySpaceMedium)
+                    add(DividerItem())
+                    popularMovies
+                        .sortedByDescending { it.releaseYear }
+                        .map { addAll(listOf(MovieItemVariant(it), DividerItem())) }
+                }
+            } else emptyList()
+        }
+        return deferredPopular
+    }
+
+    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
+
 }
