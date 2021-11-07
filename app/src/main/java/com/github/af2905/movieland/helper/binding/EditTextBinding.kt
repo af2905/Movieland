@@ -9,3 +9,8 @@ import com.github.af2905.movieland.presentation.model.item.SearchItem
 fun EditText.queryListener(listener: SearchItem.Listener) {
     this.afterTextChanged { text -> listener.textChanged(text.toString()) }
 }
+
+@BindingAdapter("app:clearQuery")
+fun EditText.clearQuery(clear: Boolean) {
+    if (clear) this.text.clear()
+}

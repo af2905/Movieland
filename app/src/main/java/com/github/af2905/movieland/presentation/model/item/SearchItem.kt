@@ -12,7 +12,8 @@ data class SearchItem(
     var queryHint: String = "",
     @StringRes var queryHintRes: Int = R.string.hint_search_query,
     var loading: Boolean = false,
-    var deleteVisible: Boolean = false
+    var deleteVisible: Boolean = false,
+    var clearText: Boolean = false
 ) : Model(VIEW_TYPE) {
 
     companion object {
@@ -20,7 +21,8 @@ data class SearchItem(
         const val TEXT_ENTERED_DEBOUNCE_MILLIS = 500L
     }
 
-    fun interface Listener : ItemDelegate.Listener {
+    interface Listener : ItemDelegate.Listener {
         fun textChanged(text: String)
+        fun deleteTextClicked()
     }
 }

@@ -40,7 +40,21 @@ class SearchViewModel @Inject constructor(
     private val queryFlow = MutableStateFlow("")
 
     var searchItem = MutableLiveData(SearchItem())
-    val searchListener = SearchItem.Listener { query -> queryFlow.value = query }
+    val searchListener = object : SearchItem.Listener {
+        override fun textChanged(text: String) {
+            queryFlow.value = text
+            searchItem.value = searchItem.value?.copy(clearText = false)
+            searchItem.notifyObserver()
+        }
+
+        override fun deleteTextClicked() {
+            launchUI {
+                queryFlow.value = ""
+                searchItem.value = searchItem.value?.copy(clearText = true)
+                searchItem.notifyObserver()
+            }
+        }
+    }
 
     private val _searchResult = MutableStateFlow<SearchResult>(SearchResult.EmptyQuery)
     val searchResult: LiveData<SearchResult>
@@ -50,11 +64,7 @@ class SearchViewModel @Inject constructor(
         launchUI {
             queryFlow
                 .sample(TEXT_ENTERED_DEBOUNCE_MILLIS)
-                .onEach {
-                    if (_searchResult.value != SearchResult.EmptyQuery) {
-                        _searchResult.value = SearchResult.Loading
-                    }
-                }
+                .onEach { _searchResult.value = SearchResult.Loading }
                 .mapLatest(::handleQuery)
                 .collect { state -> _searchResult.value = state }
         }
@@ -83,6 +93,7 @@ class SearchViewModel @Inject constructor(
             is SearchResult.SuccessResult -> {
                 hideLoadingWithDelay()
                 list.add(emptySpaceMedium)
+                list.add(DividerItem())
                 state.result.map {
                     if (it is MovieItem) list.addAll(listOf(MovieItemVariant(it), DividerItem()))
                 }
