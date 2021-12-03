@@ -16,9 +16,9 @@
         android:orientation="vertical">
 
         <include
+            android:id="@+id/search"
             layout="@layout/list_item_search"
-            app:item="@{viewModel.searchItem}"
-            app:listener="@{viewModel.searchListener}" />
+            app:item="@{viewModel.searchItem}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchRecyclerView"

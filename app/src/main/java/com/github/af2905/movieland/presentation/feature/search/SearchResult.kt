@@ -7,5 +7,5 @@ sealed class SearchResult{
     object EmptyResult : SearchResult()
     object EmptyQuery : SearchResult()
     data class SuccessResult(val result: List<Model>) : SearchResult()
-    data class ErrorResult(val e: Throwable) : SearchResult()
+    data class ErrorResult(val e: Throwable?) : SearchResult()
 }

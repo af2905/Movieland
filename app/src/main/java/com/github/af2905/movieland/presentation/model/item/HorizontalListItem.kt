@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.BindingViewHolder
@@ -32,12 +33,13 @@ data class HorizontalListItem(
 class HorizontalListAdapter(
     layout: Int,
     val adapter: () -> BaseAdapter,
-    val decoration: ((Context) -> RecyclerView.ItemDecoration)? = null
+    val snapHelper: SnapHelper? = null,
+    val decoration: ((Context) -> RecyclerView.ItemDecoration)? = null,
 ) : ItemDelegate(layout) {
 
     override fun onCreateViewHolder(parent: ViewGroup): BindingViewHolder {
         return super.onCreateViewHolder(parent).apply {
-            binding.root.findViewById<RecyclerView>(R.id.recyclerView).apply {
+            val recyclerView = binding.root.findViewById<RecyclerView>(R.id.recyclerView).apply {
                 layoutManager =
                     LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = adapter()
@@ -45,6 +47,7 @@ class HorizontalListAdapter(
                     addItemDecoration(decoration.invoke(this.context))
                 }
             }
+            snapHelper?.attachToRecyclerView(recyclerView)
         }
     }
 }
