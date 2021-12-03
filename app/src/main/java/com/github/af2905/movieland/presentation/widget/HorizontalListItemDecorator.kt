@@ -22,8 +22,8 @@ class HorizontalListItemDecorator(
             val lastPos = kotlin.math.min(
                 lastPosition, (parent.adapter as BaseAdapter).itemCount - 1
             )
-            if (pos == startPosition) left = marginStart
-            right = if (pos == lastPos) marginEnd else spacing
+            left = if (pos == startPosition) marginStart else spacing
+            if (pos == lastPos) right = marginEnd
             top = marginTop
             bottom = marginBottom
         }

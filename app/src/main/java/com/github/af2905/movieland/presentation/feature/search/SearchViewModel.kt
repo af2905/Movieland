@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.data.result.Result
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
@@ -40,21 +39,6 @@ class SearchViewModel @Inject constructor(
     private val queryFlow = MutableStateFlow("")
 
     var searchItem = MutableLiveData(SearchItem())
-    val searchListener = object : SearchItem.Listener {
-        override fun textChanged(text: String) {
-            queryFlow.value = text
-            searchItem.value = searchItem.value?.copy(clearText = false)
-            searchItem.notifyObserver()
-        }
-
-        override fun deleteTextClicked() {
-            launchUI {
-                queryFlow.value = ""
-                searchItem.value = searchItem.value?.copy(clearText = true)
-                searchItem.notifyObserver()
-            }
-        }
-    }
 
     private val _searchResult = MutableStateFlow<SearchResult>(SearchResult.EmptyQuery)
     val searchResult: LiveData<SearchResult>
@@ -63,10 +47,24 @@ class SearchViewModel @Inject constructor(
     init {
         launchUI {
             queryFlow
-                .sample(TEXT_ENTERED_DEBOUNCE_MILLIS)
+                .debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .onEach { _searchResult.value = SearchResult.Loading }
                 .mapLatest(::handleQuery)
                 .collect { state -> _searchResult.value = state }
+        }
+    }
+
+    fun searchTextChanged(text: String) {
+        searchItem.value = searchItem.value?.copy(clearText = false)
+        searchItem.notifyObserver()
+        queryFlow.value = text
+    }
+
+    fun searchDeleteTextClicked() {
+        launchUI {
+            searchItem.value = searchItem.value?.copy(clearText = true)
+            searchItem.notifyObserver()
+            queryFlow.value = ""
         }
     }
 
@@ -75,13 +73,14 @@ class SearchViewModel @Inject constructor(
     }
 
     private suspend fun handleSearchMovie(query: String): SearchResult {
-        return when (val response = getSearchMovie(SearchMovieParams(query = query))) {
-            is Result.Error -> SearchResult.ErrorResult(response.exception)
-            is Result.Success -> {
-                response.extractData?.movies.orEmpty().let { movies ->
-                    if (movies.isEmpty()) SearchResult.EmptyResult
-                    else SearchResult.SuccessResult(movies)
-                }
+        val result = getSearchMovie(SearchMovieParams(query = query))
+
+        return if (result.isFailure) {
+            return SearchResult.ErrorResult(result.exceptionOrNull())
+        } else {
+            result.getOrNull()?.movies.orEmpty().let { movies ->
+                if (movies.isEmpty()) SearchResult.EmptyResult
+                else SearchResult.SuccessResult(movies)
             }
         }
     }
@@ -102,9 +101,8 @@ class SearchViewModel @Inject constructor(
                     _items.notifyObserver()
                 }
             }
-            is SearchResult.ErrorResult -> {
-                hideLoading(true)
-            }
+            is SearchResult.ErrorResult -> hideLoading(true)
+
             is SearchResult.EmptyResult -> {
                 hideLoading(true)
                 list.addAll(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
@@ -153,10 +151,11 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun loadPopularMoviesAsync(
         coroutineScope: CoroutineScope
-    ): Deferred<kotlin.Result<List<Model>>> {
-        val deferredPopular = coroutineScope.iOAsync {
+    ): Deferred<Result<List<Model>>> {
+        val deferredPopular: Deferred<Result<List<Model>>> = coroutineScope.iOAsync {
             val popularMovies =
-                getPopularMovies(PopularMoviesParams()).extractData?.movies ?: listOf()
+                getPopularMovies(PopularMoviesParams()).getOrThrow().movies ?: listOf()
+
             if (popularMovies.isNotEmpty()) {
                 mutableListOf<Model>().apply {
                     add(emptySpaceMedium)
