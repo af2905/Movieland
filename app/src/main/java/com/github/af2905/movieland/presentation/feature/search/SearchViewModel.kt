@@ -171,6 +171,6 @@ class SearchViewModel @Inject constructor(
         return deferredPopular
     }
 
-    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
+    fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
 
 }

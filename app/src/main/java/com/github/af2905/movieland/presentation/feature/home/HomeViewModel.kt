@@ -169,7 +169,7 @@ class HomeViewModel @Inject constructor(
         return deferredTop3
     }
 
-    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
+    fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
     fun refresh() = loadData(forced = true)
 
     companion object {

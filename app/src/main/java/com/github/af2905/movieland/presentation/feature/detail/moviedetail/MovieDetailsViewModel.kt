@@ -46,7 +46,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         }
 
-        override fun onBackClicked() = navigate { back() }
+        override fun onBackClicked() = navigator { back() }
     }
 
     init {
@@ -107,5 +107,5 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun openActorDetail(item: MovieActorItem, position: Int) {}
     fun openSimilarMovieDetail(item: MovieItem, position: Int) =
-        navigate { forwardMovieDetail(item.id) }
+        navigator { forwardMovieDetail(item.id) }
 }
