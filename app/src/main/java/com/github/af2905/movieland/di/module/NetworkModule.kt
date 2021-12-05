@@ -4,7 +4,7 @@ import com.github.af2905.movieland.BuildConfig
 import com.github.af2905.movieland.data.api.MoviesApi
 import com.github.af2905.movieland.data.api.SearchApi
 import com.github.af2905.movieland.data.interceptor.ApiKeyInterceptor
-import com.github.af2905.movieland.data.interceptor.HttpInterceptor
+import com.github.af2905.movieland.data.interceptor.ErrorInterceptor
 import com.github.af2905.movieland.data.interceptor.HttpLoggerInterceptor
 import com.github.af2905.movieland.di.scope.AppScope
 import com.google.gson.Gson
@@ -57,7 +57,7 @@ class NetworkModule {
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         apiKeyInterceptor: ApiKeyInterceptor,
-        httpInterceptor: HttpInterceptor
+        errorInterceptor: ErrorInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectionPool(
@@ -67,7 +67,7 @@ class NetworkModule {
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(apiKeyInterceptor)
-            .addInterceptor(httpInterceptor)
+            .addInterceptor(errorInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
     }
@@ -78,7 +78,7 @@ class NetworkModule {
 
     @AppScope
     @Provides
-    fun provideHttpInterceptor(): HttpInterceptor = HttpInterceptor()
+    fun provideErrorInterceptor(gson: Gson): ErrorInterceptor = ErrorInterceptor(gson)
 
     @AppScope
     @Provides

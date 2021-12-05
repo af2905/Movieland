@@ -16,7 +16,6 @@ import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 
-
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
