@@ -49,7 +49,7 @@ class SearchViewModel @Inject constructor(
             queryFlow
                 .debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .onEach { _searchResult.value = SearchResult.Loading }
-                .mapLatest(::handleQuery)
+                .mapLatest { handleQuery(it, this) }
                 .collect { state -> _searchResult.value = state }
         }
     }
@@ -68,12 +68,16 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleQuery(query: String): SearchResult {
-        return if (query.isEmpty()) SearchResult.EmptyQuery else handleSearchMovie(query)
+    private suspend fun handleQuery(query: String, scope: CoroutineScope): SearchResult {
+        return if (query.isEmpty()) SearchResult.EmptyQuery
+        else handleSearchMovie(query, scope)
     }
 
-    private suspend fun handleSearchMovie(query: String): SearchResult {
-        val result = getSearchMovie(SearchMovieParams(query = query))
+    private suspend fun handleSearchMovie(query: String, scope: CoroutineScope): SearchResult {
+
+        val result = scope.iOAsync {
+            getSearchMovie(SearchMovieParams(query = query))
+        }.await().getOrThrow()
 
         return if (result.isFailure) {
             return SearchResult.ErrorResult(result.exceptionOrNull())
