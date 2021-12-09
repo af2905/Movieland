@@ -12,7 +12,7 @@ class UndefinedException(throwable: Throwable) : ApiException(throwable.message)
 
 class ConnectionException(message: String?) : ApiException(message)
 
-open class ErrorBodyApiException(val body: ErrorBody) : ApiException(body.error)
+open class ErrorBodyApiException(body: ErrorBody) : ApiException(body.error)
 
 class ClientException(body: ErrorBody) : ErrorBodyApiException(body)
 class ServerException(body: ErrorBody) : ErrorBodyApiException(body)

@@ -33,8 +33,7 @@ class ErrorInterceptor @Inject constructor(private val gson: Gson) : Interceptor
 
         val errorBody = gson.fromJson(response.body?.string(), ErrorBody::class.java)
 
-        return when (response.code) {
-            in HttpResponseCode.OK.code -> response
+        when (response.code) {
 
             in HttpResponseCode.SERVER_ERROR.code -> throw ServerException(errorBody)
 

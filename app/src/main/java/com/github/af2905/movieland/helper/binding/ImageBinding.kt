@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.helper.binding
 
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
@@ -19,4 +20,9 @@ fun ShapeableImageView.loadImage(src: String?) {
         .load(src)
         .apply(options)
         .into(this)
+}
+
+@BindingAdapter("app:src")
+fun ShapeableImageView.loadImage(@DrawableRes imageRes: Int? = null) {
+    imageRes?.let { setImageResource(imageRes) }
 }
