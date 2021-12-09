@@ -3,25 +3,19 @@ package com.github.af2905.movieland.presentation
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.github.af2905.movieland.di.ViewModelFactory
-
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
-
-    /*@Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory*/
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
@@ -30,25 +24,16 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var bottomNav: BottomNavigationView
-    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-
-        //viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         binding.viewModel = viewModel
 
         navController = findNavController()
-
-        /*toolbar = findViewById(R.id.toolbar)
-
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)*/
 
         setupBottomNavMenu(navController)
         setDestinationChangedListener()
@@ -78,9 +63,7 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun setDestinationChangedListener() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment -> showBottomNav()
-                R.id.searchFragment -> showBottomNav()
-                R.id.profileFragment -> showBottomNav()
+                R.id.homeFragment, R.id.searchFragment, R.id.profileFragment -> showBottomNav()
                 else -> hideBottomNav()
             }
         }
