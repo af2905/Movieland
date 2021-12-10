@@ -27,8 +27,8 @@
         android:paddingBottom="@dimen/default_margin_small">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="@dimen/movie_card_width"
-            android:layout_height="@dimen/movie_card_height"
+            android:layout_width="@dimen/movie_card_variant_width"
+            android:layout_height="@dimen/movie_card_variant_height"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
             app:src="@{item.movieItem.posterPath}"

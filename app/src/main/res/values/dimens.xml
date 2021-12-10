@@ -11,13 +11,19 @@
     <dimen name="default_text_normal">14sp</dimen>
     <dimen name="default_text_medium">18sp</dimen>
 
+    <dimen name="size_0">0dp</dimen>
+
     <dimen name="default_stroke">2dp</dimen>
     <dimen name="default_corners_radius">8dp</dimen>
 
     <dimen name="default_divider_height">1dp</dimen>
+    <dimen name="default_tab_indicator_height">1dp</dimen>
 
     <dimen name="movie_card_width">130dp</dimen>
-    <dimen name="movie_card_height">170dp</dimen>
+    <dimen name="movie_card_height">200dp</dimen>
+    <dimen name="movie_card_variant_width">130dp</dimen>
+    <dimen name="movie_card_variant_height">170dp</dimen>
+
     <dimen name="default_button_size_small">20dp</dimen>
 
     <dimen name="default_icon_size">90dp</dimen>
