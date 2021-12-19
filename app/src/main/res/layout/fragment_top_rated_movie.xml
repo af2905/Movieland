@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNowPlayingMovies"
+        android:id="@+id/recyclerView"
         linearLayoutManager="@{false}"
         recyclerSetData="@{viewModel.items}"
         android:layout_width="match_parent"

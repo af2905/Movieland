@@ -17,7 +17,6 @@ import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovi
 import com.github.af2905.movieland.presentation.feature.home.top.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
 import com.github.af2905.movieland.presentation.model.item.MovieItem
-import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
@@ -32,16 +31,6 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                 viewModel.openDetail(item.id, position)
             })
     )
-
-    private val top3MoviesAdapter: BaseAdapter = BaseAdapter(
-        ItemDelegate(
-            MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, position ->
-                viewModel.openDetail(item.id, position)
-            }
-        )
-    )
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,10 +48,6 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             )
         }
 
-        binding.recyclerViewTop3Movies.apply {
-            adapter = top3MoviesAdapter
-        }
-
         setupPager(
             tabLayout = binding.pagerTabs,
             viewPager = binding.pager,
@@ -76,8 +61,10 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             )
         )
 
-/*        binding.homeSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.refresh()
-        }*/
+        binding.homeSwipeRefreshLayout.setOnRefreshListener { viewModel.refresh() }
+
+        viewModel.updateFailed.observe(viewLifecycleOwner, { failed ->
+            if (failed) binding.homeSwipeRefreshLayout.isRefreshing = false
+        })
     }
 }

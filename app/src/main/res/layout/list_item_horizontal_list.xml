@@ -10,7 +10,7 @@
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNowPlayingMovies"
+        android:id="@+id/recyclerView"
         recyclerSetData="@{item.list}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
