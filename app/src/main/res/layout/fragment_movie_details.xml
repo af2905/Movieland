@@ -30,7 +30,7 @@
             app:refreshing="@{viewModel.loading}">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/movieDetailsRecyclerView"
+                android:id="@+id/recyclerView"
                 linearLayoutManager="@{false}"
                 recyclerSetData="@{viewModel.items}"
                 android:layout_width="match_parent"
