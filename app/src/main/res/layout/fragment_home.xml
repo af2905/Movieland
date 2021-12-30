@@ -11,28 +11,55 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/homeCoordinatorLayout"
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/homeAppBar"
+            android:id="@+id/innerAppBarLayout"
+            style="@style/TabsUnderlineBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.Movieland.AppBarOverlay">
+            app:elevation="@dimen/size_0">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/collapsing_toolbar_min_height"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@string/app_name"
-                app:titleCollapseMode="scale"
+                app:contentScrim="?colorSurface"
+                app:titleCollapseMode="fade"
+                app:toolbarId="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:expandedTitleMarginStart="@dimen/default_margin"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:titleEnabled="true"
-                app:toolbarId="@+id/toolbar">
+                app:title="@string/app_name"
+                app:expandedTitleGravity="top">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_medium"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextView.Medium.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="?attr/actionBarSize"
+                        android:padding="@dimen/default_margin"
+                        app:visible="@{viewModel.headerVisible}"
+                        android:text="@{viewModel.header.res}" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        linearLayoutManager="@{true}"
+                        recyclerSetData="@{viewModel.nowPlayingMovies}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -41,24 +68,29 @@
                     app:popupTheme="@style/Theme.Movieland.PopupOverlay">
 
                 </androidx.appcompat.widget.Toolbar>
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/pagerTabs"
+                style="@style/TabsLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="fixed" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/homeSwipeRefreshLayout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/homeSwipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:refreshing="@{viewModel.loading}">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:refreshing="@{viewModel.loading}">
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                linearLayoutManager="@{false}"
-                recyclerSetData="@{viewModel.items}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

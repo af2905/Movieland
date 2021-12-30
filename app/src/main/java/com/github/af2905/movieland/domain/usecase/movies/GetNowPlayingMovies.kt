@@ -17,8 +17,7 @@ class GetNowPlayingMovies @Inject constructor(
             moviesRepository.getNowPlayingMovies(
                 params.language,
                 params.page,
-                params.region,
-                forced = params.forced
+                params.region
             )
         )
     }

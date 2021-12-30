@@ -9,30 +9,28 @@ interface IMoviesRepository {
     suspend fun getNowPlayingMovies(
         language: String?,
         page: Int?,
-        region: String?,
-        forced: Boolean = false
+        region: String?
     ): ResponseWithMovies
 
     suspend fun getPopularMovies(
         language: String?,
         page: Int?,
-        region: String?,
-        forced: Boolean = false
+        region: String?
     ): ResponseWithMovies
 
     suspend fun getTopRatedMovies(
         language: String?,
         page: Int?,
-        region: String?,
-        forced: Boolean = false
+        region: String?
     ): ResponseWithMovies
 
     suspend fun getUpcomingMovies(
         language: String?,
         page: Int?,
-        region: String?,
-        forced: Boolean = false
+        region: String?
     ): ResponseWithMovies
+
+    suspend fun clearCache()
 
     suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity
 
