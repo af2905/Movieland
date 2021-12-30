@@ -3,6 +3,7 @@ package com.github.af2905.movieland.presentation.feature.home
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
@@ -32,6 +33,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                         })
                 )
             },
+            snapHelper = LinearSnapHelper(),
             decoration = {
                 HorizontalListItemDecorator(
                     marginStart = it.resources.getDimensionPixelSize(R.dimen.default_margin),

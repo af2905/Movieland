@@ -27,5 +27,9 @@
 
     //Search
     <string name="search_empty_result">No results matching your query</string>
+    <string name="search_popular_search_queries">Popular movie search queries</string>
+
+    //Fail to connect
+    <string name="fail_to_connect">Failed to connect</string>
 
 </resources>
