@@ -10,25 +10,24 @@
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/searchSwipeRefreshLayout"
+        <include
+            android:id="@+id/search"
+            layout="@layout/list_item_search"
+            app:item="@{viewModel.searchItem}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            linearLayoutManager="@{false}"
+            recyclerSetData="@{viewModel.items}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:refreshing="@{viewModel.loading}">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchRecyclerView"
-                linearLayoutManager="@{false}"
-                recyclerSetData="@{viewModel.items}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </FrameLayout>
+    </LinearLayout>
 
 </layout>

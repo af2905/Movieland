@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
     ): Deferred<Result<List<Model>>> {
         val deferredNowPlaying = coroutineScope.iOAsync {
             val nowPlaying =
-                getNowPlayingMovies(NowPlayingMoviesParams(forced = forced)).extractData?.movies
+                getNowPlayingMovies(NowPlayingMoviesParams(forced = forced)).getOrThrow().movies
                     ?: listOf()
             if (nowPlaying.isNotEmpty()) {
                 listOf(
@@ -93,7 +93,7 @@ class HomeViewModel @Inject constructor(
     ): Deferred<Result<List<Model>>> {
         val deferredPopular = coroutineScope.iOAsync {
             val popularMovies =
-                getPopularMovies(PopularMoviesParams(forced = forced)).extractData?.movies
+                getPopularMovies(PopularMoviesParams(forced = forced)).getOrThrow().movies
                     ?: listOf()
             if (popularMovies.isNotEmpty()) {
                 listOf(
@@ -114,7 +114,7 @@ class HomeViewModel @Inject constructor(
     ): Deferred<Result<List<Model>>> {
         val deferredTopRated = coroutineScope.iOAsync {
             val topRatedMovies =
-                getTopRatedMovies(TopRatedMoviesParams(forced = forced)).extractData?.movies
+                getTopRatedMovies(TopRatedMoviesParams(forced = forced)).getOrThrow().movies
                     ?: listOf()
             if (topRatedMovies.isNotEmpty()) {
                 listOf(
@@ -134,9 +134,9 @@ class HomeViewModel @Inject constructor(
     ): Deferred<Result<List<Model>>> {
         val deferredUpcoming = coroutineScope.iOAsync {
             val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams(forced = forced)).extractData?.movies
+                getUpcomingMovies(UpcomingMoviesParams(forced = forced)).getOrThrow().movies
                     ?: listOf()
-            if (upcomingMovies.isNotEmpty()) {
+            if (!upcomingMovies.isNullOrEmpty()) {
                 listOf(
                     HeaderItem(R.string.upcoming),
                     emptySpaceMedium,
@@ -155,8 +155,8 @@ class HomeViewModel @Inject constructor(
         val deferredTop3 = coroutineScope.iOAsync {
 
             val top3 =
-                getTop3Movies { getPopularMovies(PopularMoviesParams(forced = forced)) }.extractData?.movies
-
+                getTop3Movies { getPopularMovies(PopularMoviesParams(forced = forced)) }.getOrThrow().movies
+                    ?: listOf()
             if (!top3.isNullOrEmpty()) {
                 mutableListOf<Model>().apply {
                     add(HeaderItem(R.string.top_3_rated))
@@ -169,7 +169,7 @@ class HomeViewModel @Inject constructor(
         return deferredTop3
     }
 
-    fun openDetail(itemId: Int, position: Int) = navigate { forwardMovieDetail(itemId) }
+    fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
     fun refresh() = loadData(forced = true)
 
     companion object {

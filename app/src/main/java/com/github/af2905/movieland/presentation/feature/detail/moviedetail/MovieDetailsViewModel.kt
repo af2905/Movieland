@@ -46,7 +46,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         }
 
-        override fun onBackClicked() = navigate { back() }
+        override fun onBackClicked() = navigator { back() }
     }
 
     init {
@@ -60,14 +60,15 @@ class MovieDetailsViewModel @Inject constructor(
             val list = mutableListOf<Model>()
             if (movieDetailsItem.value == null) {
                 val movieDetails = getMovieDetails(MovieDetailsParams(movieId))
-                movieDetails.extractData?.let {
-                    movieDetailsItem.postValue(it)
-                    list.add(MovieDetailsDescItem(it))
+                movieDetails.let {
+                    movieDetailsItem.postValue(it.getOrThrow())
+                    list.add(MovieDetailsDescItem(it.getOrThrow()))
                 }
             }
             getMovieActors(MovieActorsParams(movieId)).let { result ->
-                result.extractData?.let {
-                    val actors = it.filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
+                result.let {
+                    val actors = it.getOrThrow()
+                        .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
                     list.addAll(
                         listOf(
                             HeaderItem(R.string.actors_and_crew_title),
@@ -82,8 +83,9 @@ class MovieDetailsViewModel @Inject constructor(
                 }
             }
             getSimilarMovies(SimilarMoviesParams((movieId))).let { result ->
-                result.extractData?.let {
-                    val similar = it.movies?.filterNot { movie -> movie.posterPath.isNullOrEmpty() }
+                result.let {
+                    val similar =
+                        it.getOrThrow().movies?.filterNot { movie -> movie.posterPath.isNullOrEmpty() }
                     if (!similar.isNullOrEmpty()) {
                         list.addAll(
                             listOf(
@@ -105,5 +107,5 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun openActorDetail(item: MovieActorItem, position: Int) {}
     fun openSimilarMovieDetail(item: MovieItem, position: Int) =
-        navigate { forwardMovieDetail(item.id) }
+        navigator { forwardMovieDetail(item.id) }
 }

@@ -13,10 +13,11 @@ import com.github.af2905.movieland.BR
 import com.github.af2905.movieland.di.ViewModelFactory
 import com.github.af2905.movieland.helper.navigator.Navigator
 import dagger.android.support.DaggerFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> :
-    DaggerFragment() {
+    DaggerFragment(), Base<NV> {
 
     protected abstract fun layoutRes(): Int
     protected abstract fun viewModelClass(): Class<VM>
@@ -29,10 +30,12 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewM
     protected lateinit var viewModelFactory: ViewModelFactory<VM>
 
     lateinit var navController: NavController
+    lateinit var base: Base<NV>
+    override val navigator: NV get() = base.navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(viewModelClass())
+        viewModel = ViewModelProvider(this, viewModelFactory)[viewModelClass()]
     }
 
     override fun onCreateView(
@@ -43,14 +46,25 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewM
             it.setVariable(BR.viewModel, viewModel)
             it.lifecycleOwner = viewLifecycleOwner
         }
-        onBind()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         navController = this.findNavController()
-        viewModel.subscribeNavigator { navigate -> navigate(getNavigator(navController)) }
+        base = BaseImpl(
+            navigatorFactory = { getNavigator(navController) },
+            requireContext = { requireContext() }
+        )
+        viewModel.subscribeOnEffect { handleEffect(it) }
+
+        onBind()
+    }
+
+    override fun handleEffect(effect: UIEffect) {
+        Timber.d("effect: ${effect}, class: $javaClass")
+        base.handleEffect(effect)
     }
 
     open fun onBind() {}

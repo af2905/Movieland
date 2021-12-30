@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -10,13 +11,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.github.af2905.movieland"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -44,35 +45,42 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8 }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+    }
 
     buildFeatures { dataBinding true }
 }
 
 ext {
-    coreKtxVersion = '1.6.0'
+    coreKtxVersion = '1.7.0'
     appcompatVersion = '1.3.1'
     materialVersion = '1.4.0'
-    constraintlayoutVersion = '2.1.0'
+    constraintlayoutVersion = '2.1.1'
     junitVersion = '4.13.2'
     junitExtVersion = '1.1.3'
     espressoVersion = '3.4.0'
-    timberVersion = '4.7.1'
+    timberVersion = '5.0.1'
     glideVersion = '4.11.0'
-    coroutinesVersion = '1.4.3'
+    coroutinesVersion = '1.5.2'
     retrofitVersion = '2.9.0'
-    okHttpVersion = '4.8.1'
-    daggerVersion = '2.34'
+    okHttpVersion = '4.9.0'
+    daggerVersion = '2.37'
     gsonVersion = '2.8.6'
-    lifecycleVersion = '2.3.1'
+    lifecycleVersion = '2.4.0'
     navigationVersion = '2.3.5'
     recyclerViewVersion = '1.2.1'
     roomVersion = '2.3.0'
-    swipeRefreshLayoutVersion = "1.1.0"
+    swipeRefreshLayoutVersion = '1.1.0'
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "com.google.android.material:material:$materialVersion"

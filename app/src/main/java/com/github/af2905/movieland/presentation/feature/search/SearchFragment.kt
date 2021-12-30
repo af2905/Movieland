@@ -11,15 +11,12 @@ import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
 
-class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
+class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
     override fun viewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
     override fun getNavigator(navController: NavController) = SearchNavigator(navController)
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
-        ItemDelegate(
-            SearchItem.VIEW_TYPE, SearchItem.Listener { text -> viewModel.onNewQuery(text) }
-        ),
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, position ->
@@ -31,7 +28,12 @@ class SearchFragment : BaseFragment< SearchNavigator, FragmentSearchBinding, Sea
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.searchSwipeRefreshLayout.isEnabled = false
+        binding.search.listener = object : SearchItem.Listener {
+            override fun textChanged(text: String) = viewModel.searchTextChanged(text)
+            override fun deleteTextClicked() = viewModel.searchDeleteTextClicked()
+        }
         binding.searchRecyclerView.apply { adapter = baseAdapter }
+
+        viewModel.searchResult.observe(viewLifecycleOwner, viewModel::handleMoviesList)
     }
 }
