@@ -33,4 +33,17 @@
     <style name="DividerBackground">
         <item name="android:backgroundTint">@color/dividerDark</item>
     </style>
+
+    <style name="TabsUnderlineBackground">
+        <item name="android:background">@drawable/bg_tab_underline_dark</item>
+    </style>
+
+    <style name="TabsLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">@dimen/default_tab_indicator_height</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+    </style>
+
 </resources>

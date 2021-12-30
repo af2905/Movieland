@@ -17,8 +17,7 @@ class GetUpcomingMovies @Inject constructor(
             moviesRepository.getUpcomingMovies(
                 params.language,
                 params.page,
-                params.region,
-                forced = params.forced
+                params.region
             )
         )
     }

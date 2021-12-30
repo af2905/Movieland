@@ -19,4 +19,7 @@ interface MovieResponseDao {
     @Delete
     suspend fun delete(movieResponse: MoviesResponseEntity)
 
+    @Query("DELETE FROM MoviesResponseEntity")
+    suspend fun clearAll()
+
 }
