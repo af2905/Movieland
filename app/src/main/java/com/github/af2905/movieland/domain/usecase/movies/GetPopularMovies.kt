@@ -18,8 +18,7 @@ class GetPopularMovies @Inject constructor(
             moviesRepository.getPopularMovies(
                 params.language,
                 params.page,
-                params.region,
-                forced = params.forced
+                params.region
             )
         )
     }

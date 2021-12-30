@@ -15,6 +15,8 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val getNowPlayingMovies: GetNowPlayingMovies,
+    private val forceUpdate: ForceUpdate,
+    private val homeRepository: HomeRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -31,13 +33,16 @@ class HomeViewModel @Inject constructor(
 
     init {
         loadData()
+        launchIO {
+            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+        }
     }
 
-    private fun loadData(forced: Boolean = false) {
+    private fun loadData() {
         launchUI {
             loading.emit(true)
             val nowPlayingList = mutableListOf<Model>()
-            val nowPlaying = loadNowPlayingMoviesAsync(this, forced)
+            val nowPlaying = loadNowPlayingMoviesAsync(this)
             nowPlayingList.addAll(nowPlaying.await().getOrThrow())
             _nowPlayingMovies.value = nowPlayingList
             _headerVisible.value = nowPlayingList.isNotEmpty()
@@ -45,19 +50,23 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadNowPlayingMoviesAsync(coroutineScope: CoroutineScope, forced: Boolean)
+    private suspend fun loadNowPlayingMoviesAsync(coroutineScope: CoroutineScope)
             : Deferred<Result<List<Model>>> {
         val deferredNowPlaying = coroutineScope.iOAsync {
-            return@iOAsync getNowPlayingMovies(NowPlayingMoviesParams(forced = forced))
+            return@iOAsync getNowPlayingMovies(NowPlayingMoviesParams())
                 .getOrThrow().movies ?: emptyList()
         }
         return deferredNowPlaying
     }
 
     fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
-    fun refresh() {
-        loadData(forced = true)
+
+
+    fun setForceUpdate() {
+        launchIO { forceUpdate.invoke(Unit) }
     }
+
+    private fun refresh() = loadData()
 
     override fun handleError(throwable: Throwable) {
         super.handleError(throwable)

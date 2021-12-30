@@ -61,7 +61,9 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             )
         )
 
-        binding.homeSwipeRefreshLayout.setOnRefreshListener { viewModel.refresh() }
+        binding.homeSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.setForceUpdate()
+        }
 
         viewModel.updateFailed.observe(viewLifecycleOwner, { failed ->
             if (failed) binding.homeSwipeRefreshLayout.isRefreshing = false

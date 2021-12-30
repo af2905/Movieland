@@ -25,24 +25,24 @@ class MoviesRepository @Inject constructor(
 ) : IMoviesRepository {
 
     override suspend fun getNowPlayingMovies(
-        language: String?, page: Int?, region: String?, forced: Boolean
+        language: String?, page: Int?, region: String?
     ): ResponseWithMovies =
-        loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region, forced = forced)
+        loadMovies(MovieType.NOW_PLAYING.name, language, page, region = region)
 
     override suspend fun getPopularMovies(
-        language: String?, page: Int?, region: String?, forced: Boolean
+        language: String?, page: Int?, region: String?
     ): ResponseWithMovies =
-        loadMovies(MovieType.POPULAR.name, language, page, region = region, forced = forced)
+        loadMovies(MovieType.POPULAR.name, language, page, region = region)
 
     override suspend fun getTopRatedMovies(
-        language: String?, page: Int?, region: String?, forced: Boolean
+        language: String?, page: Int?, region: String?
     ): ResponseWithMovies =
-        loadMovies(MovieType.TOP_RATED.name, language, page, region = region, forced = forced)
+        loadMovies(MovieType.TOP_RATED.name, language, page, region = region)
 
     override suspend fun getUpcomingMovies(
-        language: String?, page: Int?, region: String?, forced: Boolean
+        language: String?, page: Int?, region: String?
     ): ResponseWithMovies =
-        loadMovies(MovieType.UPCOMING.name, language, page, region = region, forced = forced)
+        loadMovies(MovieType.UPCOMING.name, language, page, region = region)
 
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?
@@ -57,6 +57,8 @@ class MoviesRepository @Inject constructor(
     override suspend fun getMovieActors(movieId: Int, language: String?) =
         moviesApi.getMovieActors(movieId = movieId, language = language)
 
+    override suspend fun clearCache() = movieResponseDao.clearAll()
+
     override suspend fun getMovieDetails(movieId: Int, language: String?) =
         movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
 
@@ -65,8 +67,7 @@ class MoviesRepository @Inject constructor(
         language: String?,
         page: Int?,
         region: String? = null,
-        movieId: Int? = null,
-        forced: Boolean = false
+        movieId: Int? = null
     ): ResponseWithMovies {
 
         val count = movieResponseDao.getByType(type)?.movies?.size
@@ -82,7 +83,7 @@ class MoviesRepository @Inject constructor(
 
         val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
 
-        if (count.isNullOrEmpty() || forced || needToUpdate == true) {
+        if (count.isNullOrEmpty() || needToUpdate == true) {
             val dto = when (type) {
                 MovieType.NOW_PLAYING.name -> moviesApi.getNowPlayingMovies(language, page, region)
                 MovieType.POPULAR.name -> moviesApi.getPopularMovies(language, page, region)
@@ -109,5 +110,4 @@ class MoviesRepository @Inject constructor(
     companion object {
         const val DEFAULT_UPDATE_MOVIE_HOURS = 24
     }
-
 }
