@@ -7,6 +7,7 @@ import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
+import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.DividerItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class PopularMovieViewModel @Inject constructor(
     private val getPopularMovies: GetPopularMovies,
+    private val homeRepository: HomeRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -24,24 +26,24 @@ class PopularMovieViewModel @Inject constructor(
 
     init {
         loadData()
+        launchIO {
+            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+        }
     }
 
-    private fun loadData(forced: Boolean = false) {
+    private fun loadData() {
         launchUI {
             loading.emit(true)
-            val popular = loadPopularMoviesAsync(this, forced)
+            val popular = loadPopularMoviesAsync(this)
             _items.value = popular.await().getOrDefault(emptyList())
             loading.emit(false)
         }
     }
 
-    private suspend fun loadPopularMoviesAsync(
-        coroutineScope: CoroutineScope,
-        forced: Boolean
-    ): Deferred<Result<List<Model>>> {
+    private suspend fun loadPopularMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
         val deferredPopular = coroutineScope.iOAsync {
             val popularMovies =
-                getPopularMovies(PopularMoviesParams(forced = forced)).getOrThrow().movies
+                getPopularMovies(PopularMoviesParams()).getOrThrow().movies
                     ?.map { MovieItemVariant(it) } ?: emptyList()
             if (popularMovies.isNotEmpty()) {
                 mutableListOf<Model>().apply {
@@ -51,6 +53,8 @@ class PopularMovieViewModel @Inject constructor(
         }
         return deferredPopular
     }
+
+    private fun refresh() = loadData()
 
     fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
 }

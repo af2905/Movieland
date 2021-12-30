@@ -17,8 +17,7 @@ class GetTopRatedMovies @Inject constructor(
             moviesRepository.getTopRatedMovies(
                 params.language,
                 params.page,
-                params.region,
-                forced = params.forced
+                params.region
             )
         )
     }

@@ -33,6 +33,8 @@
     <dimen name="collapsing_toolbar_min_height">100dp</dimen>
     <dimen name="searchbar_height">56dp</dimen>
 
+    <dimen name="default_simple_dialog_size">280dp</dimen>
+
     <item name="text_line_spacing_multiplier" format="float" type="dimen">1.5</item>
 
 </resources>

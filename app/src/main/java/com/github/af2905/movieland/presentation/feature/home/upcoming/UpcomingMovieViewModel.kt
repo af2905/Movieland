@@ -7,6 +7,7 @@ import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
+import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.DividerItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class UpcomingMovieViewModel @Inject constructor(
     private val getUpcomingMovies: GetUpcomingMovies,
+    private val homeRepository: HomeRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
 
@@ -24,24 +26,24 @@ class UpcomingMovieViewModel @Inject constructor(
 
     init {
         loadData()
+        launchIO {
+            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+        }
     }
 
-    private fun loadData(forced: Boolean = false) {
+    private fun loadData() {
         launchUI {
             loading.emit(true)
-            val upcoming = loadUpcomingMoviesAsync(this, forced)
+            val upcoming = loadUpcomingMoviesAsync(this)
             _items.value = upcoming.await().getOrDefault(emptyList())
             loading.emit(false)
         }
     }
 
-    private suspend fun loadUpcomingMoviesAsync(
-        coroutineScope: CoroutineScope,
-        forced: Boolean
-    ): Deferred<Result<List<Model>>> {
+    private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
         val deferredUpcoming = coroutineScope.iOAsync {
             val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams(forced = forced)).getOrThrow().movies
+                getUpcomingMovies(UpcomingMoviesParams()).getOrThrow().movies
                     ?.map { MovieItemVariant(it) } ?: emptyList()
             if (!upcomingMovies.isNullOrEmpty()) {
                 mutableListOf<Model>().apply {
@@ -51,6 +53,8 @@ class UpcomingMovieViewModel @Inject constructor(
         }
         return deferredUpcoming
     }
+
+    private fun refresh() = loadData()
 
     fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
 }
