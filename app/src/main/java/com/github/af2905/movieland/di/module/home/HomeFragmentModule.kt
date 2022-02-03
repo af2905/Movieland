@@ -5,7 +5,7 @@ import com.github.af2905.movieland.di.scope.HomeScope
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.feature.home.HomeRepositoryImpl
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
-import com.github.af2905.movieland.presentation.feature.home.top.TopRatedMovieFragment
+import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
 import dagger.Binds
 import dagger.Module

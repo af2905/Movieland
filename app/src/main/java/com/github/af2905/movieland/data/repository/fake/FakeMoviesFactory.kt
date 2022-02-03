@@ -1,13 +1,10 @@
 package com.github.af2905.movieland.data.repository.fake
 
-import com.github.af2905.movieland.data.database.entity.MovieEntity
-import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
-import com.github.af2905.movieland.data.database.entity.ResponseWithMovies
 import javax.inject.Inject
 
 class FakeMoviesFactory @Inject constructor() {
 
-    fun createFakeResponseWithMovies(): ResponseWithMovies {
+   /* fun createFakeResponseWithMovies(): ResponseWithMovies {
         return ResponseWithMovies(
             moviesResponseEntity = createFakeMovieResponse(),
             movies = createFakeMovieList()
@@ -64,5 +61,5 @@ class FakeMoviesFactory @Inject constructor() {
                 posterPath = "/9Xc26HQdeR3ySdRCN6dMt3952ha.jpg"
             }
         )
-    }
+    }*/
 }

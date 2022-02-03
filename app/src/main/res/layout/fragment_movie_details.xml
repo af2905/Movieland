@@ -20,14 +20,14 @@
             layout="@layout/toolbar_movie_details"
             app:item="@{viewModel.movieDetailsItem}"
             app:listener="@{viewModel.movieDetailsItemClickListener}"
-            app:visible="@{!viewModel.loading}" />
+             />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/movieDetailsSwipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:refreshing="@{viewModel.loading}">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

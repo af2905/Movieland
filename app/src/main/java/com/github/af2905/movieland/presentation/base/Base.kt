@@ -10,7 +10,7 @@ interface Base<N : Navigator> {
 
     val navigator: N
 
-    fun handleEffect(effect: UIEffect)
+    fun handleEffect(effect: UiEffect)
 }
 
 class BaseImpl<N : Navigator>(navigatorFactory: () -> N, private val requireContext: () -> Context) :
@@ -18,7 +18,7 @@ class BaseImpl<N : Navigator>(navigatorFactory: () -> N, private val requireCont
 
     override val navigator: N by lazy(navigatorFactory)
 
-    override fun handleEffect(effect: UIEffect) {
+    override fun handleEffect(effect: UiEffect) {
         when (effect) {
             is ToastMessage -> Toast.makeText(
                 requireContext(), effect.text.asCharSequence(requireContext()), Toast.LENGTH_SHORT

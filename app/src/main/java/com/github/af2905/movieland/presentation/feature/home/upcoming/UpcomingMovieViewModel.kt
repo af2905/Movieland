@@ -1,60 +1,89 @@
 package com.github.af2905.movieland.presentation.feature.home.upcoming
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
 import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
-import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
-import com.github.af2905.movieland.presentation.base.BaseViewModel
+import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
+import com.github.af2905.movieland.helper.text.UiText
+import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.effect.Navigate
+import com.github.af2905.movieland.presentation.common.effect.ToastMessage
+import com.github.af2905.movieland.presentation.feature.home.HomeContract
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.DividerItem
+import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UpcomingMovieViewModel @Inject constructor(
     private val getUpcomingMovies: GetUpcomingMovies,
     private val homeRepository: HomeRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
-) : BaseViewModel<HomeNavigator>(coroutineDispatcherProvider) {
+) : ViewModel() {
 
-    private val _items = MutableLiveData<List<Model>>()
-    val items: LiveData<List<Model>> = _items
+    val container: Container<HomeContract.State, HomeContract.Effect> =
+        Container(viewModelScope, HomeContract.State.Loading())
+
+    private val _items = MutableStateFlow<List<Model>>(listOf())
+    val items = _items.asStateFlow()
 
     init {
         loadData()
-        launchIO {
+        viewModelScope.launch(coroutineDispatcherProvider.main()) {
             homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
     }
 
-    private fun loadData() {
-        launchUI {
-            loading.emit(true)
-            val upcoming = loadUpcomingMoviesAsync(this)
-            _items.value = upcoming.await().getOrDefault(emptyList())
-            loading.emit(false)
-        }
-    }
-
-    private suspend fun loadUpcomingMoviesAsync(coroutineScope: CoroutineScope): Deferred<Result<List<Model>>> {
-        val deferredUpcoming = coroutineScope.iOAsync {
-            val upcomingMovies =
-                getUpcomingMovies(UpcomingMoviesParams()).getOrThrow().movies
-                    ?.map { MovieItemVariant(it) } ?: emptyList()
-            if (!upcomingMovies.isNullOrEmpty()) {
-                mutableListOf<Model>().apply {
-                    upcomingMovies.map { addAll(listOf(it, DividerItem())) }
+    private fun loadData(forceUpdate: Boolean = false) {
+        container.intent {
+            container.reduce { HomeContract.State.Loading(items.value) }
+            try {
+                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).let {
+                    container.reduce {
+                        it.getOrThrow().let {
+                            if (it.isEmpty()) HomeContract.State.EmptyResult
+                            else HomeContract.State.Success(it)
+                        }
+                    }
                 }
-            } else emptyList()
+            } catch (e: Exception) {
+                container.reduce { HomeContract.State.Error(e) }
+            }
         }
-        return deferredUpcoming
     }
 
-    private fun refresh() = loadData()
+    fun updateData(movies: List<Model>) {
+        val list = mutableListOf<Model>()
+        movies.map { model ->
+            list.addAll(
+                listOf(MovieItemVariant(model as MovieItem), DividerItem())
+            )
+        }
+        _items.value = list
+    }
 
-    fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
+    private fun refresh() = loadData(forceUpdate = true)
+
+    fun openDetail(itemId: Int) = navigateToDetail(itemId)
+
+    private fun navigateToDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(HomeContract.Effect.OpenMovieDetail(Navigate { navigator ->
+                (navigator as HomeNavigator).forwardMovieDetail(itemId)
+            }))
+        }
+
+    }
+
+    fun showError(error: UiText) {
+        container.intent {
+            container.postEffect(HomeContract.Effect.ShowFailMessage(ToastMessage(error)))
+        }
+    }
 }
