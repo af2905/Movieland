@@ -6,7 +6,6 @@ import com.github.af2905.movieland.presentation.feature.detail.DetailModule
 import com.github.af2905.movieland.presentation.feature.home.HomeModule
 import com.github.af2905.movieland.presentation.feature.profile.ProfileModule
 import com.github.af2905.movieland.presentation.feature.search.SearchModule
-import com.github.af2905.movieland.presentation.feature.updatefailed.SimpleDialogModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,8 +19,7 @@ abstract class ViewModule {
             DetailModule::class,
             HomeModule::class,
             ProfileModule::class,
-            SearchModule::class,
-            SimpleDialogModule::class
+            SearchModule::class
         ]
     )
     abstract fun mainActivity(): MainActivity

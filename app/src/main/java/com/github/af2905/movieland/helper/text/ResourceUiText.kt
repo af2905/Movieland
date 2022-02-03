@@ -6,7 +6,7 @@ import com.github.af2905.movieland.helper.extension.empty
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ResourceUIText(@StringRes private val res: Int?) : ParcelableUIText {
+data class ResourceUiText(@StringRes private val res: Int?) : ParcelableUiText {
 
     override fun asCharSequence(context: Context): CharSequence {
         return res?.let { context.resources.getText(res) } ?: String.empty

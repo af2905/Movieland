@@ -1,11 +1,11 @@
-package com.github.af2905.movieland.presentation.feature.home.popular
+package com.github.af2905.movieland.presentation.feature.home.toprated
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.databinding.FragmentPopularMovieBinding
+import com.github.af2905.movieland.databinding.FragmentTopRatedMovieBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ErrorHandler
@@ -15,12 +15,13 @@ import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import kotlinx.coroutines.flow.collect
 
-class PopularMovieFragment :
-    BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
+class TopRatedMovieFragment :
+    BaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
-    override fun layoutRes(): Int = R.layout.fragment_popular_movie
-    override fun viewModelClass(): Class<PopularMovieViewModel> = PopularMovieViewModel::class.java
+    override fun layoutRes(): Int = R.layout.fragment_top_rated_movie
+    override fun viewModelClass(): Class<TopRatedMovieViewModel> =
+        TopRatedMovieViewModel::class.java
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
@@ -32,6 +33,7 @@ class PopularMovieFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.apply { adapter = baseAdapter }
+
 
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->

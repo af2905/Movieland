@@ -2,31 +2,29 @@ package com.github.af2905.movieland.presentation.feature.detail.moviedetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.GetMovieActors
 import com.github.af2905.movieland.domain.usecase.movies.GetMovieDetails
 import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
-import com.github.af2905.movieland.domain.usecase.params.MovieActorsParams
-import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
-import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
-import com.github.af2905.movieland.helper.CoroutineDispatcherProvider
-import com.github.af2905.movieland.presentation.base.BaseViewModel
-import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
-import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
+import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
+import com.github.af2905.movieland.presentation.base.Container
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
-import com.github.af2905.movieland.presentation.model.ItemIds
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.*
+import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
 import javax.inject.Inject
 
 class MovieDetailsViewModel @Inject constructor(
     args: MovieDetailsFragmentArgs,
-    coroutineDispatcherProvider: CoroutineDispatcherProvider,
+    private val coroutineDispatcherProvider: CoroutineDispatcherProvider,
     private val getMovieDetails: GetMovieDetails,
     private val getMovieActors: GetMovieActors,
     private val getSimilarMovies: GetSimilarMovies
-) : BaseViewModel<DetailNavigator>(coroutineDispatcherProvider) {
+) : ViewModel() {
 
+    val container: Container<MovieDetailContract .State, MovieDetailContract .Effect> =
+        Container(viewModelScope, MovieDetailContract.State.Loading)
     private val movieId = args.movieId
 
     private val emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
@@ -46,8 +44,9 @@ class MovieDetailsViewModel @Inject constructor(
             )
         }
 
-        override fun onBackClicked() = navigator { back() }
+        override fun onBackClicked(){} //= navigator { back() }
     }
+/*
 
     init {
         loadData()
@@ -56,7 +55,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadData() {
 
         launchUI {
-            loading.emit(true)
+            //_loading.emit(true)
             val list = mutableListOf<Model>()
             if (movieDetailsItem.value == null) {
                 val movieDetails = getMovieDetails(MovieDetailsParams(movieId))
@@ -82,11 +81,18 @@ class MovieDetailsViewModel @Inject constructor(
                     )
                 }
             }
-            getSimilarMovies(SimilarMoviesParams((movieId))).let { result ->
-                result.let {
-                    val similar =
-                        it.getOrThrow().movies?.filterNot { movie -> movie.posterPath.isNullOrEmpty() }
-                    if (!similar.isNullOrEmpty()) {
+            //_loading.emit(false)
+
+*/
+/*            getSimilarMovies.invoke(SimilarMoviesParams((movieId))).collect {
+                when (val result = it.getOrThrow()) {
+                    is UiState.Loading -> loading.emit(true)
+                    is UiState.SuccessResult -> {
+
+                        val similar = result.result
+                            .map { model -> model as MovieItem }
+                            .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
+
                         list.addAll(
                             listOf(
                                 HeaderItem(R.string.similar),
@@ -97,15 +103,20 @@ class MovieDetailsViewModel @Inject constructor(
                                 )
                             )
                         )
+                        _items.value = list
+                        loading.emit(false)
                     }
+                    else -> {}
                 }
-            }
-            _items.postValue(list)
-            loading.emit(false)
+            }*//*
+
         }
+
     }
 
-    fun openActorDetail(item: MovieActorItem, position: Int) {}
+*/
+
+/*    fun openActorDetail(item: MovieActorItem, position: Int) {}
     fun openSimilarMovieDetail(item: MovieItem, position: Int) =
-        navigator { forwardMovieDetail(item.id) }
+        navigator { forwardMovieDetail(item.id) }*/
 }

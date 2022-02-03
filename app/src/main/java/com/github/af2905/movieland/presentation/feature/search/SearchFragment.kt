@@ -9,7 +9,6 @@ import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
-import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -20,7 +19,7 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, position ->
-                viewModel.openDetail(item.id, position)
+                //viewModel.openDetail(item.id, position)
             }
         )
     )
@@ -28,12 +27,12 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.search.listener = object : SearchItem.Listener {
+        /*binding.search.listener = object : SearchItem.Listener {
             override fun textChanged(text: String) = viewModel.searchTextChanged(text)
             override fun deleteTextClicked() = viewModel.searchDeleteTextClicked()
-        }
+        }*/
         binding.searchRecyclerView.apply { adapter = baseAdapter }
 
-        viewModel.searchResult.observe(viewLifecycleOwner, viewModel::handleMoviesList)
+        //viewModel.state.observe(viewLifecycleOwner, viewModel::handleMoviesList)
     }
 }

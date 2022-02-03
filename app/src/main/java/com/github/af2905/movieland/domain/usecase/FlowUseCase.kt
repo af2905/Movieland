@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.flowOn
 
 abstract class FlowUseCase<in P, R>(private val coroutineDispatcher: CoroutineDispatcher) {
 
-    suspend operator fun invoke(parameters: P) = execute(parameters)
+    suspend operator fun invoke(params: P) = execute(params)
         .catch { e -> emit(Result.failure(Exception(e))) }
         .flowOn(coroutineDispatcher)
 
-    protected abstract fun execute(parameters: P): Flow<Result<R>>
+    protected abstract suspend fun execute(params: P): Flow<Result<R>>
 }

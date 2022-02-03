@@ -19,17 +19,17 @@ import com.github.af2905.movieland.presentation.model.item.MoviesResponse
 import javax.inject.Inject
 
 class MoviesResponseDtoToEntityMapper @Inject constructor(
-    private val datesMapper: DatesDtoToEntityMapper
+    private val datesMapper: DatesDtoToEntityMapper,
+    private val movieMapper: MovieDtoToEntityMapper
 ) : IMovieResponseMapper<MoviesResponseDto, String, Long, MoviesResponseEntity> {
     override fun map(input: MoviesResponseDto, type: String, timeStamp: Long) =
         with(input) {
             MoviesResponseEntity(
                 dates = dates?.let { datesMapper.map(it) },
                 page = page,
+                movies = movies.map { movieMapper.map(it, type, timeStamp) },
                 totalPages = totalPages,
-                totalResults = totalResults,
-                movieType = type,
-                timeStamp = timeStamp
+                totalResults = totalResults
             )
         }
 }
@@ -54,7 +54,8 @@ class MovieDtoToEntityMapper @Inject constructor() :
                 video = video,
                 voteAverage = voteAverage,
                 voteCount = voteCount,
-                responseMovieType = type
+                movieType = type,
+                timeStamp = timeStamp
             )
         }.also {
             it.backdropPath = input.backdropPath
