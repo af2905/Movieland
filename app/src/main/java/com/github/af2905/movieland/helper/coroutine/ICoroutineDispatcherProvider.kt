@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.helper
+package com.github.af2905.movieland.helper.coroutine
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

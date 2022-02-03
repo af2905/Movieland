@@ -10,12 +10,15 @@ import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor() : HomeRepository {
 
-    private val _forceUpdate = MutableSharedFlow<Boolean>(0,1, BufferOverflow.DROP_OLDEST)
+    private val _forceUpdate = MutableSharedFlow<Boolean>(0, 1, BufferOverflow.DROP_OLDEST)
     private val forceUpdate = _forceUpdate.asSharedFlow()
 
     private var job: Job? = null
 
-    override fun subscribeOnForceUpdate(scope: CoroutineScope, collector: suspend (force: Boolean) -> Unit) {
+    override fun subscribeOnForceUpdate(
+        scope: CoroutineScope,
+        collector: suspend (force: Boolean) -> Unit
+    ) {
         job = forceUpdate.launchCollect(scope, collector)
     }
 
@@ -24,7 +27,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
     }
 }
 
-interface HomeRepository{
+interface HomeRepository {
     fun forceUpdate()
     fun subscribeOnForceUpdate(scope: CoroutineScope, collector: suspend (force: Boolean) -> Unit)
 }

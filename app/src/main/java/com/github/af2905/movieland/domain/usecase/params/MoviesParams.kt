@@ -1,39 +1,53 @@
 package com.github.af2905.movieland.domain.usecase.params
 
 data class NowPlayingMoviesParams(
-    val language: String? = null,
-    val page: Int? = null,
-    val region: String? = null
-)
+    override val language: String? = null,
+    override val page: Int? = null,
+    override val region: String? = null,
+    override val forceUpdate: Boolean = false
+) : BaseMoviesParams
 
 data class PopularMoviesParams(
-    val language: String? = null,
-    val page: Int? = null,
-    val region: String? = null
-)
+    override val language: String? = null,
+    override val page: Int? = null,
+    override val region: String? = null,
+    override val forceUpdate: Boolean = false
+) : BaseMoviesParams
 
 data class TopRatedMoviesParams(
-    val language: String? = null,
-    val page: Int? = null,
-    val region: String? = null
-)
+    override val language: String? = null,
+    override val page: Int? = null,
+    override val region: String? = null,
+    override val forceUpdate: Boolean = false
+) : BaseMoviesParams
 
 data class UpcomingMoviesParams(
-    val language: String? = null,
-    val page: Int? = null,
-    val region: String? = null
-)
-
-data class MovieDetailsParams(val movieId: Int, val language: String? = null)
+    override val language: String? = null,
+    override val page: Int? = null,
+    override val region: String? = null,
+    override val forceUpdate: Boolean = false
+) : BaseMoviesParams
 
 data class RecommendedMoviesParams(
-    val movieId: Int, val language: String? = null, val page: Int? = null
+    val movieId: Int,
+    val language: String? = null,
+    val page: Int? = null,
+    val forceUpdate: Boolean = false
 )
 
 data class SimilarMoviesParams(
-    val movieId: Int, val language: String? = null, val page: Int? = null
+    val movieId: Int,
+    val language: String? = null,
+    val page: Int? = null,
+    val forceUpdate: Boolean = false
 )
 
+data class MovieDetailsParams(val movieId: Int, val language: String? = null)
 data class MovieActorsParams(val movieId: Int, val language: String? = null)
 
-
+interface BaseMoviesParams {
+    val language: String?
+    val page: Int?
+    val region: String?
+    val forceUpdate: Boolean
+}

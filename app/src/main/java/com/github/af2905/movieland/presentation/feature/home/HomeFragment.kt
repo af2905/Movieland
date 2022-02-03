@@ -2,24 +2,28 @@ package com.github.af2905.movieland.presentation.feature.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
-import com.github.af2905.movieland.helper.text.ResourceUIText
+import com.github.af2905.movieland.helper.text.ResourceUiText
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
+import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.presentation.common.pager.PageItem
 import com.github.af2905.movieland.presentation.common.pager.setupPager
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
-import com.github.af2905.movieland.presentation.feature.home.top.TopRatedMovieFragment
+import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
+import kotlinx.coroutines.flow.collect
 
-class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
+class HomeFragment :
+    BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_home
@@ -27,8 +31,8 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
 
     private val nowPlayingAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(MovieItem.VIEW_TYPE,
-            listener = MovieItem.Listener { item, position ->
-                viewModel.openDetail(item.id, position)
+            listener = MovieItem.Listener { item, _ ->
+                viewModel.openDetail(item.id)
             })
     )
 
@@ -54,9 +58,9 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             adapter = FragmentPagerAdapter(
                 fragment = this,
                 items = listOf(
-                    PageItem(ResourceUIText(R.string.popular)) { PopularMovieFragment() },
-                    PageItem(ResourceUIText(R.string.top_rated)) { TopRatedMovieFragment() },
-                    PageItem(ResourceUIText(R.string.upcoming)) { UpcomingMovieFragment() },
+                    PageItem(ResourceUiText(R.string.popular)) { PopularMovieFragment() },
+                    PageItem(ResourceUiText(R.string.top_rated)) { TopRatedMovieFragment() },
+                    PageItem(ResourceUiText(R.string.upcoming)) { UpcomingMovieFragment() },
                 )
             )
         )
@@ -65,8 +69,40 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             viewModel.setForceUpdate()
         }
 
-        viewModel.updateFailed.observe(viewLifecycleOwner, { failed ->
-            if (failed) binding.homeSwipeRefreshLayout.isRefreshing = false
-        })
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.state.collect { state ->
+                when (state) {
+                    is HomeContract.State.Loading -> startRefresh()
+                    is HomeContract.State.Success -> {
+                        viewModel.updateData(state.movies, true)
+                        finishRefresh()
+                    }
+                    is HomeContract.State.EmptyResult -> {
+                        viewModel.updateData(emptyList(), false)
+                        finishRefresh()
+                    }
+                    is HomeContract.State.Error -> {
+                        viewModel.showError(ErrorHandler.handleError(state.e))
+                        finishRefresh()
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.effect.collect { effect ->
+                when (effect) {
+                    is HomeContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                }
+            }
+        }
+    }
+
+    private fun startRefresh() {
+        binding.homeSwipeRefreshLayout.isRefreshing = true
+    }
+
+    private fun finishRefresh() {
+        binding.homeSwipeRefreshLayout.isRefreshing = false
     }
 }

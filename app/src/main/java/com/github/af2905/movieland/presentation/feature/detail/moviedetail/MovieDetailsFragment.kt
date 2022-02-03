@@ -20,6 +20,7 @@ import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorat
 
 class MovieDetailsFragment :
     BaseFragment<DetailNavigator, FragmentMovieDetailsBinding, MovieDetailsViewModel>() {
+
     override fun layoutRes(): Int = R.layout.fragment_movie_details
     override fun viewModelClass(): Class<MovieDetailsViewModel> = MovieDetailsViewModel::class.java
     override fun getNavigator(navController: NavController) = DetailNavigator(navController)
@@ -34,7 +35,7 @@ class MovieDetailsFragment :
                     ItemDelegate(
                         MovieActorItem.VIEW_TYPE,
                         listener = MovieActorItem.Listener { item, position ->
-                            viewModel.openActorDetail(item, position)
+                            //viewModel.openActorDetail(item, position)
                         })
                 )
             },
@@ -47,7 +48,7 @@ class MovieDetailsFragment :
                     ItemDelegate(
                         MovieItem.VIEW_TYPE,
                         listener = MovieItem.Listener { item, position ->
-                            viewModel.openSimilarMovieDetail(item, position)
+                            //viewModel.openSimilarMovieDetail(item, position)
                         })
                 )
             },

@@ -1,25 +1,15 @@
 package com.github.af2905.movieland.data.database.entity
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
 
-data class ResponseWithMovies(
-    @Embedded val moviesResponseEntity: MoviesResponseEntity,
-    @Relation(parentColumn = "movieType", entityColumn = "responseMovieType")
-    val movies: List<MovieEntity> = listOf(),
-)
-
-@Entity
 data class MoviesResponseEntity(
-    @Embedded val dates: DatesEntity?,
+    val dates: DatesEntity?,
     val page: Int,
+    val movies: List<MovieEntity>,
     val totalPages: Int,
-    val totalResults: Int,
-    @PrimaryKey val movieType: String = "",
-    val timeStamp: Long? = null
+    val totalResults: Int
 )
 
 data class DatesEntity(val maximum: String, val minimum: String)
@@ -38,7 +28,8 @@ data class MovieEntity(
     val video: Boolean?,
     val voteAverage: Double?,
     val voteCount: Int?,
-    val responseMovieType: String = ""
+    val movieType: String = "",
+    val timeStamp: Long? = null
 ) {
     var backdropPath: String? = null
         get() = field.getFullPathToImage()
@@ -47,5 +38,5 @@ data class MovieEntity(
 }
 
 enum class MovieType {
-    POPULAR, NOW_PLAYING, TOP_RATED, UPCOMING, RECOMMENDED
+    POPULAR, NOW_PLAYING, TOP_RATED, UPCOMING, RECOMMENDED, SIMILAR
 }
