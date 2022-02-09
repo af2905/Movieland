@@ -17,7 +17,8 @@ import dagger.android.AndroidInjector
         NetworkModule::class,
         RepositoryModule::class,
         ViewModule::class,
-        StorageModule::class
+        StorageModule::class,
+        WorkManagerModule::class
     ]
 )
 interface AppComponent : AndroidInjector<App> {

@@ -77,6 +77,8 @@ ext {
     recyclerViewVersion = '1.2.1'
     roomVersion = '2.4.0'
     swipeRefreshLayoutVersion = '1.1.0'
+    workVersion = "2.7.1"
+    daggerAssistVersion = '0.5.2'
 }
 
 dependencies {
@@ -123,4 +125,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     //SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
+    //WorkManager
+    implementation "androidx.work:work-runtime-ktx:$workVersion"
 }
