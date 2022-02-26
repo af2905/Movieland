@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.LinearSnapHelper
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.helper.text.ResourceUiText
@@ -20,6 +19,7 @@ import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMo
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.flow.collect
 
 class HomeFragment :
@@ -41,13 +41,13 @@ class HomeFragment :
 
         binding.recyclerView.apply {
             adapter = nowPlayingAdapter
-            val snapHelper = LinearSnapHelper()
-            snapHelper.attachToRecyclerView(this)
+            //val snapHelper = LinearSnapHelper()
+            //snapHelper.attachToRecyclerView(this)
             addItemDecoration(
                 HorizontalListItemDecorator(
                     marginStart = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
                     marginEnd = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
-                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin_small)
+                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
                 )
             )
         }
@@ -64,6 +64,11 @@ class HomeFragment :
                 )
             )
         )
+
+        binding.innerAppBarLayout.addOnOffsetChangedListener(
+            AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            binding.homeSwipeRefreshLayout.isEnabled = verticalOffset >= 0
+        })
 
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.setForceUpdate()
