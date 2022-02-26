@@ -13,6 +13,7 @@ import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeContract
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
+import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 import kotlinx.coroutines.flow.collect
 
 class TopRatedMovieFragment :
@@ -32,8 +33,16 @@ class TopRatedMovieFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.apply { adapter = baseAdapter }
-
+        binding.recyclerView.apply {
+            adapter = baseAdapter
+            addItemDecoration(
+                VerticalListItemDecorator(
+                    marginTop = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    marginBottom = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
+                )
+            )
+        }
 
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->

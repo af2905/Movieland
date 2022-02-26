@@ -13,7 +13,6 @@ import com.github.af2905.movieland.presentation.feature.home.HomeContract
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.DividerItem
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,7 +61,7 @@ class TopRatedMovieViewModel @Inject constructor(
         val list = mutableListOf<Model>()
         movies.map { model ->
             list.addAll(
-                listOf(MovieItemVariant(model as MovieItem), DividerItem())
+                listOf(MovieItemVariant(model as MovieItem))
             )
         }
         _items.value = list

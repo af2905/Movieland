@@ -33,40 +33,62 @@
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
             app:src="@{item.posterPath}"
+            app:strokeColor="@color/darkGrey"
+            app:strokeWidth="@dimen/default_stroke_tiny"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_placeholder" />
 
-        <TextView
-            android:id="@+id/movieRating"
-            style="@style/TextView.Bold.White"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/average"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_small"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:background="@{item.voteAverageBackground}"
+            android:orientation="horizontal"
             android:paddingStart="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin_tiny"
-            app:voteAverage="@{item.voteAverage}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/bg_green_corners_8"
-            tools:text="7.6" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieImage">
+
+            <TextView
+                style="@style/TextView.Small.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin_small"
+                android:gravity="center_vertical"
+                android:textColor="@color/darkGrey"
+                app:voteAverage="@{item.voteAverage}"
+                tools:text="7.6" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:isIndicator="true"
+                android:minWidth="@dimen/default_margin"
+                android:numStars="@integer/default_num_stars"
+                android:progressBackgroundTint="@color/gold_700"
+                android:rating="@{item.voteAverageStar}"
+                android:stepSize="0.5"
+                tools:rating="3.2" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/_movieDescription"
+            android:id="@+id/movieDescription"
             style="@style/TextView.Bold"
-            android:layout_width="@dimen/movie_card_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_tiny"
+            android:ellipsize="end"
+            android:lines="@integer/max_lines_1"
             android:paddingStart="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin_tiny"
-            android:ellipsize="end"
-            android:maxLines="@integer/max_lines_2"
-            android:lines="@integer/max_lines_2"
             android:text="@{item.title}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieImage"
-            tools:text="Игра на понижение" />
+            app:layout_constraintTop_toBottomOf="@id/average"
+            tools:text="Игра на понижение"
+            android:paddingBottom="@dimen/default_margin"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
