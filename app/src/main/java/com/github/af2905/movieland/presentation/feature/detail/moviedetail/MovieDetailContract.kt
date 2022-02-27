@@ -9,7 +9,7 @@ class MovieDetailContract {
 
     sealed class State : UiState() {
 
-        object Loading : State()
+        data class Loading(val result: List<Model> = emptyList()) : State()
         data class Success(val result: List<Model>) : State()
         data class Error(val e: Throwable?) : State()
         object EmptyResult : State()
