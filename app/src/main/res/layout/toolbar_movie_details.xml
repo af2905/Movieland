@@ -20,18 +20,17 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/movieDetailsAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.Movieland.AppBarOverlay">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/movieDetailCollapsingToolbarLayout"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/backdrop_height"
+                android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:contentScrim="?colorSurface"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:title="@{item.title}"
                 app:titleCollapseMode="scale"
                 app:titleEnabled="true"
@@ -49,14 +48,14 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:scaleType="center"
-                        app:src="@{item.backdropPath}"
+                        app:src="@{item.posterPath}"
                         tools:background="@color/white"
                         tools:src="@drawable/ic_placeholder" />
 
                 </FrameLayout>
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/movieDetailsToolbar"
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"

@@ -47,9 +47,9 @@ class HomeViewModel @Inject constructor(
         container.intent {
             container.reduce { HomeContract.State.Loading(nowPlayingMovies.value) }
             try {
-                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let {
+                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let { result ->
                     container.reduce {
-                        it.getOrThrow().let {
+                        result.getOrThrow().let {
                             if (it.isEmpty()) HomeContract.State.EmptyResult
                             else HomeContract.State.Success(it)
                         }
