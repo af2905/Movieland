@@ -64,9 +64,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:onClick="@{() -> listener.onBackClicked()}"
                         android:src="@drawable/ic_arrow"
-                        android:background="?selectableItemBackgroundBorderless"
                         tools:ignore="ContentDescription" />
                 </androidx.appcompat.widget.Toolbar>
 
@@ -75,13 +75,13 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
-            app:liked="@{item.liked}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             android:onClick="@{() -> listener.onLikedClick(item)}"
             app:layout_anchor="@id/movieDetailsAppBar"
             app:layout_anchorGravity="bottom|end"
+            app:liked="@{item.liked}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_heart"
             tools:tint="@color/indianRed" />
