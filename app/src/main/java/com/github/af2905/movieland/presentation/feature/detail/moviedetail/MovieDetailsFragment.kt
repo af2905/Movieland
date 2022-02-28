@@ -54,8 +54,8 @@ class MovieDetailsFragment :
                 BaseAdapter(
                     ItemDelegate(
                         MovieItem.VIEW_TYPE,
-                        listener = MovieItem.Listener { item, position ->
-                            //viewModel.openSimilarMovieDetail(item, position)
+                        listener = MovieItem.Listener { item, _ ->
+                            viewModel.openSimilarMovieDetail(item.id)
                         })
                 )
             },
@@ -71,7 +71,8 @@ class MovieDetailsFragment :
                     requireActivity().theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
                     binding.movieDetailsToolbar.toolbar.background = ColorDrawable(typedValue.data)
                 }
-                State.IDLE -> binding.movieDetailsToolbar.toolbar.background = ColorDrawable(Color.TRANSPARENT)
+                State.IDLE -> binding.movieDetailsToolbar.toolbar.background =
+                    ColorDrawable(Color.TRANSPARENT)
                 else -> Unit
             }
         }
@@ -89,16 +90,19 @@ class MovieDetailsFragment :
             viewModel.container.state.collect { state ->
                 when (state) {
                     is MovieDetailContract.State.Loading -> {}
-                    is MovieDetailContract.State.Success -> {
-                        viewModel.updateSuccessData(items = state.result)
+                    is MovieDetailContract.State.Content -> {
+                        viewModel.updateSuccessData(
+                            movieDetails = state.movieDetailsItem,
+                            items = state.list
+                        )
                     }
                     is MovieDetailContract.State.EmptyResult -> {
-                       /* viewModel.updateData(emptyList(), false)
-                        finishRefresh()*/
+                        /* viewModel.updateData(emptyList(), false)
+                         finishRefresh()*/
                     }
                     is MovieDetailContract.State.Error -> {
-                       /* viewModel.showError(ErrorHandler.handleError(state.e))
-                        finishRefresh()*/
+                        /* viewModel.showError(ErrorHandler.handleError(state.e))
+                         finishRefresh()*/
                     }
                 }
             }
@@ -108,13 +112,24 @@ class MovieDetailsFragment :
             removeOnOffsetChangedListener(appBarStateChangeListener)
             addOnOffsetChangedListener(appBarStateChangeListener)
         }
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.effect.collect { effect ->
+                when (effect) {
+                    is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is MovieDetailContract.Effect.OpenActorDetail -> handleEffect(effect.navigator)
+                    is MovieDetailContract.Effect.MoveToBackScreen -> handleEffect(effect.navigator)
+                    is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                }
+            }
+        }
     }
 
     private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {
         return HorizontalListItemDecorator(
             marginStart = context.resources.getDimensionPixelSize(R.dimen.default_margin),
             marginEnd = context.resources.getDimensionPixelSize(R.dimen.default_margin),
-            spacing = context.resources.getDimensionPixelSize(R.dimen.default_margin_small)
+            spacing = context.resources.getDimensionPixelSize(R.dimen.default_margin)
         )
     }
 }

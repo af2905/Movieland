@@ -12,6 +12,8 @@ import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
 import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.effect.Navigate
+import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import com.github.af2905.movieland.presentation.model.ItemIds
@@ -47,35 +49,17 @@ class MovieDetailsViewModel @Inject constructor(
 
     val movieDetailsItemClickListener = object : MovieDetailsItem.Listener {
         override fun onLikedClick(item: MovieDetailsItem) {
-            movieDetailsItem.postValue(
+            /*movieDetailsItem.postValue(
                 movieDetailsItem.value?.copy(liked = !movieDetailsItem.value!!.liked)
-            )
+            )*/
         }
 
-        override fun onBackClicked() {} //= navigator { back() }
+        override fun onBackClicked() = navigateBack()
     }
 
     init {
         loadData()
     }
-
-    /*    private fun loadData(forceUpdate: Boolean = false) {
-        container.intent {
-            container.reduce { HomeContract.State.Loading(nowPlayingMovies.value) }
-            try {
-                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let { result ->
-                    container.reduce {
-                        result.getOrThrow().let {
-                            if (it.isEmpty()) HomeContract.State.EmptyResult
-                            else HomeContract.State.Success(it)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                container.reduce { HomeContract.State.Error(e) }
-            }
-        }
-    }*/
 
     private fun loadData() {
         container.intent {
@@ -85,7 +69,6 @@ class MovieDetailsViewModel @Inject constructor(
                     val movieDetails = getMovieDetails(MovieDetailsParams(movieId))
                     movieDetails.let {
                         val result = it.getOrThrow()
-                        movieDetailsItem.postValue(result)
                         list.add(MovieDetailsDescItem(result))
                     }
                 }
@@ -120,22 +103,52 @@ class MovieDetailsViewModel @Inject constructor(
                         )
                     )
                 }
+                val movieDetailsDescItem =
+                    list.find { it is MovieDetailsDescItem } as MovieDetailsDescItem
                 container.reduce {
-                    MovieDetailContract.State.Success(list)
+                    MovieDetailContract.State.Content(movieDetailsDescItem.movieDetailsItem, list)
                 }
             } catch (e: Exception) {
                 container.reduce { MovieDetailContract.State.Error(e) }
             }
         }
-
-
     }
+
+    fun openSimilarMovieDetail(itemId: Int) = navigateToDetail(itemId)
+
+    private fun navigateToDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
+                (navigator as DetailNavigator).forwardMovieDetail(itemId)
+            }))
+        }
+    }
+
+    private fun navigateBack() {
+        container.intent {
+            container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
+                (navigator as DetailNavigator).back()
+            }))
+        }
+    }
+
+    /*    fun openDetail(itemId: Int) = navigateToDetail(itemId)
+
+    private fun navigateToDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(HomeContract.Effect.OpenMovieDetail(Navigate { navigator ->
+                (navigator as HomeNavigator).forwardMovieDetail(itemId)
+            }))
+        }
+    }*/
+
 
 /*    fun openActorDetail(item: MovieActorItem, position: Int) {}
     fun openSimilarMovieDetail(item: MovieItem, position: Int) =
         navigator { forwardMovieDetail(item.id) }*/
 
-    fun updateSuccessData(items: List<Model>) {
+    fun updateSuccessData(movieDetails: MovieDetailsItem, items: List<Model>) {
+        movieDetailsItem.postValue(movieDetails)
         _items.tryEmit(items)
     }
 }

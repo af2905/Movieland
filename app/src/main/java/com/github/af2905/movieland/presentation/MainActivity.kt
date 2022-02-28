@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
+
 class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
