@@ -59,12 +59,8 @@ class UpcomingMovieViewModel @Inject constructor(
 
     fun updateData(movies: List<Model>) {
         val list = mutableListOf<Model>()
-        movies.map { model ->
-            list.addAll(
-                listOf(MovieItemVariant(model as MovieItem))
-            )
-        }
-        _items.value = list
+        movies.map { model -> list.addAll(listOf(MovieItemVariant(model as MovieItem))) }
+        _items.tryEmit(list)
     }
 
     private fun refresh() = loadData(forceUpdate = true)

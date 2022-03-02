@@ -132,11 +132,7 @@ class SearchViewModel @Inject constructor(
 
     private fun showMovieList(movies: List<Model>) {
         val list = mutableListOf<Model>()
-        list.add(emptySpaceMedium)
-        list.add(DividerItem())
-        movies.map { movie ->
-            list.addAll(listOf(MovieItemVariant(movie as MovieItem), DividerItem()))
-        }
+        movies.map { model -> list.addAll(listOf(MovieItemVariant(model as MovieItem))) }
         _items.tryEmit(list)
     }
 
