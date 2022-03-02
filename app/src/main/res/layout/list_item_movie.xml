@@ -87,8 +87,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/average"
-            tools:text="Игра на понижение"
-            android:paddingBottom="@dimen/default_margin"/>
+            tools:text="Игра на понижение" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
