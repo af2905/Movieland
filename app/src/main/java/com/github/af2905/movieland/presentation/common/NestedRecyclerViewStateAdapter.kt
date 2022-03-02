@@ -63,3 +63,58 @@ class NestedRecyclerViewStateAdapter(vararg delegates: ItemDelegate) : BaseAdapt
         val reference: WeakReference<BindingViewHolder>
     )
 }
+
+/*class SavingStateListAdapter (vararg itemAdapters: ItemAdapter) : ListAdapter(*itemAdapters) {
+
+    override var items: List<Model>
+        get() = super.items
+        set(value) {
+            saveState()
+            super.items = value
+        }
+
+    private val states = HashMap<Int, Parcelable?>()
+    private val visibleRecyclers = HashMap<Int, ViewHolderRef>()
+
+    override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        holder.layoutManager()?.let { layoutManager ->
+            states[holder.currentItemId]
+                ?.let(layoutManager::onRestoreInstanceState)
+                ?: layoutManager.scrollToPosition(Int.empty)
+
+            visibleRecyclers[holder.hashCode()] =
+                ViewHolderRef(holder.currentItemId, WeakReference(holder))
+        }
+    }
+
+    override fun onViewRecycled(holder: BindingViewHolder) {
+        holder.layoutManager()?.let { layoutManager ->
+            states[holder.currentItemId] = layoutManager.onSaveInstanceState()
+            visibleRecyclers.remove(holder.hashCode())
+        }
+
+        super.onViewRecycled(holder)
+    }
+
+    private fun saveState() {
+        visibleRecyclers.values.forEach { ref ->
+            ref.reference.get()?.let { holder ->
+                states[ref.id] = holder.layoutManager()?.onSaveInstanceState()
+            }
+        }
+        visibleRecyclers.clear()
+    }
+
+    private fun BindingViewHolder.layoutManager(): RecyclerView.LayoutManager? {
+        return binding.root
+            .findViewById<RecyclerView>(R.id.recyclerView)
+            ?.layoutManager
+    }
+
+    private data class ViewHolderRef(
+        val id: Int,
+        val reference: WeakReference<BindingViewHolder>
+    )
+}*/
