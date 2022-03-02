@@ -1,6 +1,9 @@
 package com.github.af2905.movieland.presentation.feature.home
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -8,6 +11,7 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.helper.text.ResourceUiText
 import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
@@ -30,11 +34,29 @@ class HomeFragment :
     override fun viewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
 
     private val nowPlayingAdapter: BaseAdapter = BaseAdapter(
-        ItemDelegate(MovieItem.VIEW_TYPE,
+        ItemDelegate(
+            MovieItem.VIEW_TYPE,
             listener = MovieItem.Listener { item, _ ->
                 viewModel.openDetail(item.id)
-            })
+            }
+        )
     )
+
+    private val appBarStateChangeListener = object : AppBarStateChangeListener() {
+        override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
+            when (state) {
+                State.COLLAPSED -> {
+                    val typedValue = TypedValue()
+                    requireActivity().theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
+                    binding.toolbar.background = ColorDrawable(typedValue.data)
+                }
+                State.IDLE -> binding.toolbar.background = ColorDrawable(Color.TRANSPARENT)
+                else -> Unit
+            }
+        }
+
+        override fun onScrolled(state: State, dy: Int) {}
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,8 +89,13 @@ class HomeFragment :
 
         binding.innerAppBarLayout.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            binding.homeSwipeRefreshLayout.isEnabled = verticalOffset >= 0
-        })
+                binding.homeSwipeRefreshLayout.isEnabled = verticalOffset >= 0
+            })
+
+        binding.innerAppBarLayout.apply {
+            removeOnOffsetChangedListener(appBarStateChangeListener)
+            addOnOffsetChangedListener(appBarStateChangeListener)
+        }
 
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.setForceUpdate()
@@ -77,17 +104,23 @@ class HomeFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is HomeContract.State.Loading -> startRefresh()
+                    is HomeContract.State.Loading -> {
+                        viewModel.showLoading(true)
+                        //startRefresh()
+                    }
                     is HomeContract.State.Success -> {
                         viewModel.updateData(state.movies, true)
+                        viewModel.showLoading(false)
                         finishRefresh()
                     }
                     is HomeContract.State.EmptyResult -> {
                         viewModel.updateData(emptyList(), false)
+                        viewModel.showLoading(false)
                         finishRefresh()
                     }
                     is HomeContract.State.Error -> {
                         viewModel.showError(ErrorHandler.handleError(state.e))
+                        //viewModel.showLoading(false)
                         finishRefresh()
                     }
                 }

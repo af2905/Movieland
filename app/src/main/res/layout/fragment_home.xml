@@ -10,7 +10,7 @@
 
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout
         android:id="@+id/homeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,7 +41,6 @@
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                     app:title="@string/app_name"
-                    app:titleCollapseMode="fade"
                     app:titleEnabled="true"
                     app:toolbarId="@+id/toolbar">
 
@@ -60,7 +59,15 @@
                             android:text="@{viewModel.header.res}"
                             app:visible="@{viewModel.headerVisible}" />
 
+                        <include
+                            android:id="@+id/shimmer"
+                            app:visible="@{viewModel.loading}"
+                            layout="@layout/list_item_movie_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                         <androidx.recyclerview.widget.RecyclerView
+                            app:visible="@{!viewModel.loading}"
                             android:id="@+id/recyclerView"
                             linearLayoutManager="@{true}"
                             recyclerSetData="@{viewModel.nowPlayingMovies}"
@@ -69,6 +76,7 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:layout_collapseMode="pin"
@@ -92,5 +100,5 @@
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout>
 </layout>

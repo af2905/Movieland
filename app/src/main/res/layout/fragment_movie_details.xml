@@ -19,15 +19,13 @@
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_details"
             app:item="@{viewModel.movieDetailsItem}"
-            app:listener="@{viewModel.movieDetailsItemClickListener}"
-             />
+            app:listener="@{viewModel.movieDetailsItemClickListener}" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/movieDetailsSwipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
