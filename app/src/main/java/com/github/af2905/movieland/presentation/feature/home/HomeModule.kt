@@ -11,5 +11,4 @@ abstract class HomeModule {
     @HomeScope
     @ContributesAndroidInjector(modules = [HomeFragmentModule::class])
     abstract fun homeFragment(): HomeFragment
-
 }
