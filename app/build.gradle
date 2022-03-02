@@ -79,6 +79,7 @@ ext {
     swipeRefreshLayoutVersion = '1.1.0'
     workVersion = "2.7.1"
     daggerAssistVersion = '0.5.2'
+    shimmerVersion = '0.5.0'
 }
 
 dependencies {
@@ -127,4 +128,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:$workVersion"
+    //Shimmer
+    implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
 }

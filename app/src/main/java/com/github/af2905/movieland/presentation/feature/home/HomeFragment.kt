@@ -104,17 +104,23 @@ class HomeFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is HomeContract.State.Loading -> startRefresh()
+                    is HomeContract.State.Loading -> {
+                        viewModel.showLoading(true)
+                        //startRefresh()
+                    }
                     is HomeContract.State.Success -> {
                         viewModel.updateData(state.movies, true)
+                        viewModel.showLoading(false)
                         finishRefresh()
                     }
                     is HomeContract.State.EmptyResult -> {
                         viewModel.updateData(emptyList(), false)
+                        viewModel.showLoading(false)
                         finishRefresh()
                     }
                     is HomeContract.State.Error -> {
                         viewModel.showError(ErrorHandler.handleError(state.e))
+                        //viewModel.showLoading(false)
                         finishRefresh()
                     }
                 }

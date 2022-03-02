@@ -59,7 +59,15 @@
                             android:text="@{viewModel.header.res}"
                             app:visible="@{viewModel.headerVisible}" />
 
+                        <include
+                            android:id="@+id/shimmer"
+                            app:visible="@{viewModel.loading}"
+                            layout="@layout/list_item_movie_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                         <androidx.recyclerview.widget.RecyclerView
+                            app:visible="@{!viewModel.loading}"
                             android:id="@+id/recyclerView"
                             linearLayoutManager="@{true}"
                             recyclerSetData="@{viewModel.nowPlayingMovies}"

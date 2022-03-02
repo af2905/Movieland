@@ -36,6 +36,9 @@ class HomeViewModel @Inject constructor(
     private val _nowPlayingMovies = MutableStateFlow<List<Model>>(listOf())
     val nowPlayingMovies = _nowPlayingMovies.asStateFlow()
 
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
+
     init {
         loadData()
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -63,7 +66,7 @@ class HomeViewModel @Inject constructor(
 
     fun updateData(movies: List<Model>, headerVisibility: Boolean) {
         _nowPlayingMovies.value = movies
-        headerVisible.value = headerVisibility
+        _headerVisible.tryEmit(headerVisibility)
     }
 
     fun setForceUpdate() =
@@ -85,5 +88,10 @@ class HomeViewModel @Inject constructor(
         container.intent {
             container.postEffect(HomeContract.Effect.ShowFailMessage(ToastMessage(error)))
         }
+    }
+
+    fun showLoading(loading: Boolean) {
+        _loading.tryEmit(loading)
+        if (!headerVisible.value) _headerVisible.tryEmit(true)
     }
 }
