@@ -2,13 +2,17 @@ package com.github.af2905.movieland.presentation.feature.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
+import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
+import com.github.af2905.movieland.presentation.model.item.SearchItem
+import kotlinx.coroutines.flow.collect
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -18,8 +22,8 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, position ->
-                //viewModel.openDetail(item.id, position)
+            listener = MovieItemVariant.Listener { item, _ ->
+                viewModel.openDetail(item.id)
             }
         )
     )
@@ -27,12 +31,30 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*binding.search.listener = object : SearchItem.Listener {
+        binding.search.listener = object : SearchItem.Listener {
             override fun textChanged(text: String) = viewModel.searchTextChanged(text)
             override fun deleteTextClicked() = viewModel.searchDeleteTextClicked()
-        }*/
+        }
         binding.searchRecyclerView.apply { adapter = baseAdapter }
 
-        //viewModel.state.observe(viewLifecycleOwner, viewModel::handleMoviesList)
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.state.collect { state ->
+                when (state) {
+                    is SearchContract.State.Loading -> Unit
+                    is SearchContract.State.EmptyQuery -> viewModel.handleEmptyQuery(state.list)
+                    is SearchContract.State.Success -> viewModel.handleSuccess(state.list)
+                    is SearchContract.State.EmptyResult -> viewModel.handleEmptyResult()
+                    is SearchContract.State.Error -> viewModel.showError(ErrorHandler.handleError(state.e))
+                }
+            }
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.effect.collect { effect ->
+                when (effect) {
+                    is SearchContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is SearchContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                }
+            }
+        }
     }
 }
