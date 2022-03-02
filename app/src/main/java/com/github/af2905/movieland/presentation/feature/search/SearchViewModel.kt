@@ -3,165 +3,156 @@ package com.github.af2905.movieland.presentation.feature.search
 import androidx.lifecycle.*
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
+import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
+import com.github.af2905.movieland.helper.extension.empty
+import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.effect.Navigate
+import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
-import com.github.af2905.movieland.presentation.model.item.SearchItem
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.github.af2905.movieland.presentation.model.item.*
+import com.github.af2905.movieland.presentation.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val getSearchMovie: GetSearchMovie,
     private val getPopularMovies: GetPopularMovies,
-    private val coroutineDispatcherProvider: CoroutineDispatcherProvider
+    coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
     val container: Container<SearchContract.State, SearchContract.Effect> =
-        Container(viewModelScope, SearchContract.State.Loading)
+        Container(viewModelScope, SearchContract.State.Loading())
 
-    private val _items = MutableLiveData<MutableList<Model>>()
-    val items: LiveData<MutableList<Model>> = _items
+    private val _items = MutableStateFlow(emptyList<Model>())
+    val items = _items.asStateFlow()
 
     private val emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
     private val emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
     private val emptySpaceMedium = EmptySpaceItem(R.dimen.default_margin_medium)
     private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
 
-    private val queryFlow = MutableStateFlow("")
+    private val queryFlow = MutableStateFlow(String.empty)
 
     var searchItem = MutableLiveData(SearchItem())
 
-    private val _searchResult = MutableStateFlow<SearchContract.State>(SearchContract.State.EmptyQuery)
+    private val _searchResult =
+        MutableStateFlow<SearchContract.State>(SearchContract.State.EmptyQuery())
     val state: LiveData<SearchContract.State>
         get() = _searchResult.asLiveData(viewModelScope.coroutineContext)
 
- /*   init {
-        launchUI {
+    init {
+        viewModelScope.launch(coroutineDispatcherProvider.main()) {
             queryFlow
                 .debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
-                .onEach { _searchResult.value = SearchContract.State.Loading }
-                .mapLatest { handleQuery(it, this) }
-                .collect { state -> _searchResult.value = state }
+                .onEach { _searchResult.value = SearchContract.State.Loading() }
+                .mapLatest(::handleQuery)
+                .collect { state ->
+                    when (state) {
+                        is SearchContract.State.EmptyQuery -> loadPopularMovies()
+                        is SearchContract.State.Loading -> handleSearchMovie(state.query)
+                        else -> Unit
+                    }
+                }
+        }
+    }
+
+    private fun handleQuery(query: String): SearchContract.State {
+        return if (query.isEmpty()) SearchContract.State.EmptyQuery()
+        else SearchContract.State.Loading(query)
+    }
+
+    private fun loadPopularMovies() {
+        container.intent {
+            container.reduce { SearchContract.State.Loading() }
+            try {
+                getPopularMovies(PopularMoviesParams()).let {
+                    container.reduce {
+                        it.getOrDefault(emptyList()).let { movies ->
+                            SearchContract.State.EmptyQuery(movies)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                container.reduce { SearchContract.State.Error(e) }
+            }
         }
     }
 
     fun searchTextChanged(text: String) {
-        searchItem.value = searchItem.value?.copy(clearText = false)
-        searchItem.notifyObserver()
-        queryFlow.value = text
+/*        searchItem.value = searchItem.value?.copy(clearText = false)
+        searchItem.notifyObserver()*/
+        queryFlow.tryEmit(text)
     }
 
     fun searchDeleteTextClicked() {
-        launchUI {
+/*        launchUI {
             searchItem.value = searchItem.value?.copy(clearText = true)
-            searchItem.notifyObserver()
-            queryFlow.value = ""
-        }
+            searchItem.notifyObserver()*/
+        queryFlow.tryEmit(String.empty)
+        // }
     }
 
-    private suspend fun handleQuery(query: String, scope: CoroutineScope): SearchContract.State {
-        return if (query.isEmpty()) SearchContract.State.EmptyQuery
-        else handleSearchMovie(query, scope)
-    }
-
-    private suspend fun handleSearchMovie(query: String, scope: CoroutineScope): SearchContract.State {
-
-        val result = scope.iOAsync {
-            getSearchMovie(SearchMovieParams(query = query))
-        }.await().getOrThrow()
-
-        return if (result.isFailure) {
-            return SearchContract.State.Error(result.exceptionOrNull())
-        } else {
-            result.getOrNull()?.movies.orEmpty().let { movies ->
-                if (movies.isEmpty()) SearchContract.State.EmptyResult
-                else SearchContract.State.Success(movies)
-            }
-        }
-    }
-
-    fun handleMoviesList(state: SearchContract.State) {
-        val list = mutableListOf<Model>()
-
-        when (state) {
-            is SearchContract.State.Success -> {
-                hideLoadingWithDelay()
-                list.add(emptySpaceMedium)
-                list.add(DividerItem())
-                state.result.map {
-                    if (it is MovieItem) list.addAll(listOf(MovieItemVariant(it), DividerItem()))
-                }
-                launchUI {
-                    _items.value = list
-                    _items.notifyObserver()
-                }
-            }
-            is SearchContract.State.Error -> hideLoading(true)
-
-            is SearchContract.State.EmptyResult -> {
-                hideLoading(true)
-                list.addAll(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
-                launchUI {
-                    _items.value = list
-                    _items.notifyObserver()
-                }
-            }
-            is SearchContract.State.EmptyQuery -> {
-                launchUI {
-                    hideLoading(false)
-                    loadPopularMovies()
-                    _items.value = list
-                    _items.notifyObserver()
-                }
-            }
-            is SearchContract.State.Loading -> showLoading()
-        }
-    }
-
-    private fun showLoading() {
-        if (searchItem.value?.loading == false) {
-            searchItem.postValue(searchItem.value?.copy(loading = true, deleteVisible = false))
-        }
-    }
-
-    private fun hideLoading(deleteVisible: Boolean) {
-        if (searchItem.value?.loading == true) {
-            searchItem.postValue(
-                searchItem.value?.copy(loading = false, deleteVisible = deleteVisible)
-            )
-        }
-    }
-
-    private fun hideLoadingWithDelay() {
-        launchUI {
-            delay(MIN_TIME_REFRESH_DELAY)
-            searchItem.postValue(
-                searchItem.value?.copy(
-                    loading = false, deleteVisible = queryFlow.value.isNotEmpty()
-                )
-            )
-        }
-    }
-
-    private suspend fun loadPopularMovies() {
-*//*        getPopularMovies.invoke(PopularMoviesParams())
-            .collect {
-                val popularMovies = it.getOrDefault(emptyList())
-                    .map { movieItem -> MovieItemVariant(movieItem) }
-
-                if (popularMovies.isNotEmpty()) {
-                    popularMovies.map { list ->
-                        _items.value = mutableListOf(list, DividerItem())
-                    }
+    private fun handleSearchMovie(query: String) {
+        container.intent {
+            getSearchMovie(SearchMovieParams(query = query)).let { result ->
+                if (result.isFailure) {
+                    SearchContract.State.Error(result.exceptionOrNull())
                 } else {
-                    _items.value = mutableListOf()
+                    result.getOrNull()?.movies.orEmpty().let { movies ->
+                        if (movies.isEmpty()) container.reduce { SearchContract.State.EmptyResult }
+                        else container.reduce { SearchContract.State.Success(movies) }
+                    }
                 }
-            }*//*
+            }
+        }
     }
 
-    //fun openDetail(itemId: Int, position: Int) = navigator { forwardMovieDetail(itemId) }
-*/
+    fun handleSuccess(movies: List<Model>) {
+        showMovieList(movies)
+    }
 
+    fun handleEmptyQuery(movies: List<Model>) {
+        showMovieList(movies)
+    }
+
+    fun handleEmptyResult() {
+        container.intent {
+            _items.tryEmit(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
+        }
+    }
+
+    fun handleLoading() {
+
+    }
+
+    private fun showMovieList(movies: List<Model>) {
+        val list = mutableListOf<Model>()
+        list.add(emptySpaceMedium)
+        list.add(DividerItem())
+        movies.map { movie ->
+            list.addAll(listOf(MovieItemVariant(movie as MovieItem), DividerItem()))
+        }
+        _items.tryEmit(list)
+    }
+
+    fun showError(error: UiText) {
+        container.intent {
+            container.postEffect(SearchContract.Effect.ShowFailMessage(ToastMessage(error)))
+        }
+    }
+
+    fun openDetail(itemId: Int) = navigateToDetail(itemId)
+
+    private fun navigateToDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(SearchContract.Effect.OpenMovieDetail(Navigate { navigator ->
+                (navigator as SearchNavigator).forwardMovieDetail(itemId)
+            }))
+        }
+    }
 }
