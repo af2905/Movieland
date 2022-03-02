@@ -32,6 +32,9 @@ class PopularMovieViewModel @Inject constructor(
     private val _items = MutableStateFlow<List<Model>>(listOf())
     val items = _items.asStateFlow()
 
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
+
     init {
         loadData()
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -80,5 +83,9 @@ class PopularMovieViewModel @Inject constructor(
         container.intent {
             container.postEffect(HomeContract.Effect.ShowFailMessage(ToastMessage(error)))
         }
+    }
+
+    fun showLoading(loading: Boolean) {
+        _loading.tryEmit(loading)
     }
 }
