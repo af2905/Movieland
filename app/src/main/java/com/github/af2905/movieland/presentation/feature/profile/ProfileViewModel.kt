@@ -13,7 +13,7 @@ class ProfileViewModel @Inject constructor(
 ) : BaseViewModel<SearchContract.State, SearchContract.Effect>(coroutineDispatcherProvider) {
 
     val container: Container<SearchContract.State, SearchContract.Effect> =
-        Container(viewModelScope, SearchContract.State.Loading)
+        Container(viewModelScope, SearchContract.State.Loading())
 
     val userInfoHeader = UserInfoHeaderItem()
 
