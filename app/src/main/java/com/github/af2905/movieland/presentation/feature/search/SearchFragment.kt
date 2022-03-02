@@ -12,6 +12,7 @@ import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
+import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 import kotlinx.coroutines.flow.collect
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
@@ -35,7 +36,16 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
             override fun textChanged(text: String) = viewModel.searchTextChanged(text)
             override fun deleteTextClicked() = viewModel.searchDeleteTextClicked()
         }
-        binding.searchRecyclerView.apply { adapter = baseAdapter }
+        binding.searchRecyclerView.apply {
+            adapter = baseAdapter
+            addItemDecoration(
+                VerticalListItemDecorator(
+                    marginTop = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    marginBottom = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
+                )
+            )
+        }
 
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
@@ -44,7 +54,9 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
                     is SearchContract.State.EmptyQuery -> viewModel.handleEmptyQuery(state.list)
                     is SearchContract.State.Success -> viewModel.handleSuccess(state.list)
                     is SearchContract.State.EmptyResult -> viewModel.handleEmptyResult()
-                    is SearchContract.State.Error -> viewModel.showError(ErrorHandler.handleError(state.e))
+                    is SearchContract.State.Error -> {
+                        viewModel.showError(ErrorHandler.handleError(state.e))
+                    }
                 }
             }
         }
