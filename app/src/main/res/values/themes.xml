@@ -20,14 +20,20 @@
     <style name="Theme.Movieland.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SearchStyle">
-        <item name="android:background">@drawable/bg_search</item>
+        <item name="android:background">@null</item>
         <item name="android:maxLines">@integer/max_lines_1</item>
         <item name="android:paddingStart">@dimen/default_margin_big</item>
         <item name="android:paddingEnd">@dimen/default_margin_huge</item>
+        <item name="android:paddingTop">@dimen/default_margin_small</item>
+        <item name="android:paddingBottom">@dimen/default_margin_small</item>
         <item name="android:textColorHint">@color/tintSearchBarLight</item>
         <item name="android:hint">@string/hint_search_query</item>
         <item name="android:textSize">@dimen/default_text_normal</item>
         <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="SearchBackgroundStyle">
+        <item name="android:background">@drawable/bg_search</item>
     </style>
 
     <style name="SearchIconsStyle">
@@ -48,6 +54,10 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="tabSelectedTextColor">@color/black</item>
+    </style>
+
+    <style name="ShimmerStyle">
+        <item name="android:background">@drawable/bg_light_grey_corner_8</item>
     </style>
 
 </resources>
