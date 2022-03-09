@@ -1,12 +1,12 @@
 package com.github.af2905.movieland.presentation.feature.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
-import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.extension.empty
 import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
@@ -16,13 +16,11 @@ import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
 import com.github.af2905.movieland.presentation.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val getSearchMovie: GetSearchMovie,
-    private val getPopularMovies: GetPopularMovies,
-    coroutineDispatcherProvider: CoroutineDispatcherProvider
+    private val getPopularMovies: GetPopularMovies
 ) : ViewModel() {
 
     val container: Container<SearchContract.State, SearchContract.Effect> =
@@ -36,68 +34,39 @@ class SearchViewModel @Inject constructor(
     private val emptySpaceMedium = EmptySpaceItem(R.dimen.default_margin_medium)
     private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
 
-    private val queryFlow = MutableStateFlow(String.empty)
+    private val _queryFlow = MutableStateFlow(String.empty)
 
-    var searchItem = MutableLiveData(SearchItem())
+    private var _searchItem = MutableStateFlow(SearchItem())
+    val searchItem = _searchItem.asStateFlow()
 
-    private val _searchResult =
-        MutableStateFlow<SearchContract.State>(SearchContract.State.EmptyQuery())
-    val state: LiveData<SearchContract.State>
-        get() = _searchResult.asLiveData(viewModelScope.coroutineContext)
+    private val _popularMovies = MutableStateFlow(listOf<MovieItem>())
+    private val _popularMoviesHeader = HeaderItem(R.string.search_popular_search_queries)
 
     init {
-        viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            queryFlow
+        container.intent {
+            _popularMovies.tryEmit(getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList()))
+            _queryFlow
                 .debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
-                .onEach { _searchResult.value = SearchContract.State.Loading() }
                 .mapLatest(::handleQuery)
-                .collect { state ->
-                    when (state) {
-                        is SearchContract.State.EmptyQuery -> loadPopularMovies()
-                        is SearchContract.State.Loading -> handleSearchMovie(state.query)
-                        else -> Unit
-                    }
-                }
+                .collect { state -> container.reduce { state } }
         }
     }
 
     private fun handleQuery(query: String): SearchContract.State {
-        return if (query.isEmpty()) SearchContract.State.EmptyQuery()
+        return if (query.isEmpty()) SearchContract.State.EmptyQuery(_popularMovies.value)
         else SearchContract.State.Loading(query)
     }
 
-    private fun loadPopularMovies() {
-        container.intent {
-            container.reduce { SearchContract.State.Loading() }
-            try {
-                getPopularMovies(PopularMoviesParams()).let {
-                    container.reduce {
-                        it.getOrDefault(emptyList()).let { movies ->
-                            SearchContract.State.EmptyQuery(movies)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                container.reduce { SearchContract.State.Error(e) }
-            }
-        }
-    }
-
     fun searchTextChanged(text: String) {
-/*        searchItem.value = searchItem.value?.copy(clearText = false)
-        searchItem.notifyObserver()*/
-        queryFlow.tryEmit(text)
+        _queryFlow.tryEmit(text)
+        _searchItem.tryEmit(
+            _searchItem.value.copy(clearText = text.isEmpty(), deleteVisible = text.isNotEmpty())
+        )
     }
 
-    fun searchDeleteTextClicked() {
-/*        launchUI {
-            searchItem.value = searchItem.value?.copy(clearText = true)
-            searchItem.notifyObserver()*/
-        queryFlow.tryEmit(String.empty)
-        // }
-    }
+    fun searchDeleteTextClicked() = searchTextChanged(String.empty)
 
-    private fun handleSearchMovie(query: String) {
+    fun handleSearchMovie(query: String) {
         container.intent {
             getSearchMovie(SearchMovieParams(query = query)).let { result ->
                 if (result.isFailure) {
@@ -117,17 +86,17 @@ class SearchViewModel @Inject constructor(
     }
 
     fun handleEmptyQuery(movies: List<Model>) {
-        showMovieList(movies)
+        val list = mutableListOf<Model>().apply {
+            add(_popularMoviesHeader)
+        }
+        movies.map { model -> list.addAll(listOf(MovieItemVariant(model as MovieItem))) }
+        _items.tryEmit(list)
     }
 
     fun handleEmptyResult() {
         container.intent {
             _items.tryEmit(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
         }
-    }
-
-    fun handleLoading() {
-
     }
 
     private fun showMovieList(movies: List<Model>) {

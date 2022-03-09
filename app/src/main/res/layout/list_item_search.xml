@@ -56,17 +56,5 @@
             app:layout_constraintTop_toTopOf="@id/searchInput"
             app:visible="@{item.deleteVisible}"
             tools:ignore="ContentDescription" />
-
-        <ProgressBar
-            android:id="@+id/searchProgress"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="@id/searchInput"
-            app:layout_constraintTop_toTopOf="@id/searchInput"
-            app:visible="@{item.loading}"
-            tools:visibility="gone" />
     </LinearLayout>
 </layout>
