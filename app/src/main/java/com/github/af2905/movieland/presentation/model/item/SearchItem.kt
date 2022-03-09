@@ -11,7 +11,6 @@ data class SearchItem(
     var searchString: String = "",
     var queryHint: String = "",
     @StringRes var queryHintRes: Int = R.string.hint_search_query,
-    var loading: Boolean = false,
     var deleteVisible: Boolean = false,
     var clearText: Boolean = false
 ) : Model(VIEW_TYPE) {
