@@ -50,7 +50,7 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is SearchContract.State.Loading -> Unit
+                    is SearchContract.State.Loading -> viewModel.handleSearchMovie(state.query)
                     is SearchContract.State.EmptyQuery -> viewModel.handleEmptyQuery(state.list)
                     is SearchContract.State.Success -> viewModel.handleSuccess(state.list)
                     is SearchContract.State.EmptyResult -> viewModel.handleEmptyResult()
