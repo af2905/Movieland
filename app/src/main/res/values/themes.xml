@@ -40,6 +40,15 @@
         <item name="android:tint">@color/tintSearchBarLight</item>
     </style>
 
+    <style name="DefaultInfoIconsStyle">
+        <item name="android:background">@drawable/bg_search</item>
+        <item name="android:tint">@color/tintSearchBarLight</item>
+    </style>
+
+    <style name="TextAlphaStyle">
+        <item name="android:textColor">@color/darkGreyAlpha</item>
+    </style>
+
     <style name="DividerBackground">
         <item name="android:backgroundTint">@color/dividerLight</item>
     </style>
