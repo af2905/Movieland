@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin_small"
                 android:gravity="center_vertical"
-                android:textColor="@color/darkGrey"
+                app:voteAverageTextColor="@{item.voteAverage}"
                 app:voteAverage="@{item.voteAverage}"
                 tools:text="7.6" />
 
