@@ -29,10 +29,10 @@ class SearchViewModel @Inject constructor(
     private val _items = MutableStateFlow(emptyList<Model>())
     val items = _items.asStateFlow()
 
-    private val emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
-    private val emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
-    private val emptySpaceMedium = EmptySpaceItem(R.dimen.default_margin_medium)
-    private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
+    private val _emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
+    private val _emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
+    private val _emptySpaceMedium = EmptySpaceItem(R.dimen.default_margin_medium)
+    private val _emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
 
     private val _queryFlow = MutableStateFlow(String.empty)
 
@@ -41,6 +41,8 @@ class SearchViewModel @Inject constructor(
 
     private val _popularMovies = MutableStateFlow(listOf<MovieItem>())
     private val _popularMoviesHeader = HeaderItem(R.string.search_popular_search_queries)
+
+    private val _notFoundItem = NotFoundItem(R.string.search_empty_result)
 
     init {
         container.intent {
@@ -94,9 +96,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun handleEmptyResult() {
-        container.intent {
-            _items.tryEmit(listOf(emptySpaceMedium, SimpleTextItem(R.string.search_empty_result)))
-        }
+        _items.tryEmit(listOf(_notFoundItem))
     }
 
     private fun showMovieList(movies: List<Model>) {
