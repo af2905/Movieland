@@ -47,18 +47,15 @@ class TopRatedMovieFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is HomeContract.State.Loading -> viewModel.showLoading(true)
+                    is HomeContract.State.Loading -> {}
                     is HomeContract.State.Success -> {
                         viewModel.updateData(state.movies)
-                        viewModel.showLoading(false)
                     }
                     is HomeContract.State.EmptyResult -> {
                         viewModel.updateData(emptyList())
-                        viewModel.showLoading(false)
                     }
                     is HomeContract.State.Error -> {
                         viewModel.showError(ErrorHandler.handleError(state.e))
-                        viewModel.showLoading(false)
                     }
                 }
             }
