@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
-class Container<STATE, EFFECT>(private val scope: CoroutineScope, initialState: STATE) {
+class Container<STATE, EFFECT>(val scope: CoroutineScope, initialState: STATE) {
 
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<STATE> = _state

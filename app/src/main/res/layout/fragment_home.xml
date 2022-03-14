@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -24,6 +25,7 @@
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/innerAppBarLayout"
+                app:visible="@{!viewModel.loading}"
                 style="@style/TabsUnderlineBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,14 +61,6 @@
                             android:text="@{viewModel.header.res}"
                             app:visible="@{viewModel.headerVisible}" />
 
-                        <include
-                            android:id="@+id/shimmer"
-                            layout="@layout/list_item_movie_placeholder"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/default_margin"
-                            app:visible="@{viewModel.loading}" />
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             linearLayoutManager="@{true}"
@@ -92,6 +86,7 @@
                     style="@style/TabsLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:visible="@{!viewModel.loading}"
                     app:tabMode="fixed" />
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -99,8 +94,16 @@
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:visible="@{!viewModel.loading}"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
+            <include
+                android:id="@+id/shimmer"
+                layout="@layout/fragment_home_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="gone"
+                app:visible="@{viewModel.loading}" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout>
 </layout>
