@@ -3,9 +3,11 @@ package com.github.af2905.movieland.presentation.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.domain.usecase.movies.ForceUpdate
-import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
+import com.github.af2905.movieland.domain.usecase.movies.*
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
+import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
@@ -13,6 +15,7 @@ import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.HeaderItem
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,6 +23,9 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val getNowPlayingMovies: GetNowPlayingMovies,
+    private val getPopularMovies: GetPopularMovies,
+    private val getUpcomingMovies: GetUpcomingMovies,
+    private val getTopRatedMovies: GetTopRatedMovies,
     private val forceUpdate: ForceUpdate,
     private val homeRepository: HomeRepository,
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider
@@ -40,9 +46,34 @@ class HomeViewModel @Inject constructor(
     val loading = _loading.asStateFlow()
 
     init {
-        loadData()
-        viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+        _loading.tryEmit(true)
+        container.intent {
+            this.scope.launch {
+                homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+                loadData()
+                uploadMoviesInit(this)
+                homeRepository.subscribeOnAllMoviesUploaded(this) { uploaded ->
+                    if (uploaded) allMoviesUploaded()
+                }
+            }
+        }
+    }
+
+    private fun uploadMoviesInit(scope: CoroutineScope) {
+        scope.launch {
+            getPopularMovies(PopularMoviesParams())
+                .getOrDefault(emptyList())
+                .let { homeRepository.popularMoviesUploaded() }
+        }
+        scope.launch {
+            getUpcomingMovies(UpcomingMoviesParams())
+                .getOrDefault(emptyList())
+                .let { homeRepository.upcomingMoviesUploaded() }
+        }
+        scope.launch {
+            getTopRatedMovies(TopRatedMoviesParams())
+                .getOrDefault(emptyList())
+                .let { homeRepository.topRatedMoviesUploaded() }
         }
     }
 
@@ -53,6 +84,7 @@ class HomeViewModel @Inject constructor(
                 getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let { result ->
                     container.reduce {
                         result.getOrThrow().let {
+                            homeRepository.nowPlayingMoviesUploaded()
                             if (it.isEmpty()) HomeContract.State.EmptyResult
                             else HomeContract.State.Success(it)
                         }
@@ -90,8 +122,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun showLoading(loading: Boolean) {
-        _loading.tryEmit(loading)
-        if (!headerVisible.value) _headerVisible.tryEmit(true)
-    }
+    private fun allMoviesUploaded() = _loading.tryEmit(false)
 }
