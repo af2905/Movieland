@@ -16,6 +16,7 @@
     <dimen name="default_stroke_tiny">0.1dp</dimen>
     <dimen name="default_stroke">2dp</dimen>
     <dimen name="default_corners_radius">8dp</dimen>
+    <dimen name="default_corners_radius_big">32dp</dimen>
 
     <dimen name="default_divider_height">1dp</dimen>
     <dimen name="default_tab_indicator_height">1dp</dimen>
