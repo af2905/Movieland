@@ -26,18 +26,18 @@
                 android:orientation="vertical">
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="@dimen/movie_card_width"
                     android:layout_height="@dimen/movie_card_height" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small"
@@ -52,18 +52,18 @@
                 android:orientation="vertical">
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="@dimen/movie_card_width"
                     android:layout_height="@dimen/movie_card_height" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small"
@@ -78,18 +78,18 @@
                 android:orientation="vertical">
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="@dimen/movie_card_width"
                     android:layout_height="@dimen/movie_card_height" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small" />
 
                 <View
-                    style="@style/ShimmerStyle"
+                    style="@style/ShimmerStyleRoundCorners"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin_small"

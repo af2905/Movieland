@@ -28,7 +28,7 @@ data class MovieItem(
         when (voteAverage) {
             in RAD_RANGE -> R.drawable.bg_red_corners_8
             in GREEN_RANGE -> R.drawable.bg_green_corners_8
-            else -> R.drawable.bg_grey_corner_8
+            else -> R.drawable.bg_dark_grey_corner_8
         }
     }
 
