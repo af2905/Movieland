@@ -51,7 +51,11 @@ class MainActivity : DaggerAppCompatActivity() {
             .build()
 
         WorkManager.getInstance(this)
-            .enqueueUniqueWork(UpdateMoviesWorker.WORKER_NAME, ExistingWorkPolicy.REPLACE, workRequest)
+            .enqueueUniqueWork(
+                UpdateMoviesWorker.WORKER_NAME,
+                ExistingWorkPolicy.REPLACE,
+                workRequest
+            )
     }
 
     private fun findNavController(): NavController {
@@ -73,6 +77,10 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp()
     }
 
     private fun setDestinationChangedListener() {
