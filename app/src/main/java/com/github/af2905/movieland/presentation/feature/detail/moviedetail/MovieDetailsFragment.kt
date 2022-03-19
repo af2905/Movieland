@@ -6,11 +6,13 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailsBinding
+import com.github.af2905.movieland.helper.ThemeHelper
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
@@ -69,10 +71,21 @@ class MovieDetailsFragment :
                 State.COLLAPSED -> {
                     val typedValue = TypedValue()
                     requireActivity().theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
-                    binding.movieDetailsToolbar.toolbar.background = ColorDrawable(typedValue.data)
+                    binding.movieDetailsToolbar.toolbar.apply {
+                        background = ColorDrawable(typedValue.data)
+                        if (ThemeHelper.isCurrentThemeDark(context)) {
+                            navigationIcon?.setTint(Color.WHITE)
+                        } else {
+                            navigationIcon?.setTint(Color.DKGRAY)
+                        }
+                    }
                 }
-                State.IDLE -> binding.movieDetailsToolbar.toolbar.background =
-                    ColorDrawable(Color.TRANSPARENT)
+                State.IDLE -> {
+                    binding.movieDetailsToolbar.toolbar.apply {
+                        background = ColorDrawable(Color.TRANSPARENT)
+                        navigationIcon?.setTint(Color.WHITE)
+                    }
+                }
                 else -> Unit
             }
         }
@@ -86,6 +99,12 @@ class MovieDetailsFragment :
         binding.movieDetailsSwipeRefreshLayout.isEnabled = false
         binding.recyclerView.apply { adapter = baseAdapter }
 
+        initToolbar()
+
+        binding.movieDetailsToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
+        binding.movieDetailsToolbar.movieDetailCollapsingToolbarLayout
+            .setExpandedTitleColor(Color.WHITE)
+
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
@@ -97,8 +116,8 @@ class MovieDetailsFragment :
                         )*/
                     }
                     //is MovieDetailContract.State.EmptyResult -> {
-                        /* viewModel.updateData(emptyList(), false)
-                         finishRefresh()*/
+                    /* viewModel.updateData(emptyList(), false)
+                     finishRefresh()*/
                     //}
                     is MovieDetailContract.State.Error -> {
                         /* viewModel.showError(ErrorHandler.handleError(state.e))
@@ -121,6 +140,16 @@ class MovieDetailsFragment :
                     is MovieDetailContract.Effect.MoveToBackScreen -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
+            }
+        }
+    }
+
+    private fun initToolbar() {
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(binding.movieDetailsToolbar.toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
             }
         }
     }
