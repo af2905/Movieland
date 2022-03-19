@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,11 +19,13 @@
         <include
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_details"
+            app:visible="@{!viewModel.isLoading}"
             app:item="@{viewModel.movieDetailsItem}"
             app:listener="@{viewModel.movieDetailsItemClickListener}" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/movieDetailsSwipeRefreshLayout"
+            app:visible="@{!viewModel.isLoading}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -36,5 +39,13 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/shimmer"
+            layout="@layout/fragment_movie_details_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:visibility="gone"
+            app:visible="@{viewModel.isLoading}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

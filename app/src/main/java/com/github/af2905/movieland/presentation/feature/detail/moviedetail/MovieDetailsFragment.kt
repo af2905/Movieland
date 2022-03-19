@@ -89,17 +89,17 @@ class MovieDetailsFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is MovieDetailContract.State.Loading -> {}
+
                     is MovieDetailContract.State.Content -> {
-                        viewModel.updateSuccessData(
+/*                        viewModel.updateSuccessData(
                             movieDetails = state.movieDetailsItem,
                             items = state.list
-                        )
+                        )*/
                     }
-                    is MovieDetailContract.State.EmptyResult -> {
+                    //is MovieDetailContract.State.EmptyResult -> {
                         /* viewModel.updateData(emptyList(), false)
                          finishRefresh()*/
-                    }
+                    //}
                     is MovieDetailContract.State.Error -> {
                         /* viewModel.showError(ErrorHandler.handleError(state.e))
                          finishRefresh()*/

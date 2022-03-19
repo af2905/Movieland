@@ -30,7 +30,7 @@
                 <View
                     android:layout_width="@dimen/movie_card_variant_width"
                     android:layout_height="@dimen/movie_card_variant_height"
-                    style="@style/ShimmerStyle" />
+                    style="@style/ShimmerStyleRoundCorners" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="@dimen/default_icon_size"
@@ -51,14 +51,14 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -75,7 +75,7 @@
                 <View
                     android:layout_width="@dimen/movie_card_variant_width"
                     android:layout_height="@dimen/movie_card_variant_height"
-                    style="@style/ShimmerStyle" />
+                    style="@style/ShimmerStyleRoundCorners" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="@dimen/default_icon_size"
@@ -96,14 +96,14 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -120,7 +120,7 @@
                 <View
                     android:layout_width="@dimen/movie_card_variant_width"
                     android:layout_height="@dimen/movie_card_variant_height"
-                    style="@style/ShimmerStyle" />
+                    style="@style/ShimmerStyleRoundCorners" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="@dimen/default_icon_size"
@@ -141,14 +141,14 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -165,7 +165,7 @@
                 <View
                     android:layout_width="@dimen/movie_card_variant_width"
                     android:layout_height="@dimen/movie_card_variant_height"
-                    style="@style/ShimmerStyle" />
+                    style="@style/ShimmerStyleRoundCorners" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -178,7 +178,7 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="@dimen/default_icon_size"
@@ -186,14 +186,14 @@
                         android:layout_marginEnd="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/default_margin_huge"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="@dimen/default_margin_small"
-                        style="@style/ShimmerStyle" />
+                        style="@style/ShimmerStyleRoundCorners" />
                 </LinearLayout>
             </LinearLayout>
 

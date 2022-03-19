@@ -62,7 +62,15 @@
     </style>
 
     <style name="ShimmerStyle">
+        <item name="android:background">@drawable/bg_dark_grey</item>
+    </style>
+
+    <style name="ShimmerStyleRoundCorners">
         <item name="android:background">@drawable/bg_dark_grey_corner_8</item>
+    </style>
+
+    <style name="ShimmerStyleRoundCornersBig">
+        <item name="android:background">@drawable/bg_dark_grey_corner_32</item>
     </style>
 
 </resources>

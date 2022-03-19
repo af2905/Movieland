@@ -27,7 +27,6 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 app:contentScrim="?colorSurface"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
@@ -47,10 +46,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:minHeight="@dimen/backdrop_height"
                         android:scaleType="center"
-                        app:src="@{item.posterPath}"
-                        tools:background="@color/white"
-                        tools:src="@drawable/ic_placeholder" />
+                        app:src="@{item.backdropPath}" />
 
                 </FrameLayout>
 

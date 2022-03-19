@@ -11,10 +11,14 @@ class MovieDetailContract {
 
     sealed class State : UiState() {
 
-        data class Loading(val list: List<Model> = emptyList()) : State()
-        data class Content(val movieDetailsItem: MovieDetailsItem, val list: List<Model>) : State()
+        data class Content(
+            val isLoading: Boolean = false,
+            val movieDetailsItem: MovieDetailsItem = MovieDetailsItem(),
+            val list: List<Model> = emptyList()
+        ) : State()
+
         data class Error(val e: Throwable?) : State()
-        object EmptyResult : State()
+        //object EmptyResult : State()
     }
 
     sealed class Effect : UiEffect() {

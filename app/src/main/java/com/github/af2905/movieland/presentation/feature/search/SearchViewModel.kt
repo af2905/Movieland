@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.GetPopularMovies
-import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
 import com.github.af2905.movieland.helper.extension.empty
@@ -39,14 +38,14 @@ class SearchViewModel @Inject constructor(
     private var _searchItem = MutableStateFlow(SearchItem())
     val searchItem = _searchItem.asStateFlow()
 
-    private val _popularMovies = MutableStateFlow(listOf<MovieItem>())
+    private val _popularMovies = MutableStateFlow(listOf<MovieItem>()) // todo to room
     private val _popularMoviesHeader = HeaderItem(R.string.search_popular_search_queries)
 
     private val _notFoundItem = NotFoundItem(R.string.search_empty_result)
 
     init {
         container.intent {
-            _popularMovies.tryEmit(getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList()))
+            //_popularMovies.tryEmit(getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList()))
             _queryFlow
                 .debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .mapLatest(::handleQuery)

@@ -16,6 +16,7 @@ import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.HeaderItem
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -47,34 +48,27 @@ class HomeViewModel @Inject constructor(
 
     init {
         _loading.tryEmit(true)
-        container.intent {
-            this.scope.launch {
+            viewModelScope.launch {
                 homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
                 loadData()
                 uploadMoviesInit(this)
-                homeRepository.subscribeOnAllMoviesUploaded(this) { uploaded ->
-                    if (uploaded) allMoviesUploaded()
-                }
+                hideLoading()
             }
-        }
     }
 
-    private fun uploadMoviesInit(scope: CoroutineScope) {
-        scope.launch {
-            getPopularMovies(PopularMoviesParams())
-                .getOrDefault(emptyList())
-                .let { homeRepository.popularMoviesUploaded() }
-        }
-        scope.launch {
-            getUpcomingMovies(UpcomingMoviesParams())
-                .getOrDefault(emptyList())
-                .let { homeRepository.upcomingMoviesUploaded() }
-        }
-        scope.launch {
-            getTopRatedMovies(TopRatedMoviesParams())
-                .getOrDefault(emptyList())
-                .let { homeRepository.topRatedMoviesUploaded() }
-        }
+    private suspend fun uploadMoviesInit(scope: CoroutineScope) {
+            val popularMoviesAsync = scope.async {
+                getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList())
+            }
+            val upcomingMoviesAsync = scope.async {
+                getUpcomingMovies(UpcomingMoviesParams()).getOrDefault(emptyList())
+            }
+            val topRatedMoviesAsync = scope.async {
+                getTopRatedMovies(TopRatedMoviesParams()).getOrDefault(emptyList())
+            }
+            popularMoviesAsync.await()
+            upcomingMoviesAsync.await()
+            topRatedMoviesAsync.await()
     }
 
     private fun loadData(forceUpdate: Boolean = false) {
@@ -84,7 +78,7 @@ class HomeViewModel @Inject constructor(
                 getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let { result ->
                     container.reduce {
                         result.getOrThrow().let {
-                            homeRepository.nowPlayingMoviesUploaded()
+                            //homeRepository.nowPlayingMoviesUploaded()
                             if (it.isEmpty()) HomeContract.State.EmptyResult
                             else HomeContract.State.Success(it)
                         }
@@ -122,5 +116,5 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun allMoviesUploaded() = _loading.tryEmit(false)
+    private fun hideLoading() = _loading.tryEmit(false)
 }
