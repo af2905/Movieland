@@ -60,10 +60,7 @@ class MovieDetailsFragment :
             },
             decoration = { getHorizontalListItemDecoration(it) }
         ),
-        ItemDelegate(ErrorItem.VIEW_TYPE,
-            listener = ErrorItem.Listener {
-                viewModel.updateData()
-            })
+        ItemDelegate(ErrorItem.VIEW_TYPE, listener = ErrorItem.Listener { viewModel.updateData() })
     )
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
@@ -97,7 +94,6 @@ class MovieDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.movieDetailsSwipeRefreshLayout.isEnabled = false
         binding.recyclerView.apply { adapter = baseAdapter }
 
         initToolbar()
@@ -105,28 +101,6 @@ class MovieDetailsFragment :
         binding.movieDetailsToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
         binding.movieDetailsToolbar.movieDetailCollapsingToolbarLayout
             .setExpandedTitleColor(Color.WHITE)
-
-/*        lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                when (state) {
-
-                    is MovieDetailContract.State.Content -> {
-*//*                        viewModel.updateSuccessData(
-                            movieDetails = state.movieDetailsItem,
-                            items = state.list
-                        )*//*
-                    }
-                    //is MovieDetailContract.State.EmptyResult -> {
-                    *//* viewModel.updateData(emptyList(), false)
-                     finishRefresh()*//*
-                    //}
-                    is MovieDetailContract.State.Error -> {
-*//*                         viewModel.showError(ErrorHandler.handleError(state.e))
-                         finishRefresh()*//*
-                    }
-                }
-            }
-        }*/
 
         binding.movieDetailsToolbar.movieDetailsAppBar.apply {
             removeOnOffsetChangedListener(appBarStateChangeListener)
