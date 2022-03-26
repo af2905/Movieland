@@ -19,7 +19,7 @@
         <include
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_details"
-            app:visible="@{!viewModel.isLoading}"
+            app:visible="@{!viewModel.isLoading &amp;&amp; !viewModel.isError()}"
             app:item="@{viewModel.movieDetailsItem}"
             app:listener="@{viewModel.movieDetailsItemClickListener}" />
 
@@ -46,6 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:visibility="gone"
-            app:visible="@{viewModel.isLoading}" />
+            app:visible="@{viewModel.isLoading &amp;&amp; !viewModel.isError()}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

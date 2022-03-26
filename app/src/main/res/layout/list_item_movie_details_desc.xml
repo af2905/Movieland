@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -15,19 +16,38 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:layout_margin="@dimen/default_margin"
-            android:isIndicator="true"
-            android:minWidth="@dimen/default_margin"
-            android:numStars="5"
-            android:progressBackgroundTint="@color/gold_700"
-            android:rating="@{item.movieDetailsItem.voteAverageStar}"
-            android:stepSize="0.5"
-            tools:rating="3.2" />
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextView.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin_small"
+                app:voteAverage="@{item.movieDetailsItem.voteAverage}"
+                app:voteAverageTextColor="@{item.movieDetailsItem.voteAverage}"
+                tools:text="7.6" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:isIndicator="true"
+                android:minWidth="@dimen/default_margin"
+                android:numStars="5"
+                android:progressBackgroundTint="@color/gold_700"
+                android:rating="@{item.movieDetailsItem.voteAverageStar}"
+                android:stepSize="0.5"
+                tools:rating="3.2" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

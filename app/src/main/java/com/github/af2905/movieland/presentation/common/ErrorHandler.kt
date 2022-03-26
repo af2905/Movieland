@@ -13,7 +13,7 @@ object ErrorHandler {
     fun handleError(throwable: Throwable?) : UiText {
         Timber.e(throwable)
         return when (throwable) {
-            is ConnectionException -> UiText.of(R.string.fail_to_connect)
+            is ConnectionException -> UiText.of(R.string.message_fail_to_connect)
             else -> UiText.of(throwable?.message)
         }
     }

@@ -11,13 +11,16 @@ import com.github.af2905.movieland.domain.usecase.params.MovieActorsParams
 import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
 import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
 import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
+import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import com.github.af2905.movieland.presentation.model.ItemIds
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.EmptySpaceItem
+import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.HeaderItem
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import kotlinx.coroutines.flow.filter
@@ -53,13 +56,18 @@ class MovieDetailsViewModel @Inject constructor(
         .map { (it as MovieDetailContract.State.Content).list }
         .asLiveData()
 
+    val isError = container.state
+        .filter { it is MovieDetailContract.State.Content }
+        .map { (it as MovieDetailContract.State.Content).error != null }
+        .asLiveData()
+
     val movieDetailsItemClickListener = object : MovieDetailsItem.Listener {
         override fun onLikedClick(item: MovieDetailsItem) {
             container.intent {
                 container.reduce {
                     if (this is MovieDetailContract.State.Content) {
                         MovieDetailContract.State.Content(
-                            movieDetailsItem = this.movieDetailsItem.copy(
+                            movieDetailsItem = this.movieDetailsItem?.copy(
                                 liked = !this.movieDetailsItem.liked
                             ),
                             list = this.list
@@ -88,34 +96,38 @@ class MovieDetailsViewModel @Inject constructor(
                 }
                 getMovieActors(MovieActorsParams(movieId)).let { result ->
                     val actors = result
-                        .getOrThrow()
+                        .getOrDefault(emptyList())
                         .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
-                    list.addAll(
-                        listOf(
-                            HeaderItem(R.string.actors_and_crew_title),
-                            emptySpaceNormal,
-                            HorizontalListItem(
-                                actors,
-                                id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
-                            ),
-                            emptySpaceNormal
+                    if (actors.isNotEmpty()) {
+                        list.addAll(
+                            listOf(
+                                HeaderItem(R.string.actors_and_crew_title),
+                                emptySpaceNormal,
+                                HorizontalListItem(
+                                    actors,
+                                    id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
+                                ),
+                                emptySpaceNormal
+                            )
                         )
-                    )
+                    }
                 }
                 getSimilarMovies.invoke(SimilarMoviesParams((movieId))).let { result ->
                     val similar = result
-                        .getOrThrow()
+                        .getOrDefault(emptyList())
                         .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
-                    list.addAll(
-                        listOf(
-                            HeaderItem(R.string.similar),
-                            emptySpaceNormal,
-                            HorizontalListItem(
-                                similar,
-                                id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
+                    if (similar.isNotEmpty()) {
+                        list.addAll(
+                            listOf(
+                                HeaderItem(R.string.similar),
+                                emptySpaceNormal,
+                                HorizontalListItem(
+                                    similar,
+                                    id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
+                                )
                             )
                         )
-                    )
+                    }
                 }
                 val movieDetailsDescItem =
                     list.find { it is MovieDetailsDescItem } as MovieDetailsDescItem
@@ -123,13 +135,31 @@ class MovieDetailsViewModel @Inject constructor(
                     MovieDetailContract.State.Content(
                         isLoading = false,
                         movieDetailsItem = movieDetailsDescItem.movieDetailsItem,
-                        list = list)
+                        list = list,
+                        error = null
+                    )
                 }
             } catch (e: Exception) {
-                container.reduce { MovieDetailContract.State.Error(e) }
+                container.reduce {
+                    MovieDetailContract.State.Content(
+                        isLoading = false,
+                        movieDetailsItem = null,
+                        list = listOf<Model>(ErrorItem()),
+                        error = e
+                    )
+                }
+                container.postEffect(
+                    MovieDetailContract.Effect.ShowFailMessage(
+                        ToastMessage(
+                            ErrorHandler.handleError(e)
+                        )
+                    )
+                )
             }
         }
     }
+
+    fun updateData() = loadData()
 
     fun openSimilarMovieDetail(itemId: Int) = navigateToDetail(itemId)
 
