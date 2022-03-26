@@ -14,7 +14,9 @@ class GetSimilarMovies @Inject constructor(
 
     override suspend fun execute(params: SimilarMoviesParams): List<MovieItem> {
         val response = moviesRepository.getSimilarMovies(
-            params.movieId, params.language, params.page, params.forceUpdate
+            params.movieId,
+            params.language,
+            params.page
         )
         return mapper.map(response)
     }

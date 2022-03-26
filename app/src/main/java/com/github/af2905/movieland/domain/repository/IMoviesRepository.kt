@@ -33,15 +33,9 @@ interface IMoviesRepository {
         forceUpdate: Boolean
     ): List<MovieEntity>
 
-    suspend fun getRecommendedMovies(
-        movieId: Int,
-        language: String?,
-        page: Int?,
-        forceUpdate: Boolean
-    ): List<MovieEntity>
+    suspend fun getRecommendedMovies(movieId: Int, language: String?, page: Int?): List<MovieEntity>
 
-    suspend fun getSimilarMovies(movieId: Int, language: String?, page: Int?, forceUpdate: Boolean)
-            : List<MovieEntity>
+    suspend fun getSimilarMovies(movieId: Int, language: String?, page: Int?): List<MovieEntity>
 
     suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity
     suspend fun getMovieActors(movieId: Int, language: String?): MovieActorsResponseDto

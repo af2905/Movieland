@@ -13,7 +13,10 @@ class GetTopRatedMovies @Inject constructor(
 ) : CoroutineUseCase<TopRatedMoviesParams, List<MovieItem>>() {
     override suspend fun execute(params: TopRatedMoviesParams): List<MovieItem> {
         val response = moviesRepository.getTopRatedMovies(
-            params.language, params.page, params.region, params.forceUpdate
+            params.language,
+            params.page,
+            params.region,
+            params.forceUpdate
         )
         return mapper.map(response)
     }

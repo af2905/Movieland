@@ -65,24 +65,18 @@ class MoviesRepository @Inject constructor(
         )
 
     override suspend fun getRecommendedMovies(
-        movieId: Int, language: String?, page: Int?, forceUpdate: Boolean
-    ) = loadMovies(
-        MovieType.RECOMMENDED.name,
-        movieId = movieId,
-        language = language,
-        page = page,
-        forceUpdate = forceUpdate
-    )
+        movieId: Int, language: String?, page: Int?
+    ): List<MovieEntity> {
+        val response = moviesApi.getRecommendedMovies(movieId, language, page)
+        return movieDtoMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
+    }
 
     override suspend fun getSimilarMovies(
-        movieId: Int, language: String?, page: Int?, forceUpdate: Boolean
-    ) = loadMovies(
-        MovieType.SIMILAR.name,
-        movieId = movieId,
-        language = language,
-        page = page,
-        forceUpdate = forceUpdate
-    )
+        movieId: Int, language: String?, page: Int?
+    ): List<MovieEntity> {
+        val response = moviesApi.getSimilarMovies(movieId, language, page)
+        return movieDtoMapper.map(response.movies, MovieType.SIMILAR.name, 0)
+    }
 
     override suspend fun getMovieActors(movieId: Int, language: String?) =
         moviesApi.getMovieActors(movieId = movieId, language = language)
