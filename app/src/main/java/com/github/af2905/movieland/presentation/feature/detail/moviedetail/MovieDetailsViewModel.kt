@@ -61,25 +61,21 @@ class MovieDetailsViewModel @Inject constructor(
         .map { (it as MovieDetailContract.State.Content).error != null }
         .asLiveData()
 
-    val movieDetailsItemClickListener = object : MovieDetailsItem.Listener {
-        override fun onLikedClick(item: MovieDetailsItem) {
-            container.intent {
-                container.reduce {
-                    if (this is MovieDetailContract.State.Content) {
-                        MovieDetailContract.State.Content(
-                            movieDetailsItem = this.movieDetailsItem?.copy(
-                                liked = !this.movieDetailsItem.liked
-                            ),
-                            list = this.list
-                        )
-                    } else {
-                        this
-                    }
+    val movieDetailsItemClickListener = MovieDetailsItem.Listener {
+        container.intent {
+            container.reduce {
+                if (this is MovieDetailContract.State.Content) {
+                    MovieDetailContract.State.Content(
+                        movieDetailsItem = this.movieDetailsItem?.copy(
+                            liked = !this.movieDetailsItem.liked
+                        ),
+                        list = this.list
+                    )
+                } else {
+                    this
                 }
             }
         }
-
-        override fun onBackClicked() = navigateBack()
     }
 
     init {
@@ -88,73 +84,10 @@ class MovieDetailsViewModel @Inject constructor(
 
     private fun loadData() {
         container.intent {
-            val list = mutableListOf<Model>()
             try {
-                getMovieDetails(MovieDetailsParams(movieId)).let {
-                    val result = it.getOrThrow()
-                    list.add(MovieDetailsDescItem(result))
-                }
-                getMovieActors(MovieActorsParams(movieId)).let { result ->
-                    val actors = result
-                        .getOrDefault(emptyList())
-                        .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
-                    if (actors.isNotEmpty()) {
-                        list.addAll(
-                            listOf(
-                                HeaderItem(R.string.actors_and_crew_title),
-                                emptySpaceNormal,
-                                HorizontalListItem(
-                                    actors,
-                                    id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
-                                ),
-                                emptySpaceNormal
-                            )
-                        )
-                    }
-                }
-                getSimilarMovies.invoke(SimilarMoviesParams((movieId))).let { result ->
-                    val similar = result
-                        .getOrDefault(emptyList())
-                        .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
-                    if (similar.isNotEmpty()) {
-                        list.addAll(
-                            listOf(
-                                HeaderItem(R.string.similar),
-                                emptySpaceNormal,
-                                HorizontalListItem(
-                                    similar,
-                                    id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
-                                )
-                            )
-                        )
-                    }
-                }
-                val movieDetailsDescItem =
-                    list.find { it is MovieDetailsDescItem } as MovieDetailsDescItem
-                container.reduce {
-                    MovieDetailContract.State.Content(
-                        isLoading = false,
-                        movieDetailsItem = movieDetailsDescItem.movieDetailsItem,
-                        list = list,
-                        error = null
-                    )
-                }
+                handleMovieDetail()
             } catch (e: Exception) {
-                container.reduce {
-                    MovieDetailContract.State.Content(
-                        isLoading = false,
-                        movieDetailsItem = null,
-                        list = listOf<Model>(ErrorItem()),
-                        error = e
-                    )
-                }
-                container.postEffect(
-                    MovieDetailContract.Effect.ShowFailMessage(
-                        ToastMessage(
-                            ErrorHandler.handleError(e)
-                        )
-                    )
-                )
+                handleError(e)
             }
         }
     }
@@ -163,18 +96,81 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun openSimilarMovieDetail(itemId: Int) = navigateToDetail(itemId)
 
+    private suspend fun handleMovieDetail() {
+        val list = mutableListOf<Model>()
+        getMovieDetails(MovieDetailsParams(movieId)).let {
+            val result = it.getOrThrow()
+            list.add(MovieDetailsDescItem(result))
+        }
+        getMovieActors(MovieActorsParams(movieId)).let { result ->
+            val actors = result
+                .getOrDefault(emptyList())
+                .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
+            if (actors.isNotEmpty()) {
+                list.addAll(
+                    listOf(
+                        HeaderItem(R.string.actors_and_crew_title),
+                        emptySpaceNormal,
+                        HorizontalListItem(
+                            actors,
+                            id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
+                        ),
+                        emptySpaceNormal
+                    )
+                )
+            }
+        }
+        getSimilarMovies.invoke(SimilarMoviesParams(movieId)).let { result ->
+            val similar = result
+                .getOrDefault(emptyList())
+                .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
+            if (similar.isNotEmpty()) {
+                list.addAll(
+                    listOf(
+                        HeaderItem(R.string.similar),
+                        emptySpaceNormal,
+                        HorizontalListItem(
+                            similar,
+                            id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
+                        )
+                    )
+                )
+            }
+        }
+        val movieDetailsDescItem = list.find { it is MovieDetailsDescItem } as MovieDetailsDescItem
+
+        container.reduce {
+            MovieDetailContract.State.Content(
+                isLoading = false,
+                movieDetailsItem = movieDetailsDescItem.movieDetailsItem,
+                list = list,
+                error = null
+            )
+        }
+    }
+
+    private suspend fun handleError(e: Exception) {
+        container.reduce {
+            MovieDetailContract.State.Content(
+                isLoading = false,
+                movieDetailsItem = null,
+                list = listOf<Model>(ErrorItem()),
+                error = e
+            )
+        }
+        container.postEffect(
+            MovieDetailContract.Effect.ShowFailMessage(
+                ToastMessage(
+                    ErrorHandler.handleError(e)
+                )
+            )
+        )
+    }
+
     private fun navigateToDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as DetailNavigator).forwardMovieDetail(itemId)
-            }))
-        }
-    }
-
-    private fun navigateBack() {
-        container.intent {
-            container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as DetailNavigator).back()
             }))
         }
     }

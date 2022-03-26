@@ -13,7 +13,10 @@ class GetUpcomingMovies @Inject constructor(
 ) : CoroutineUseCase<UpcomingMoviesParams, List<MovieItem>>() {
     override suspend fun execute(params: UpcomingMoviesParams): List<MovieItem> {
         val response = moviesRepository.getUpcomingMovies(
-            params.language, params.page, params.region, params.forceUpdate
+            params.language,
+            params.page,
+            params.region,
+            params.forceUpdate
         )
         return mapper.map(response)
     }

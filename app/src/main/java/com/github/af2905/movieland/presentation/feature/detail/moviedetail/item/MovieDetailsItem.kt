@@ -48,9 +48,8 @@ data class MovieDetailsItem(
         append(genreList)
     }
 
-    interface Listener : ItemDelegate.Listener {
+    fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: MovieDetailsItem)
-        fun onBackClicked()
     }
 }
 
