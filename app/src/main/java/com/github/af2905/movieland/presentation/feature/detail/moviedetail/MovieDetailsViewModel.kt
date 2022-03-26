@@ -27,6 +27,9 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+private const val ACTORS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
+private const val SIMILAR_MOVIE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
+
 class MovieDetailsViewModel @Inject constructor(
     args: MovieDetailsFragmentArgs,
     private val getMovieDetails: GetMovieDetails,
@@ -111,10 +114,7 @@ class MovieDetailsViewModel @Inject constructor(
                     listOf(
                         HeaderItem(R.string.actors_and_crew_title),
                         emptySpaceNormal,
-                        HorizontalListItem(
-                            actors,
-                            id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
-                        ),
+                        HorizontalListItem(actors, id = ACTORS_LIST_ID),
                         emptySpaceNormal
                     )
                 )
@@ -129,10 +129,8 @@ class MovieDetailsViewModel @Inject constructor(
                     listOf(
                         HeaderItem(R.string.similar),
                         emptySpaceNormal,
-                        HorizontalListItem(
-                            similar,
-                            id = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
-                        )
+                        HorizontalListItem(similar, id = SIMILAR_MOVIE_LIST_ID),
+                        emptySpaceNormal
                     )
                 )
             }
