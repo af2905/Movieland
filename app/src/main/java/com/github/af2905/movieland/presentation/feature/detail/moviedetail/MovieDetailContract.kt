@@ -13,11 +13,12 @@ class MovieDetailContract {
 
         data class Content(
             val isLoading: Boolean = false,
-            val movieDetailsItem: MovieDetailsItem = MovieDetailsItem(),
-            val list: List<Model> = emptyList()
+            val movieDetailsItem: MovieDetailsItem? = null,
+            val list: List<Model> = emptyList(),
+            val error: Throwable? = null
         ) : State()
 
-        data class Error(val e: Throwable?) : State()
+        //data class Error(val e: Throwable?) : State()
         //object EmptyResult : State()
     }
 

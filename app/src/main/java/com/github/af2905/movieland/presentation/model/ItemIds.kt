@@ -11,4 +11,5 @@ object ItemIds {
     const val SIMPLE_TEXT_ITEM_ID = -106
     const val USER_INFO_HEADER_ITEM_ID = -107
     const val NOT_FOUND_ITEM_ID = -108
+    const val ERROR_ITEM_ID = -109
 }

@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/gold_700</item>
         <item name="colorOnSecondary">@color/dark</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/darker_gray</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
@@ -40,7 +40,7 @@
         <item name="android:tint">@color/tintSearchBarLight</item>
     </style>
 
-    <style name="DefaultInfoIconsStyle">
+    <style name="DefaultInfoIconsStyleNotFound">
         <item name="android:background">@drawable/bg_search</item>
         <item name="android:tint">@color/tintSearchBarLight</item>
     </style>

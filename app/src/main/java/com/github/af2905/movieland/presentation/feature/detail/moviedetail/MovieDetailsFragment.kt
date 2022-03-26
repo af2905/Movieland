@@ -19,10 +19,7 @@ import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
-import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
-import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
-import com.github.af2905.movieland.presentation.model.item.MovieActorItem
-import com.github.af2905.movieland.presentation.model.item.MovieItem
+import com.github.af2905.movieland.presentation.model.item.*
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.flow.collect
@@ -62,7 +59,11 @@ class MovieDetailsFragment :
                 )
             },
             decoration = { getHorizontalListItemDecoration(it) }
-        )
+        ),
+        ItemDelegate(ErrorItem.VIEW_TYPE,
+            listener = ErrorItem.Listener {
+                viewModel.updateData()
+            })
     )
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
@@ -105,27 +106,27 @@ class MovieDetailsFragment :
         binding.movieDetailsToolbar.movieDetailCollapsingToolbarLayout
             .setExpandedTitleColor(Color.WHITE)
 
-        lifecycleScope.launchWhenCreated {
+/*        lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
 
                     is MovieDetailContract.State.Content -> {
-/*                        viewModel.updateSuccessData(
+*//*                        viewModel.updateSuccessData(
                             movieDetails = state.movieDetailsItem,
                             items = state.list
-                        )*/
+                        )*//*
                     }
                     //is MovieDetailContract.State.EmptyResult -> {
-                    /* viewModel.updateData(emptyList(), false)
-                     finishRefresh()*/
+                    *//* viewModel.updateData(emptyList(), false)
+                     finishRefresh()*//*
                     //}
                     is MovieDetailContract.State.Error -> {
-                        /* viewModel.showError(ErrorHandler.handleError(state.e))
-                         finishRefresh()*/
+*//*                         viewModel.showError(ErrorHandler.handleError(state.e))
+                         finishRefresh()*//*
                     }
                 }
             }
-        }
+        }*/
 
         binding.movieDetailsToolbar.movieDetailsAppBar.apply {
             removeOnOffsetChangedListener(appBarStateChangeListener)
