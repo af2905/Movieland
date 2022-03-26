@@ -14,7 +14,9 @@ class GetRecommendedMovies @Inject constructor(
 
     override suspend fun execute(params: RecommendedMoviesParams): List<MovieItem> {
         val response = moviesRepository.getRecommendedMovies(
-            params.movieId, params.language, params.page, params.forceUpdate
+            params.movieId,
+            params.language,
+            params.page
         )
         return mapper.map(response)
     }

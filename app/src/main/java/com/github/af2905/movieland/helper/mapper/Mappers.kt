@@ -2,7 +2,6 @@ package com.github.af2905.movieland.helper.mapper
 
 open class ListMapper<I, O>(private val mapper: IMapper<I, O>) : IListMapper<I, O> {
     override fun map(input: List<I>): List<O> = input.map { mapper.map(it) }
-
 }
 
 open class MovieResponseListMapper<I, T, D, O>(private val mapper: IMovieResponseMapper<I, T, D, O>) :

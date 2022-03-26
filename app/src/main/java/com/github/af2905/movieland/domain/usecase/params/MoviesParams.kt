@@ -31,15 +31,13 @@ data class UpcomingMoviesParams(
 data class RecommendedMoviesParams(
     val movieId: Int,
     val language: String? = null,
-    val page: Int? = null,
-    val forceUpdate: Boolean = false
+    val page: Int? = null
 )
 
 data class SimilarMoviesParams(
     val movieId: Int,
     val language: String? = null,
-    val page: Int? = null,
-    val forceUpdate: Boolean = false
+    val page: Int? = null
 )
 
 data class MovieDetailsParams(val movieId: Int, val language: String? = null)
