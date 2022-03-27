@@ -8,9 +8,7 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentPopularMovieBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
-import com.github.af2905.movieland.presentation.feature.home.HomeContract
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
@@ -42,28 +40,11 @@ class PopularMovieFragment :
                 )
             )
         }
-
-        lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                when (state) {
-                    is HomeContract.State.Loading -> {}
-                    is HomeContract.State.Success -> {
-                        viewModel.updateData(state.movies)
-                    }
-                    is HomeContract.State.EmptyResult -> {
-                        viewModel.updateData(emptyList())
-                    }
-                    is HomeContract.State.Error -> {
-                        viewModel.showError(ErrorHandler.handleError(state.e))
-                    }
-                }
-            }
-        }
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is HomeContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
-                    is HomeContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is PopularMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is PopularMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
         }

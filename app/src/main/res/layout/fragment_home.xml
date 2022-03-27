@@ -25,7 +25,7 @@
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/innerAppBarLayout"
-                app:visible="@{!viewModel.loading}"
+                app:visible="@{!viewModel.isLoading()}"
                 style="@style/TabsUnderlineBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,11 +64,11 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             linearLayoutManager="@{true}"
-                            recyclerSetData="@{viewModel.nowPlayingMovies}"
+                            recyclerSetData="@{viewModel.items}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/default_margin"
-                            app:visible="@{!viewModel.loading}" />
+                            app:visible="@{!viewModel.isLoading()}" />
                     </LinearLayout>
 
                     <androidx.appcompat.widget.Toolbar
@@ -86,7 +86,7 @@
                     style="@style/TabsLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:visible="@{!viewModel.loading}"
+                    app:visible="@{!viewModel.isLoading()}"
                     app:tabMode="fixed" />
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -94,7 +94,7 @@
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:visible="@{!viewModel.loading}"
+                app:visible="@{!viewModel.isLoading()}"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
             <include
@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="gone"
-                app:visible="@{viewModel.loading}" />
+                app:visible="@{viewModel.isLoading()}" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout>
 </layout>

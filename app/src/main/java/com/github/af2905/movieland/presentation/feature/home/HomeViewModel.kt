@@ -1,24 +1,22 @@
 package com.github.af2905.movieland.presentation.feature.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.*
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
-import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
-import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.HeaderItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,66 +31,72 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<HomeContract.State, HomeContract.Effect> =
-        Container(viewModelScope, HomeContract.State.Loading())
+        Container(viewModelScope, HomeContract.State.Content(isLoading = true))
 
-    var header = HeaderItem(R.string.now_playing)
+    val isLoading = container.state
+        .filter { it is HomeContract.State.Content }
+        .map { (it as HomeContract.State.Content).isLoading }
+        .asLiveData()
 
-    private val _headerVisible = MutableStateFlow(false)
-    val headerVisible = _headerVisible
+    val items = container.state
+        .filter { it is HomeContract.State.Content }
+        .map { (it as HomeContract.State.Content).list }
+        .asLiveData()
 
-    private val _nowPlayingMovies = MutableStateFlow<List<Model>>(listOf())
-    val nowPlayingMovies = _nowPlayingMovies.asStateFlow()
+    val header = container.state
+        .filter { it is HomeContract.State.Content }
+        .map { (it as HomeContract.State.Content).header }
+        .asLiveData()
 
-    private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    val headerVisible = container.state
+        .filter { it is HomeContract.State.Content }
+        .map { !((it as HomeContract.State.Content).list).isNullOrEmpty() }
+        .asLiveData()
 
     init {
-        _loading.tryEmit(true)
-            viewModelScope.launch {
-                homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
-                loadData()
-                uploadMoviesInit(this)
-                hideLoading()
-            }
+        viewModelScope.launch {
+            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+            loadData()
+            uploadMoviesInit(this)
+        }
     }
 
     private suspend fun uploadMoviesInit(scope: CoroutineScope) {
-            val popularMoviesAsync = scope.async {
-                getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList())
-            }
-            val upcomingMoviesAsync = scope.async {
-                getUpcomingMovies(UpcomingMoviesParams()).getOrDefault(emptyList())
-            }
-            val topRatedMoviesAsync = scope.async {
-                getTopRatedMovies(TopRatedMoviesParams()).getOrDefault(emptyList())
-            }
-            popularMoviesAsync.await()
-            upcomingMoviesAsync.await()
-            topRatedMoviesAsync.await()
+        val popularMoviesAsync = scope.async {
+            getPopularMovies(PopularMoviesParams()).getOrDefault(emptyList())
+        }
+        val upcomingMoviesAsync = scope.async {
+            getUpcomingMovies(UpcomingMoviesParams()).getOrDefault(emptyList())
+        }
+        val topRatedMoviesAsync = scope.async {
+            getTopRatedMovies(TopRatedMoviesParams()).getOrDefault(emptyList())
+        }
+        popularMoviesAsync.await()
+        upcomingMoviesAsync.await()
+        topRatedMoviesAsync.await()
     }
 
     private fun loadData(forceUpdate: Boolean = false) {
         container.intent {
-            container.reduce { HomeContract.State.Loading(nowPlayingMovies.value) }
             try {
                 getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).let { result ->
                     container.reduce {
                         result.getOrThrow().let {
-                            //homeRepository.nowPlayingMoviesUploaded()
-                            if (it.isEmpty()) HomeContract.State.EmptyResult
-                            else HomeContract.State.Success(it)
+                            HomeContract.State.Content(isLoading = false, list = it)
                         }
                     }
                 }
             } catch (e: Exception) {
-                container.reduce { HomeContract.State.Error(e) }
+                container.reduce {
+                    HomeContract.State.Content(isLoading = false, error = e)
+                }
+                container.postEffect(
+                    HomeContract.Effect.ShowFailMessage(
+                        ToastMessage(ErrorHandler.handleError(e))
+                    )
+                )
             }
         }
-    }
-
-    fun updateData(movies: List<Model>, headerVisibility: Boolean) {
-        _nowPlayingMovies.value = movies
-        _headerVisible.tryEmit(headerVisibility)
     }
 
     fun setForceUpdate() =
@@ -109,12 +113,4 @@ class HomeViewModel @Inject constructor(
             }))
         }
     }
-
-    fun showError(error: UiText) {
-        container.intent {
-            container.postEffect(HomeContract.Effect.ShowFailMessage(ToastMessage(error)))
-        }
-    }
-
-    private fun hideLoading() = _loading.tryEmit(false)
 }
