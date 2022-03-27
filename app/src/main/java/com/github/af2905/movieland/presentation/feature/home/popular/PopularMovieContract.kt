@@ -1,23 +1,20 @@
-package com.github.af2905.movieland.presentation.feature.home
+package com.github.af2905.movieland.presentation.feature.home.popular
 
-import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.base.UiEffect
 import com.github.af2905.movieland.presentation.base.UiState
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
-import com.github.af2905.movieland.presentation.model.item.HeaderItem
 
-class HomeContract {
+class PopularMovieContract {
 
     sealed class State : UiState() {
 
         data class Content(
             val isLoading: Boolean = false,
             val list: List<Model> = emptyList(),
-            val header: HeaderItem = HeaderItem(R.string.now_playing),
             val error: Throwable? = null
-        ) : State()
+        ) : PopularMovieContract.State()
     }
 
     sealed class Effect : UiEffect() {

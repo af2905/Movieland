@@ -13,7 +13,6 @@ import com.github.af2905.movieland.helper.text.ResourceUiText
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.presentation.common.pager.PageItem
@@ -104,21 +103,8 @@ class HomeFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
                 when (state) {
-                    is HomeContract.State.Loading -> {
-                        //startRefresh()
-                    }
-                    is HomeContract.State.Success -> {
-                        viewModel.updateData(state.movies, true)
-                        finishRefresh()
-                    }
-                    is HomeContract.State.EmptyResult -> {
-                        viewModel.updateData(emptyList(), false)
-                        finishRefresh()
-                    }
-                    is HomeContract.State.Error -> {
-                        viewModel.showError(ErrorHandler.handleError(state.e))
-                        //viewModel.showLoading(false)
-                        finishRefresh()
+                    is HomeContract.State.Content -> {
+                        if (!state.isLoading) finishRefresh()
                     }
                 }
             }
@@ -131,10 +117,6 @@ class HomeFragment :
                 }
             }
         }
-    }
-
-    private fun startRefresh() {
-        binding.homeSwipeRefreshLayout.isRefreshing = true
     }
 
     private fun finishRefresh() {

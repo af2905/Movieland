@@ -17,9 +17,6 @@ class MovieDetailContract {
             val list: List<Model> = emptyList(),
             val error: Throwable? = null
         ) : State()
-
-        //data class Error(val e: Throwable?) : State()
-        //object EmptyResult : State()
     }
 
     sealed class Effect : UiEffect() {

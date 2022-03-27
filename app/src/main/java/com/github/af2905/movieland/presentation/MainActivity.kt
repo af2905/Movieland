@@ -44,7 +44,7 @@ class MainActivity : DaggerAppCompatActivity() {
         navController = findNavController()
 
         setupBottomNavMenu(navController)
-        //setDestinationChangedListener()
+        setDestinationChangedListener()
 
         val workRequest = OneTimeWorkRequestBuilder<UpdateMoviesWorker>()
             .build()
