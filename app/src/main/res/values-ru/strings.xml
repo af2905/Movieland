@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movieland</string>
+
+    //BottomNavMenu
+    <string name="bottom_nav_menu_home_title">Главная</string>
+    <string name="bottom_nav_menu_search_title">Поиск</string>
+    <string name="bottom_nav_menu_profile_title">Профиль</string>
+
+    <string name="action_search">Поиск</string>
+
+    <string name="any_screen_more">ещё…</string>
+    <string name="hint_search_query">Введите поисковый запрос…</string>
+
+    //Headers
+    <string name="header">Заголовок</string>
+    <string name="popular">Популярные</string>
+    <string name="now_playing">Сейчас смотрят</string>
+    <string name="top_rated">Топ просмотров</string>
+    <string name="upcoming">Ожидаемые</string>
+    <string name="recommended">Рекомендуемые</string>
+    <string name="similar">Похожие</string>
+    <string name="adult">Для взрослых</string>
+    <string name="top_3_rated">Топ 3 рейтинга</string>
+
+    //Movie detail
+    <string name="actors_and_crew_title">Актеры и съемочная команда</string>
+
+    //Search
+    <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
+    <string name="search_popular_search_queries">Популярные поисковые запросы</string>
+
+    //Fail to connect
+    <string name="message_fail_to_connect">Похоже пропал интернет, проверьте соединение</string>
+    <string name="message_no_internet_connection">Что-то пошло не так, \nпроверьте интернет соединение и попробуйте снова</string>
+
+    <string name="any_screen_try_again">Попробовать снова</string>
+</resources>

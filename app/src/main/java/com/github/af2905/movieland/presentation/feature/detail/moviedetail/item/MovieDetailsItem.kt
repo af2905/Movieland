@@ -48,6 +48,8 @@ data class MovieDetailsItem(
         append(genreList)
     }
 
+    val taglineVisible : Boolean = tagline.isNotEmpty()
+
     fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: MovieDetailsItem)
     }
