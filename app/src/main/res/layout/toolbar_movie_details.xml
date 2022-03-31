@@ -20,7 +20,6 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/movieDetailsAppBar"
             android:layout_width="match_parent"
-            android:fitsSystemWindows="true"
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -29,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentScrim="?colorSurface"
-                android:fitsSystemWindows="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:title="@{item.title}"
