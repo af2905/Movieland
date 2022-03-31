@@ -112,6 +112,7 @@ class MovieDetailsViewModel @Inject constructor(
             if (actors.isNotEmpty()) {
                 list.addAll(
                     listOf(
+                        emptySpaceNormal,
                         HeaderItem(R.string.actors_and_crew_title),
                         emptySpaceNormal,
                         HorizontalListItem(actors, id = ACTORS_LIST_ID),

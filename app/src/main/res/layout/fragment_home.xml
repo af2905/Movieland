@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:visible="@{!viewModel.isLoading()}"
-                    app:tabMode="fixed" />
+                    app:tabMode="scrollable" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager2.widget.ViewPager2

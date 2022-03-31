@@ -67,7 +67,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
             android:text="@{item.movieDetailsItem.tagline}"
-            app:visible="@{item.movieDetailsItem.tagline != null}"
+            app:visible="@{item.movieDetailsItem.taglineVisible}"
             tools:text="«Два мира - одна судьба»" />
 
         <TextView
