@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:contentScrim="?colorSurface"
+                    app:scrimAnimationDuration="0"
                     app:expandedTitleGravity="top"
                     app:expandedTitleMarginStart="@dimen/default_margin"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
