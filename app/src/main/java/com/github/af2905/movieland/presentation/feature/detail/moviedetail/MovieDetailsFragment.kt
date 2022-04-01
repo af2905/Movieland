@@ -14,10 +14,7 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailsBinding
 import com.github.af2905.movieland.helper.ThemeHelper
 import com.github.af2905.movieland.presentation.base.BaseFragment
-import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
-import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemDelegate
-import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
+import com.github.af2905.movieland.presentation.common.*
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.model.item.*
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
@@ -108,11 +105,28 @@ class MovieDetailsFragment :
         }
 
         lifecycleScope.launchWhenCreated {
+            viewModel.container.state.collect { state ->
+                when (state) {
+                    is MovieDetailContract.State.Loading -> {
+                        viewModel.showLoading(true)
+                    }
+                    is MovieDetailContract.State.Content -> {
+                        viewModel.showContent(state.movieDetailsItem, state.list)
+                        viewModel.showLoading(false)
+                    }
+                    is MovieDetailContract.State.Error -> {
+                        viewModel.showError(ErrorHandler.handleError(state.e))
+                        viewModel.showLoading(false)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
                     is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.OpenActorDetail -> handleEffect(effect.navigator)
-                    is MovieDetailContract.Effect.MoveToBackScreen -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
