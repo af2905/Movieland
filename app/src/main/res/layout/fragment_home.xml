@@ -25,11 +25,11 @@
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/innerAppBarLayout"
-                app:visible="@{!viewModel.isLoading()}"
                 style="@style/TabsUnderlineBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="@dimen/size_0">
+                app:elevation="@dimen/size_0"
+                app:visible="@{!viewModel.isLoading()}">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsingToolbarLayout"
@@ -37,12 +37,12 @@
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:contentScrim="?colorSurface"
-                    app:scrimAnimationDuration="0"
                     app:expandedTitleGravity="top"
                     app:expandedTitleMarginStart="@dimen/default_margin"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+                    app:scrimAnimationDuration="0"
                     app:title="@string/app_name"
                     app:titleEnabled="true"
                     app:toolbarId="@+id/toolbar">

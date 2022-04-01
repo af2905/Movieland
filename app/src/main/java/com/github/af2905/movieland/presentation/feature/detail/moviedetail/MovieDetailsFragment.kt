@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,10 @@ import com.github.af2905.movieland.helper.ThemeHelper
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.*
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
-import com.github.af2905.movieland.presentation.model.item.*
+import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
+import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
+import com.github.af2905.movieland.presentation.model.item.MovieActorItem
+import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.flow.collect
@@ -56,37 +58,8 @@ class MovieDetailsFragment :
                 )
             },
             decoration = { getHorizontalListItemDecoration(it) }
-        ),
-        ItemDelegate(ErrorItem.VIEW_TYPE, listener = ErrorItem.Listener { viewModel.updateData() })
+        )
     )
-
-    private val appBarStateChangeListener = object : AppBarStateChangeListener() {
-        override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
-            when (state) {
-                State.COLLAPSED -> {
-                    val typedValue = TypedValue()
-                    requireActivity().theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
-                    binding.movieDetailsToolbar.toolbar.apply {
-                        background = ColorDrawable(typedValue.data)
-                        if (ThemeHelper.isCurrentThemeDark(context)) {
-                            navigationIcon?.setTint(Color.WHITE)
-                        } else {
-                            navigationIcon?.setTint(Color.DKGRAY)
-                        }
-                    }
-                }
-                State.IDLE -> {
-                    binding.movieDetailsToolbar.toolbar.apply {
-                        background = ColorDrawable(Color.TRANSPARENT)
-                        navigationIcon?.setTint(Color.WHITE)
-                    }
-                }
-                else -> Unit
-            }
-        }
-
-        override fun onScrolled(state: State, dy: Int) {}
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,6 +67,8 @@ class MovieDetailsFragment :
         binding.recyclerView.apply { adapter = baseAdapter }
 
         initToolbar()
+
+        val appBarStateChangeListener = getAppBarStateChangeListener()
 
         binding.movieDetailsToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
         binding.movieDetailsToolbar.movieDetailCollapsingToolbarLayout
@@ -141,6 +116,31 @@ class MovieDetailsFragment :
                 setDisplayShowHomeEnabled(true)
             }
         }
+    }
+
+    private fun getAppBarStateChangeListener() = object : AppBarStateChangeListener() {
+        override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
+            when (state) {
+                State.COLLAPSED -> {
+                    binding.movieDetailsToolbar.toolbar.apply {
+                        if (ThemeHelper.isCurrentThemeDark(context)) {
+                            navigationIcon?.setTint(Color.WHITE)
+                        } else {
+                            navigationIcon?.setTint(Color.DKGRAY)
+                        }
+                    }
+                }
+                State.IDLE -> {
+                    binding.movieDetailsToolbar.toolbar.apply {
+                        background = ColorDrawable(Color.TRANSPARENT)
+                        navigationIcon?.setTint(Color.WHITE)
+                    }
+                }
+                else -> Unit
+            }
+        }
+
+        override fun onScrolled(state: State, dy: Int) {}
     }
 
     private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {
