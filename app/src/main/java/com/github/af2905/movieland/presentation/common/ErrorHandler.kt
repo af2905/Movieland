@@ -6,8 +6,6 @@ import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.helper.text.of
 import timber.log.Timber
 
-
-
 object ErrorHandler {
 
     fun handleError(throwable: Throwable?) : UiText {

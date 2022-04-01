@@ -11,12 +11,13 @@ class MovieDetailContract {
 
     sealed class State : UiState() {
 
-        data class Content(
-            val isLoading: Boolean = false,
-            val movieDetailsItem: MovieDetailsItem? = null,
-            val list: List<Model> = emptyList(),
-            val error: Throwable? = null
-        ) : State()
+        object Loading : State() {
+            override fun toString(): String = javaClass.simpleName
+        }
+
+        data class Content(val movieDetailsItem: MovieDetailsItem, val list: List<Model>) : State()
+
+        data class Error(val e: Throwable?) : State()
     }
 
     sealed class Effect : UiEffect() {
@@ -24,6 +25,5 @@ class MovieDetailContract {
         data class ShowFailMessage(val message: ToastMessage) : Effect()
         data class OpenMovieDetail(val navigator: Navigate) : Effect()
         data class OpenActorDetail(val navigator: Navigate) : Effect()
-        data class MoveToBackScreen(val navigator: Navigate) : Effect()
     }
 }
