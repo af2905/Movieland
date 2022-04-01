@@ -34,10 +34,8 @@ class HomeFragment :
 
     private val nowPlayingAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            MovieItem.VIEW_TYPE,
-            listener = MovieItem.Listener { item, _ ->
-                viewModel.openDetail(item.id)
-            }
+            viewType = MovieItem.VIEW_TYPE,
+            listener = MovieItem.Listener { item, _ -> viewModel.openDetail(item.id) }
         )
     )
 

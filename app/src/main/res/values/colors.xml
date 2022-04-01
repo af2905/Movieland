@@ -18,8 +18,8 @@
     <color name="lightGrey">#D3D3D3</color>
     <color name="darkGrey">#A9A9A9</color>
 
-    <color name="lightGreyAlpha">#66D3D3D3</color>
-    <color name="darkGreyAlpha">#66A9A9A9</color>
+    <color name="lightGreyAlpha">#BFD3D3D3</color>
+    <color name="darkGreyAlpha">#BFA9A9A9</color>
 
     <color name="textColorPrimary">#C7000000</color>
     <color name="textColorSecondary">#94000000</color>

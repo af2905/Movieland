@@ -32,7 +32,7 @@
 
     //Fail to connect
     <string name="message_fail_to_connect">Похоже пропал интернет, проверьте соединение</string>
-    <string name="message_no_internet_connection">Что-то пошло не так, \nпроверьте интернет соединение и попробуйте снова</string>
+    <string name="message_no_internet_connection">Что-то пошло не так, \nпроверьте интернет соединение \nи попробуйте снова</string>
 
     <string name="any_screen_try_again">Попробовать снова</string>
 </resources>
