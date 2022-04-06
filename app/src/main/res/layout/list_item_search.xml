@@ -15,8 +15,9 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/searchContainer"
+        style="@style/SearchBackgroundStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
@@ -27,14 +28,16 @@
             android:id="@+id/searchInput"
             style="@style/SearchStyle"
             android:layout_width="0dp"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:importantForAutofill="no"
             android:inputType="textShortMessage"
+            app:clearQuery="@{item.clearText}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryListener="@{listener}"
-            app:clearQuery="@{item.clearText}"
             tools:hint="@string/hint_search_query"
             tools:ignore="LabelFor" />
 
@@ -43,27 +46,15 @@
             style="@style/SearchIconsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/default_margin"
+            android:onClick="@{() -> listener.deleteTextClicked()}"
             android:src="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="@id/searchInput"
+            app:layout_constraintStart_toEndOf="@id/searchInput"
             app:layout_constraintTop_toTopOf="@id/searchInput"
-            android:onClick="@{() -> listener.deleteTextClicked()}"
             app:visible="@{item.deleteVisible}"
             tools:ignore="ContentDescription" />
-
-        <ProgressBar
-            android:id="@+id/searchProgress"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:indeterminate="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="@id/searchInput"
-            app:layout_constraintTop_toTopOf="@id/searchInput"
-            app:visible="@{item.loading}"
-            tools:visibility="gone" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </LinearLayout>
 </layout>

@@ -8,12 +8,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.data.worker.UpdateMoviesWorker
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.github.af2905.movieland.di.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -28,6 +33,9 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //window.statusBarColor = Color.TRANSPARENT
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
@@ -37,6 +45,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
         setupBottomNavMenu(navController)
         setDestinationChangedListener()
+
+        val workRequest = OneTimeWorkRequestBuilder<UpdateMoviesWorker>()
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniqueWork(
+                UpdateMoviesWorker.WORKER_NAME,
+                ExistingWorkPolicy.REPLACE,
+                workRequest
+            )
     }
 
     private fun findNavController(): NavController {
@@ -58,6 +76,10 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp()
     }
 
     private fun setDestinationChangedListener() {

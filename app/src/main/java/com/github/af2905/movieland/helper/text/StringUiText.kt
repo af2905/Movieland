@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class StringUIText(private val str: String?) : ParcelableUIText {
+data class StringUiText(private val str: String?) : ParcelableUiText {
 
     override fun asCharSequence(context: Context) = str.orEmpty()
 }

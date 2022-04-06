@@ -13,8 +13,12 @@
 
     <dimen name="size_0">0dp</dimen>
 
+    <dimen name="default_elevation">2dp</dimen>
+
+    <dimen name="default_stroke_tiny">0.1dp</dimen>
     <dimen name="default_stroke">2dp</dimen>
     <dimen name="default_corners_radius">8dp</dimen>
+    <dimen name="default_corners_radius_big">32dp</dimen>
 
     <dimen name="default_divider_height">1dp</dimen>
     <dimen name="default_tab_indicator_height">1dp</dimen>
@@ -29,7 +33,7 @@
     <dimen name="default_icon_size">90dp</dimen>
     <dimen name="default_icon_size_medium">120dp</dimen>
 
-    <dimen name="backdrop_height">220dp</dimen>
+    <dimen name="backdrop_height">280dp</dimen>
     <dimen name="collapsing_toolbar_min_height">100dp</dimen>
     <dimen name="searchbar_height">56dp</dimen>
 

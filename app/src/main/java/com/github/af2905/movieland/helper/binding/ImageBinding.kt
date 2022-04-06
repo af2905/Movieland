@@ -12,7 +12,6 @@ import com.google.android.material.imageview.ShapeableImageView
 @BindingAdapter("app:src")
 fun ShapeableImageView.loadImage(src: String?) {
     val options: RequestOptions = RequestOptions()
-        .placeholder(R.drawable.ic_placeholder)
         .error(R.drawable.ic_placeholder)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .priority(Priority.HIGH)
