@@ -27,15 +27,16 @@ data class MovieItem(
     var voteAverageBackground = voteAverage?.let {
         when (voteAverage) {
             in RAD_RANGE -> R.drawable.bg_red_corners_8
-            in GRAY_RANGE -> R.drawable.bg_grey_corner_8
-            else -> R.drawable.bg_green_corners_8
+            in GREEN_RANGE -> R.drawable.bg_green_corners_8
+            else -> R.drawable.bg_dark_grey_corner_8
         }
     }
 
     companion object {
         const val VIEW_TYPE = R.layout.list_item_movie
-        val RAD_RANGE = 0.0..5.0
+        val RAD_RANGE = 0.1..5.0
         val GRAY_RANGE = 5.1..6.9
+        val GREEN_RANGE = 7.0..10.0
     }
 
     fun interface Listener : ItemDelegate.Listener {

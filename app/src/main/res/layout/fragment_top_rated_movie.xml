@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.presentation.feature.home.top.TopMovieViewModel" />
+            type="com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieViewModel" />
 
     </data>
 
@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        linearLayoutManager="@{false}"
-        recyclerSetData="@{viewModel.items}"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            linearLayoutManager="@{false}"
+            recyclerSetData="@{viewModel.items}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>

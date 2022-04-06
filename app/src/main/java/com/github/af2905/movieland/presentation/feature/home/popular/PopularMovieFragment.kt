@@ -2,6 +2,7 @@ package com.github.af2905.movieland.presentation.feature.home.popular
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentPopularMovieBinding
@@ -10,6 +11,8 @@ import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
+import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
+import kotlinx.coroutines.flow.collect
 
 class PopularMovieFragment :
     BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
@@ -21,14 +24,29 @@ class PopularMovieFragment :
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, position ->
-                viewModel.openDetail(item.id, position)
-            })
+            listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) })
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.apply { adapter = baseAdapter }
+        binding.recyclerView.apply {
+            adapter = baseAdapter
+            addItemDecoration(
+                VerticalListItemDecorator(
+                    marginTop = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    marginBottom = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
+                )
+            )
+        }
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.effect.collect { effect ->
+                when (effect) {
+                    is PopularMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is PopularMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.github.af2905.movieland.data.mapper
 
 import com.github.af2905.movieland.data.database.entity.DatesEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
-import com.github.af2905.movieland.data.database.entity.ResponseWithMovies
+import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
 import com.github.af2905.movieland.helper.mapper.IMapper
@@ -15,16 +15,15 @@ import javax.inject.Inject
 class MoviesResponseEntityToUIMapper @Inject constructor(
     private val datesMapper: DatesEntityToUIMapper,
     private val movieMapper: MovieEntityToUIListMapper,
-) : IMapper<ResponseWithMovies, MoviesResponse> {
-    override fun map(input: ResponseWithMovies) =
+) : IMapper<MoviesResponseEntity, MoviesResponse> {
+    override fun map(input: MoviesResponseEntity) =
         with(input) {
             MoviesResponse(
-                dates = moviesResponseEntity.dates?.let { datesMapper.map(it) },
-                page = moviesResponseEntity.page,
+                dates = dates?.let { datesMapper.map(it) },
+                page = page,
                 movies = movieMapper.map(input.movies),
-                totalPages = moviesResponseEntity.totalPages,
-                totalResults = moviesResponseEntity.totalResults,
-                movieType = moviesResponseEntity.movieType
+                totalPages = totalPages,
+                totalResults = totalResults
             )
         }
 }
@@ -52,7 +51,6 @@ class MovieEntityToUIMapper @Inject constructor() :
                 voteAverage = voteAverage,
                 voteAverageStar = voteAverage?.fiveStarRating()?.toFloat(),
                 voteCount = voteCount,
-                responseMovieType = responseMovieType,
                 releaseYear = releaseDate?.getYearFromReleaseDate()
             )
         }
