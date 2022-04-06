@@ -1,16 +1,16 @@
 package com.github.af2905.movieland.di.module
 
 import android.content.Context
+import com.github.af2905.movieland.data.datastore.ResourceDatastore
 import com.github.af2905.movieland.di.qualifier.AppContext
 import com.github.af2905.movieland.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 
 @Module
-class AppModule(private val context: Context) {
+class ResourceModule {
 
     @AppScope
     @Provides
-    @AppContext
-    fun provideAppContext() = context
+    fun provideResourceDatastore(@AppContext context: Context) = ResourceDatastore(context)
 }

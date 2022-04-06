@@ -15,5 +15,4 @@ interface RepositoryModule {
 
     @Binds
     fun bindSearchRepository(searchRepository: SearchRepository): ISearchRepository
-
 }

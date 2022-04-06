@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Movieland</string>
+    <string name="language">ru</string>
 
     //BottomNavMenu
     <string name="bottom_nav_menu_home_title">Главная</string>
