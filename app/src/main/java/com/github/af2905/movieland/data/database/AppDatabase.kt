@@ -28,5 +28,4 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
     abstract fun movieDetailsDao(): MovieDetailsDao
-
 }

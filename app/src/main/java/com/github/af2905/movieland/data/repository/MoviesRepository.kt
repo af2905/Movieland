@@ -5,6 +5,7 @@ import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
 import com.github.af2905.movieland.data.database.entity.MovieType
+import com.github.af2905.movieland.data.datastore.ResourceDatastore
 import com.github.af2905.movieland.data.mapper.MovieDetailsDtoToEntityMapper
 import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
 import com.github.af2905.movieland.domain.repository.IMoviesRepository
@@ -17,7 +18,8 @@ class MoviesRepository @Inject constructor(
     private val moviesApi: MoviesApi,
     private val movieDtoMapper: MovieDtoToEntityListMapper,
     private val movieDetailsDtoMapper: MovieDetailsDtoToEntityMapper,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val resourceDatastore: ResourceDatastore
 ) : IMoviesRepository {
 
     override suspend fun getNowPlayingMovies(
@@ -67,26 +69,42 @@ class MoviesRepository @Inject constructor(
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?
     ): List<MovieEntity> {
-        val response = moviesApi.getRecommendedMovies(movieId, language, page)
+        val response = moviesApi.getRecommendedMovies(
+            movieId = movieId,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page
+        )
         return movieDtoMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
     }
 
     override suspend fun getSimilarMovies(
         movieId: Int, language: String?, page: Int?
     ): List<MovieEntity> {
-        val response = moviesApi.getSimilarMovies(movieId, language, page)
+        val response = moviesApi.getSimilarMovies(
+            movieId = movieId,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page
+        )
         return movieDtoMapper.map(response.movies, MovieType.SIMILAR.name, 0)
     }
 
     override suspend fun getMovieActors(movieId: Int, language: String?) =
-        moviesApi.getMovieActors(movieId = movieId, language = language)
+        moviesApi.getMovieActors(
+            movieId = movieId,
+            language = language ?: resourceDatastore.getLanguage()
+        )
 
     override suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity =
-        movieDetailsDtoMapper.map(moviesApi.getMovieDetails(movieId = movieId, language = language))
+        movieDetailsDtoMapper.map(
+            moviesApi.getMovieDetails(
+                movieId = movieId,
+                language = language ?: resourceDatastore.getLanguage()
+            )
+        )
 
     private suspend fun loadMovies(
         type: String,
-        language: String?,
+        language: String? = resourceDatastore.getLanguage(),
         page: Int?,
         region: String? = null,
         movieId: Int? = null,

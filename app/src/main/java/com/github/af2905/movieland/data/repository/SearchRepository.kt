@@ -1,11 +1,15 @@
 package com.github.af2905.movieland.data.repository
 
 import com.github.af2905.movieland.data.api.SearchApi
+import com.github.af2905.movieland.data.datastore.ResourceDatastore
 import com.github.af2905.movieland.data.dto.MoviesResponseDto
 import com.github.af2905.movieland.domain.repository.ISearchRepository
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val searchApi: SearchApi) : ISearchRepository {
+class SearchRepository @Inject constructor(
+    private val searchApi: SearchApi,
+    private val resourceDatastore: ResourceDatastore
+) : ISearchRepository {
 
     override suspend fun getSearchMovie(
         query: String,
@@ -17,7 +21,7 @@ class SearchRepository @Inject constructor(private val searchApi: SearchApi) : I
     ): MoviesResponseDto {
         return searchApi.searchMovie(
             query = query,
-            language = language,
+            language = language ?: resourceDatastore.getLanguage(),
             page = page,
             adult = adult,
             region = region,

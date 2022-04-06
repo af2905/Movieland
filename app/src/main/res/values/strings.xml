@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Movieland</string>
+    <string name="language">en</string>
 
     //BottomNavMenu
     <string name="bottom_nav_menu_home_title">Home</string>

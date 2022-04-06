@@ -9,6 +9,8 @@
             name="viewModel"
             type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailsViewModel" />
 
+        <import type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailContract" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -19,33 +21,34 @@
         <include
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_details"
-            app:item="@{viewModel.movieDetailsItem}"
+            app:item="@{viewModel.container.state.toContent().movieDetailsItem}"
             app:listener="@{viewModel.movieDetailsItemClickListener}"
-            app:visible="@{!viewModel.isLoading &amp;&amp; !viewModel.isError()}" />
+            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             linearLayoutManager="@{false}"
-            recyclerSetData="@{viewModel.items}"
+            recyclerSetData="@{viewModel.container.state.toContent().list}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:visible="@{!viewModel.isLoading}" />
+            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
 
         <include
             android:id="@+id/shimmer"
             layout="@layout/fragment_movie_details_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:visible="@{viewModel.isLoading &amp;&amp; !viewModel.isError()}"
+            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Loading}"
             tools:visibility="gone" />
 
         <include
             android:id="@+id/error"
             layout="@layout/list_item_error"
-            app:item="@{viewModel.errorItem}"
+            app:item="@{viewModel.container.state.toError().errorItem}"
             app:listener="@{viewModel.errorItemClickListener}"
-            app:visible="@{!viewModel.isLoading &amp;&amp; viewModel.isError()}" />
+            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}"
+            tools:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

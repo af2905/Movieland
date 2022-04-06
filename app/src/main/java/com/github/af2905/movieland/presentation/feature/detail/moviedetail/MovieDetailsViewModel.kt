@@ -9,8 +9,8 @@ import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
 import com.github.af2905.movieland.domain.usecase.params.MovieActorsParams
 import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
 import com.github.af2905.movieland.domain.usecase.params.SimilarMoviesParams
-import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
+import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
@@ -24,8 +24,6 @@ import com.github.af2905.movieland.presentation.model.item.HeaderItem
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 private const val ACTORS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
@@ -44,27 +42,15 @@ class MovieDetailsViewModel @Inject constructor(
         Container(viewModelScope, MovieDetailContract.State.Loading)
 
     private val emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    private val _isError = MutableStateFlow(false)
-    val isError = _isError.asStateFlow()
-
-    private val _movieDetailsItem = MutableStateFlow(MovieDetailsItem())
-    val movieDetailsItem = _movieDetailsItem.asStateFlow()
-
-    private val _items = MutableStateFlow(emptyList<Model>())
-    val items = _items.asStateFlow()
-
-    val errorItem = ErrorItem()
+    private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
+    private val emptySpaceHuge = EmptySpaceItem(R.dimen.default_margin_huge)
 
     val movieDetailsItemClickListener = MovieDetailsItem.Listener {
         container.intent {
             container.reduce {
                 if (this is MovieDetailContract.State.Content) {
                     MovieDetailContract.State.Content(
-                        movieDetailsItem = this.movieDetailsItem?.copy(
+                        movieDetailsItem = this.movieDetailsItem.copy(
                             liked = !this.movieDetailsItem.liked
                         ),
                         list = this.list
@@ -92,11 +78,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateData() = loadData()
-
     fun openSimilarMovieDetail(itemId: Int) = navigateToDetail(itemId)
-
-    suspend fun showLoading(show: Boolean) = _isLoading.emit(show)
 
     private suspend fun handleMovieDetail(scope: CoroutineScope) {
         val list = mutableListOf<Model>()
@@ -116,7 +98,7 @@ class MovieDetailsViewModel @Inject constructor(
                         HeaderItem(R.string.actors_and_crew_title),
                         emptySpaceNormal,
                         HorizontalListItem(actors, id = ACTORS_LIST_ID),
-                        emptySpaceNormal
+                        emptySpaceBig
                     )
                 } else {
                     emptyList()
@@ -134,7 +116,7 @@ class MovieDetailsViewModel @Inject constructor(
                         HeaderItem(R.string.similar),
                         emptySpaceNormal,
                         HorizontalListItem(similar, id = SIMILAR_MOVIE_LIST_ID),
-                        emptySpaceNormal
+                        emptySpaceHuge
                     )
                 } else {
                     emptyList()
@@ -158,22 +140,19 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    suspend fun showContent(movieDetailsItem: MovieDetailsItem, list: List<Model>) {
-        _isError.emit(false)
-        _movieDetailsItem.emit(movieDetailsItem)
-        _items.emit(list)
-    }
-
-    suspend fun showError(error: UiText) {
-        _isError.emit(true)
+    private suspend fun handleError(e: Exception) {
+        container.reduce {
+            MovieDetailContract.State.Error(
+                ErrorItem(errorMessage = e.message.orEmpty()), e)
+        }
         container.intent {
-            container.postEffect(MovieDetailContract.Effect.ShowFailMessage(ToastMessage(error)))
+            container.postEffect(
+                MovieDetailContract.Effect.ShowFailMessage(
+                    ToastMessage(ErrorHandler.handleError(e))
+                )
+            )
         }
     }
-
-    private suspend fun handleError(e: Exception) =
-        container.reduce { MovieDetailContract.State.Error(e) }
-
 
     private fun navigateToDetail(itemId: Int) {
         container.intent {
