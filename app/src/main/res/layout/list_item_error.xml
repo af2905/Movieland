@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
             android:gravity="center_horizontal"
-            android:text="@{item.titleRes}"
+            android:text="@{item.errorMessage}"
             android:textSize="18sp"
             tools:text="@string/message_no_internet_connection"
             tools:textColor="@color/darkGrey" />
@@ -48,7 +48,7 @@
             android:layout_margin="@dimen/default_margin"
             android:gravity="center_horizontal"
             android:onClick="@{() -> listener.onItemClicked()}"
-            android:text="@{item.buttonRes}"
+            android:text="@string/any_screen_try_again"
             android:textAllCaps="false"
             android:textColor="?attr/colorPrimary"
             android:textSize="@dimen/default_text_medium"

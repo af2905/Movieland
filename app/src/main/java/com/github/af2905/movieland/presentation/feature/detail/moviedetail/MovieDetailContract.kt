@@ -6,6 +6,7 @@ import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import com.github.af2905.movieland.presentation.model.Model
+import com.github.af2905.movieland.presentation.model.item.ErrorItem
 
 class MovieDetailContract {
 
@@ -16,8 +17,10 @@ class MovieDetailContract {
         }
 
         data class Content(val movieDetailsItem: MovieDetailsItem, val list: List<Model>) : State()
+        data class Error(val errorItem: ErrorItem = ErrorItem(), val e: Throwable?) : State()
 
-        data class Error(val e: Throwable?) : State()
+        fun toContent(): Content? = if (this is Content) this else null
+        fun toError(): Error? = if (this is Error) this else null
     }
 
     sealed class Effect : UiEffect() {
