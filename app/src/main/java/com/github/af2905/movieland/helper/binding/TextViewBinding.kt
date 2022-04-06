@@ -1,10 +1,14 @@
 package com.github.af2905.movieland.helper.binding
 
+import android.content.res.ColorStateList
+import android.os.Build
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
+import com.github.af2905.movieland.R
 import com.github.af2905.movieland.helper.extension.formatVoteAverage
+import com.github.af2905.movieland.presentation.model.item.MovieItem
 
 private const val DEFAULT_RATING_FORMAT_DIGITS = 1
 
@@ -17,4 +21,23 @@ fun TextView.setText(@StringRes res: Int?) = res?.let { setText(res) }
 @BindingAdapter("app:voteAverage")
 fun TextView.setVoteAverage(voteAverage: Double?) {
     this.text = voteAverage?.formatVoteAverage(DEFAULT_RATING_FORMAT_DIGITS).orEmpty()
+}
+
+@BindingAdapter("app:voteAverageTextColor")
+fun TextView.setVoteAverageTextColor(voteAverage: Double?){
+    val voteAverageTextColor = voteAverage?.let {
+        when (voteAverage) {
+            in MovieItem.RAD_RANGE -> R.color.indianRed
+            in MovieItem.GREEN_RANGE -> R.color.forestGreen
+            else -> R.color.darkGrey
+        }
+    } ?: R.color.darkGrey
+    val color = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        ColorStateList.valueOf(
+            resources.getColor(voteAverageTextColor, context.theme)
+        )
+    } else {
+        ColorStateList.valueOf(resources.getColor(voteAverageTextColor))
+    }
+    this.setTextColor(color)
 }

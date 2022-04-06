@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package com.github.af2905.movieland.presentation.base
 
 import android.os.Bundle
@@ -6,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -16,7 +19,7 @@ import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewModel<NV>> :
+abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : ViewModel> :
     DaggerFragment(), Base<NV> {
 
     protected abstract fun layoutRes(): Int
@@ -57,12 +60,10 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : BaseViewM
             navigatorFactory = { getNavigator(navController) },
             requireContext = { requireContext() }
         )
-        viewModel.subscribeOnEffect { handleEffect(it) }
-
         onBind()
     }
 
-    override fun handleEffect(effect: UIEffect) {
+    override fun handleEffect(effect: UiEffect) {
         Timber.d("effect: ${effect}, class: $javaClass")
         base.handleEffect(effect)
     }

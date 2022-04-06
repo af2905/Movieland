@@ -9,13 +9,11 @@ import com.github.af2905.movieland.data.database.converter.ProductionCompanyConv
 import com.github.af2905.movieland.data.database.converter.ProductionCountryConverter
 import com.github.af2905.movieland.data.database.dao.MovieDao
 import com.github.af2905.movieland.data.database.dao.MovieDetailsDao
-import com.github.af2905.movieland.data.database.dao.MovieResponseDao
 import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
-import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 
 @Database(
-    entities = [MoviesResponseEntity::class, MovieEntity::class, MovieDetailsEntity::class],
+    entities = [MovieEntity::class, MovieDetailsEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -28,8 +26,6 @@ import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun movieResponseDao(): MovieResponseDao
     abstract fun movieDao(): MovieDao
     abstract fun movieDetailsDao(): MovieDetailsDao
-
 }

@@ -22,15 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> listener.onItemClicked(item.movieItem, position)}"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/default_margin_small"
-        android:paddingBottom="@dimen/default_margin_small">
+        android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="@dimen/movie_card_variant_width"
             android:layout_height="@dimen/movie_card_variant_height"
+            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
+            app:strokeColor="@color/darkGrey"
+            app:strokeWidth="@dimen/default_stroke_tiny"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
             app:src="@{item.movieItem.posterPath}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_placeholder" />
@@ -42,19 +44,6 @@
             android:gravity="top"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatRatingBar
-                style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:isIndicator="true"
-                android:minWidth="@dimen/default_margin"
-                android:numStars="@integer/default_num_stars"
-                android:progressBackgroundTint="@color/gold_700"
-                android:rating="@{item.movieItem.voteAverageStar}"
-                android:stepSize="0.5"
-                tools:rating="3.2" />
-
             <TextView
                 style="@style/TextView.Bold"
                 android:layout_width="match_parent"
@@ -62,19 +51,39 @@
                 android:layout_marginTop="@dimen/default_margin_small"
                 android:ellipsize="end"
                 android:maxLines="@integer/max_lines_2"
-                android:text="@{item.movieItem.title}"
-                tools:text="Мир дикого запада" />
+                android:text="@{item.titleWithReleaseYear}"
+                tools:text="Мир дикого запада (2020)" />
 
-            <TextView
-                style="@style/TextView.Small"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_small"
-                android:ellipsize="end"
-                android:maxLines="@integer/max_lines_2"
-                android:text="@{item.movieItem.releaseYear}"
-                android:textColor="@color/darkGrey"
-                tools:text="2021" />
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextView.Small.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin_small"
+                    android:gravity="center_vertical"
+                    app:voteAverageTextColor="@{item.movieItem.voteAverage}"
+                    app:voteAverage="@{item.movieItem.voteAverage}"
+                    tools:text="7.6" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:isIndicator="true"
+                    android:minWidth="@dimen/default_margin"
+                    android:numStars="@integer/default_num_stars"
+                    android:progressBackgroundTint="@color/gold_700"
+                    android:rating="@{item.movieItem.voteAverageStar}"
+                    android:stepSize="0.5"
+                    tools:rating="3.2" />
+
+            </LinearLayout>
 
             <TextView
                 style="@style/TextView.Small"
