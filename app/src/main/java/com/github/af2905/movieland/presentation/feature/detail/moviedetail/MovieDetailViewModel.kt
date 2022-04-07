@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.domain.usecase.movies.GetMovieActors
-import com.github.af2905.movieland.domain.usecase.movies.GetMovieDetails
+import com.github.af2905.movieland.domain.usecase.movies.GetMovieDetail
 import com.github.af2905.movieland.domain.usecase.movies.GetSimilarMovies
 import com.github.af2905.movieland.domain.usecase.params.MovieActorsParams
 import com.github.af2905.movieland.domain.usecase.params.MovieDetailsParams
@@ -13,8 +13,7 @@ import com.github.af2905.movieland.presentation.base.Container
 import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
-import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
-import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsDescItem
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailDescItem
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.item.MovieDetailsItem
 import com.github.af2905.movieland.presentation.model.ItemIds
 import com.github.af2905.movieland.presentation.model.Model
@@ -29,9 +28,9 @@ import javax.inject.Inject
 private const val ACTORS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
 private const val SIMILAR_MOVIE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
 
-class MovieDetailsViewModel @Inject constructor(
-    args: MovieDetailsFragmentArgs,
-    private val getMovieDetails: GetMovieDetails,
+class MovieDetailViewModel @Inject constructor(
+    args: MovieDetailFragmentArgs,
+    private val getMovieDetail: GetMovieDetail,
     private val getMovieActors: GetMovieActors,
     private val getSimilarMovies: GetSimilarMovies
 ) : ViewModel() {
@@ -84,7 +83,7 @@ class MovieDetailsViewModel @Inject constructor(
         val list = mutableListOf<Model>()
 
         val movieDetailsAsync = scope.async {
-            MovieDetailsDescItem(getMovieDetails(MovieDetailsParams(movieId)).getOrThrow())
+            MovieDetailDescItem(getMovieDetail(MovieDetailsParams(movieId)).getOrThrow())
         }
 
         val movieActorsAsync = scope.async {
@@ -157,7 +156,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun navigateToDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as DetailNavigator).forwardMovieDetail(itemId)
+                (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
             }))
         }
     }

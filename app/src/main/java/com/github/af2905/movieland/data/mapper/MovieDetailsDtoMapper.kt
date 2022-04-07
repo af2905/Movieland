@@ -4,10 +4,10 @@ import com.github.af2905.movieland.data.database.entity.GenreEntity
 import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
 import com.github.af2905.movieland.data.database.entity.ProductionCompanyEntity
 import com.github.af2905.movieland.data.database.entity.ProductionCountryEntity
-import com.github.af2905.movieland.data.dto.GenreDto
-import com.github.af2905.movieland.data.dto.MovieDetailsDto
-import com.github.af2905.movieland.data.dto.ProductionCompanyDto
-import com.github.af2905.movieland.data.dto.ProductionCountryDto
+import com.github.af2905.movieland.data.dto.movie.GenreDto
+import com.github.af2905.movieland.data.dto.movie.MovieDetailsDto
+import com.github.af2905.movieland.data.dto.movie.ProductionCompanyDto
+import com.github.af2905.movieland.data.dto.movie.ProductionCountryDto
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.helper.mapper.ListMapper
 import javax.inject.Inject

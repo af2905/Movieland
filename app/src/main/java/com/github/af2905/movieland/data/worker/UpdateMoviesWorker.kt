@@ -5,14 +5,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.github.af2905.movieland.domain.repository.IMoviesRepository
+import com.github.af2905.movieland.domain.repository.MoviesRepository
 import timber.log.Timber
 import javax.inject.Inject
 
 class UpdateMoviesWorker(
     context: Context,
     params: WorkerParameters,
-    private val repository: IMoviesRepository
+    private val repository: MoviesRepository
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
@@ -22,7 +22,7 @@ class UpdateMoviesWorker(
     }
 
     class Factory @Inject constructor(
-        private val repository: IMoviesRepository
+        private val repository: MoviesRepository
     ) : WorkerFactory() {
 
         override fun createWorker(

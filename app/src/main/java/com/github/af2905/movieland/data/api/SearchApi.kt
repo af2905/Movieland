@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.data.api
 
 import com.github.af2905.movieland.data.ApiParams
-import com.github.af2905.movieland.data.dto.MoviesResponseDto
+import com.github.af2905.movieland.data.dto.movie.MoviesResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
