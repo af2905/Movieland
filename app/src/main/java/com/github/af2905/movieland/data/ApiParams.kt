@@ -10,4 +10,5 @@ object ApiParams {
     const val QUERY = "query"
     const val INCLUDE_ADULT = "include_adult"
     const val YEAR = "year"
+    const val PERSON_ID = "person_id"
 }

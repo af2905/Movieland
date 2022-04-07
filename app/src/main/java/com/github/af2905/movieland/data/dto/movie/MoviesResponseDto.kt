@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.data.dto
+package com.github.af2905.movieland.data.dto.movie
 
 import com.google.gson.annotations.SerializedName
 

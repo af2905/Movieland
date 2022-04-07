@@ -4,9 +4,10 @@ import com.github.af2905.movieland.data.ApiParams.LANGUAGE
 import com.github.af2905.movieland.data.ApiParams.MOVIE_ID
 import com.github.af2905.movieland.data.ApiParams.PAGE
 import com.github.af2905.movieland.data.ApiParams.REGION
-import com.github.af2905.movieland.data.dto.MovieActorsResponseDto
-import com.github.af2905.movieland.data.dto.MovieDetailsDto
-import com.github.af2905.movieland.data.dto.MoviesResponseDto
+import com.github.af2905.movieland.data.dto.movie.MovieActorsResponseDto
+import com.github.af2905.movieland.data.dto.movie.MovieDetailsDto
+import com.github.af2905.movieland.data.dto.movie.MoviesResponseDto
+
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

@@ -10,14 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.databinding.FragmentMovieDetailsBinding
+import com.github.af2905.movieland.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.helper.ThemeHelper
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
-import com.github.af2905.movieland.presentation.feature.detail.DetailNavigator
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieActorItem
@@ -26,14 +25,14 @@ import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorat
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.flow.collect
 
-class MovieDetailsFragment :
-    BaseFragment<DetailNavigator, FragmentMovieDetailsBinding, MovieDetailsViewModel>() {
+class MovieDetailFragment :
+    BaseFragment<MovieDetailNavigator, FragmentMovieDetailBinding, MovieDetailViewModel>() {
 
-    override fun layoutRes(): Int = R.layout.fragment_movie_details
-    override fun viewModelClass(): Class<MovieDetailsViewModel> = MovieDetailsViewModel::class.java
-    override fun getNavigator(navController: NavController) = DetailNavigator(navController)
+    override fun layoutRes(): Int = R.layout.fragment_movie_detail
+    override fun viewModelClass(): Class<MovieDetailViewModel> = MovieDetailViewModel::class.java
+    override fun getNavigator(navController: NavController) = MovieDetailNavigator(navController)
 
-    val args: MovieDetailsFragmentArgs by navArgs()
+    val args: MovieDetailFragmentArgs by navArgs()
 
     private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
         HorizontalListAdapter(
