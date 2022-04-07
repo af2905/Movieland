@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class MovieDetailsModule {
+class MovieDetailModule {
 
     @Provides
-    fun provideMovieId(fragment: MovieDetailsFragment) : MovieDetailsFragmentArgs = fragment.args
+    fun provideMovieId(fragment: MovieDetailFragment) : MovieDetailFragmentArgs = fragment.args
 }

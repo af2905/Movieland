@@ -8,19 +8,19 @@ import com.github.af2905.movieland.data.database.entity.MovieType
 import com.github.af2905.movieland.data.datastore.ResourceDatastore
 import com.github.af2905.movieland.data.mapper.MovieDetailsDtoToEntityMapper
 import com.github.af2905.movieland.data.mapper.MovieDtoToEntityListMapper
-import com.github.af2905.movieland.domain.repository.IMoviesRepository
+import com.github.af2905.movieland.domain.repository.MoviesRepository
 import com.github.af2905.movieland.helper.extension.isNullOrEmpty
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class MoviesRepository @Inject constructor(
+class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
     private val movieDtoMapper: MovieDtoToEntityListMapper,
     private val movieDetailsDtoMapper: MovieDetailsDtoToEntityMapper,
     private val movieDao: MovieDao,
     private val resourceDatastore: ResourceDatastore
-) : IMoviesRepository {
+) : MoviesRepository {
 
     override suspend fun getNowPlayingMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean

@@ -3,9 +3,9 @@ package com.github.af2905.movieland.data.mapper
 import com.github.af2905.movieland.data.database.entity.DatesEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
 import com.github.af2905.movieland.data.database.entity.MoviesResponseEntity
-import com.github.af2905.movieland.data.dto.DatesDto
-import com.github.af2905.movieland.data.dto.MovieDto
-import com.github.af2905.movieland.data.dto.MoviesResponseDto
+import com.github.af2905.movieland.data.dto.movie.DatesDto
+import com.github.af2905.movieland.data.dto.movie.MovieDto
+import com.github.af2905.movieland.data.dto.movie.MoviesResponseDto
 import com.github.af2905.movieland.helper.extension.fiveStarRating
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
 import com.github.af2905.movieland.helper.extension.getYearFromReleaseDate
