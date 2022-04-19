@@ -4,44 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
     app:startDestination="@id/homeFragment">
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.github.af2905.movieland.presentation.feature.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/openMovieDetails"
+            android:id="@+id/openMovieDetail"
             app:destination="@id/movieDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.github.af2905.movieland.presentation.feature.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/openMovieDetails"
+            android:id="@+id/openMovieDetail"
             app:destination="@id/movieDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.github.af2905.movieland.presentation.feature.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/openMovieDetails"
+            android:id="@+id/openMovieDetail"
             app:destination="@id/movieDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailFragment"
         android:label="MovieDetailFragment"
         tools:layout="@layout/fragment_movie_detail">
         <action
-            android:id="@+id/openMovieDetails"
+            android:id="@+id/openMovieDetail"
             app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/openPersonDetail"
+            app:destination="@id/personDetailFragment" />
 
         <argument
             android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/personDetailFragment"
+        android:name="com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailFragment"
+        android:label="PersonDetailFragment">
+
+        <argument
+            android:name="personId"
             app:argType="integer" />
     </fragment>
 

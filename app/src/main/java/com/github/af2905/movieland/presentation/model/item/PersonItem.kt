@@ -5,7 +5,7 @@ import com.github.af2905.movieland.helper.extension.getFullPathToImage
 data class PersonItem(
     val id: Int,
     val name: String,
-    val birthday: String,
+    val birthday: String?,
     val knownForDepartment: String,
     val deathday: String?,
     val alsoKnownAs: List<String>?,
@@ -14,12 +14,10 @@ data class PersonItem(
     val biography: String,
     val placeOfBirth: String?,
     val adult: Boolean,
-    val imdbId: String,
-    val homepage: String?
+    val homepage: String?,
+    val liked: Boolean = false
 ) {
 
     var profilePath: String? = null
         get() = field.getFullPathToImage()
 }
-
-
