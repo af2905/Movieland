@@ -11,7 +11,7 @@ class HomeNavigator @Inject constructor(
 
     fun forwardMovieDetail(movieId: Int) {
         navController.navigate(
-            HomeFragmentDirections.openMovieDetails(movieId), NavOptions.optionsAnimSlide()
+            HomeFragmentDirections.openMovieDetail(movieId), NavOptions.optionsAnimSlide()
         )
     }
 }

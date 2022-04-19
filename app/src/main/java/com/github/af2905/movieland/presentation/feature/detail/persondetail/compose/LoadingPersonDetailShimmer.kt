@@ -3,6 +3,7 @@ package com.github.af2905.movieland.presentation.feature.detail.persondetail.com
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -94,18 +95,22 @@ fun ShimmerPersonDetailItem(
                     .background(brush = brush)
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Surface(
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(cardHeight / 10)
-                    .background(brush = brush)
-            )
+        LazyColumn {
+            items(5) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Surface(
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(cardHeight / 10)
+                            .background(brush = brush)
+                    )
+                }
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.helper.extension.getFullPathToImage
 import com.github.af2905.movieland.presentation.model.item.PersonItem
+import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -32,9 +34,16 @@ fun PersonItem(item: PersonItem) {
             contentScale = ContentScale.FillWidth,
             error = painterResource(id = R.drawable.ic_account),
             modifier = Modifier
-                .heightIn(300.dp, 500.dp)
+                .height(500.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(8.dp)),
+            shimmerParams = ShimmerParams(
+                baseColor = MaterialTheme.colors.background,
+                highlightColor = Color.LightGray.copy(alpha = .3f),
+                durationMillis = 1300,
+                dropOff = 0.65f,
+                tilt = 20f
+            )
         )
 
         Spacer(Modifier.height(16.dp))
