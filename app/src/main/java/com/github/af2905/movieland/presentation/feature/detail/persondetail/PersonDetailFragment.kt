@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.compose.BaseComposeFragment
-import com.github.af2905.movieland.presentation.feature.detail.persondetail.compose.DrawPersonDetailScreen
+import com.github.af2905.movieland.presentation.feature.detail.persondetail.compose.PersonDetailScreen
 
 class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewModel>() {
 
@@ -24,7 +24,7 @@ class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewM
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
-            setContent { DrawPersonDetailScreen(viewModel) }
+            setContent { PersonDetailScreen(viewModel) }
         }
     }
 }
