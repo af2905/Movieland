@@ -1,12 +1,12 @@
 package com.github.af2905.movieland.data.mapper
 
-import com.github.af2905.movieland.data.dto.people.PersonDetailsResponseDto
+import com.github.af2905.movieland.data.dto.people.PersonDetailResponseDto
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.presentation.model.item.PersonItem
 import javax.inject.Inject
 
-class PersonDetailsDtoMapper @Inject constructor() : IMapper<PersonDetailsResponseDto, PersonItem> {
-    override fun map(input: PersonDetailsResponseDto): PersonItem {
+class PersonDetailsDtoMapper @Inject constructor() : IMapper<PersonDetailResponseDto, PersonItem> {
+    override fun map(input: PersonDetailResponseDto): PersonItem {
         return PersonItem(
             id = input.id,
             name = input.name,
@@ -19,7 +19,6 @@ class PersonDetailsDtoMapper @Inject constructor() : IMapper<PersonDetailsRespon
             biography = input.biography,
             placeOfBirth = input.placeOfBirth,
             adult = input.adult,
-            imdbId = input.imdbId,
             homepage = input.homepage
         ).also { it.profilePath = input.profilePath }
     }

@@ -23,7 +23,6 @@ import com.github.af2905.movieland.presentation.model.item.MovieActorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.coroutines.flow.collect
 
 class MovieDetailFragment :
     BaseFragment<MovieDetailNavigator, FragmentMovieDetailBinding, MovieDetailViewModel>() {
@@ -40,22 +39,14 @@ class MovieDetailFragment :
             adapter = {
                 BaseAdapter(
                     ItemDelegate(
-                        MovieActorItem.VIEW_TYPE,
-                        listener = MovieActorItem.Listener { item, position ->
-                            //viewModel.openActorDetail(item, position)
-                        })
-                )
-            },
-            decoration = { getHorizontalListItemDecoration(it) }
-        ),
-        HorizontalListAdapter(
-            layout = HorizontalListItem.VIEW_TYPE,
-            adapter = {
-                BaseAdapter(
-                    ItemDelegate(
                         MovieItem.VIEW_TYPE,
                         listener = MovieItem.Listener { item, _ ->
                             viewModel.openSimilarMovieDetail(item.id)
+                        }),
+                    ItemDelegate(
+                        MovieActorItem.VIEW_TYPE,
+                        listener = MovieActorItem.Listener { item, _ ->
+                            viewModel.openPersonDetail(item.id)
                         })
                 )
             },
@@ -81,22 +72,11 @@ class MovieDetailFragment :
             addOnOffsetChangedListener(appBarStateChangeListener)
         }
 
-/*        lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                when (state) {
-                    is MovieDetailContract.State.Error -> {
-                        viewModel.showError(ErrorHandler.handleError(state.e))
-                    }
-                    else -> Unit
-                }
-            }
-        }*/
-
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
                     is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
-                    is MovieDetailContract.Effect.OpenActorDetail -> handleEffect(effect.navigator)
+                    is MovieDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }

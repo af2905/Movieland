@@ -36,4 +36,13 @@
 
     <string name="any_screen_try_again">try again</string>
 
+    //Person detail
+    <string name="person_detail_name">name</string>
+    <string name="person_detail_birthday">birthday</string>
+    <string name="person_detail_place_of_birth">place of birth</string>
+    <string name="person_detail_known_for_department">known for department</string>
+    <string name="person_detail_deathday">deathday</string>
+    <string name="person_detail_popularity">popularity</string>
+    <string name="person_detail_biography">biography</string>
+
 </resources>

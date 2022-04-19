@@ -11,7 +11,13 @@ class MovieDetailNavigator @Inject constructor(
 
     fun forwardMovieDetail(movieId: Int) {
         navController.navigate(
-            MovieDetailFragmentDirections.openMovieDetails(movieId), NavOptions.optionsAnimSlide()
+            MovieDetailFragmentDirections.openMovieDetail(movieId), NavOptions.optionsAnimSlide()
+        )
+    }
+
+    fun forwardPersonDetail(personId: Int) {
+        navController.navigate(
+            MovieDetailFragmentDirections.openPersonDetail(personId), NavOptions.optionsAnimSlide()
         )
     }
 }

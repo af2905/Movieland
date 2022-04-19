@@ -13,11 +13,11 @@ class PeopleRepositoryImpl @Inject constructor(
     private val resourceDatastore: ResourceDatastore
 ) : PeopleRepository {
 
-    override suspend fun getPersonDetails(
+    override suspend fun getPersonDetail(
         personId: Int,
         language: String?
     ): PersonItem {
-        val response = peopleApi.getPersonDetails(
+        val response = peopleApi.getPersonDetail(
             personId = personId,
             language = language ?: resourceDatastore.getLanguage()
         )

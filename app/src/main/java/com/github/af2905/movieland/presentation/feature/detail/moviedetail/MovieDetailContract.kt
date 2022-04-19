@@ -27,6 +27,6 @@ class MovieDetailContract {
 
         data class ShowFailMessage(val message: ToastMessage) : Effect()
         data class OpenMovieDetail(val navigator: Navigate) : Effect()
-        data class OpenActorDetail(val navigator: Navigate) : Effect()
+        data class OpenPersonDetail(val navigator: Navigate) : Effect()
     }
 }
