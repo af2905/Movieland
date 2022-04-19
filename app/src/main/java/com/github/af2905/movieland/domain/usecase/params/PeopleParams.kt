@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.domain.usecase.params
 
-data class PersonParams(
+data class PersonDetailParams(
     val movieId: Int,
     val language: String? = null
 )

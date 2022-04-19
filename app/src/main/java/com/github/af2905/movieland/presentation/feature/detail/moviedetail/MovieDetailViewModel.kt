@@ -77,7 +77,8 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun openSimilarMovieDetail(itemId: Int) = navigateToDetail(itemId)
+    fun openSimilarMovieDetail(itemId: Int) = navigateToMovieDetail(itemId)
+    fun openPersonDetail(itemId: Int) = navigateToPersonDetail(itemId)
 
     private suspend fun handleMovieDetail(scope: CoroutineScope) {
         val list = mutableListOf<Model>()
@@ -153,10 +154,18 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToDetail(itemId: Int) {
+    private fun navigateToMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
+            }))
+        }
+    }
+
+    private fun navigateToPersonDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
+                (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)
             }))
         }
     }
