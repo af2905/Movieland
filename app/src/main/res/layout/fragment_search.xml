@@ -8,6 +8,7 @@
             name="viewModel"
             type="com.github.af2905.movieland.presentation.feature.search.SearchViewModel" />
 
+        <import type="com.github.af2905.movieland.presentation.feature.search.SearchContract" />
     </data>
 
     <LinearLayout
@@ -15,19 +16,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            style="@style/TextView.Medium.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:text="@string/search_title" />
+
         <include
             android:id="@+id/search"
             layout="@layout/list_item_search"
-            app:item="@{viewModel.searchItem}" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            app:item="@{viewModel.container.state.searchItem()}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchRecyclerView"
             linearLayoutManager="@{false}"
-            recyclerSetData="@{viewModel.items}"
+            recyclerSetData="@{viewModel.container.state.list()}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 </layout>

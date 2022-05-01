@@ -1,20 +1,56 @@
 package com.github.af2905.movieland.presentation.feature.search
 
-import com.github.af2905.movieland.helper.extension.empty
 import com.github.af2905.movieland.presentation.base.UiEffect
 import com.github.af2905.movieland.presentation.base.UiState
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
+import com.github.af2905.movieland.presentation.model.item.LoadingItem
+import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 class SearchContract {
 
     sealed class State : UiState() {
-        data class Loading (val query: String = String.empty) : State()
-        data class EmptyQuery(val list: List<Model>) : State()
-        data class Success(val list: List<Model>) : State()
-        data class Error(val e: Throwable?) : State()
-        object EmptyResult : State()
+        data class Loading(
+            val searchItem: SearchItem,
+            val list: List<Model> = listOf(LoadingItem())
+        ) : State()
+
+        data class EmptyQuery(
+            val searchItem: SearchItem = SearchItem(),
+            val list: List<Model> = emptyList()
+        ) : State()
+
+        data class Content(
+            val searchItem: SearchItem,
+            val list: List<Model>
+        ) : State()
+
+        data class Error(val searchItem: SearchItem, val list: List<Model>, val e: Throwable?) :
+            State()
+
+        data class EmptyResult(val searchItem: SearchItem, val list: List<Model>) : State()
+
+        fun searchItem(): SearchItem = when (this) {
+            is Loading -> this.searchItem
+            is EmptyQuery -> this.searchItem
+            is Content -> this.searchItem
+            is Error -> this.searchItem
+            is EmptyResult -> this.searchItem
+        }
+
+        fun list(): List<Model> = when (this) {
+            is Loading -> this.list
+            is EmptyQuery -> this.list
+            is Content -> this.list
+            is Error -> this.list
+            is EmptyResult -> this.list
+        }
+
+        fun toLoading(): Loading? = if (this is Loading) this else null
+        fun toContent(): Content? = if (this is Content) this else null
+        fun toEmptyQuery(): EmptyQuery? = if (this is EmptyQuery) this else null
+        fun toError(): Error? = if (this is Error) this else null
     }
 
     sealed class Effect : UiEffect() {
