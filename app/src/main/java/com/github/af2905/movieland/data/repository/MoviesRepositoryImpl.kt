@@ -14,6 +14,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+private const val DEFAULT_UPDATE_MOVIE_HOURS = 24L
+
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
     private val movieDtoMapper: MovieDtoToEntityListMapper,
@@ -26,9 +28,9 @@ class MoviesRepositoryImpl @Inject constructor(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
     ): List<MovieEntity> =
         loadMovies(
-            MovieType.NOW_PLAYING.name,
-            language,
-            page,
+            type = MovieType.NOW_PLAYING.name,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page,
             region = region,
             forceUpdate = forceUpdate
         )
@@ -38,8 +40,8 @@ class MoviesRepositoryImpl @Inject constructor(
     ): List<MovieEntity> =
         loadMovies(
             MovieType.POPULAR.name,
-            language,
-            page,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page,
             region = region,
             forceUpdate = forceUpdate
         )
@@ -49,8 +51,8 @@ class MoviesRepositoryImpl @Inject constructor(
     ): List<MovieEntity> =
         loadMovies(
             MovieType.TOP_RATED.name,
-            language,
-            page,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page,
             region = region,
             forceUpdate = forceUpdate
         )
@@ -60,8 +62,8 @@ class MoviesRepositoryImpl @Inject constructor(
     ): List<MovieEntity> =
         loadMovies(
             MovieType.UPCOMING.name,
-            language,
-            page,
+            language = language ?: resourceDatastore.getLanguage(),
+            page = page,
             region = region,
             forceUpdate = forceUpdate
         )
@@ -104,7 +106,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
     private suspend fun loadMovies(
         type: String,
-        language: String? = resourceDatastore.getLanguage(),
+        language: String?,
         page: Int?,
         region: String? = null,
         movieId: Int? = null,
@@ -118,10 +120,15 @@ class MoviesRepositoryImpl @Inject constructor(
         val currentTime = Calendar.getInstance().timeInMillis
 
         val timeDiff = timeStamp?.let {
-            periodOfTimeInHours(timeStamp = it, currentTime = currentTime)
+            periodOfTimeInHours(
+                timeStamp = it,
+                currentTime = currentTime
+            )
         }
 
-        val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
+        val needToUpdate = timeDiff?.let {
+            it > TimeUnit.HOURS.toMillis(DEFAULT_UPDATE_MOVIE_HOURS)
+        }
 
         if (count.isNullOrEmpty() || needToUpdate == true || forceUpdate) {
             val dto = when (type) {
@@ -139,13 +146,6 @@ class MoviesRepositoryImpl @Inject constructor(
         return movieDao.getByType(type).orEmpty()
     }
 
-    private fun periodOfTimeInMin(timeStamp: Long, currentTime: Long) =
-        TimeUnit.MILLISECONDS.toMinutes(currentTime - timeStamp)
-
     private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =
         TimeUnit.MILLISECONDS.toHours(currentTime - timeStamp)
-
-    companion object {
-        const val DEFAULT_UPDATE_MOVIE_HOURS = 24
-    }
 }

@@ -2,13 +2,14 @@ package com.github.af2905.movieland.presentation.model.item
 
 import androidx.annotation.StringRes
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.helper.extension.empty
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.ItemIds.SEARCH_ITEM_ID
 import com.github.af2905.movieland.presentation.model.Model
 
 data class SearchItem(
     override val id: Int = SEARCH_ITEM_ID,
-    var searchString: String = "",
+    var searchString: String = String.empty,
     var queryHint: String = "",
     @StringRes var queryHintRes: Int = R.string.hint_search_query,
     var deleteVisible: Boolean = false,

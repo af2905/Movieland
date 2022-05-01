@@ -12,7 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,11 +76,6 @@ fun PersonBiography(item: PersonItem) {
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Text(
-            text = stringResource(id = R.string.person_detail_biography),
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6,
-        )
         Spacer(Modifier.height(16.dp))
         Text(text = item.biography)
     }
