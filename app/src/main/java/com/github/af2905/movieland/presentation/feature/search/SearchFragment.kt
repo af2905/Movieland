@@ -8,10 +8,10 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
+import com.github.af2905.movieland.presentation.model.item.SearchQueryMovieNameItem
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
@@ -24,6 +24,12 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, _ ->
                 viewModel.openDetail(item.id)
+            }
+        ),
+        ItemDelegate(
+            SearchQueryMovieNameItem.VIEW_TYPE,
+            listener = SearchQueryMovieNameItem.Listener { item ->
+                viewModel.searchTextChanged(item.title)
             }
         )
     )
@@ -46,19 +52,6 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
             )
         }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                when (state) {
-                    is SearchContract.State.Loading -> viewModel.handleSearchMovie(state.query)
-                    is SearchContract.State.EmptyQuery -> viewModel.handleEmptyQuery(state.list)
-                    is SearchContract.State.Success -> viewModel.handleSuccess(state.list)
-                    is SearchContract.State.EmptyResult -> viewModel.handleEmptyResult()
-                    is SearchContract.State.Error -> {
-                        viewModel.showError(ErrorHandler.handleError(state.e))
-                    }
-                }
-            }
-        }
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {

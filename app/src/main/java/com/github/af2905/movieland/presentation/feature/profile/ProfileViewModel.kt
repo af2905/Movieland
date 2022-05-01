@@ -5,6 +5,7 @@ import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.base.Container
 import com.github.af2905.movieland.presentation.feature.search.SearchContract
+import com.github.af2905.movieland.presentation.model.item.SearchItem
 import com.github.af2905.movieland.presentation.model.item.UserInfoHeaderItem
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class ProfileViewModel @Inject constructor(
 ) : BaseViewModel<SearchContract.State, SearchContract.Effect>(coroutineDispatcherProvider) {
 
     val container: Container<SearchContract.State, SearchContract.Effect> =
-        Container(viewModelScope, SearchContract.State.Loading())
+        Container(viewModelScope, SearchContract.State.Loading(SearchItem()))
 
     val userInfoHeader = UserInfoHeaderItem()
 
