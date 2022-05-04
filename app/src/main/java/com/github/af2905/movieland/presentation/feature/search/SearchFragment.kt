@@ -9,9 +9,10 @@ import com.github.af2905.movieland.databinding.FragmentSearchBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
-import com.github.af2905.movieland.presentation.model.item.SearchQueryMovieNameItem
+import com.github.af2905.movieland.presentation.model.item.SearchQueryItem
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
@@ -22,15 +23,15 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, _ ->
-                viewModel.openDetail(item.id)
-            }
+            listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) }
         ),
         ItemDelegate(
-            SearchQueryMovieNameItem.VIEW_TYPE,
-            listener = SearchQueryMovieNameItem.Listener { item ->
-                viewModel.searchTextChanged(item.title)
-            }
+            SearchQueryItem.VIEW_TYPE,
+            listener = SearchQueryItem.Listener { item -> viewModel.searchTextChanged(item.title) }
+        ),
+        ItemDelegate(
+            ErrorItem.VIEW_TYPE,
+            listener = ErrorItem.Listener { viewModel.update() }
         )
     )
 
