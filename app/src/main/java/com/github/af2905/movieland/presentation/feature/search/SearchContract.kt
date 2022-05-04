@@ -46,11 +46,6 @@ class SearchContract {
             is Error -> this.list
             is EmptyResult -> this.list
         }
-
-        fun toLoading(): Loading? = if (this is Loading) this else null
-        fun toContent(): Content? = if (this is Content) this else null
-        fun toEmptyQuery(): EmptyQuery? = if (this is EmptyQuery) this else null
-        fun toError(): Error? = if (this is Error) this else null
     }
 
     sealed class Effect : UiEffect() {
