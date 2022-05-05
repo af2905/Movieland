@@ -31,12 +31,12 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
-            app:item="@{viewModel.container.state.searchItem()}" />
+            app:item="@{viewModel.container.state.searchItem}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchRecyclerView"
             linearLayoutManager="@{false}"
-            recyclerSetData="@{viewModel.container.state.list()}"
+            recyclerSetData="@{viewModel.container.state.list}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
