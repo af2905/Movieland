@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.data.mapper
 
-import com.github.af2905.movieland.data.dto.MovieActorDto
+import com.github.af2905.movieland.data.dto.movie.MovieActorDto
 import com.github.af2905.movieland.helper.mapper.IMapper
 import com.github.af2905.movieland.presentation.model.item.MovieActorItem
 import javax.inject.Inject

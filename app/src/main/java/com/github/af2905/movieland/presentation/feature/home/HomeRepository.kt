@@ -1,11 +1,11 @@
 package com.github.af2905.movieland.presentation.feature.home
 
-import com.github.af2905.movieland.helper.extension.launchCollect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor() : HomeRepository {
@@ -20,8 +20,14 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         scope: CoroutineScope,
         collector: suspend (force: Boolean) -> Unit
     ) {
-        job = forceUpdate.launchCollect(scope, collector)
+        //job = forceUpdate.launchCollect(scope, collector)
+        job = scope.launch {
+            forceUpdate.collect { collector(it) }
+        }
     }
+
+    //fun <T> Flow<T>.launchCollect(scope: CoroutineScope, collector: suspend (T) -> Unit) =
+    //    scope.launch { collect(collector) }
 
     override fun forceUpdate() {
         _forceUpdate.tryEmit(true)

@@ -1,20 +1,44 @@
 package com.github.af2905.movieland.presentation.feature.search
 
-import com.github.af2905.movieland.helper.extension.empty
 import com.github.af2905.movieland.presentation.base.UiEffect
 import com.github.af2905.movieland.presentation.base.UiState
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
+import com.github.af2905.movieland.presentation.model.item.LoadingItem
+import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 class SearchContract {
 
-    sealed class State : UiState() {
-        data class Loading (val query: String = String.empty) : State()
-        data class EmptyQuery(val list: List<Model>) : State()
-        data class Success(val list: List<Model>) : State()
-        data class Error(val e: Throwable?) : State()
-        object EmptyResult : State()
+    sealed class State(
+        open val searchItem: SearchItem,
+        open val list: List<Model>
+    ) : UiState() {
+        data class Loading(
+            override val searchItem: SearchItem,
+            override val list: List<Model> = listOf(LoadingItem())
+        ) : State(searchItem, list)
+
+        data class EmptyQuery(
+            override val searchItem: SearchItem = SearchItem(),
+            override val list: List<Model> = emptyList()
+        ) : State(searchItem, list)
+
+        data class Content(
+            override val searchItem: SearchItem,
+            override val list: List<Model>
+        ) : State(searchItem, list)
+
+        data class Error(
+            override val searchItem: SearchItem,
+            override val list: List<Model>,
+            val e: Throwable?
+        ) : State(searchItem, list)
+
+        data class EmptyResult(
+            override val searchItem: SearchItem,
+            override val list: List<Model>
+        ) : State(searchItem, list)
     }
 
     sealed class Effect : UiEffect() {

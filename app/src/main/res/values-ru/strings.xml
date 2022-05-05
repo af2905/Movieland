@@ -28,12 +28,13 @@
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>
 
     //Search
+    <string name="search_title">Начните поиск фильмов, которые вам интересны, или выберете из списка популярных запросов</string>
     <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
     <string name="search_popular_search_queries">Популярные поисковые запросы</string>
 
     //Fail to connect
     <string name="message_fail_to_connect">Похоже пропал интернет, проверьте соединение</string>
-    <string name="message_no_internet_connection">Что-то пошло не так, \nпроверьте интернет соединение \nи попробуйте снова</string>
+    <string name="message_no_internet_connection">Что-то пошло не так, проверьте интернет соединение и попробуйте снова</string>
 
     <string name="any_screen_try_again">Попробовать снова</string>
 </resources>

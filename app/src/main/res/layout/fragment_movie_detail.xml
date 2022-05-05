@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailsViewModel" />
+            type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailViewModel" />
 
         <import type="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailContract" />
 
@@ -20,7 +20,7 @@
 
         <include
             android:id="@+id/movieDetailsToolbar"
-            layout="@layout/toolbar_movie_details"
+            layout="@layout/toolbar_movie_detail"
             app:item="@{viewModel.container.state.toContent().movieDetailsItem}"
             app:listener="@{viewModel.movieDetailsItemClickListener}"
             app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
