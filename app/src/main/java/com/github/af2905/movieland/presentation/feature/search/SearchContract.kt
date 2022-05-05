@@ -10,42 +10,35 @@ import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 class SearchContract {
 
-    sealed class State : UiState() {
+    sealed class State(
+        open val searchItem: SearchItem,
+        open val list: List<Model>
+    ) : UiState() {
         data class Loading(
-            val searchItem: SearchItem,
-            val list: List<Model> = listOf(LoadingItem())
-        ) : State()
+            override val searchItem: SearchItem,
+            override val list: List<Model> = listOf(LoadingItem())
+        ) : State(searchItem, list)
 
         data class EmptyQuery(
-            val searchItem: SearchItem = SearchItem(),
-            val list: List<Model> = emptyList()
-        ) : State()
+            override val searchItem: SearchItem = SearchItem(),
+            override val list: List<Model> = emptyList()
+        ) : State(searchItem, list)
 
         data class Content(
-            val searchItem: SearchItem,
-            val list: List<Model>
-        ) : State()
+            override val searchItem: SearchItem,
+            override val list: List<Model>
+        ) : State(searchItem, list)
 
-        data class Error(val searchItem: SearchItem, val list: List<Model>, val e: Throwable?) :
-            State()
+        data class Error(
+            override val searchItem: SearchItem,
+            override val list: List<Model>,
+            val e: Throwable?
+        ) : State(searchItem, list)
 
-        data class EmptyResult(val searchItem: SearchItem, val list: List<Model>) : State()
-
-        fun searchItem(): SearchItem = when (this) {
-            is Loading -> this.searchItem
-            is EmptyQuery -> this.searchItem
-            is Content -> this.searchItem
-            is Error -> this.searchItem
-            is EmptyResult -> this.searchItem
-        }
-
-        fun list(): List<Model> = when (this) {
-            is Loading -> this.list
-            is EmptyQuery -> this.list
-            is Content -> this.list
-            is Error -> this.list
-            is EmptyResult -> this.list
-        }
+        data class EmptyResult(
+            override val searchItem: SearchItem,
+            override val list: List<Model>
+        ) : State(searchItem, list)
     }
 
     sealed class Effect : UiEffect() {
