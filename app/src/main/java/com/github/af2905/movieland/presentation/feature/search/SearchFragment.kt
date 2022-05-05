@@ -8,12 +8,12 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
 import com.github.af2905.movieland.presentation.base.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
+import com.github.af2905.movieland.presentation.model.item.SearchQueryItem
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
-import kotlinx.coroutines.flow.collect
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -23,9 +23,15 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, _ ->
-                viewModel.openDetail(item.id)
-            }
+            listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) }
+        ),
+        ItemDelegate(
+            SearchQueryItem.VIEW_TYPE,
+            listener = SearchQueryItem.Listener { item -> viewModel.searchTextChanged(item.title) }
+        ),
+        ItemDelegate(
+            ErrorItem.VIEW_TYPE,
+            listener = ErrorItem.Listener { viewModel.update() }
         )
     )
 
@@ -47,19 +53,6 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
             )
         }
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                when (state) {
-                    is SearchContract.State.Loading -> viewModel.handleSearchMovie(state.query)
-                    is SearchContract.State.EmptyQuery -> viewModel.handleEmptyQuery(state.list)
-                    is SearchContract.State.Success -> viewModel.handleSuccess(state.list)
-                    is SearchContract.State.EmptyResult -> viewModel.handleEmptyResult()
-                    is SearchContract.State.Error -> {
-                        viewModel.showError(ErrorHandler.handleError(state.e))
-                    }
-                }
-            }
-        }
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {

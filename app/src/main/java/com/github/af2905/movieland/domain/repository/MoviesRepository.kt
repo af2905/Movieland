@@ -2,9 +2,9 @@ package com.github.af2905.movieland.domain.repository
 
 import com.github.af2905.movieland.data.database.entity.MovieDetailsEntity
 import com.github.af2905.movieland.data.database.entity.MovieEntity
-import com.github.af2905.movieland.data.dto.MovieActorsResponseDto
+import com.github.af2905.movieland.data.dto.movie.MovieActorsResponseDto
 
-interface IMoviesRepository {
+interface MoviesRepository {
     suspend fun getNowPlayingMovies(
         language: String?,
         page: Int?,
@@ -39,5 +39,4 @@ interface IMoviesRepository {
 
     suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity
     suspend fun getMovieActors(movieId: Int, language: String?): MovieActorsResponseDto
-
 }

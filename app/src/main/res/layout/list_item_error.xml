@@ -26,18 +26,20 @@
             style="@style/DefaultInfoIconsStyleNotFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
             android:padding="@dimen/default_margin"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/ic_close"
             tools:ignore="ContentDescription" />
 
         <TextView
             style="@style/TextAlphaStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin_big"
+            android:layout_marginEnd="@dimen/default_margin_big"
+            android:layout_marginBottom="@dimen/default_margin"
             android:gravity="center_horizontal"
             android:text="@{item.errorMessage}"
-            android:textSize="18sp"
             tools:text="@string/message_no_internet_connection"
             tools:textColor="@color/darkGrey" />
 
@@ -45,13 +47,11 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_margin"
-            android:gravity="center_horizontal"
+            android:gravity="center_vertical"
             android:onClick="@{() -> listener.onItemClicked()}"
             android:text="@string/any_screen_try_again"
             android:textAllCaps="false"
             android:textColor="?attr/colorPrimary"
-            android:textSize="@dimen/default_text_medium"
             app:strokeColor="?attr/colorPrimary"
             tools:text="@string/any_screen_try_again" />
     </LinearLayout>
