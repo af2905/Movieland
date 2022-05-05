@@ -1,8 +1,10 @@
 package com.github.af2905.movieland.presentation.feature.detail
 
 import com.github.af2905.movieland.di.scope.FragmentScope
-import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailsFragment
-import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailsModule
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailFragment
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailModule
+import com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailFragment
+import com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,6 +13,10 @@ import dagger.android.ContributesAndroidInjector
 abstract class DetailModule {
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = [MovieDetailsModule::class])
-    abstract fun movieDetailsFragment(): MovieDetailsFragment
+    @ContributesAndroidInjector(modules = [MovieDetailModule::class])
+    abstract fun movieDetailFragment(): MovieDetailFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = [PersonDetailModule::class])
+    abstract fun personDetailFragment(): PersonDetailFragment
 }

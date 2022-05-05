@@ -52,16 +52,25 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+        // for compose
+        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
     }
 
-    buildFeatures { dataBinding true }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
+
+    buildFeatures {
+        dataBinding true
+        compose true
+    }
 }
 
 ext {
     coreKtxVersion = '1.7.0'
-    appcompatVersion = '1.4.0'
-    materialVersion = '1.4.0'
-    constraintlayoutVersion = '2.1.2'
+    appcompatVersion = '1.4.1'
+    materialVersion = '1.5.0'
+    constraintlayoutVersion = '2.1.3'
     junitVersion = '4.13.2'
     junitExtVersion = '1.1.3'
     espressoVersion = '3.4.0'
@@ -75,7 +84,7 @@ ext {
     lifecycleVersion = '2.4.0'
     navigationVersion = '2.4.0'
     recyclerViewVersion = '1.2.1'
-    roomVersion = '2.4.0'
+    roomVersion = '2.4.2'
     swipeRefreshLayoutVersion = '1.1.0'
     workVersion = "2.7.1"
     daggerAssistVersion = '0.5.2'
@@ -92,42 +101,60 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-    //Dagger
+    // Dagger
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-    //Coroutines
+    // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}"
-    //ViewModel
+    // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    //LiveData
+    // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    //Saved state module for ViewModel
+    // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
-    //Retrofit
+    // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    //OkHttp
+    // OkHttp
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
-    //Gson
+    // Gson
     implementation "com.google.code.gson:gson:${gsonVersion}"
-    //Glide
+    // Glide
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
-    //Timber
+    // Timber
     implementation "com.jakewharton.timber:timber:${timberVersion}"
-    //Navigation
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    //Room
+    // Room
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    //SwipeRefreshLayout
+    // SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
-    //WorkManager
+    // WorkManager
     implementation "androidx.work:work-runtime-ktx:$workVersion"
-    //Shimmer
+    // Shimmer
     implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
+
+    //Compose
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.1.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.1.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+    //Landscapist
+    implementation "com.github.skydoves:landscapist-glide:1.5.1"
+    //Icons
+    implementation "androidx.compose.material:material-icons-extended:1.1.1"
 }
