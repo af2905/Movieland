@@ -43,6 +43,7 @@
                 android:minWidth="@dimen/default_margin"
                 android:numStars="5"
                 android:progressBackgroundTint="@color/gold_700"
+                android:progressTint="@color/gold_200"
                 android:rating="@{item.movieDetailsItem.voteAverageStar}"
                 android:stepSize="0.5"
                 tools:rating="3.2" />

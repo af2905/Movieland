@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.github.af2905.movieland.presentation.model.item.HomeMenuItem" />
+
+        <variable
+            name="listener"
+            type="com.github.af2905.movieland.presentation.model.item.HomeMenuItem.Listener" />
+
+    </data>
+
+    <LinearLayout
+        android:background="@drawable/bg_item_gradient"
+        android:layout_width="@dimen/movie_card_width"
+        android:layout_height="@dimen/movie_card_width"
+        android:onClick="@{() -> listener.onItemClicked(item)}"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:src="@{item.drawableRes}"
+            android:tint="@color/white"
+            tools:src="@drawable/ic_heart_outline" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_tiny"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:lines="@integer/max_lines_2"
+            app:text="@{item.nameRes}"
+            tools:text="Вам понравилось" />
+
+    </LinearLayout>
+</layout>

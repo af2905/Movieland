@@ -6,8 +6,8 @@ import com.github.af2905.movieland.helper.extension.afterTextChanged
 import com.github.af2905.movieland.presentation.model.item.SearchItem
 
 @BindingAdapter("app:queryListener")
-fun EditText.queryListener(listener: SearchItem.Listener) {
-    this.afterTextChanged { text -> listener.textChanged(text.toString()) }
+fun EditText.queryListener(listener: SearchItem.Listener?) {
+    this.afterTextChanged { text -> listener?.textChanged(text.toString()) }
 }
 
 @BindingAdapter("app:clearQuery")
