@@ -37,4 +37,9 @@
 
     <string name="any_screen_try_again">try again</string>
 
+    //home menu item
+    <string name="home_menu_item_recently_viewed_title">Recently viewed</string>
+    <string name="home_menu_item_liked_title">Liked</string>
+    <string name="home_menu_item_settings_title">Settings</string>
+
 </resources>

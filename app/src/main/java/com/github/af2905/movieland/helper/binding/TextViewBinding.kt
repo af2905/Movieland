@@ -1,7 +1,6 @@
 package com.github.af2905.movieland.helper.binding
 
 import android.content.res.ColorStateList
-import android.os.Build
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -24,7 +23,7 @@ fun TextView.setVoteAverage(voteAverage: Double?) {
 }
 
 @BindingAdapter("app:voteAverageTextColor")
-fun TextView.setVoteAverageTextColor(voteAverage: Double?){
+fun TextView.setVoteAverageTextColor(voteAverage: Double?) {
     val voteAverageTextColor = voteAverage?.let {
         when (voteAverage) {
             in MovieItem.RAD_RANGE -> R.color.indianRed
@@ -32,12 +31,9 @@ fun TextView.setVoteAverageTextColor(voteAverage: Double?){
             else -> R.color.darkGrey
         }
     } ?: R.color.darkGrey
-    val color = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        ColorStateList.valueOf(
-            resources.getColor(voteAverageTextColor, context.theme)
-        )
-    } else {
-        ColorStateList.valueOf(resources.getColor(voteAverageTextColor))
-    }
+    val color = ColorStateList.valueOf(resources.getColor(voteAverageTextColor, context.theme))
     this.setTextColor(color)
 }
+
+@BindingAdapter("app:text")
+fun TextView.setResText(@StringRes textRes: Int) = setText(textRes)
