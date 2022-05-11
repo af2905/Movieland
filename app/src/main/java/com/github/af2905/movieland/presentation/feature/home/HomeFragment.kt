@@ -20,10 +20,9 @@ import com.github.af2905.movieland.presentation.common.pager.setupPager
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
-import com.github.af2905.movieland.presentation.model.item.MovieItem
+import com.github.af2905.movieland.presentation.model.item.HomeMenuItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.coroutines.flow.collect
 
 class HomeFragment :
     BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
@@ -32,12 +31,13 @@ class HomeFragment :
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun viewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
 
-    private val nowPlayingAdapter: BaseAdapter = BaseAdapter(
-        ItemDelegate(
-            viewType = MovieItem.VIEW_TYPE,
-            listener = MovieItem.Listener { item, _ -> viewModel.openDetail(item.id) }
-        )
-    )
+    private val baseAdapter: BaseAdapter =
+        BaseAdapter(
+            ItemDelegate(HomeMenuItem.VIEW_TYPE,
+                listener = HomeMenuItem.Listener { item ->
+
+                }
+            ))
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
@@ -59,7 +59,7 @@ class HomeFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.apply {
-            adapter = nowPlayingAdapter
+            adapter = baseAdapter
             //val snapHelper = LinearSnapHelper()
             //snapHelper.attachToRecyclerView(this)
             addItemDecoration(
@@ -100,10 +100,9 @@ class HomeFragment :
 
         lifecycleScope.launchWhenCreated {
             viewModel.container.state.collect { state ->
-                when (state) {
-                    is HomeContract.State.Content -> {
-                        if (!state.isLoading) finishRefresh()
-                    }
+                if ((state is HomeContract.State.Loading).not()) {
+                    finishRefresh()
+                    baseAdapter.submitList(state.list)
                 }
             }
         }
