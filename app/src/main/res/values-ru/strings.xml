@@ -28,7 +28,7 @@
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>
 
     //Search
-    <string name="search_title">Начните поиск фильмов, которые вам интересны, или выберете из списка популярных запросов</string>
+    <string name="search_title">Поиск</string>
     <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
     <string name="search_popular_search_queries">Популярные поисковые запросы</string>
 
