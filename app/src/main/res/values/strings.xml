@@ -27,7 +27,7 @@
     <string name="actors_and_crew_title">Actors and crew</string>
 
     //Search
-    <string name="search_title">Start searching for movies that you are interested in, or choose from a list of popular queries</string>
+    <string name="search_title">Search</string>
     <string name="search_empty_result">No results matching your query</string>
     <string name="search_popular_search_queries">Popular movie search queries</string>
 

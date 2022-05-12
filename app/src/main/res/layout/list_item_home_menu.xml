@@ -39,6 +39,7 @@
             android:ellipsize="end"
             android:textColor="@color/white"
             android:lines="@integer/max_lines_2"
+            android:gravity="center|center_vertical"
             app:text="@{item.nameRes}"
             tools:text="Вам понравилось" />
 
