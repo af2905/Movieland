@@ -24,6 +24,16 @@
         android:layout_marginRight="@dimen/default_margin"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/searchIcon"
+            style="@style/SearchIconsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/default_margin"
+            android:src="@drawable/ic_search"
+            tools:ignore="ContentDescription" />
+
         <EditText
             android:id="@+id/searchInput"
             style="@style/SearchStyle"
@@ -35,9 +45,6 @@
             android:inputType="textShortMessage"
             android:text="@{item.searchString}"
             app:clearQuery="@{item.clearText}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:queryListener="@{listener}"
             tools:hint="@string/hint_search_query"
             tools:ignore="LabelFor" />
@@ -51,10 +58,6 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:onClick="@{() -> listener.deleteTextClicked()}"
             android:src="@drawable/ic_delete"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="@id/searchInput"
-            app:layout_constraintStart_toEndOf="@id/searchInput"
-            app:layout_constraintTop_toTopOf="@id/searchInput"
             app:visible="@{item.deleteVisible}"
             tools:ignore="ContentDescription" />
     </LinearLayout>
