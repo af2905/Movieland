@@ -5,7 +5,7 @@
             <solid android:color="?colorSurface" />
             <corners android:radius="@dimen/default_corners_radius" />
             <stroke
-                android:width="@dimen/default_stroke_tiny"
+                android:width="@dimen/default_stroke_small"
                 android:color="@color/accent" />
         </shape>
     </item>

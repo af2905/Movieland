@@ -8,6 +8,7 @@ import com.github.af2905.movieland.presentation.model.Model
 
 data class ErrorItem(
     val errorMessage: String = "",
+    val errorButtonVisible: Boolean = true,
     @StringRes val titleRes: Int = R.string.message_no_internet_connection,
     @StringRes val buttonRes: Int = R.string.any_screen_try_again,
     override val id: Int = ERROR_ITEM_ID

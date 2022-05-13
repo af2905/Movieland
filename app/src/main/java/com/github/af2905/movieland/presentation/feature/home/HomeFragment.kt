@@ -96,20 +96,13 @@ class HomeFragment :
 
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.setForceUpdate()
+            finishRefresh()
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.container.state.collect { state ->
-                if ((state is HomeContract.State.Loading).not()) {
-                    finishRefresh()
-                    baseAdapter.submitList(state.list)
-                }
-            }
-        }
-        lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is HomeContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenMenuItemDetail -> handleEffect(effect.navigator)
                     is HomeContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
