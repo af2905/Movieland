@@ -4,6 +4,7 @@ import com.github.af2905.movieland.di.scope.FragmentScope
 import com.github.af2905.movieland.di.scope.HomeScope
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.feature.home.HomeRepositoryImpl
+import com.github.af2905.movieland.presentation.feature.home.nowplaying.NowPlayingMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
@@ -25,6 +26,10 @@ abstract class HomeFragmentModule {
     @FragmentScope
     @ContributesAndroidInjector
     abstract fun topMovieFragment(): TopRatedMovieFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun nowPlayingMovieFragment(): NowPlayingMovieFragment
 
     @HomeScope
     @Binds

@@ -1,9 +1,9 @@
-package com.github.af2905.movieland.presentation.feature.home.upcoming
+package com.github.af2905.movieland.presentation.feature.home.nowplaying
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
-import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
+import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
+import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.Container
 import com.github.af2905.movieland.presentation.common.effect.Navigate
@@ -14,14 +14,14 @@ import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UpcomingMovieViewModel @Inject constructor(
-    private val getUpcomingMovies: GetUpcomingMovies,
+class NowPlayingMovieViewModel @Inject constructor(
+    private val getNowPlayingMovies: GetNowPlayingMovies,
     private val homeRepository: HomeRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    val container: Container<UpcomingMovieContract.State, UpcomingMovieContract.Effect> =
-        Container(viewModelScope, UpcomingMovieContract.State.Init())
+    val container: Container<NowPlayingMovieContract.State, NowPlayingMovieContract.Effect> =
+        Container(viewModelScope, NowPlayingMovieContract.State.Init())
 
     init {
         loadData()
@@ -33,13 +33,13 @@ class UpcomingMovieViewModel @Inject constructor(
     private fun loadData(forceUpdate: Boolean = false) {
         container.intent {
             container.reduce {
-                UpcomingMovieContract.State.Init(list = this.list)
+                NowPlayingMovieContract.State.Init(list = this.list)
             }
-            val result = getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate))
+            val result = getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate))
             if (result.isFailure) {
                 val error = result.exceptionOrNull()
                 container.reduce {
-                    UpcomingMovieContract.State.Error(
+                    NowPlayingMovieContract.State.Error(
                         list = listOf(
                             ErrorItem(
                                 errorMessage = error?.message.orEmpty(),
@@ -52,7 +52,7 @@ class UpcomingMovieViewModel @Inject constructor(
             } else {
                 val movies = result.getOrNull().orEmpty()
                 container.reduce {
-                    UpcomingMovieContract.State.Content(
+                    NowPlayingMovieContract.State.Content(
                         list = movies.map { MovieItemVariant(it) }
                     )
                 }
@@ -66,10 +66,9 @@ class UpcomingMovieViewModel @Inject constructor(
 
     private fun navigateToDetail(itemId: Int) {
         container.intent {
-            container.postEffect(UpcomingMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
+            container.postEffect(NowPlayingMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardMovieDetail(itemId)
             }))
         }
-
     }
 }

@@ -17,6 +17,7 @@ import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.presentation.common.pager.PageItem
 import com.github.af2905.movieland.presentation.common.pager.setupPager
+import com.github.af2905.movieland.presentation.feature.home.nowplaying.NowPlayingMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.upcoming.UpcomingMovieFragment
@@ -80,6 +81,7 @@ class HomeFragment :
                     PageItem(ResourceUiText(R.string.popular)) { PopularMovieFragment() },
                     PageItem(ResourceUiText(R.string.top_rated)) { TopRatedMovieFragment() },
                     PageItem(ResourceUiText(R.string.upcoming)) { UpcomingMovieFragment() },
+                    PageItem(ResourceUiText(R.string.now_playing)) { NowPlayingMovieFragment() }
                 )
             )
         )
