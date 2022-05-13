@@ -15,14 +15,12 @@ class HomeContract {
             override val list: List<Model> = listOf(HomeMenuPlaceholderItem())
         ) : State(list)
 
-        data class Loading(override val list: List<Model>) : State(list)
         data class Content(override val list: List<Model>) : State(list)
-        data class Error(override val list: List<Model>, val e: Throwable?) : State(list)
     }
 
     sealed class Effect : UiEffect() {
 
         data class ShowFailMessage(val message: ToastMessage) : Effect()
-        data class OpenMovieDetail(val navigator: Navigate) : Effect()
+        data class OpenMenuItemDetail(val navigator: Navigate) : Effect()
     }
 }

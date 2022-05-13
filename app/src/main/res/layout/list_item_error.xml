@@ -51,8 +51,9 @@
             android:onClick="@{() -> listener.onItemClicked()}"
             android:text="@string/any_screen_try_again"
             android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary"
-            app:strokeColor="?attr/colorPrimary"
+            android:textColor="?attr/colorAccent"
+            app:strokeColor="?attr/colorAccent"
+            app:visible="@{item.errorButtonVisible}"
             tools:text="@string/any_screen_try_again" />
     </LinearLayout>
 </layout>
