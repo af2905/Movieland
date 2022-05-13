@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.feature.home.upcoming
+package com.github.af2905.movieland.presentation.feature.home.nowplaying
 
 import com.github.af2905.movieland.presentation.base.UiEffect
 import com.github.af2905.movieland.presentation.base.UiState
@@ -7,7 +7,7 @@ import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.feature.home.item.ListMovieVariantPlaceholderItem
 import com.github.af2905.movieland.presentation.model.Model
 
-class UpcomingMovieContract {
+class NowPlayingMovieContract {
 
     sealed class State(open val list: List<Model>) : UiState() {
 
