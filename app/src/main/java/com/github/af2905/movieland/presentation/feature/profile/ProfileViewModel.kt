@@ -1,24 +1,21 @@
 package com.github.af2905.movieland.presentation.feature.profile
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
-import com.github.af2905.movieland.presentation.base.BaseViewModel
 import com.github.af2905.movieland.presentation.base.Container
-import com.github.af2905.movieland.presentation.feature.search.SearchContract
-import com.github.af2905.movieland.presentation.model.item.SearchItem
-import com.github.af2905.movieland.presentation.model.item.UserInfoHeaderItem
+import com.github.af2905.movieland.presentation.model.item.ProfileMenuItem
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(
-    coroutineDispatcherProvider: CoroutineDispatcherProvider
-) : BaseViewModel<SearchContract.State, SearchContract.Effect>(coroutineDispatcherProvider) {
+class ProfileViewModel @Inject constructor() : ViewModel() {
 
-    val container: Container<SearchContract.State, SearchContract.Effect> =
-        Container(viewModelScope, SearchContract.State.Loading(SearchItem()))
-
-    val userInfoHeader = UserInfoHeaderItem()
+    val container: Container<ProfileContract.State, ProfileContract.Effect> =
+        Container(viewModelScope, ProfileContract.State.Init)
 
     init {
-
+        container.intent {
+            container.reduce {
+                ProfileContract.State.Content(list = ProfileMenuItem.getList())
+            }
+        }
     }
 }
