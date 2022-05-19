@@ -5,7 +5,7 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.model.ItemIds.USER_INFO_HEADER_ITEM_ID
 import com.github.af2905.movieland.presentation.model.Model
 
-const val USER_NAME = "User Name"
+private const val USER_NAME = "User Name"
 
 data class UserInfoHeaderItem(
     override val id: Int = USER_INFO_HEADER_ITEM_ID,

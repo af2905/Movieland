@@ -38,9 +38,12 @@
 
     <string name="any_screen_try_again">Попробовать снова</string>
 
-    //home menu item
-    <string name="home_menu_item_recently_viewed_title">История просмотров</string>
-    <string name="home_menu_item_liked_title">Вам понравилось</string>
-    <string name="home_menu_item_settings_title">Настройки</string>
+    //Menu item
+    <string name="menu_item_recently_viewed_title">История просмотров</string>
+    <string name="menu_item_liked_title">Вам понравилось</string>
+    <string name="menu_item_settings_title">Настройки</string>
+
+    //Profile
+    <string name="profile_title">Профиль</string>
 
 </resources>
