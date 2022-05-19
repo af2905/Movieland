@@ -4,15 +4,15 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.Model
 
-data class HomeMenuItem(
+data class ProfileMenuItem(
     val type: ProfileMenuItemType
 ) : Model(VIEW_TYPE) {
 
     override val id: Int
         get() = when (type) {
-            ProfileMenuItemType.LIKED -> HOME_MENU_ITEM_LIKED_TYPE_ID
-            ProfileMenuItemType.RECENTLY_VIEWED -> HOME_MENU_ITEM_RECENTLY_VIEWED_TYPE_ID
-            ProfileMenuItemType.SETTINGS -> HOME_MENU_ITEM_SETTINGS_TYPE_ID
+            ProfileMenuItemType.LIKED -> PROFILE_MENU_ITEM_LIKED_TYPE_ID
+            ProfileMenuItemType.RECENTLY_VIEWED -> PROFILE_MENU_ITEM_RECENTLY_VIEWED_TYPE_ID
+            ProfileMenuItemType.SETTINGS -> PROFILE_MENU_ITEM_SETTINGS_TYPE_ID
         }
 
     val nameRes: Int
@@ -30,24 +30,24 @@ data class HomeMenuItem(
         }
 
     companion object {
-        const val VIEW_TYPE = R.layout.list_item_home_menu
+        const val VIEW_TYPE = R.layout.list_item_profile_menu
 
         fun getList() = listOf<Model>(
-            HomeMenuItem(ProfileMenuItemType.LIKED),
-            HomeMenuItem(ProfileMenuItemType.RECENTLY_VIEWED),
-            HomeMenuItem(ProfileMenuItemType.SETTINGS)
+            ProfileMenuItem(ProfileMenuItemType.LIKED),
+            ProfileMenuItem(ProfileMenuItemType.RECENTLY_VIEWED),
+            ProfileMenuItem(ProfileMenuItemType.SETTINGS)
         )
 
-        private const val HOME_MENU_ITEM_LIKED_TYPE_ID = -11
-        private const val HOME_MENU_ITEM_RECENTLY_VIEWED_TYPE_ID = -12
-        private const val HOME_MENU_ITEM_SETTINGS_TYPE_ID = -13
+        private const val PROFILE_MENU_ITEM_LIKED_TYPE_ID = -21
+        private const val PROFILE_MENU_ITEM_RECENTLY_VIEWED_TYPE_ID = -22
+        private const val PROFILE_MENU_ITEM_SETTINGS_TYPE_ID = -23
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: HomeMenuItem)
+        fun onItemClicked(item: ProfileMenuItem)
     }
 }
 
-enum class HomeMenuItemType {
+enum class ProfileMenuItemType {
     LIKED, RECENTLY_VIEWED, SETTINGS
 }

@@ -8,19 +8,14 @@ import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.domain.usecase.search.GetPopularSearchQueries
 import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
 import com.github.af2905.movieland.helper.extension.empty
-import com.github.af2905.movieland.helper.text.UiText
 import com.github.af2905.movieland.presentation.base.Container
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
-import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.model.Model
 import com.github.af2905.movieland.presentation.model.item.*
 import com.github.af2905.movieland.presentation.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
@@ -31,51 +26,43 @@ class SearchViewModel @Inject constructor(
     val container: Container<SearchContract.State, SearchContract.Effect> =
         Container(viewModelScope, SearchContract.State.EmptyQuery())
 
-    private val searchItem = container.state
-        .filter { it is SearchContract.State.Loading }
-        .map { (it as SearchContract.State.Loading).searchItem }
+    private val query = MutableStateFlow(String.empty)
 
     init {
         container.intent {
             container.reduce {
                 SearchContract.State.Loading(SearchItem())
             }
-        }
-        viewModelScope.launch {
-            searchItem.debounce(TEXT_ENTERED_DEBOUNCE_MILLIS).mapLatest(::handleQuery)
-                .collect { state ->
-                    container.reduce { state }
-                    if (state is SearchContract.State.Error) {
-                        showError(ErrorHandler.handleError(state.e))
-                    }
-                }
+            query.debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
+                .mapLatest(::handleQuery)
+                .collect { state -> container.reduce { state } }
         }
     }
 
-    private suspend fun handleQuery(searchItem: SearchItem): SearchContract.State {
-        val result = if (searchItem.searchString.isEmpty()) {
+    private suspend fun handleQuery(text: String): SearchContract.State {
+        val result = if (text.isEmpty()) {
             val queries = getPopularSearchQueries(PopularMoviesParams()).getOrDefault(emptyList())
             SearchContract.State.EmptyQuery(
-                searchItem = searchItem,
+                searchItem = container.state.value.searchItem.copy(searchString = query.value),
                 list = listOf<Model>(HeaderItemAlpha(R.string.search_popular_search_queries)) + queries
             )
         } else {
-            val result = getSearchMovie(SearchMovieParams(query = searchItem.searchString))
+            val result = getSearchMovie(SearchMovieParams(query = text))
             if (result.isFailure) {
                 val error = result.exceptionOrNull()
                 SearchContract.State.Error(
-                    searchItem = searchItem,
+                    searchItem = container.state.value.searchItem.copy(searchString = query.value),
                     list = listOf(ErrorItem(errorMessage = error?.message.orEmpty())),
                     e = error
                 )
             } else {
                 val movies = result.getOrNull()?.movies.orEmpty()
                 if (movies.isEmpty()) SearchContract.State.EmptyResult(
-                    searchItem = searchItem,
+                    searchItem = container.state.value.searchItem.copy(searchString = query.value),
                     list = listOf(EmptyResultItem())
                 )
                 else SearchContract.State.Content(
-                    searchItem = searchItem,
+                    searchItem = container.state.value.searchItem.copy(searchString = query.value),
                     list = movies.map { MovieItemVariant(it) })
             }
         }
@@ -94,6 +81,7 @@ class SearchViewModel @Inject constructor(
                 )
             }
         }
+        query.tryEmit(text)
     }
 
     fun searchDeleteTextClicked() = searchTextChanged(String.empty)
@@ -101,12 +89,6 @@ class SearchViewModel @Inject constructor(
     fun update() {
         val searchItem = container.state.value.searchItem
         searchTextChanged(text = searchItem.searchString)
-    }
-
-    private fun showError(error: UiText) {
-        container.intent {
-            container.postEffect(SearchContract.Effect.ShowFailMessage(ToastMessage(error)))
-        }
     }
 
     fun openDetail(itemId: Int) = navigateToDetail(itemId)
