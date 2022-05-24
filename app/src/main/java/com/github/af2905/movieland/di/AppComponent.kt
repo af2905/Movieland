@@ -23,11 +23,18 @@ import dagger.android.AndroidInjector
 )
 interface AppComponent : AndroidInjector<App> {
 
-    @Component.Builder
+    //by Factory
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context): AppComponent
+    }
+
+    //by Builder
+    /*@Component.Builder
     interface Builder {
 
         @BindsInstance
         fun context(context: Context): Builder
         fun build(): AppComponent
-    }
+    }*/
 }
