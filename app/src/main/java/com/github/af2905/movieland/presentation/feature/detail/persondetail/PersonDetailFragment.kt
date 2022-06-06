@@ -11,8 +11,8 @@ import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.compose.BaseComposeFragment
-import com.github.af2905.movieland.presentation.feature.detail.DaggerPersonDetailComponent
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.compose.PersonDetailScreen
+import com.github.af2905.movieland.presentation.feature.detail.persondetail.di.DaggerPersonDetailComponent
 
 class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewModel>() {
 

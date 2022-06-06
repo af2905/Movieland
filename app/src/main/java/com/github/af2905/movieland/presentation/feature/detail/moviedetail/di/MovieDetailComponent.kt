@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.feature.detail
+package com.github.af2905.movieland.presentation.feature.detail.moviedetail.di
 
 import com.github.af2905.movieland.di.AppComponent
 import com.github.af2905.movieland.di.scope.FragmentScope

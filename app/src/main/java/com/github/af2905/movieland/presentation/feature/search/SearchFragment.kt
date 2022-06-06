@@ -1,21 +1,24 @@
 package com.github.af2905.movieland.presentation.feature.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.feature.search.di.DaggerSearchComponent
 import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
 import com.github.af2905.movieland.presentation.model.item.SearchQueryItem
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
-class SearchFragment : DaggerBaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
+class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
     override fun viewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
     override fun getNavigator(navController: NavController) = SearchNavigator(navController)
@@ -34,6 +37,13 @@ class SearchFragment : DaggerBaseFragment<SearchNavigator, FragmentSearchBinding
             listener = ErrorItem.Listener { viewModel.update() }
         )
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        val searchComponent = DaggerSearchComponent.factory().create(appComponent)
+        searchComponent.injectSearchFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

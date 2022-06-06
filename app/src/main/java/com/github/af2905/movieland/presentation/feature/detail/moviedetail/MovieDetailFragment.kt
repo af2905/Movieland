@@ -18,7 +18,7 @@ import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
-import com.github.af2905.movieland.presentation.feature.detail.DaggerMovieDetailComponent
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.di.DaggerMovieDetailComponent
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieActorItem
