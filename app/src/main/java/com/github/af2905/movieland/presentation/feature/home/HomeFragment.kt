@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.helper.text.ResourceUiText
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
@@ -26,7 +26,7 @@ import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorat
 import com.google.android.material.appbar.AppBarLayout
 
 class HomeFragment :
-    BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
+    DaggerBaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_home
