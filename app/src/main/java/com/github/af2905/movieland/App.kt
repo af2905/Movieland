@@ -1,7 +1,9 @@
 package com.github.af2905.movieland
 
+import android.content.Context
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.github.af2905.movieland.di.AppComponent
 import com.github.af2905.movieland.di.AppWorkerFactory
 import com.github.af2905.movieland.di.DaggerAppComponent
 import dagger.android.AndroidInjector
@@ -14,6 +16,8 @@ class App : DaggerApplication() {
     @Inject
     lateinit var workerFactory: AppWorkerFactory
 
+    internal val appComponent: AppComponent = DaggerAppComponent.factory().create(this)
+
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
@@ -25,11 +29,12 @@ class App : DaggerApplication() {
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return appComponent
+    }
+}
 
-        //Factory create
-        return DaggerAppComponent.factory().create(this)
-
-        //Builder build
-        //return DaggerAppComponent.builder().context(this).build()
+object AppComponentProvider {
+    fun getAppComponent(context: Context): AppComponent {
+        return (context.applicationContext as App).appComponent
     }
 }

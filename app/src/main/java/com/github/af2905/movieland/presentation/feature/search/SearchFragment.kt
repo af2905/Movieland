@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.model.item.ErrorItem
@@ -15,7 +15,7 @@ import com.github.af2905.movieland.presentation.model.item.SearchItem
 import com.github.af2905.movieland.presentation.model.item.SearchQueryItem
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
-class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
+class SearchFragment : DaggerBaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
     override fun viewModelClass(): Class<SearchViewModel> = SearchViewModel::class.java
     override fun getNavigator(navController: NavController) = SearchNavigator(navController)

@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentNowPlayingMovieBinding
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
@@ -14,7 +14,7 @@ import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
 class NowPlayingMovieFragment :
-    BaseFragment<HomeNavigator, FragmentNowPlayingMovieBinding, NowPlayingMovieViewModel>() {
+    DaggerBaseFragment<HomeNavigator, FragmentNowPlayingMovieBinding, NowPlayingMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_now_playing_movie

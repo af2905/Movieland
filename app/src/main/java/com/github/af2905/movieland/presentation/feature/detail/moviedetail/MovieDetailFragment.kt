@@ -9,14 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.helper.ThemeHelper
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
+import com.github.af2905.movieland.presentation.feature.detail.DaggerMovieDetailComponent
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieActorItem
@@ -53,6 +55,14 @@ class MovieDetailFragment :
             decoration = { getHorizontalListItemDecoration(it) }
         )
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        val detailComponent = DaggerMovieDetailComponent.factory().create(appComponent, args)
+        detailComponent.injectMovieDetailFragment(this)
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

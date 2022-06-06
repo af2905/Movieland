@@ -6,16 +6,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentTopRatedMovieBinding
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
-import kotlinx.coroutines.flow.collect
 
 class TopRatedMovieFragment :
-    BaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
+    DaggerBaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_top_rated_movie
