@@ -1,18 +1,21 @@
 package com.github.af2905.movieland.presentation.feature.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentProfileBinding
-import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.feature.profile.di.DaggerProfileComponent
 import com.github.af2905.movieland.presentation.model.item.ProfileMenuItem
 
-class ProfileFragment : DaggerBaseFragment<ProfileNavigator, FragmentProfileBinding, ProfileViewModel>() {
+class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, ProfileViewModel>() {
     override fun getNavigator(navController: NavController) = ProfileNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_profile
     override fun viewModelClass(): Class<ProfileViewModel> = ProfileViewModel::class.java
@@ -25,6 +28,13 @@ class ProfileFragment : DaggerBaseFragment<ProfileNavigator, FragmentProfileBind
 
                 }
             ))
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        val detailComponent = DaggerProfileComponent.factory().create(appComponent)
+        detailComponent.injectProfileFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -3,8 +3,6 @@ package com.github.af2905.movieland.di.module
 import com.github.af2905.movieland.di.scope.ActivityScope
 import com.github.af2905.movieland.presentation.MainActivity
 import com.github.af2905.movieland.presentation.feature.home.HomeModule
-import com.github.af2905.movieland.presentation.feature.profile.ProfileModule
-import com.github.af2905.movieland.presentation.feature.search.SearchModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,9 +13,7 @@ abstract class ViewModule {
     @ContributesAndroidInjector(
         modules = [
             MainActivityModule::class,
-            HomeModule::class,
-            ProfileModule::class,
-            SearchModule::class
+            HomeModule::class
         ]
     )
     abstract fun mainActivity(): MainActivity
