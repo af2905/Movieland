@@ -3,6 +3,7 @@ package com.github.af2905.movieland.presentation
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -15,12 +16,11 @@ import com.github.af2905.movieland.R
 import com.github.af2905.movieland.data.worker.UpdateMoviesWorker
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.github.af2905.movieland.di.ViewModelFactory
+import com.github.af2905.movieland.presentation.di.DaggerMainComponent
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
@@ -33,6 +33,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerMainComponent.create().injectMainActivity(this)
 
         //window.statusBarColor = Color.TRANSPARENT
 
