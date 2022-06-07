@@ -19,8 +19,8 @@ import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.presentation.common.pager.PageItem
 import com.github.af2905.movieland.presentation.common.pager.setupPager
-import com.github.af2905.movieland.presentation.feature.home.di.DaggerHomeComponent
-import com.github.af2905.movieland.presentation.feature.home.di.HomeComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerHomeComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponent
 import com.github.af2905.movieland.presentation.feature.home.nowplaying.NowPlayingMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
