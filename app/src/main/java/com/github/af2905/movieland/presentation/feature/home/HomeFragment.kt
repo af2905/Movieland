@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.presentation.feature.home
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -7,16 +8,19 @@ import android.util.TypedValue
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.helper.text.ResourceUiText
-import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.presentation.common.pager.PageItem
 import com.github.af2905.movieland.presentation.common.pager.setupPager
+import com.github.af2905.movieland.presentation.feature.home.di.DaggerHomeComponent
+import com.github.af2905.movieland.presentation.feature.home.di.HomeComponent
 import com.github.af2905.movieland.presentation.feature.home.nowplaying.NowPlayingMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.popular.PopularMovieFragment
 import com.github.af2905.movieland.presentation.feature.home.toprated.TopRatedMovieFragment
@@ -25,12 +29,13 @@ import com.github.af2905.movieland.presentation.model.item.HomeMenuItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
 
-class HomeFragment :
-    DaggerBaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
+class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun viewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
+
+    lateinit var homeComponent: HomeComponent
 
     private val baseAdapter: BaseAdapter =
         BaseAdapter(
@@ -54,6 +59,13 @@ class HomeFragment :
         }
 
         override fun onScrolled(state: State, dy: Int) {}
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        homeComponent = DaggerHomeComponent.factory().create(appComponent)
+        homeComponent.injectHomeFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

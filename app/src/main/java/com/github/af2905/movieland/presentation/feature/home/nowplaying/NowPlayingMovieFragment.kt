@@ -1,20 +1,23 @@
 package com.github.af2905.movieland.presentation.feature.home.nowplaying
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentNowPlayingMovieBinding
-import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
+import com.github.af2905.movieland.presentation.feature.home.di.DaggerNowPlayingMovieComponent
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
 class NowPlayingMovieFragment :
-    DaggerBaseFragment<HomeNavigator, FragmentNowPlayingMovieBinding, NowPlayingMovieViewModel>() {
+    BaseFragment<HomeNavigator, FragmentNowPlayingMovieBinding, NowPlayingMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_now_playing_movie
@@ -26,6 +29,13 @@ class NowPlayingMovieFragment :
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) })
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        val nowPlayingMovieComponent = DaggerNowPlayingMovieComponent.factory().create(appComponent)
+        nowPlayingMovieComponent.injectNowPlayingMovieFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

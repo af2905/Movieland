@@ -1,20 +1,22 @@
 package com.github.af2905.movieland.presentation.feature.home.popular
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.AppComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentPopularMovieBinding
-import com.github.af2905.movieland.presentation.base.fragment.DaggerBaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
+import com.github.af2905.movieland.presentation.feature.home.di.DaggerPopularMovieComponent
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
-class PopularMovieFragment :
-    DaggerBaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
+class PopularMovieFragment : BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_popular_movie
@@ -25,6 +27,13 @@ class PopularMovieFragment :
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) })
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = AppComponentProvider.getAppComponent(context)
+        val popularMovieComponent = DaggerPopularMovieComponent.factory().create(appComponent)
+        popularMovieComponent.injectPopularMovieFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
