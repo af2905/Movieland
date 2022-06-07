@@ -18,7 +18,6 @@ import dagger.android.AndroidInjector
         AndroidInjectionModule::class,
         NetworkModule::class,
         RepositoryModule::class,
-        ViewModule::class,
         StorageModule::class,
         WorkManagerModule::class,
         ResourceModule::class

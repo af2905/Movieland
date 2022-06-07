@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.feature.home.di
+package com.github.af2905.movieland.presentation.feature.home.di.module
 
 import com.github.af2905.movieland.di.scope.HomeScope
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository

@@ -1,8 +1,9 @@
-package com.github.af2905.movieland.presentation.feature.home.di
+package com.github.af2905.movieland.presentation.feature.home.di.component
 
 import com.github.af2905.movieland.di.AppComponent
 import com.github.af2905.movieland.di.scope.HomeScope
 import com.github.af2905.movieland.presentation.feature.home.HomeFragment
+import com.github.af2905.movieland.presentation.feature.home.di.module.HomeFragmentModule
 import dagger.Component
 
 @HomeScope

@@ -12,7 +12,7 @@ import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
-import com.github.af2905.movieland.presentation.feature.home.di.DaggerNowPlayingMovieComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerNowPlayingMovieComponent
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
