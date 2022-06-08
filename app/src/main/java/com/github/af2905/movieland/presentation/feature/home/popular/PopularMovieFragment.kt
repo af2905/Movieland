@@ -13,10 +13,12 @@ import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerPopularMovieComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponentProvider
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
-class PopularMovieFragment : BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
+class PopularMovieFragment :
+    BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_popular_movie
@@ -31,7 +33,9 @@ class PopularMovieFragment : BaseFragment<HomeNavigator, FragmentPopularMovieBin
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = AppComponentProvider.getAppComponent(context)
-        val popularMovieComponent = DaggerPopularMovieComponent.factory().create(appComponent)
+        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val popularMovieComponent =
+            DaggerPopularMovieComponent.factory().create(appComponent, homeComponent)
         popularMovieComponent.injectPopularMovieFragment(this)
     }
 
