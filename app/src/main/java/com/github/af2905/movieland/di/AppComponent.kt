@@ -1,7 +1,6 @@
 package com.github.af2905.movieland.di
 
 import android.content.Context
-import com.github.af2905.movieland.App
 import com.github.af2905.movieland.di.module.*
 import com.github.af2905.movieland.di.scope.AppScope
 import com.github.af2905.movieland.domain.repository.MoviesRepository
@@ -10,7 +9,6 @@ import com.github.af2905.movieland.domain.repository.SearchRepository
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
-import dagger.android.AndroidInjector
 
 @AppScope
 @Component(
@@ -23,11 +21,12 @@ import dagger.android.AndroidInjector
         ResourceModule::class
     ]
 )
-interface AppComponent : AndroidInjector<App> {
+interface AppComponent {
 
     fun getMoviesRepository(): MoviesRepository
     fun getPeopleRepository(): PeopleRepository
     fun getSearchRepository(): SearchRepository
+    fun getAppWorkerFactory(): AppWorkerFactory
 
     @Component.Factory
     interface Factory {

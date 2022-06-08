@@ -13,6 +13,7 @@ import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerNowPlayingMovieComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponentProvider
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
@@ -33,7 +34,8 @@ class NowPlayingMovieFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = AppComponentProvider.getAppComponent(context)
-        val nowPlayingMovieComponent = DaggerNowPlayingMovieComponent.factory().create(appComponent)
+        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val nowPlayingMovieComponent = DaggerNowPlayingMovieComponent.factory().create(appComponent, homeComponent)
         nowPlayingMovieComponent.injectNowPlayingMovieFragment(this)
     }
 
