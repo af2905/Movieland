@@ -1,11 +1,12 @@
 package com.github.af2905.movieland.presentation.feature.home
 
+import com.github.af2905.movieland.helper.extension.launchCollect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor() : HomeRepository {
@@ -16,18 +17,9 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
 
     private var job: Job? = null
 
-    override fun subscribeOnForceUpdate(
-        scope: CoroutineScope,
-        collector: suspend (force: Boolean) -> Unit
-    ) {
-        //job = forceUpdate.launchCollect(scope, collector)
-        job = scope.launch {
-            forceUpdate.collect { collector(it) }
-        }
+    override fun subscribeOnForceUpdate(scope: CoroutineScope, collector: FlowCollector<Boolean>) {
+        job = forceUpdate.launchCollect(scope, collector)
     }
-
-    //fun <T> Flow<T>.launchCollect(scope: CoroutineScope, collector: suspend (T) -> Unit) =
-    //    scope.launch { collect(collector) }
 
     override fun forceUpdate() {
         _forceUpdate.tryEmit(true)
@@ -36,8 +28,5 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
 
 interface HomeRepository {
     fun forceUpdate()
-    fun subscribeOnForceUpdate(
-        scope: CoroutineScope,
-        collector: suspend (force: Boolean) -> Unit
-    )
+    fun subscribeOnForceUpdate(scope: CoroutineScope, collector: FlowCollector<Boolean>)
 }

@@ -13,6 +13,7 @@ import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerTopRatedMovieComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponentProvider
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
 
@@ -33,7 +34,9 @@ class TopRatedMovieFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = AppComponentProvider.getAppComponent(context)
-        val topRatedMovieComponent = DaggerTopRatedMovieComponent.factory().create(appComponent)
+        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val topRatedMovieComponent =
+            DaggerTopRatedMovieComponent.factory().create(appComponent, homeComponent)
         topRatedMovieComponent.injectTopRatedMovieFragment(this)
     }
 
