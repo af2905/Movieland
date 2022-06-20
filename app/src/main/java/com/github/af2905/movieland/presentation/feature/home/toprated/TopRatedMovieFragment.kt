@@ -1,18 +1,21 @@
 package com.github.af2905.movieland.presentation.feature.home.toprated
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentTopRatedMovieBinding
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
+import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerTopRatedMovieComponent
+import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponentProvider
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
-import kotlinx.coroutines.flow.collect
 
 class TopRatedMovieFragment :
     BaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
@@ -27,6 +30,15 @@ class TopRatedMovieFragment :
             MovieItemVariant.VIEW_TYPE,
             listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) })
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = CoreComponentProvider.getAppComponent(context)
+        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val topRatedMovieComponent =
+            DaggerTopRatedMovieComponent.factory().create(appComponent, homeComponent)
+        topRatedMovieComponent.injectTopRatedMovieFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

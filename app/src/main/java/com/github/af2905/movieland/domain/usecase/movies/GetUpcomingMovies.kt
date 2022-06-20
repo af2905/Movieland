@@ -19,5 +19,7 @@ class GetUpcomingMovies @Inject constructor(
             params.forceUpdate
         )
         return mapper.map(response)
+            .filterNot { it.overview.isNullOrEmpty() }
+            .sortedByDescending { it.releaseYear }
     }
 }

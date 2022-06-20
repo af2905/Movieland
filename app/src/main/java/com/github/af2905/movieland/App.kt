@@ -1,19 +1,19 @@
 package com.github.af2905.movieland
 
+import android.app.Application
+import android.content.Context
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.github.af2905.movieland.di.AppWorkerFactory
-import com.github.af2905.movieland.di.DaggerAppComponent
-import com.github.af2905.movieland.di.module.AppModule
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import com.github.af2905.movieland.di.CoreComponent
+import com.github.af2905.movieland.di.DaggerCoreComponent
 import timber.log.Timber
-import javax.inject.Inject
 
-class App : DaggerApplication() {
+class App : Application(), CoreComponentStore {
 
-    @Inject
-    lateinit var workerFactory: AppWorkerFactory
+    internal val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
+
+    private val workerFactory: AppWorkerFactory = coreComponent.getAppWorkerFactory()
 
     override fun onCreate() {
         super.onCreate()
@@ -25,10 +25,17 @@ class App : DaggerApplication() {
         WorkManager.initialize(this, workManagerConfig)
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder()
-            .context(this)
-            .appModule(AppModule(applicationContext))
-            .build()
+    override fun getComponent(): CoreComponent {
+        return coreComponent
     }
+}
+
+object CoreComponentProvider {
+    fun getAppComponent(context: Context): CoreComponent {
+        return (context.applicationContext as CoreComponentStore).getComponent()
+    }
+}
+
+interface CoreComponentStore {
+    fun getComponent(): CoreComponent
 }

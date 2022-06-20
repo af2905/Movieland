@@ -3,8 +3,8 @@ package com.github.af2905.movieland.presentation
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -14,18 +14,10 @@ import androidx.work.WorkManager
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.data.worker.UpdateMoviesWorker
 import com.github.af2905.movieland.databinding.ActivityMainBinding
-import com.github.af2905.movieland.di.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
 
+class MainActivity : AppCompatActivity() {
 
-class MainActivity : DaggerAppCompatActivity() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-
-    lateinit var viewModel: MainViewModel
     lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
 
@@ -37,9 +29,6 @@ class MainActivity : DaggerAppCompatActivity() {
         //window.statusBarColor = Color.TRANSPARENT
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        binding.viewModel = viewModel
 
         navController = findNavController()
 
