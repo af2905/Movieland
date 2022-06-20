@@ -8,7 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import com.github.af2905.movieland.AppComponentProvider
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.helper.text.ResourceUiText
@@ -63,7 +63,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = AppComponentProvider.getAppComponent(context)
+        val appComponent = CoreComponentProvider.getAppComponent(context)
         homeComponent = DaggerHomeComponent.factory().create(appComponent)
         homeComponent.injectHomeFragment(this)
     }

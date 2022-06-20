@@ -5,7 +5,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -15,17 +14,10 @@ import androidx.work.WorkManager
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.data.worker.UpdateMoviesWorker
 import com.github.af2905.movieland.databinding.ActivityMainBinding
-import com.github.af2905.movieland.di.ViewModelFactory
-import com.github.af2905.movieland.presentation.di.DaggerMainComponent
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<MainViewModel>
-
-    lateinit var viewModel: MainViewModel
     lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
 
@@ -34,14 +26,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerMainComponent.create().injectMainActivity(this)
-
         //window.statusBarColor = Color.TRANSPARENT
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
-        binding.viewModel = viewModel
 
         navController = findNavController()
 

@@ -4,16 +4,16 @@ import android.app.Application
 import android.content.Context
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.github.af2905.movieland.di.AppComponent
 import com.github.af2905.movieland.di.AppWorkerFactory
-import com.github.af2905.movieland.di.DaggerAppComponent
+import com.github.af2905.movieland.di.CoreComponent
+import com.github.af2905.movieland.di.DaggerCoreComponent
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), CoreComponentStore {
 
-    internal val appComponent: AppComponent = DaggerAppComponent.factory().create(this)
+    internal val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
 
-    val workerFactory: AppWorkerFactory = appComponent.getAppWorkerFactory()
+    private val workerFactory: AppWorkerFactory = coreComponent.getAppWorkerFactory()
 
     override fun onCreate() {
         super.onCreate()
@@ -24,10 +24,18 @@ class App : Application() {
             .build()
         WorkManager.initialize(this, workManagerConfig)
     }
+
+    override fun getComponent(): CoreComponent {
+        return coreComponent
+    }
 }
 
-object AppComponentProvider {
-    fun getAppComponent(context: Context): AppComponent {
-        return (context.applicationContext as App).appComponent
+object CoreComponentProvider {
+    fun getAppComponent(context: Context): CoreComponent {
+        return (context.applicationContext as CoreComponentStore).getComponent()
     }
+}
+
+interface CoreComponentStore {
+    fun getComponent(): CoreComponent
 }
