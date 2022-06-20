@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import com.github.af2905.movieland.AppComponentProvider
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentPopularMovieBinding
 import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
@@ -32,7 +32,7 @@ class PopularMovieFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = AppComponentProvider.getAppComponent(context)
+        val appComponent = CoreComponentProvider.getAppComponent(context)
         val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
         val popularMovieComponent =
             DaggerPopularMovieComponent.factory().create(appComponent, homeComponent)
