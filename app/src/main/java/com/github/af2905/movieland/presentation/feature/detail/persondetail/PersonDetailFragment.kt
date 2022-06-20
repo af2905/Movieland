@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
-import com.github.af2905.movieland.AppComponentProvider
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.helper.navigator.AppNavigator
 import com.github.af2905.movieland.presentation.base.compose.BaseComposeFragment
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.compose.PersonDetailScreen
@@ -23,7 +23,7 @@ class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewM
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = AppComponentProvider.getAppComponent(context)
+        val appComponent = CoreComponentProvider.getAppComponent(context)
         val detailComponent = DaggerPersonDetailComponent.factory().create(appComponent, args)
         detailComponent.injectPersonDetailFragment(this)
     }

@@ -21,7 +21,7 @@ import dagger.android.AndroidInjectionModule
         ResourceModule::class
     ]
 )
-interface AppComponent {
+interface CoreComponent {
 
     fun getMoviesRepository(): MoviesRepository
     fun getPeopleRepository(): PeopleRepository
@@ -30,6 +30,6 @@ interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(@BindsInstance context: Context): CoreComponent
     }
 }
