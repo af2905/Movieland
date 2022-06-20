@@ -4,10 +4,6 @@
 
     <data>
 
-        <variable
-            name="viewModel"
-            type="com.github.af2905.movieland.presentation.MainViewModel" />
-
     </data>
 
     <LinearLayout

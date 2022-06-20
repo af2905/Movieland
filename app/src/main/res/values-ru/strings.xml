@@ -28,7 +28,7 @@
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>
 
     //Search
-    <string name="search_title">Начните поиск фильмов, которые вам интересны, или выберете из списка популярных запросов</string>
+    <string name="search_title">Поиск</string>
     <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
     <string name="search_popular_search_queries">Популярные поисковые запросы</string>
 
@@ -37,4 +37,13 @@
     <string name="message_no_internet_connection">Что-то пошло не так, проверьте интернет соединение и попробуйте снова</string>
 
     <string name="any_screen_try_again">Попробовать снова</string>
+
+    //Menu item
+    <string name="menu_item_recently_viewed_title">История просмотров</string>
+    <string name="menu_item_liked_title">Вам понравилось</string>
+    <string name="menu_item_settings_title">Настройки</string>
+
+    //Profile
+    <string name="profile_title">Профиль</string>
+
 </resources>

@@ -27,7 +27,7 @@
     <string name="actors_and_crew_title">Actors and crew</string>
 
     //Search
-    <string name="search_title">Start searching for movies that you are interested in, or choose from a list of popular queries</string>
+    <string name="search_title">Search</string>
     <string name="search_empty_result">No results matching your query</string>
     <string name="search_popular_search_queries">Popular movie search queries</string>
 
@@ -36,5 +36,13 @@
     <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
 
     <string name="any_screen_try_again">try again</string>
+
+    //Menu item
+    <string name="menu_item_recently_viewed_title">Recently viewed</string>
+    <string name="menu_item_liked_title">Liked</string>
+    <string name="menu_item_settings_title">Settings</string>
+
+    //Profile
+    <string name="profile_title">Profile</string>
 
 </resources>
