@@ -1,6 +1,4 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
-
-package com.github.af2905.movieland.presentation.base
+package com.github.af2905.movieland.presentation.base.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -15,12 +14,14 @@ import androidx.navigation.fragment.findNavController
 import com.github.af2905.movieland.BR
 import com.github.af2905.movieland.di.ViewModelFactory
 import com.github.af2905.movieland.helper.navigator.Navigator
-import dagger.android.support.DaggerFragment
+import com.github.af2905.movieland.presentation.base.Base
+import com.github.af2905.movieland.presentation.base.BaseImpl
+import com.github.af2905.movieland.presentation.base.UiEffect
 import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : ViewModel> :
-    DaggerFragment(), Base<NV> {
+    Fragment(), Base<NV> {
 
     protected abstract fun layoutRes(): Int
     protected abstract fun viewModelClass(): Class<VM>

@@ -4,17 +4,19 @@ import com.github.af2905.movieland.presentation.base.UiEffect
 import com.github.af2905.movieland.presentation.base.UiState
 import com.github.af2905.movieland.presentation.common.effect.Navigate
 import com.github.af2905.movieland.presentation.common.effect.ToastMessage
+import com.github.af2905.movieland.presentation.feature.home.item.ListMovieVariantPlaceholderItem
 import com.github.af2905.movieland.presentation.model.Model
 
 class PopularMovieContract {
 
-    sealed class State : UiState() {
+    sealed class State(open val list: List<Model>) : UiState() {
 
-        data class Content(
-            val isLoading: Boolean = false,
-            val list: List<Model> = emptyList(),
-            val error: Throwable? = null
-        ) : PopularMovieContract.State()
+        data class Init(
+            override val list: List<Model> = listOf(ListMovieVariantPlaceholderItem())
+        ) : State(list)
+
+        data class Content(override val list: List<Model>) : State(list)
+        data class Error(override val list: List<Model>, val e: Throwable?) : State(list)
     }
 
     sealed class Effect : UiEffect() {

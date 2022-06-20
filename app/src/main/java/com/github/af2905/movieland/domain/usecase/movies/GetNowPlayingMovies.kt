@@ -4,6 +4,7 @@ import com.github.af2905.movieland.data.mapper.MovieEntityToUIListMapper
 import com.github.af2905.movieland.domain.repository.MoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
+import com.github.af2905.movieland.helper.extension.empty
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import javax.inject.Inject
 
@@ -19,5 +20,8 @@ class GetNowPlayingMovies @Inject constructor(
             params.forceUpdate
         )
         return mapper.map(response)
+            .filterNot { it.overview.isNullOrEmpty() }
+            .filterNot { it.voteAverage == Double.empty }
+            .sortedByDescending { it.releaseYear }
     }
 }

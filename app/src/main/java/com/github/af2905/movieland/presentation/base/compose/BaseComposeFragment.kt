@@ -4,6 +4,7 @@ package com.github.af2905.movieland.presentation.base.compose
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -13,12 +14,10 @@ import com.github.af2905.movieland.helper.navigator.Navigator
 import com.github.af2905.movieland.presentation.base.Base
 import com.github.af2905.movieland.presentation.base.BaseImpl
 import com.github.af2905.movieland.presentation.base.UiEffect
-import dagger.android.support.DaggerFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseComposeFragment<NV : Navigator, VM : ViewModel> :
-    DaggerFragment(), Base<NV> {
+abstract class BaseComposeFragment<NV : Navigator, VM : ViewModel> : Fragment(), Base<NV> {
 
     protected abstract fun viewModelClass(): Class<VM>
     protected abstract fun getNavigator(navController: NavController): NV

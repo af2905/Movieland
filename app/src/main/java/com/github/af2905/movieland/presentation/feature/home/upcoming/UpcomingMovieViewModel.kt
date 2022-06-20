@@ -1,20 +1,16 @@
 package com.github.af2905.movieland.presentation.feature.home.upcoming
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.domain.usecase.movies.GetUpcomingMovies
 import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
 import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.base.Container
-import com.github.af2905.movieland.presentation.common.ErrorHandler
 import com.github.af2905.movieland.presentation.common.effect.Navigate
-import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
+import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,12 +21,7 @@ class UpcomingMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<UpcomingMovieContract.State, UpcomingMovieContract.Effect> =
-        Container(viewModelScope, UpcomingMovieContract.State.Content(isLoading = true))
-
-    val items = container.state
-        .filter { it is UpcomingMovieContract.State.Content }
-        .map { (it as UpcomingMovieContract.State.Content).list }
-        .asLiveData()
+        Container(viewModelScope, UpcomingMovieContract.State.Init())
 
     init {
         loadData()
@@ -41,27 +32,30 @@ class UpcomingMovieViewModel @Inject constructor(
 
     private fun loadData(forceUpdate: Boolean = false) {
         container.intent {
-            try {
-                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).let {
-                    container.reduce {
-                        it.getOrThrow().let {
-                            UpcomingMovieContract.State.Content(
-                                isLoading = false,
-                                list = it.map { item -> MovieItemVariant(item) },
-                                error = null
-                            )
-                        }
-                    }
-                }
-            } catch (e: Exception) {
+            container.reduce {
+                UpcomingMovieContract.State.Init(list = this.list)
+            }
+            val result = getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate))
+            if (result.isFailure) {
+                val error = result.exceptionOrNull()
                 container.reduce {
-                    UpcomingMovieContract.State.Content(isLoading = false, error = e)
-                }
-                container.postEffect(
-                    UpcomingMovieContract.Effect.ShowFailMessage(
-                        ToastMessage(ErrorHandler.handleError(e))
+                    UpcomingMovieContract.State.Error(
+                        list = listOf(
+                            ErrorItem(
+                                errorMessage = error?.message.orEmpty(),
+                                errorButtonVisible = false
+                            )
+                        ),
+                        e = error
                     )
-                )
+                }
+            } else {
+                val movies = result.getOrNull().orEmpty()
+                container.reduce {
+                    UpcomingMovieContract.State.Content(
+                        list = movies.map { MovieItemVariant(it) }
+                    )
+                }
             }
         }
     }

@@ -4,4 +4,4 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(value = AnnotationRetention.RUNTIME)
-annotation class AppContext()
+annotation class MainActivityContext

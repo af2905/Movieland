@@ -1,14 +1,17 @@
 package com.github.af2905.movieland.presentation.feature.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
+import com.github.af2905.movieland.presentation.feature.search.di.DaggerSearchComponent
 import com.github.af2905.movieland.presentation.model.item.ErrorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.model.item.SearchItem
@@ -34,6 +37,13 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
             listener = ErrorItem.Listener { viewModel.update() }
         )
     )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val appComponent = CoreComponentProvider.getAppComponent(context)
+        val searchComponent = DaggerSearchComponent.factory().create(appComponent)
+        searchComponent.injectSearchFragment(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

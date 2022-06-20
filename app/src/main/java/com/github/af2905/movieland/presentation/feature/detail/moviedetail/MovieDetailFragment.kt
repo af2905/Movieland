@@ -6,23 +6,30 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
+import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
 import com.github.af2905.movieland.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.helper.ThemeHelper
-import com.github.af2905.movieland.presentation.base.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
+import com.github.af2905.movieland.presentation.base.fragment.RetainStoreFragment
 import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
 import com.github.af2905.movieland.presentation.common.BaseAdapter
 import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.di.DaggerMovieDetailComponent
+import com.github.af2905.movieland.presentation.feature.detail.moviedetail.di.MovieDetailComponent
 import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
 import com.github.af2905.movieland.presentation.model.item.MovieActorItem
 import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
+
+private const val COMPONENT_TAG = "component"
 
 class MovieDetailFragment :
     BaseFragment<MovieDetailNavigator, FragmentMovieDetailBinding, MovieDetailViewModel>() {
@@ -53,6 +60,29 @@ class MovieDetailFragment :
             decoration = { getHorizontalListItemDecoration(it) }
         )
     )
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val fragment =
+            childFragmentManager.findFragmentByTag(COMPONENT_TAG) as? RetainStoreFragment<MovieDetailComponent>
+
+        val component = fragment?.component
+
+        if (component != null) {
+            component.injectMovieDetailFragment(this)
+        } else {
+            val appComponent = CoreComponentProvider.getAppComponent(context)
+            val detailComponent = DaggerMovieDetailComponent.factory().create(appComponent, args)
+            detailComponent.injectMovieDetailFragment(this)
+
+            val retainStoreFragment = RetainStoreFragment<MovieDetailComponent>()
+            retainStoreFragment.component = detailComponent
+            childFragmentManager.commit {
+                add(retainStoreFragment, COMPONENT_TAG)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
