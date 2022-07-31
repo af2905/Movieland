@@ -12,22 +12,24 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.core.base.BaseFragment
+import com.github.af2905.movieland.core.base.RetainStoreFragment
+import com.github.af2905.movieland.core.common.AppBarStateChangeListener
+import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.ItemDelegate
+import com.github.af2905.movieland.core.common.NestedRecyclerViewStateAdapter
+import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
+import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
+import com.github.af2905.movieland.core.common.model.item.MovieActorItem
+import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.helper.ThemeHelper
-import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
-import com.github.af2905.movieland.presentation.base.fragment.RetainStoreFragment
-import com.github.af2905.movieland.presentation.common.AppBarStateChangeListener
-import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemDelegate
-import com.github.af2905.movieland.presentation.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.di.DaggerMovieDetailComponent
 import com.github.af2905.movieland.presentation.feature.detail.moviedetail.di.MovieDetailComponent
-import com.github.af2905.movieland.presentation.model.item.HorizontalListAdapter
-import com.github.af2905.movieland.presentation.model.item.HorizontalListItem
-import com.github.af2905.movieland.presentation.model.item.MovieActorItem
-import com.github.af2905.movieland.presentation.model.item.MovieItem
 import com.github.af2905.movieland.presentation.widget.HorizontalListItemDecorator
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
 
 private const val COMPONENT_TAG = "component"
 
@@ -84,6 +86,7 @@ class MovieDetailFragment :
         }
     }
 
+    @OptIn(InternalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -103,13 +106,13 @@ class MovieDetailFragment :
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.container.effect.collect { effect ->
+            viewModel.container.effect.collect(FlowCollector { effect ->
                 when (effect) {
                     is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
-            }
+            })
         }
     }
 
@@ -145,7 +148,9 @@ class MovieDetailFragment :
             }
         }
 
-        override fun onScrolled(state: State, dy: Int) {}
+        override fun onScrolled(state: State, dy: Int) {
+            Unit
+        }
     }
 
     private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {

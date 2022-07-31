@@ -2,8 +2,8 @@ package com.github.af2905.movieland.presentation.feature.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.presentation.base.Container
-import com.github.af2905.movieland.presentation.model.item.ProfileMenuItem
+import com.github.af2905.movieland.core.base.Container
+import com.github.af2905.movieland.core.common.model.item.ProfileMenuItem
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor() : ViewModel() {

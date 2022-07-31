@@ -8,12 +8,14 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.core.base.BaseFragment
+import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.ItemDelegate
+import com.github.af2905.movieland.core.common.model.item.ProfileMenuItem
 import com.github.af2905.movieland.databinding.FragmentProfileBinding
-import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
-import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.profile.di.DaggerProfileComponent
-import com.github.af2905.movieland.presentation.model.item.ProfileMenuItem
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
 
 class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, ProfileViewModel>() {
     override fun getNavigator(navController: NavController) = ProfileNavigator(navController)
@@ -36,6 +38,7 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
         detailComponent.injectProfileFragment(this)
     }
 
+    @OptIn(InternalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,11 +49,11 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.container.effect.collect { effect ->
+            viewModel.container.effect.collect(FlowCollector { effect ->
                 when (effect) {
                     is ProfileContract.Effect.OpenMenuItemDetail -> handleEffect(effect.navigator)
                 }
-            }
+            })
         }
     }
 }
