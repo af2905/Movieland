@@ -9,8 +9,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.CoreComponentProvider
-import com.github.af2905.movieland.helper.navigator.AppNavigator
-import com.github.af2905.movieland.presentation.base.compose.BaseComposeFragment
+import com.github.af2905.movieland.core.base.navigator.AppNavigator
+import com.github.af2905.movieland.core.compose.BaseComposeFragment
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.compose.PersonDetailScreen
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.di.DaggerPersonDetailComponent
 

@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.presentation.feature.detail.persondetail.di
 
-import com.github.af2905.movieland.di.CoreComponent
-import com.github.af2905.movieland.di.scope.FragmentScope
+import com.github.af2905.movieland.core.di.CoreComponent
+import com.github.af2905.movieland.core.di.scope.FragmentScope
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailFragment
 import com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailFragmentArgs
 import dagger.BindsInstance

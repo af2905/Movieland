@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.presentation.feature.home.di.component
 
 import androidx.fragment.app.Fragment
-import com.github.af2905.movieland.di.CoreComponent
+import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.presentation.feature.home.HomeFragment
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import com.github.af2905.movieland.presentation.feature.home.di.module.HomeFragmentModule

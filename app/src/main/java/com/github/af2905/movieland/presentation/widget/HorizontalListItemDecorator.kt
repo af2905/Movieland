@@ -3,7 +3,7 @@ package com.github.af2905.movieland.presentation.widget
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.github.af2905.movieland.presentation.common.BaseAdapter
+import com.github.af2905.movieland.core.common.BaseAdapter
 
 class HorizontalListItemDecorator(
     val marginTop: Int = 0,

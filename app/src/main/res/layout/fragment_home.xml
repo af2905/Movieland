@@ -10,7 +10,7 @@
 
     </data>
 
-    <com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout
+    <com.github.af2905.movieland.core.common.view.OnlyVerticalSwipeRefreshLayout
         android:id="@+id/homeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -79,5 +79,5 @@
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </com.github.af2905.movieland.presentation.common.view.OnlyVerticalSwipeRefreshLayout>
+    </com.github.af2905.movieland.core.common.view.OnlyVerticalSwipeRefreshLayout>
 </layout>

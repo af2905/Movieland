@@ -1,9 +1,9 @@
 package com.github.af2905.movieland.presentation.feature.detail.persondetail
 
-import com.github.af2905.movieland.presentation.base.UiEffect
-import com.github.af2905.movieland.presentation.base.UiState
-import com.github.af2905.movieland.presentation.common.effect.ToastMessage
-import com.github.af2905.movieland.presentation.model.item.PersonItem
+import com.github.af2905.movieland.core.base.UiEffect
+import com.github.af2905.movieland.core.base.UiState
+import com.github.af2905.movieland.core.common.effect.ToastMessage
+import com.github.af2905.movieland.core.data.PersonItem
 
 class PersonDetailContract {
 

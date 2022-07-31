@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.helper.extension.getFullPathToImage
-import com.github.af2905.movieland.presentation.model.item.PersonItem
+import com.github.af2905.movieland.core.data.PersonItem
+import com.github.af2905.movieland.util.extension.getFullPathToImage
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 

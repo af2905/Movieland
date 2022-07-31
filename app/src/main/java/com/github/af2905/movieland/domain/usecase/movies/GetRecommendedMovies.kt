@@ -1,10 +1,10 @@
 package com.github.af2905.movieland.domain.usecase.movies
 
-import com.github.af2905.movieland.data.mapper.MovieEntityToUIListMapper
-import com.github.af2905.movieland.domain.repository.MoviesRepository
+import com.github.af2905.movieland.core.common.model.item.MovieItem
+import com.github.af2905.movieland.core.data.mapper.MovieEntityToUIListMapper
+import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
 import com.github.af2905.movieland.domain.usecase.params.RecommendedMoviesParams
-import com.github.af2905.movieland.presentation.model.item.MovieItem
 import javax.inject.Inject
 
 class GetRecommendedMovies @Inject constructor(

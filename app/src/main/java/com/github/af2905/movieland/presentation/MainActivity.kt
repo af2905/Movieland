@@ -12,7 +12,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.github.af2905.movieland.R
-import com.github.af2905.movieland.data.worker.UpdateMoviesWorker
+import com.github.af2905.movieland.core.data.worker.UpdateMoviesWorker
 import com.github.af2905.movieland.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
