@@ -1,8 +1,8 @@
 package com.github.af2905.movieland.presentation.feature.detail.moviedetail
 
 import androidx.navigation.NavController
-import com.github.af2905.movieland.helper.navigator.NavOptions
-import com.github.af2905.movieland.helper.navigator.Navigator
+import com.github.af2905.movieland.core.base.navigator.NavOptions
+import com.github.af2905.movieland.core.base.navigator.Navigator
 import javax.inject.Inject
 
 class MovieDetailNavigator @Inject constructor(

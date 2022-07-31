@@ -7,15 +7,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.CoreComponentProvider
 import com.github.af2905.movieland.R
+import com.github.af2905.movieland.core.base.BaseFragment
+import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.ItemDelegate
+import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
 import com.github.af2905.movieland.databinding.FragmentNowPlayingMovieBinding
-import com.github.af2905.movieland.presentation.base.fragment.BaseFragment
-import com.github.af2905.movieland.presentation.common.BaseAdapter
-import com.github.af2905.movieland.presentation.common.ItemDelegate
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.di.component.DaggerNowPlayingMovieComponent
 import com.github.af2905.movieland.presentation.feature.home.di.component.HomeComponentProvider
-import com.github.af2905.movieland.presentation.model.item.MovieItemVariant
 import com.github.af2905.movieland.presentation.widget.VerticalListItemDecorator
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
 
 class NowPlayingMovieFragment :
     BaseFragment<HomeNavigator, FragmentNowPlayingMovieBinding, NowPlayingMovieViewModel>() {
@@ -39,6 +41,7 @@ class NowPlayingMovieFragment :
         nowPlayingMovieComponent.injectNowPlayingMovieFragment(this)
     }
 
+    @OptIn(InternalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,12 +56,12 @@ class NowPlayingMovieFragment :
             )
         }
         lifecycleScope.launchWhenCreated {
-            viewModel.container.effect.collect { effect ->
+            viewModel.container.effect.collect(FlowCollector { effect ->
                 when (effect) {
                     is NowPlayingMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is NowPlayingMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
-            }
+            })
         }
     }
 }

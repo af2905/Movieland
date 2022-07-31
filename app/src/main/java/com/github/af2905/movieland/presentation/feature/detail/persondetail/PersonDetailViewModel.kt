@@ -2,11 +2,11 @@ package com.github.af2905.movieland.presentation.feature.detail.persondetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.af2905.movieland.core.base.Container
+import com.github.af2905.movieland.core.common.ErrorHandler
+import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.domain.usecase.params.PersonDetailParams
 import com.github.af2905.movieland.domain.usecase.people.GetPersonDetail
-import com.github.af2905.movieland.presentation.base.Container
-import com.github.af2905.movieland.presentation.common.ErrorHandler
-import com.github.af2905.movieland.presentation.common.effect.ToastMessage
 import javax.inject.Inject
 
 class PersonDetailViewModel @Inject constructor(

@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.domain.usecase.adult
 
+import com.github.af2905.movieland.core.common.model.item.MoviesResponse
 import com.github.af2905.movieland.domain.usecase.CoroutineUseCase
-import com.github.af2905.movieland.presentation.model.item.MoviesResponse
 import javax.inject.Inject
 
 class GetAdultMovies @Inject constructor() :

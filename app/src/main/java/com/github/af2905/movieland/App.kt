@@ -4,9 +4,9 @@ import android.app.Application
 import android.content.Context
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.github.af2905.movieland.di.AppWorkerFactory
-import com.github.af2905.movieland.di.CoreComponent
-import com.github.af2905.movieland.di.DaggerCoreComponent
+import com.github.af2905.movieland.core.di.AppWorkerFactory
+import com.github.af2905.movieland.core.di.CoreComponent
+import com.github.af2905.movieland.core.di.DaggerCoreComponent
 import timber.log.Timber
 
 class App : Application(), CoreComponentStore {
