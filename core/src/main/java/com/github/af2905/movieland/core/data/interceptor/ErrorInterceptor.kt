@@ -31,7 +31,7 @@ class ErrorInterceptor @Inject constructor(private val gson: Gson) : Interceptor
             return response
         }
 
-        val errorBody = gson.fromJson(response.body?.string(), ErrorBody::class.java)
+        val errorBody = gson.fromJson(response.body.string(), ErrorBody::class.java)
 
         when (response.code) {
 

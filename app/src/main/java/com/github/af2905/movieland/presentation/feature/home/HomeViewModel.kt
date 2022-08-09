@@ -3,13 +3,13 @@ package com.github.af2905.movieland.presentation.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
+import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.HomeMenuItem
 import com.github.af2905.movieland.domain.usecase.movies.*
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.TopRatedMoviesParams
 import com.github.af2905.movieland.domain.usecase.params.UpcomingMoviesParams
-import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

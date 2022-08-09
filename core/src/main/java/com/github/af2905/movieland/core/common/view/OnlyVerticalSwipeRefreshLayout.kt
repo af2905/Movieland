@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlin.math.abs
 
 class OnlyVerticalSwipeRefreshLayout(context: Context, attrs: AttributeSet?) :
     SwipeRefreshLayout(context, attrs) {
@@ -22,7 +23,7 @@ class OnlyVerticalSwipeRefreshLayout(context: Context, attrs: AttributeSet?) :
             }
             MotionEvent.ACTION_MOVE -> {
                 val eventX = event.x
-                val xDiff = Math.abs(eventX - prevX)
+                val xDiff = abs(eventX - prevX)
                 if (declined || xDiff > touchSlop) {
                     declined = true // Memorize
                     return false

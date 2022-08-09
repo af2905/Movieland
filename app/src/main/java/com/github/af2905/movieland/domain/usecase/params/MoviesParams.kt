@@ -34,22 +34,6 @@ data class RecommendedMoviesParams(
     val page: Int? = null
 )
 
-data class SimilarMoviesParams(
-    val movieId: Int,
-    val language: String? = null,
-    val page: Int? = null
-)
-
-data class MovieDetailsParams(
-    val movieId: Int,
-    val language: String? = null
-)
-
-data class MovieActorsParams(
-    val movieId: Int,
-    val language: String? = null
-)
-
 interface BaseMoviesParams {
     val language: String?
     val page: Int?

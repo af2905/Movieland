@@ -5,6 +5,8 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/homeFragment">
 
+    <include app:graph="@navigation/detail_graph" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.github.af2905.movieland.presentation.feature.home.HomeFragment"
@@ -12,7 +14,8 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/openMovieDetail"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/detail_graph" />
+
     </fragment>
 
     <fragment
@@ -22,7 +25,7 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/openMovieDetail"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/detail_graph" />
     </fragment>
 
     <fragment
@@ -32,34 +35,34 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/openMovieDetail"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/detail_graph" />
     </fragment>
+    <!--
+        <fragment
+            android:id="@+id/movieDetailFragment"
+            android:name="com.github.af2905.movieland.detail.moviedetail.MovieDetailFragment"
+            android:label="MovieDetailFragment"
+            tools:layout="@layout/fragment_movie_detail">
+            <action
+                android:id="@+id/openMovieDetail"
+                app:destination="@id/movieDetailFragment" />
+            <action
+                android:id="@+id/openPersonDetail"
+                app:destination="@id/personDetailFragment" />
 
-    <fragment
-        android:id="@+id/movieDetailFragment"
-        android:name="com.github.af2905.movieland.presentation.feature.detail.moviedetail.MovieDetailFragment"
-        android:label="MovieDetailFragment"
-        tools:layout="@layout/fragment_movie_detail">
-        <action
-            android:id="@+id/openMovieDetail"
-            app:destination="@id/movieDetailFragment" />
-        <action
-            android:id="@+id/openPersonDetail"
-            app:destination="@id/personDetailFragment" />
+            <argument
+                android:name="movieId"
+                app:argType="integer" />
+        </fragment>-->
 
-        <argument
-            android:name="movieId"
-            app:argType="integer" />
-    </fragment>
-
-    <fragment
+<!--    <fragment
         android:id="@+id/personDetailFragment"
-        android:name="com.github.af2905.movieland.presentation.feature.detail.persondetail.PersonDetailFragment"
+        android:name="com.github.af2905.movieland.detail.persondetail.PersonDetailFragment"
         android:label="PersonDetailFragment">
 
         <argument
             android:name="personId"
             app:argType="integer" />
-    </fragment>
+    </fragment>-->
 
 </navigation>

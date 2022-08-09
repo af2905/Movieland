@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
+import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
 import com.github.af2905.movieland.domain.usecase.movies.GetNowPlayingMovies
 import com.github.af2905.movieland.domain.usecase.params.NowPlayingMoviesParams
-import com.github.af2905.movieland.helper.coroutine.CoroutineDispatcherProvider
 import com.github.af2905.movieland.presentation.feature.home.HomeNavigator
 import com.github.af2905.movieland.presentation.feature.home.HomeRepository
 import kotlinx.coroutines.launch

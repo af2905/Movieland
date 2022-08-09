@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.presentation.feature.home
 
-import com.github.af2905.movieland.helper.extension.launchCollect
+import com.github.af2905.movieland.core.common.helper.launchCollect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
