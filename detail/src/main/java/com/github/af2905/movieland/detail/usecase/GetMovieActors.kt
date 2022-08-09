@@ -4,6 +4,7 @@ import com.github.af2905.movieland.core.common.model.item.MovieActorItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.MovieActorDtoMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
+import com.github.af2905.movieland.detail.usecase.params.MovieActorsParams
 import javax.inject.Inject
 
 class GetMovieActors @Inject constructor(

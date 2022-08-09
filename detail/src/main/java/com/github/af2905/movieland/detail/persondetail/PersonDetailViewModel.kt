@@ -6,7 +6,7 @@ import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.ErrorHandler
 import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.detail.usecase.GetPersonDetail
-import com.github.af2905.movieland.detail.usecase.PersonDetailParams
+import com.github.af2905.movieland.detail.usecase.params.PersonDetailParams
 import javax.inject.Inject
 
 class PersonDetailViewModel @Inject constructor(
