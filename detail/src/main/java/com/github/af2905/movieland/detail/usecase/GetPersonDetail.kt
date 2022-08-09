@@ -3,6 +3,7 @@ package com.github.af2905.movieland.detail.usecase
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.PersonItem
 import com.github.af2905.movieland.core.repository.PeopleRepository
+import com.github.af2905.movieland.detail.usecase.params.PersonDetailParams
 import javax.inject.Inject
 
 class GetPersonDetail @Inject constructor(

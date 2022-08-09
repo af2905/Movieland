@@ -10,7 +10,12 @@ import com.github.af2905.movieland.core.common.model.ItemIds
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.detail.R
-import com.github.af2905.movieland.detail.usecase.*
+import com.github.af2905.movieland.detail.usecase.GetMovieActors
+import com.github.af2905.movieland.detail.usecase.GetMovieDetail
+import com.github.af2905.movieland.detail.usecase.GetSimilarMovies
+import com.github.af2905.movieland.detail.usecase.params.MovieActorsParams
+import com.github.af2905.movieland.detail.usecase.params.MovieDetailsParams
+import com.github.af2905.movieland.detail.usecase.params.SimilarMoviesParams
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import java.util.Collections.emptyList
