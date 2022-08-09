@@ -33,7 +33,7 @@ data class HorizontalListItem(
 class HorizontalListAdapter(
     layout: Int,
     val adapter: () -> BaseAdapter,
-    val snapHelper: SnapHelper? = null,
+    private val snapHelper: SnapHelper? = null,
     val decoration: ((Context) -> RecyclerView.ItemDecoration)? = null,
 ) : ItemDelegate(layout) {
 

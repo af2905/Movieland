@@ -2,3 +2,4 @@ rootProject.name = "Movieland"
 include ':app'
 include ':core'
 include ':util'
+include ':detail'
