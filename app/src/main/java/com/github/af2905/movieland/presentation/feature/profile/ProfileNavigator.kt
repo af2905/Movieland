@@ -6,6 +6,4 @@ import javax.inject.Inject
 
 class ProfileNavigator @Inject constructor(
     navController: NavController
-) : Navigator(navController) {
-
-}
+) : Navigator(navController)
