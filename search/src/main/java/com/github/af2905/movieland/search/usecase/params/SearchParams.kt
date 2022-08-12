@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.domain.usecase.params
+package com.github.af2905.movieland.search.usecase.params
 
 data class SearchMovieParams(
     val query: String,

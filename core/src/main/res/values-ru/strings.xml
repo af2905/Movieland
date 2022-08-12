@@ -26,11 +26,6 @@
     //Movie detail
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>
 
-    //Search
-    <string name="search_title">Поиск</string>
-    <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
-    <string name="search_popular_search_queries">Популярные поисковые запросы</string>
-
     //Fail to connect
     <string name="message_fail_to_connect">Похоже пропал интернет, проверьте соединение</string>
     <string name="message_no_internet_connection">Что-то пошло не так, проверьте интернет соединение и попробуйте снова</string>
@@ -44,4 +39,6 @@
 
     //Profile
     <string name="profile_title">Профиль</string>
+
+    <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
 </resources>

@@ -1,17 +1,18 @@
-package com.github.af2905.movieland.presentation.feature.search
+package com.github.af2905.movieland.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.af2905.movieland.R
 import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.core.common.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
-import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
-import com.github.af2905.movieland.domain.usecase.params.SearchMovieParams
-import com.github.af2905.movieland.domain.usecase.search.GetPopularSearchQueries
-import com.github.af2905.movieland.domain.usecase.search.GetSearchMovie
+import com.github.af2905.movieland.search.R
+import com.github.af2905.movieland.search.SearchNavigator
+import com.github.af2905.movieland.search.usecase.GetPopularSearchQueries
+import com.github.af2905.movieland.search.usecase.GetSearchMovie
+import com.github.af2905.movieland.search.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.search.usecase.params.SearchMovieParams
 import com.github.af2905.movieland.util.extension.empty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce

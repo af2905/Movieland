@@ -6,11 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
-import com.github.af2905.movieland.core.base.RetainStoreFragment
 import com.github.af2905.movieland.core.common.AppBarStateChangeListener
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
@@ -25,7 +23,6 @@ import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.detail.moviedetail.di.DaggerMovieDetailComponent
-import com.github.af2905.movieland.detail.moviedetail.di.MovieDetailComponent
 import com.google.android.material.appbar.AppBarLayout
 
 private const val COMPONENT_TAG = "component"
@@ -61,7 +58,12 @@ class MovieDetailFragment :
     @Suppress("UNCHECKED_CAST")
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val fragment =
+        val appComponent = CoreComponentProvider.getAppComponent(context)
+        val detailComponent = DaggerMovieDetailComponent.factory()
+            .create(appComponent, movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG)))
+        detailComponent.injectMovieDetailFragment(this)
+
+/*        val fragment =
             childFragmentManager.findFragmentByTag(COMPONENT_TAG) as? RetainStoreFragment<MovieDetailComponent>
 
         val component = fragment?.component
@@ -79,7 +81,7 @@ class MovieDetailFragment :
             childFragmentManager.commit {
                 add(retainStoreFragment, COMPONENT_TAG)
             }
-        }
+        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
