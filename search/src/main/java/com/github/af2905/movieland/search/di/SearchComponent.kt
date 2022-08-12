@@ -1,8 +1,8 @@
-package com.github.af2905.movieland.presentation.feature.search.di
+package com.github.af2905.movieland.search.di
 
 import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.core.di.scope.FragmentScope
-import com.github.af2905.movieland.presentation.feature.search.SearchFragment
+import com.github.af2905.movieland.search.presentation.SearchFragment
 import dagger.Component
 
 @FragmentScope

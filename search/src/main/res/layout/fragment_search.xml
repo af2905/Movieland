@@ -6,9 +6,9 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.presentation.feature.search.SearchViewModel" />
+            type="com.github.af2905.movieland.search.presentation.SearchViewModel" />
 
-        <import type="com.github.af2905.movieland.presentation.feature.search.SearchContract" />
+        <import type="com.github.af2905.movieland.search.presentation.SearchContract" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

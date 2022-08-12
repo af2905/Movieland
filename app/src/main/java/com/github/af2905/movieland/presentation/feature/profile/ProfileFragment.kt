@@ -46,11 +46,11 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.container.effect.collect({ effect ->
+            viewModel.container.effect.collect { effect ->
                 when (effect) {
                     is ProfileContract.Effect.OpenMenuItemDetail -> handleEffect(effect.navigator)
                 }
-            })
+            }
         }
     }
 }

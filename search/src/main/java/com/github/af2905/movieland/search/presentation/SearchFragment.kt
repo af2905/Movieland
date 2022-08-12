@@ -1,11 +1,10 @@
-package com.github.af2905.movieland.presentation.feature.search
+package com.github.af2905.movieland.search.presentation
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import com.github.af2905.movieland.R
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
@@ -15,8 +14,10 @@ import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
 import com.github.af2905.movieland.core.common.model.item.SearchItem
 import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
-import com.github.af2905.movieland.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.presentation.feature.search.di.DaggerSearchComponent
+import com.github.af2905.movieland.search.R
+import com.github.af2905.movieland.search.SearchNavigator
+import com.github.af2905.movieland.search.databinding.FragmentSearchBinding
+import com.github.af2905.movieland.search.di.DaggerSearchComponent
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -64,12 +65,12 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
         }
 
         lifecycleScope.launchWhenCreated {
-            viewModel.container.effect.collect({ effect ->
+            viewModel.container.effect.collect { effect ->
                 when (effect) {
                     is SearchContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is SearchContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
-            })
+            }
         }
     }
 }

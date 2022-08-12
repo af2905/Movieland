@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.presentation.feature.search
+package com.github.af2905.movieland.search.presentation
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState

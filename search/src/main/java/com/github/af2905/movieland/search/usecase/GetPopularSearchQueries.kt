@@ -1,10 +1,10 @@
-package com.github.af2905.movieland.domain.usecase.search
+package com.github.af2905.movieland.search.usecase
 
 import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.MovieEntityToUIListMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
-import com.github.af2905.movieland.domain.usecase.params.PopularMoviesParams
+import com.github.af2905.movieland.search.usecase.params.PopularMoviesParams
 import javax.inject.Inject
 
 private const val DEFAULT_SIZE = 10
