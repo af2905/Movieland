@@ -2,7 +2,6 @@ package com.github.af2905.movieland.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -26,14 +25,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //window.statusBarColor = Color.TRANSPARENT
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         navController = findNavController()
 
         setupBottomNavMenu(navController)
-        setDestinationChangedListener()
 
         val workRequest = OneTimeWorkRequestBuilder<UpdateMoviesWorker>()
             .build()
@@ -69,23 +65,5 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
-    }
-
-    private fun setDestinationChangedListener() {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.homeFragment, R.id.searchFragment, R.id.profileFragment -> showBottomNav()
-                else -> hideBottomNav()
-            }
-        }
-    }
-
-    private fun showBottomNav() {
-        bottomNav.visibility = View.VISIBLE
-
-    }
-
-    private fun hideBottomNav() {
-        bottomNav.visibility = View.GONE
     }
 }

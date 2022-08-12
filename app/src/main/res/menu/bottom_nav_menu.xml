@@ -7,7 +7,7 @@
         android:title="@string/bottom_nav_menu_home_title" />
 
     <item
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_graph"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/bottom_nav_menu_search_title" />
 

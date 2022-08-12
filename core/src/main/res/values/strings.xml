@@ -25,11 +25,6 @@
     //Movie detail
     <string name="actors_and_crew_title">Actors and crew</string>
 
-    //Search
-    <string name="search_title">Search</string>
-    <string name="search_empty_result">No results matching your query</string>
-    <string name="search_popular_search_queries">Popular movie search queries</string>
-
     //Fail to connect
     <string name="message_fail_to_connect">Failed to connect</string>
     <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
@@ -43,4 +38,6 @@
 
     //Profile
     <string name="profile_title">Profile</string>
+
+    <string name="search_empty_result">No results matching your query</string>
 </resources>
