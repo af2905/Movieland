@@ -66,7 +66,9 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : ViewModel
         base.handleEffect(effect)
     }
 
-    open fun onBind() {}
+    open fun onBind() {
+        //for using in child fragment
+    }
 
     override fun onDestroyView() {
         binding.unbind()

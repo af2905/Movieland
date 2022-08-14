@@ -9,10 +9,10 @@ import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.core.common.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
-import com.github.af2905.movieland.search.usecase.GetPopularSearchQueries
-import com.github.af2905.movieland.search.usecase.GetSearchMovie
-import com.github.af2905.movieland.search.usecase.params.PopularMoviesParams
-import com.github.af2905.movieland.search.usecase.params.SearchMovieParams
+import com.github.af2905.movieland.search.domain.params.PopularMoviesParams
+import com.github.af2905.movieland.search.domain.params.SearchMovieParams
+import com.github.af2905.movieland.search.domain.usecase.GetPopularSearchQueries
+import com.github.af2905.movieland.search.domain.usecase.GetSearchMovie
 import com.github.af2905.movieland.util.extension.empty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
