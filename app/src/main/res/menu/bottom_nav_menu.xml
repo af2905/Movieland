@@ -12,7 +12,7 @@
         android:title="@string/bottom_nav_menu_search_title" />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/profile_graph"
         android:icon="@drawable/ic_menu_profile"
         android:title="@string/bottom_nav_menu_profile_title" />
 

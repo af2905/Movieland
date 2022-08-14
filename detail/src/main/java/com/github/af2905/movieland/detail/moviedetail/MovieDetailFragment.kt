@@ -25,8 +25,6 @@ import com.github.af2905.movieland.detail.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.detail.moviedetail.di.DaggerMovieDetailComponent
 import com.google.android.material.appbar.AppBarLayout
 
-private const val COMPONENT_TAG = "component"
-
 class MovieDetailFragment :
     BaseFragment<MovieDetailNavigator, FragmentMovieDetailBinding, MovieDetailViewModel>() {
 
@@ -55,33 +53,12 @@ class MovieDetailFragment :
         )
     )
 
-    @Suppress("UNCHECKED_CAST")
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
         val detailComponent = DaggerMovieDetailComponent.factory()
             .create(appComponent, movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG)))
         detailComponent.injectMovieDetailFragment(this)
-
-/*        val fragment =
-            childFragmentManager.findFragmentByTag(COMPONENT_TAG) as? RetainStoreFragment<MovieDetailComponent>
-
-        val component = fragment?.component
-
-        if (component != null) {
-            component.injectMovieDetailFragment(this)
-        } else {
-            val appComponent = CoreComponentProvider.getAppComponent(context)
-            val detailComponent = DaggerMovieDetailComponent.factory()
-                .create(appComponent, movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG)))
-            detailComponent.injectMovieDetailFragment(this)
-
-            val retainStoreFragment = RetainStoreFragment<MovieDetailComponent>()
-            retainStoreFragment.component = detailComponent
-            childFragmentManager.commit {
-                add(retainStoreFragment, COMPONENT_TAG)
-            }
-        }*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

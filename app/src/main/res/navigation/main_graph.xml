@@ -7,6 +7,7 @@
 
     <include app:graph="@navigation/detail_graph" />
     <include app:graph="@navigation/search_graph" />
+    <include app:graph="@navigation/profile_graph" />
 
     <fragment
         android:id="@+id/homeFragment"
@@ -17,16 +18,6 @@
             android:id="@+id/openMovieDetail"
             app:destination="@id/detail_graph" />
 
-    </fragment>
-
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.github.af2905.movieland.presentation.feature.profile.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/openMovieDetail"
-            app:destination="@id/detail_graph" />
     </fragment>
 
 </navigation>
