@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/home_graph">
 
-    <include app:graph="@navigation/detail_graph" />
+    <include app:graph="@navigation/home_graph" />
     <include app:graph="@navigation/search_graph" />
     <include app:graph="@navigation/profile_graph" />
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.github.af2905.movieland.presentation.feature.home.HomeFragment"
-        android:label="HomeFragment"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/openMovieDetail"
-            app:destination="@id/detail_graph" />
-
-    </fragment>
+    <include app:graph="@navigation/detail_graph" />
 
 </navigation>

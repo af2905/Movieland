@@ -11,7 +11,7 @@ import timber.log.Timber
 
 class App : Application(), CoreComponentStore {
 
-    internal val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
+    private val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
 
     private val workerFactory: AppWorkerFactory = coreComponent.getAppWorkerFactory()
 

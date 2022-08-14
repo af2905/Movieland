@@ -6,6 +6,4 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 fun <T> Flow<T>.launchCollect(scope: CoroutineScope, collector: FlowCollector<T>) =
-    scope.launch {
-        collect(collector)
-    }
+    scope.launch { collect(collector) }

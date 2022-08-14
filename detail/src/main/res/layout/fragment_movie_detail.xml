@@ -7,9 +7,9 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.detail.moviedetail.MovieDetailViewModel" />
+            type="com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailViewModel" />
 
-        <import type="com.github.af2905.movieland.detail.moviedetail.MovieDetailContract" />
+        <import type="com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailContract" />
 
     </data>
 
