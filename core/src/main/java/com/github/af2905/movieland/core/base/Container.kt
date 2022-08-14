@@ -2,15 +2,12 @@
 
 package com.github.af2905.movieland.core.base
 
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.withContext
 
 class Container<STATE, EFFECT>(private val scope: CoroutineScope, initialState: STATE) {
 
@@ -35,6 +32,7 @@ class Container<STATE, EFFECT>(private val scope: CoroutineScope, initialState: 
     }
 
     companion object {
+        @OptIn(DelicateCoroutinesApi::class)
         val SINGLE_THREAD = newSingleThreadContext("mvi")
     }
 }

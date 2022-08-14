@@ -10,8 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.af2905.movieland.detail.persondetail.PersonDetailContract
-import com.github.af2905.movieland.detail.persondetail.PersonDetailViewModel
+import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailContract
+import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

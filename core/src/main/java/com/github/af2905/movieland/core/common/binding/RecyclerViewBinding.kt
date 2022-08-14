@@ -11,8 +11,7 @@ import com.github.af2905.movieland.core.common.model.Model
 @BindingAdapter("recyclerSetData")
 fun RecyclerView.setData(items: List<Model>?) {
     isVisible = items != null
-    @Suppress("UNCHECKED_CAST")
-    (adapter as? BaseAdapter)?.let { items?.let { items -> it.submitList(items)  } }
+    (adapter as? BaseAdapter)?.let { items?.let { items -> it.submitList(items) } }
 }
 
 @BindingAdapter(value = ["linearLayoutManager", "app:reverseLayout"], requireAll = false)

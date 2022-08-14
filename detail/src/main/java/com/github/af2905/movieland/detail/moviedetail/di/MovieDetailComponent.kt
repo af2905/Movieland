@@ -2,7 +2,7 @@ package com.github.af2905.movieland.detail.moviedetail.di
 
 import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.core.di.scope.FragmentScope
-import com.github.af2905.movieland.detail.moviedetail.MovieDetailFragment
+import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailFragment
 import dagger.BindsInstance
 import dagger.Component
 

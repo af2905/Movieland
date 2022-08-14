@@ -23,9 +23,9 @@ fun ShapeableImageView.loadImage(src: String?) {
 }
 
 @BindingAdapter("app:src")
-fun ShapeableImageView.loadImage(@DrawableRes imageRes: Int? = null) {
+fun ShapeableImageView.setImage(@DrawableRes imageRes: Int? = null) {
     imageRes?.let { setImageResource(imageRes) }
 }
 
 @BindingAdapter("app:src")
-fun AppCompatImageView.setImage(@DrawableRes image: Int) = setImageResource(image)
+fun AppCompatImageView.setImage(@DrawableRes imageRes: Int) = setImageResource(imageRes)
