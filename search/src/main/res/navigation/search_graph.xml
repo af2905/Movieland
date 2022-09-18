@@ -5,6 +5,8 @@
     android:id="@+id/search_graph"
     app:startDestination="@id/searchFragment">
 
+    <include app:graph="@navigation/detail_graph" />
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.github.af2905.movieland.search.presentation.SearchFragment"

@@ -5,6 +5,8 @@
     android:id="@+id/home_graph"
     app:startDestination="@id/homeFragment">
 
+    <include app:graph="@navigation/detail_graph" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.github.af2905.movieland.home.presentation.HomeFragment"
