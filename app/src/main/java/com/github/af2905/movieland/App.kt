@@ -1,17 +1,17 @@
 package com.github.af2905.movieland
 
 import android.app.Application
-import android.content.Context
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.github.af2905.movieland.di.AppWorkerFactory
-import com.github.af2905.movieland.di.CoreComponent
-import com.github.af2905.movieland.di.DaggerCoreComponent
+import com.github.af2905.movieland.core.di.AppWorkerFactory
+import com.github.af2905.movieland.core.di.CoreComponent
+import com.github.af2905.movieland.core.di.CoreComponentStore
+import com.github.af2905.movieland.core.di.DaggerCoreComponent
 import timber.log.Timber
 
 class App : Application(), CoreComponentStore {
 
-    internal val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
+    private val coreComponent: CoreComponent = DaggerCoreComponent.factory().create(this)
 
     private val workerFactory: AppWorkerFactory = coreComponent.getAppWorkerFactory()
 
@@ -28,14 +28,4 @@ class App : Application(), CoreComponentStore {
     override fun getComponent(): CoreComponent {
         return coreComponent
     }
-}
-
-object CoreComponentProvider {
-    fun getAppComponent(context: Context): CoreComponent {
-        return (context.applicationContext as CoreComponentStore).getComponent()
-    }
-}
-
-interface CoreComponentStore {
-    fun getComponent(): CoreComponent
 }
