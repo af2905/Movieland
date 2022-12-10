@@ -6,25 +6,20 @@ plugins {
     id 'kotlin-parcelize'
 }
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+apply from: '../dependencies.gradle'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "com.github.af2905.movieland"
-        minSdkVersion 23
-        targetSdkVersion 31
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField 'String', 'THE_MOVIE_DATABASE_API_KEY', keystoreProperties['THE_MOVIE_DATABASE_API_KEY']
-        buildConfigField 'String', 'BASE_URL', '"https://api.themoviedb.org/3/"'
     }
 
     buildTypes {
@@ -56,105 +51,35 @@ android {
         freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
-    }
-
     buildFeatures {
         dataBinding true
-        compose true
     }
-}
-
-ext {
-    coreKtxVersion = '1.7.0'
-    appcompatVersion = '1.4.1'
-    materialVersion = '1.5.0'
-    constraintlayoutVersion = '2.1.3'
-    junitVersion = '4.13.2'
-    junitExtVersion = '1.1.3'
-    espressoVersion = '3.4.0'
-    timberVersion = '5.0.1'
-    glideVersion = '4.11.0'
-    coroutinesVersion = '1.5.2'
-    retrofitVersion = '2.9.0'
-    okHttpVersion = '4.9.0'
-    daggerVersion = '2.37'
-    gsonVersion = '2.8.6'
-    lifecycleVersion = '2.4.0'
-    navigationVersion = '2.4.0'
-    recyclerViewVersion = '1.2.1'
-    roomVersion = '2.4.2'
-    swipeRefreshLayoutVersion = '1.1.0'
-    workVersion = "2.7.1"
-    daggerAssistVersion = '0.5.2'
-    shimmerVersion = '0.5.0'
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation "com.google.android.material:material:$materialVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-    // Dagger
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}"
-    // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    // Saved state module for ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    // OkHttp
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
-    // Gson
-    implementation "com.google.code.gson:gson:${gsonVersion}"
-    // Glide
-    implementation "com.github.bumptech.glide:glide:${glideVersion}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
-    // Timber
-    implementation "com.jakewharton.timber:timber:${timberVersion}"
-    // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    // Room
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
-    // SwipeRefreshLayout
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshLayoutVersion"
-    // WorkManager
-    implementation "androidx.work:work-runtime-ktx:$workVersion"
-    // Shimmer
-    implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
 
-    //Compose
-    // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.4.0'
-    // Compose Material Design
-    implementation 'androidx.compose.material:material:1.1.1'
-    // Animations
-    implementation 'androidx.compose.animation:animation:1.1.1'
-    // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
-    // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
-    //Landscapist
-    implementation "com.github.skydoves:landscapist-glide:1.5.1"
-    //Icons
-    implementation "androidx.compose.material:material-icons-extended:1.1.1"
+    implementation(project(':core'))
+    implementation(project(':util'))
+    implementation(project(':detail'))
+    implementation(project(':search'))
+    implementation(project(':profile'))
+    implementation(project(':home'))
+
+    implementation libraries.kotlin
+    implementation libraries.coreKtx
+
+    implementation libraries.daggerAndroidSupport
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+    implementation libraries.monitor
+    implementation libraries.junitExt
+    androidTestImplementation libraries.junit
+    implementation libraries.navigationFragment
+    implementation libraries.material
+    implementation libraries.shimmer
+    implementation libraries.swipeRefreshLayout
+    implementation libraries.recyclerView
+    implementation libraries.workManager
+    implementation libraries.timber
+    implementation libraries.navigationUi
 }
