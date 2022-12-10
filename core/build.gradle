@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+apply from: '../dependencies.gradle'
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdk androidCompileSdkVersion
+
+    defaultConfig {
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField 'String', 'THE_MOVIE_DATABASE_API_KEY', keystoreProperties['THE_MOVIE_DATABASE_API_KEY']
+        buildConfigField 'String', 'BASE_URL', '"https://api.themoviedb.org/3/"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+
+    implementation(project(':util'))
+
+    implementation libraries.kotlin
+    implementation libraries.coreKtx
+
+    implementation libraries.daggerAndroidSupport
+    implementation libraries.junitExt
+    testImplementation libraries.junit
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+    implementation libraries.room
+    implementation libraries.roomKtx
+    kapt libraries.roomCompiler
+    implementation libraries.gson
+    implementation libraries.retrofit
+    implementation libraries.retrofitConverterGson
+    implementation libraries.okhttpLoggingInterceptor
+    implementation libraries.workManager
+    implementation libraries.timber
+    implementation libraries.navigationFragment
+    implementation libraries.glide
+    implementation libraries.material
+    implementation libraries.swipeRefreshLayout
+    implementation libraries.recyclerView
+    implementation libraries.shimmer
+}

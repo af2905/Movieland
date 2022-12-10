@@ -1,0 +1,43 @@
+<resources>
+    <string name="language">en</string>
+
+    //BottomNavMenu
+    <string name="bottom_nav_menu_home_title">Home</string>
+    <string name="bottom_nav_menu_search_title">Search</string>
+    <string name="bottom_nav_menu_profile_title">Profile</string>
+
+    <string name="action_search">Search</string>
+
+    <string name="any_screen_more">more…</string>
+    <string name="hint_search_query">Enter search query…</string>
+
+    //Headers
+    <string name="header">Header</string>
+    <string name="popular">Popular</string>
+    <string name="now_playing">Now playing</string>
+    <string name="top_rated">Top rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="recommended">Recommended</string>
+    <string name="similar">Similar</string>
+    <string name="adult">Adult</string>
+    <string name="top_3_rated">Top 3 rated</string>
+
+    //Movie detail
+    <string name="actors_and_crew_title">Actors and crew</string>
+
+    //Fail to connect
+    <string name="message_fail_to_connect">Failed to connect</string>
+    <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
+
+    <string name="any_screen_try_again">try again</string>
+
+    //Menu item
+    <string name="menu_item_recently_viewed_title">Recently viewed</string>
+    <string name="menu_item_liked_title">Liked</string>
+    <string name="menu_item_settings_title">Settings</string>
+
+    //Profile
+    <string name="profile_title">Profile</string>
+
+    <string name="search_empty_result">No results matching your query</string>
+</resources>
