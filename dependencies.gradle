@@ -20,7 +20,7 @@ ext {
     daggerVersion = '2.43.2'
     gsonVersion = '2.9.1'
     lifecycleVersion = '2.4.0'
-    navigationVersion = '2.5.1'
+    navigationVersion = '2.5.3'
     recyclerViewVersion = '1.2.1'
     roomVersion = '2.4.3'
     swipeRefreshLayoutVersion = '1.1.0'
