@@ -1,18 +1,18 @@
 package com.github.af2905.movieland.search.domain.usecase
 
-import com.github.af2905.movieland.core.common.model.item.MoviesResponse
+import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
-import com.github.af2905.movieland.core.data.mapper.MoviesResponseDtoToUiMapper
+import com.github.af2905.movieland.core.data.mapper.MovieToMovieItemListMapper
 import com.github.af2905.movieland.core.repository.SearchRepository
 import com.github.af2905.movieland.search.domain.params.SearchMovieParams
 import javax.inject.Inject
 
 class GetSearchMovie @Inject constructor(
     private val searchRepository: SearchRepository,
-    private val responseDtoMapper: MoviesResponseDtoToUiMapper
-) : CoroutineUseCase<SearchMovieParams, MoviesResponse>() {
-    override suspend fun execute(params: SearchMovieParams): MoviesResponse {
-        return responseDtoMapper.map(
+    private val mapper: MovieToMovieItemListMapper
+) : CoroutineUseCase<SearchMovieParams, List<MovieItem>>() {
+    override suspend fun execute(params: SearchMovieParams): List<MovieItem> {
+        return mapper.map(
             searchRepository.getSearchMovie(
                 query = params.query,
                 language = params.language,

@@ -4,8 +4,10 @@ import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model
 
-data class MovieItemVariant(val movieItem: MovieItem, override val id: Int = movieItem.id) :
-    Model(VIEW_TYPE) {
+data class MovieItemVariant(
+    val movieItem: MovieItem,
+    override val id: Int = movieItem.id
+) : Model(VIEW_TYPE) {
 
     val titleWithReleaseYear = StringBuilder().apply {
         append(movieItem.title)

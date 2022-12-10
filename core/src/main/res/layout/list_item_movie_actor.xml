@@ -30,7 +30,7 @@
             android:layout_height="@dimen/default_icon_size"
             android:scaleType="centerCrop"
             android:padding="@dimen/default_stroke"
-            app:src="@{item.profilePath}"
+            app:src="@{item.profileFullPathToImage}"
             app:strokeColor="@color/darkGrey"
             app:strokeWidth="@dimen/default_stroke_tiny"
             tools:src="@drawable/ic_placeholder"

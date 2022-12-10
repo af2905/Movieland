@@ -57,7 +57,7 @@ class SearchViewModel @Inject constructor(
                     e = error
                 )
             } else {
-                val movies = result.getOrNull()?.movies.orEmpty()
+                val movies = result.getOrNull().orEmpty()
                 if (movies.isEmpty()) SearchContract.State.EmptyResult(
                     searchItem = container.state.value.searchItem.copy(searchString = query.value),
                     list = listOf(EmptyResultItem())

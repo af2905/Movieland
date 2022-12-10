@@ -1,8 +1,8 @@
 package com.github.af2905.movieland.core.repository
 
-import com.github.af2905.movieland.core.data.database.entity.MovieDetailsEntity
-import com.github.af2905.movieland.core.data.database.entity.MovieEntity
-import com.github.af2905.movieland.core.data.dto.movie.MovieActorsResponseDto
+import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieDetail
+import com.github.af2905.movieland.core.data.database.entity.plain.MovieActor
 
 interface MoviesRepository {
     suspend fun getNowPlayingMovies(
@@ -10,33 +10,33 @@ interface MoviesRepository {
         page: Int?,
         region: String?,
         forceUpdate: Boolean
-    ): List<MovieEntity>
+    ): List<Movie>
 
     suspend fun getPopularMovies(
         language: String?,
         page: Int?,
         region: String?,
         forceUpdate: Boolean
-    ): List<MovieEntity>
+    ): List<Movie>
 
     suspend fun getTopRatedMovies(
         language: String?,
         page: Int?,
         region: String?,
         forceUpdate: Boolean
-    ): List<MovieEntity>
+    ): List<Movie>
 
     suspend fun getUpcomingMovies(
         language: String?,
         page: Int?,
         region: String?,
         forceUpdate: Boolean
-    ): List<MovieEntity>
+    ): List<Movie>
 
-    suspend fun getRecommendedMovies(movieId: Int, language: String?, page: Int?): List<MovieEntity>
+    suspend fun getRecommendedMovies(movieId: Int, language: String?, page: Int?): List<Movie>
 
-    suspend fun getSimilarMovies(movieId: Int, language: String?, page: Int?): List<MovieEntity>
+    suspend fun getSimilarMovies(movieId: Int, language: String?, page: Int?): List<Movie>
 
-    suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity
-    suspend fun getMovieActors(movieId: Int, language: String?): MovieActorsResponseDto
+    suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail
+    suspend fun getMovieActors(movieId: Int, language: String?): List<MovieActor>
 }

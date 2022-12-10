@@ -16,11 +16,12 @@ data class MovieActorItem(
     val castId: Int?,
     val character: String?,
     val creditId: String?,
-    val order: Int?
+    val order: Int?,
+    val profilePath: String?
 ) : Model(VIEW_TYPE) {
 
-    var profilePath: String? = null
-        get() = field.getFullPathToImage()
+    val profileFullPathToImage: String?
+        get() = profilePath.getFullPathToImage()
 
     companion object {
         val VIEW_TYPE = R.layout.list_item_movie_actor

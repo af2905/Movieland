@@ -21,8 +21,8 @@
         <include
             android:id="@+id/movieDetailsToolbar"
             layout="@layout/toolbar_movie_detail"
-            app:item="@{viewModel.container.state.toContent().movieDetailsItem}"
-            app:listener="@{viewModel.movieDetailsItemClickListener}"
+            app:item="@{viewModel.container.state.toContent().movieDetailItem}"
+            app:listener="@{viewModel.movieDetailItemClickListener}"
             app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
 
         <androidx.recyclerview.widget.RecyclerView
