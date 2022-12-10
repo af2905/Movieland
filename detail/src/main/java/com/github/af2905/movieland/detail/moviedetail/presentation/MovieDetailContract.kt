@@ -6,7 +6,7 @@ import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
-import com.github.af2905.movieland.core.common.model.item.MovieDetailsItem
+import com.github.af2905.movieland.core.common.model.item.MovieDetailItem
 
 class MovieDetailContract {
 
@@ -16,7 +16,7 @@ class MovieDetailContract {
             override fun toString(): String = javaClass.simpleName
         }
 
-        data class Content(val movieDetailsItem: MovieDetailsItem, val list: List<Model>) : State()
+        data class Content(val movieDetailItem: MovieDetailItem, val list: List<Model>) : State()
         data class Error(val errorItem: ErrorItem = ErrorItem(), val e: Throwable?) : State()
 
         fun toContent(): Content? = if (this is Content) this else null

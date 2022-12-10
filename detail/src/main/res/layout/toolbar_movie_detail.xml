@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailsItem" />
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem" />
 
         <variable
             name="listener"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailsItem.Listener" />
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem.Listener" />
 
     </data>
 
@@ -49,7 +49,7 @@
                         android:layout_height="@dimen/backdrop_height"
                         android:layout_gravity="center"
                         android:scaleType="center"
-                        app:src="@{item.backdropPath}" />
+                        app:src="@{item.backdropFullPathToImage}" />
 
                 </FrameLayout>
 

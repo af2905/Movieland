@@ -2,9 +2,9 @@ package com.github.af2905.movieland.core.data.database.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.github.af2905.movieland.core.data.database.entity.GenreEntity
-import com.github.af2905.movieland.core.data.database.entity.ProductionCompanyEntity
-import com.github.af2905.movieland.core.data.database.entity.ProductionCountryEntity
+import com.github.af2905.movieland.core.data.database.entity.Genre
+import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
+import com.github.af2905.movieland.core.data.database.entity.ProductionCountry
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
@@ -27,15 +27,15 @@ open class ListConverter<I>(private val gson: Gson) {
 class ListIntConverter @Inject constructor(gson: Gson) : ListConverter<Int>(gson)
 
 @ProvidedTypeConverter
-class GenreConverter @Inject constructor(gson: Gson) : ListConverter<GenreEntity>(gson)
+class GenreConverter @Inject constructor(gson: Gson) : ListConverter<Genre>(gson)
 
 @ProvidedTypeConverter
 class ProductionCompanyConverter @Inject constructor(gson: Gson) :
-    ListConverter<ProductionCompanyEntity>(gson)
+    ListConverter<ProductionCompany>(gson)
 
 @ProvidedTypeConverter
 class ProductionCountryConverter @Inject constructor(gson: Gson) :
-    ListConverter<ProductionCountryEntity>(gson)
+    ListConverter<ProductionCountry>(gson)
 
 
 

@@ -24,7 +24,7 @@ class PersonDetailViewModel @Inject constructor(
             container.reduce {
                 if (this is PersonDetailContract.State.Content) {
                     PersonDetailContract.State.Content(
-                        personItem = this.personItem.copy(liked = !this.personItem.liked)
+                        personDetailItem = this.personDetailItem.copy(liked = !this.personDetailItem.liked)
                     )
                 } else {
                     this

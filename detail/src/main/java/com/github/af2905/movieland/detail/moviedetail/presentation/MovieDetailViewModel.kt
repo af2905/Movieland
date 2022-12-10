@@ -39,13 +39,13 @@ class MovieDetailViewModel @Inject constructor(
     private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
     private val emptySpaceHuge = EmptySpaceItem(R.dimen.default_margin_huge)
 
-    val movieDetailsItemClickListener = MovieDetailsItem.Listener {
+    val movieDetailItemClickListener = MovieDetailItem.Listener {
         container.intent {
             container.reduce {
                 if (this is MovieDetailContract.State.Content) {
                     MovieDetailContract.State.Content(
-                        movieDetailsItem = this.movieDetailsItem.copy(
-                            liked = !this.movieDetailsItem.liked
+                        movieDetailItem = this.movieDetailItem.copy(
+                            liked = !this.movieDetailItem.liked
                         ),
                         list = this.list
                     )
@@ -129,7 +129,7 @@ class MovieDetailViewModel @Inject constructor(
 
         container.reduce {
             MovieDetailContract.State.Content(
-                movieDetailsItem = movieDetails.movieDetailsItem,
+                movieDetailItem = movieDetails.movieDetailItem,
                 list = list
             )
         }
