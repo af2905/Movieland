@@ -3,7 +3,7 @@ package com.github.af2905.movieland.detail.persondetail.presentation
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.ToastMessage
-import com.github.af2905.movieland.core.data.PersonItem
+import com.github.af2905.movieland.core.data.PersonDetailItem
 
 class PersonDetailContract {
 
@@ -13,7 +13,7 @@ class PersonDetailContract {
             override fun toString(): String = javaClass.simpleName
         }
 
-        data class Content(val personItem: PersonItem) : State()
+        data class Content(val personDetailItem: PersonDetailItem) : State()
         data class Error(val e: Throwable?) : State()
     }
 

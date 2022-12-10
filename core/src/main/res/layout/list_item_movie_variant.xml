@@ -31,7 +31,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
-            app:src="@{item.movieItem.posterPath}"
+            app:src="@{item.movieItem.posterFullPathToImage}"
             app:strokeColor="@color/darkGrey"
             app:strokeWidth="@dimen/default_stroke_tiny"
             tools:ignore="ContentDescription"
@@ -83,22 +83,19 @@
                     android:rating="@{item.movieItem.voteAverageStar}"
                     android:stepSize="0.5"
                     tools:rating="3.2" />
-
             </LinearLayout>
 
             <TextView
                 style="@style/TextView.Small"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/default_margin_small"
                 android:ellipsize="end"
-                android:maxLines="@integer/max_lines_4"
                 android:paddingBottom="@dimen/default_margin_small"
                 android:text="@{item.movieItem.overview}"
                 tools:text="Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада" />
 
         </LinearLayout>
     </LinearLayout>
-
 </layout>
 

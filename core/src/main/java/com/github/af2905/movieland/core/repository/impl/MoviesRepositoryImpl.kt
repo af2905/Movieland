@@ -2,12 +2,14 @@ package com.github.af2905.movieland.core.repository.impl
 
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
-import com.github.af2905.movieland.core.data.database.entity.MovieDetailsEntity
-import com.github.af2905.movieland.core.data.database.entity.MovieEntity
+import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.plain.MovieActor
 import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
-import com.github.af2905.movieland.core.data.mapper.MovieDetailsDtoToEntityMapper
-import com.github.af2905.movieland.core.data.mapper.MovieDtoToEntityListMapper
+import com.github.af2905.movieland.core.data.mapper.MovieActorDtoToMovieActorListMapper
+import com.github.af2905.movieland.core.data.mapper.MovieDetailDtoToMovieDetailMapper
+import com.github.af2905.movieland.core.data.mapper.MovieResponseDtoToMovieListMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.util.extension.isNullOrEmpty
 import java.util.*
@@ -18,86 +20,85 @@ private const val DEFAULT_UPDATE_MOVIE_HOURS = 24L
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
-    private val movieDtoMapper: MovieDtoToEntityListMapper,
-    private val movieDetailsDtoMapper: MovieDetailsDtoToEntityMapper,
+    private val movieListMapper: MovieResponseDtoToMovieListMapper,
+    private val movieDetailMapper: MovieDetailDtoToMovieDetailMapper,
+    private val movieActorListMapper: MovieActorDtoToMovieActorListMapper,
     private val movieDao: MovieDao,
     private val resourceDatastore: ResourceDatastore
 ) : MoviesRepository {
 
     override suspend fun getNowPlayingMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<MovieEntity> =
-        loadMovies(
-            type = MovieType.NOW_PLAYING.name,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page,
-            region = region,
-            forceUpdate = forceUpdate
-        )
+    ): List<Movie> = loadMovies(
+        type = MovieType.NOW_PLAYING.name,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page,
+        region = region,
+        forceUpdate = forceUpdate
+    )
 
     override suspend fun getPopularMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<MovieEntity> =
-        loadMovies(
-            MovieType.POPULAR.name,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page,
-            region = region,
-            forceUpdate = forceUpdate
-        )
+    ): List<Movie> = loadMovies(
+        MovieType.POPULAR.name,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page,
+        region = region,
+        forceUpdate = forceUpdate
+    )
 
     override suspend fun getTopRatedMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<MovieEntity> =
-        loadMovies(
-            MovieType.TOP_RATED.name,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page,
-            region = region,
-            forceUpdate = forceUpdate
-        )
+    ): List<Movie> = loadMovies(
+        MovieType.TOP_RATED.name,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page,
+        region = region,
+        forceUpdate = forceUpdate
+    )
 
     override suspend fun getUpcomingMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<MovieEntity> =
-        loadMovies(
-            MovieType.UPCOMING.name,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page,
-            region = region,
-            forceUpdate = forceUpdate
-        )
+    ): List<Movie> = loadMovies(
+        MovieType.UPCOMING.name,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page,
+        region = region,
+        forceUpdate = forceUpdate
+    )
 
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?
-    ): List<MovieEntity> {
+    ): List<Movie> {
         val response = moviesApi.getRecommendedMovies(
             movieId = movieId,
             language = language ?: resourceDatastore.getLanguage(),
             page = page
         )
-        return movieDtoMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
+        return movieListMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
     }
 
     override suspend fun getSimilarMovies(
         movieId: Int, language: String?, page: Int?
-    ): List<MovieEntity> {
+    ): List<Movie> {
         val response = moviesApi.getSimilarMovies(
             movieId = movieId,
             language = language ?: resourceDatastore.getLanguage(),
             page = page
         )
-        return movieDtoMapper.map(response.movies, MovieType.SIMILAR.name, 0)
+        return movieListMapper.map(response.movies, MovieType.SIMILAR.name, 0)
     }
 
-    override suspend fun getMovieActors(movieId: Int, language: String?) =
-        moviesApi.getMovieActors(
-            movieId = movieId,
-            language = language ?: resourceDatastore.getLanguage()
+    override suspend fun getMovieActors(movieId: Int, language: String?): List<MovieActor> =
+        movieActorListMapper.map(
+            moviesApi.getMovieActors(
+                movieId = movieId,
+                language = language ?: resourceDatastore.getLanguage()
+            ).actors
         )
 
-    override suspend fun getMovieDetails(movieId: Int, language: String?): MovieDetailsEntity =
-        movieDetailsDtoMapper.map(
+    override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail =
+        movieDetailMapper.map(
             moviesApi.getMovieDetails(
                 movieId = movieId,
                 language = language ?: resourceDatastore.getLanguage()
@@ -111,7 +112,7 @@ class MoviesRepositoryImpl @Inject constructor(
         region: String? = null,
         movieId: Int? = null,
         forceUpdate: Boolean
-    ): List<MovieEntity> {
+    ): List<Movie> {
 
         val count = movieDao.getCountByType(type)
 
@@ -141,7 +142,7 @@ class MoviesRepositoryImpl @Inject constructor(
                 }
                 else -> moviesApi.getSimilarMovies(movieId!!, language, page)
             }
-            movieDtoMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
+            movieListMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
         }
         return movieDao.getByType(type).orEmpty()
     }

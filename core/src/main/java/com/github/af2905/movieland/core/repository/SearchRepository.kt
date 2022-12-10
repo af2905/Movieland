@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.core.repository
 
-import com.github.af2905.movieland.core.data.dto.movie.MoviesResponseDto
+import com.github.af2905.movieland.core.data.database.entity.Movie
 
 interface SearchRepository {
 
@@ -11,5 +11,5 @@ interface SearchRepository {
         adult: String? = null,
         region: String? = null,
         year: Int? = null
-    ): MoviesResponseDto
+    ): List<Movie>
 }

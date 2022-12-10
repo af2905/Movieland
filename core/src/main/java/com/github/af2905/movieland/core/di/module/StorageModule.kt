@@ -17,9 +17,14 @@ class StorageModule {
 
     @AppScope
     @Provides
-    fun provideMovieDetailsDao(database: AppDatabase) = database.movieDetailsDao()
+    fun providePersonDetailDao(database: AppDatabase) = database.personDetailDao()
+
+    @AppScope
+    @Provides
+    fun provideMovieDetailDao(database: AppDatabase) = database.movieDetailDao()
 
     companion object {
+        private const val DATABASE_NAME = "database"
 
         @AppScope
         @Provides
@@ -34,7 +39,7 @@ class StorageModule {
             productionCompanyConverter: ProductionCompanyConverter,
             productionCountryConverter: ProductionCountryConverter
         ): AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "database")
+            Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                 .addTypeConverter(listIntConverter)
                 .addTypeConverter(genreConverter)
                 .addTypeConverter(productionCompanyConverter)

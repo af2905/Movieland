@@ -2,12 +2,13 @@ package com.github.af2905.movieland.core.common.model.item
 
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.util.extension.empty
+import com.github.af2905.movieland.util.extension.getFullPathToImage
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
 import java.util.*
 
 private const val COMMA_SEPARATOR = ", "
 
-data class MovieDetailsItem(
+data class MovieDetailItem(
     val id: Int = Int.empty,
     val adult: Boolean = false,
     val budget: Int = Int.empty,
@@ -34,10 +35,15 @@ data class MovieDetailsItem(
     val posterPath: String? = null,
     val liked: Boolean = false
 ) {
+    val backdropFullPathToImage: String?
+        get() =backdropPath.getFullPathToImage()
+
+    val posterFullPathToImage: String?
+        get() = posterPath.getFullPathToImage()
+
     private val releaseYear = releaseDate.getYearFromReleaseDate()
 
-    private val genreList = genres
-        ?.map { genre -> genre.name }
+    private val genreList = genres?.map { genre -> genre.name }
         ?.map { it.lowercase(Locale.getDefault()) }
         .orEmpty()
         .joinToString(COMMA_SEPARATOR)
@@ -48,10 +54,10 @@ data class MovieDetailsItem(
         append(genreList)
     }
 
-    val taglineVisible : Boolean = tagline.isNotEmpty()
+    val taglineVisible: Boolean = tagline.isNotEmpty()
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onLikedClick(item: MovieDetailsItem)
+        fun onLikedClick(item: MovieDetailItem)
     }
 }
 
@@ -63,5 +69,8 @@ data class ProductionCompany(
     val id: Int,
     val name: String,
     val originCountry: String,
-    var logoPath: String?
-)
+    val logoPath: String?
+) {
+    val logoFullPathToImage: String?
+        get() = logoPath.getFullPathToImage()
+}

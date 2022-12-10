@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
-            app:src="@{item.posterPath}"
+            app:src="@{item.posterFullPathToImage}"
             app:strokeColor="@color/darkGrey"
             app:strokeWidth="@dimen/default_stroke_tiny"
             tools:ignore="ContentDescription"
