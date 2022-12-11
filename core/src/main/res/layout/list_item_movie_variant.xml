@@ -88,9 +88,10 @@
             <TextView
                 style="@style/TextView.Small"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin_small"
                 android:ellipsize="end"
+                android:maxLines="@integer/max_lines_4"
                 android:paddingBottom="@dimen/default_margin_small"
                 android:text="@{item.movieItem.overview}"
                 tools:text="Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада" />

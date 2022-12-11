@@ -45,7 +45,7 @@ class SearchViewModel @Inject constructor(
             val queries = getPopularSearchQueries(PopularMoviesParams()).getOrDefault(emptyList())
             SearchContract.State.EmptyQuery(
                 searchItem = container.state.value.searchItem.copy(searchString = query.value),
-                list = listOf<Model>(HeaderItemAlpha(R.string.search_popular_search_queries)) + queries
+                list = listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + queries
             )
         } else {
             val result = getSearchMovie(SearchMovieParams(query = text))
