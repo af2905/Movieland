@@ -15,16 +15,16 @@ import dagger.Provides
 @Module
 class StorageModule {
 
-    @AppScope
-    @Provides
-    fun providePersonDetailDao(database: AppDatabase) = database.personDetailDao()
-
-    @AppScope
-    @Provides
-    fun provideMovieDetailDao(database: AppDatabase) = database.movieDetailDao()
-
     companion object {
         private const val DATABASE_NAME = "database"
+
+        @AppScope
+        @Provides
+        fun providePersonDetailDao(database: AppDatabase) = database.personDetailDao()
+
+        @AppScope
+        @Provides
+        fun provideMovieDetailDao(database: AppDatabase) = database.movieDetailDao()
 
         @AppScope
         @Provides

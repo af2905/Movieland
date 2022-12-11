@@ -27,20 +27,58 @@ open class ListConverter<I>(private val gson: Gson) {
 class ListIntConverter @Inject constructor(gson: Gson) : ListConverter<Int>(gson)
 
 @ProvidedTypeConverter
-class GenreConverter @Inject constructor(gson: Gson) : ListConverter<Genre>(gson)
+class GenreConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun fromString(json: String?): List<Genre> {
+        return if (json != null) {
+            gson.fromJson(json, object : TypeToken<List<Genre>>() {}.type)
+        } else {
+            emptyList()
+        }
+    }
+
+    @TypeConverter
+    fun fromList(list: List<Genre>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<Genre>>() {}.type)
+    }
+}
 
 @ProvidedTypeConverter
-class ProductionCompanyConverter @Inject constructor(gson: Gson) :
-    ListConverter<ProductionCompany>(gson)
+class ProductionCompanyConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun fromString(json: String?): List<ProductionCompany> {
+        return if (json != null) {
+            gson.fromJson(json, object : TypeToken<List<ProductionCompany>>() {}.type)
+        } else {
+            emptyList()
+        }
+    }
+
+    @TypeConverter
+    fun fromList(list: List<ProductionCompany>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<ProductionCompany>>() {}.type)
+    }
+}
 
 @ProvidedTypeConverter
-class ProductionCountryConverter @Inject constructor(gson: Gson) :
-    ListConverter<ProductionCountry>(gson)
+class ProductionCountryConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun fromString(json: String?): List<ProductionCountry> {
+        return if (json != null) {
+            gson.fromJson(json, object : TypeToken<List<ProductionCountry>>() {}.type)
+        } else {
+            emptyList()
+        }
+    }
 
-
-
-
-
+    @TypeConverter
+    fun fromList(list: List<ProductionCountry>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<ProductionCountry>>() {}.type)
+    }
+}
 
 
 

@@ -2,6 +2,7 @@ package com.github.af2905.movieland.core.repository.impl
 
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
+import com.github.af2905.movieland.core.data.database.dao.MovieDetailDao
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
@@ -24,6 +25,7 @@ class MoviesRepositoryImpl @Inject constructor(
     private val movieDetailMapper: MovieDetailDtoToMovieDetailMapper,
     private val movieActorListMapper: MovieActorDtoToMovieActorListMapper,
     private val movieDao: MovieDao,
+    private val movieDetailDao: MovieDetailDao,
     private val resourceDatastore: ResourceDatastore
 ) : MoviesRepository {
 
@@ -96,6 +98,18 @@ class MoviesRepositoryImpl @Inject constructor(
                 language = language ?: resourceDatastore.getLanguage()
             ).actors
         )
+
+    override suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean {
+        return movieDetailDao.save(movieDetail)?.let { true } ?: false
+    }
+
+    override suspend fun removeMovieDetail(movieDetail: MovieDetail): Boolean {
+        return movieDetailDao.delete(movieDetail)?.let { true } ?: false
+    }
+
+    override suspend fun getMovieDetailById(id: Int): MovieDetail? {
+        return movieDetailDao.getById(id)
+    }
 
     override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail =
         movieDetailMapper.map(
