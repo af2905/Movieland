@@ -22,14 +22,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:textColor="@android:color/darker_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/default_margin_tiny"
-            android:paddingTop="@dimen/default_margin_tiny"
             android:paddingStart="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin"
+            android:paddingBottom="@dimen/default_margin_tiny"
             android:text="@{item.title}"
             tools:text="Игра на понижение" />
     </FrameLayout>
