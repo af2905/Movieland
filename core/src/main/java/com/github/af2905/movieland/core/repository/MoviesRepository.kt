@@ -39,4 +39,8 @@ interface MoviesRepository {
 
     suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail
     suspend fun getMovieActors(movieId: Int, language: String?): List<MovieActor>
+
+    suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean
+    suspend fun removeMovieDetail(movieDetail: MovieDetail): Boolean
+    suspend fun getMovieDetailById(id: Int): MovieDetail?
 }
