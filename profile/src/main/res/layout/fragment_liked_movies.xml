@@ -6,9 +6,9 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.profile.presentation.profile.ProfileViewModel" />
+            type="com.github.af2905.movieland.profile.presentation.optionLiked.LikedMoviesViewModel" />
 
-        <import type="com.github.af2905.movieland.profile.presentation.profile.ProfileContract" />
+        <import type="com.github.af2905.movieland.profile.presentation.optionLiked.LikedMoviesContract" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -29,20 +29,21 @@
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?colorSurface"
-                app:expandedTitleGravity="top"
+                app:expandedTitleGravity="bottom"
+                app:expandedTitleMarginTop="@dimen/default_margin"
                 app:expandedTitleMarginStart="@dimen/default_margin"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:scrimAnimationDuration="0"
-                app:title="@string/profile_title"
+                app:title="@string/liked_movies_fragment_name"
                 app:titleEnabled="true"
                 app:toolbarId="@+id/toolbar">
 
                 <Space
                     android:id="@+id/expanded_size"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/collapsing_toolbar_min_height" />
+                    android:layout_height="@dimen/collapsing_toolbar_default_height" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -59,11 +60,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-            <include
-                android:id="@+id/includeUserHeader"
-                layout="@layout/list_item_user_info_header"
-                app:item="@{viewModel.container.state.toContent().userInfoHeader}" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

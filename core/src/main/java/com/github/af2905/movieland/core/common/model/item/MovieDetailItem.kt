@@ -36,7 +36,7 @@ data class MovieDetailItem(
     val liked: Boolean = false
 ) {
     val backdropFullPathToImage: String?
-        get() =backdropPath.getFullPathToImage()
+        get() = backdropPath.getFullPathToImage()
 
     val posterFullPathToImage: String?
         get() = posterPath.getFullPathToImage()
@@ -58,6 +58,28 @@ data class MovieDetailItem(
 
     fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: MovieDetailItem)
+    }
+
+    companion object {
+        fun MovieDetailItem.mapToMovieItem() = with(this) {
+            MovieItem(
+                id = id,
+                adult = adult,
+                backdropPath = backdropPath,
+                genreIds = genres?.map { it.id },
+                originalLanguage = originalLanguage,
+                originalTitle = originalTitle,
+                overview = overview,
+                popularity = popularity,
+                posterPath = posterPath,
+                releaseDate = releaseDate,
+                title = title,
+                video = video,
+                voteAverage = voteAverage,
+                voteCount = voteCount,
+                responseMovieType = null
+            )
+        }
     }
 }
 

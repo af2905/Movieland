@@ -5,11 +5,26 @@
     android:id="@+id/profile_graph"
     app:startDestination="@id/profileFragment">
 
+    <include app:graph="@navigation/detail_graph" />
+
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.github.af2905.movieland.profile.presentation.ProfileFragment"
+        android:name="com.github.af2905.movieland.profile.presentation.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/openLikedMovies"
+            app:destination="@id/likedMoviesFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/likedMoviesFragment"
+        android:name="com.github.af2905.movieland.profile.presentation.optionLiked.LikedMoviesFragment"
+        android:label="LikedMoviesFragment"
+        tools:layout="@layout/fragment_liked_movies">
+
+        <action
+            android:id="@+id/openMovieDetail"
+            app:destination="@id/detail_graph" />
+    </fragment>
 </navigation>
