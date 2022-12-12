@@ -36,6 +36,7 @@
 
     <dimen name="backdrop_height">280dp</dimen>
     <dimen name="collapsing_toolbar_min_height">100dp</dimen>
+    <dimen name="collapsing_toolbar_default_height">120dp</dimen>
     <dimen name="searchbar_height">56dp</dimen>
 
     <dimen name="default_simple_dialog_size">280dp</dimen>

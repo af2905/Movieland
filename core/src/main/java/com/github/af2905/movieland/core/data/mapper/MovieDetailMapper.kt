@@ -83,6 +83,10 @@ class GenreDtoToGenreMapper @Inject constructor() : Mapper<GenreDto, Genre> {
 }
 
 /**from entity to item mappers*/
+class MovieDetailToMovieDetailItemListMapper @Inject constructor(
+    mapper: MovieDetailToMovieDetailItemMapper
+) : ListMapperImpl<MovieDetail, MovieDetailItem>(mapper)
+
 class MovieDetailToMovieDetailItemMapper @Inject constructor(
     private val genreMapper: GenreToUiGenreListMapper,
     private val productionCompanyMapper: ProductionCompanyToUiProductionCompanyListMapper,
@@ -187,38 +191,38 @@ class MovieDetailItemToMovieDetailMapper @Inject constructor(
                 posterPath = posterPath
             )
         }
+}
 
-    class UiProductionCountryToProductionCountryListMapper @Inject constructor(
-        mapper: UiProductionCountryToProductionCountryMapper
-    ) : ListMapperImpl<UiProductionCountry, ProductionCountry>(mapper)
+class UiProductionCountryToProductionCountryListMapper @Inject constructor(
+    mapper: UiProductionCountryToProductionCountryMapper
+) : ListMapperImpl<UiProductionCountry, ProductionCountry>(mapper)
 
-    class UiProductionCountryToProductionCountryMapper @Inject constructor() :
-        Mapper<UiProductionCountry, ProductionCountry> {
-        override fun map(input: UiProductionCountry) =
-            with(input) { ProductionCountry(iso = iso, name = name) }
+class UiProductionCountryToProductionCountryMapper @Inject constructor() :
+    Mapper<UiProductionCountry, ProductionCountry> {
+    override fun map(input: UiProductionCountry) =
+        with(input) { ProductionCountry(iso = iso, name = name) }
+}
+
+class UiProductionCompanyToProductionCompanyListMapper @Inject constructor(
+    mapper: UiProductionCompanyToProductionCompanyMapper
+) : ListMapperImpl<UiProductionCompany, ProductionCompany>(mapper)
+
+class UiProductionCompanyToProductionCompanyMapper @Inject constructor() :
+    Mapper<UiProductionCompany, ProductionCompany> {
+    override fun map(input: UiProductionCompany) = with(input) {
+        ProductionCompany(
+            id = id,
+            name = name,
+            originCountry = originCountry,
+            logoPath = logoPath
+        )
     }
+}
 
-    class UiProductionCompanyToProductionCompanyListMapper @Inject constructor(
-        mapper: UiProductionCompanyToProductionCompanyMapper
-    ) : ListMapperImpl<UiProductionCompany, ProductionCompany>(mapper)
+class UiGenreToGenreListMapper @Inject constructor(
+    mapper: UiGenreToGenreMapper
+) : ListMapperImpl<UiGenre, Genre>(mapper)
 
-    class UiProductionCompanyToProductionCompanyMapper @Inject constructor() :
-        Mapper<UiProductionCompany, ProductionCompany> {
-        override fun map(input: UiProductionCompany) = with(input) {
-            ProductionCompany(
-                id = id,
-                name = name,
-                originCountry = originCountry,
-                logoPath = logoPath
-            )
-        }
-    }
-
-    class UiGenreToGenreListMapper @Inject constructor(
-        mapper: UiGenreToGenreMapper
-    ) : ListMapperImpl<UiGenre, Genre>(mapper)
-
-    class UiGenreToGenreMapper @Inject constructor() : Mapper<UiGenre, Genre> {
-        override fun map(input: UiGenre) = with(input) { Genre(id = id, name = name) }
-    }
+class UiGenreToGenreMapper @Inject constructor() : Mapper<UiGenre, Genre> {
+    override fun map(input: UiGenre) = with(input) { Genre(id = id, name = name) }
 }

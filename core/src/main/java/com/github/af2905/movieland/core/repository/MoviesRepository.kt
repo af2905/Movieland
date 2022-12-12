@@ -43,4 +43,5 @@ interface MoviesRepository {
     suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean
     suspend fun removeMovieDetail(movieDetail: MovieDetail): Boolean
     suspend fun getMovieDetailById(id: Int): MovieDetail?
+    suspend fun getAllSavedMovieDetail(): List<MovieDetail>
 }
