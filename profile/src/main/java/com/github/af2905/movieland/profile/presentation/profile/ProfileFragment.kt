@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.profile.presentation
+package com.github.af2905.movieland.profile.presentation.profile
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,6 @@ import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.item.ProfileMenuItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
-import com.github.af2905.movieland.profile.ProfileNavigator
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.databinding.FragmentProfileBinding
 import com.github.af2905.movieland.profile.di.DaggerProfileComponent
@@ -21,20 +20,19 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
     override fun layoutRes(): Int = R.layout.fragment_profile
     override fun viewModelClass(): Class<ProfileViewModel> = ProfileViewModel::class.java
 
-    private val baseAdapter: BaseAdapter =
-        BaseAdapter(
-            ItemDelegate(
-                ProfileMenuItem.VIEW_TYPE,
-                listener = ProfileMenuItem.Listener { item ->
-
-                }
-            ))
+    private val baseAdapter: BaseAdapter = BaseAdapter(
+        ItemDelegate(
+            viewType = ProfileMenuItem.VIEW_TYPE,
+            listener = ProfileMenuItem.Listener { item ->
+                viewModel.navigateToOption(type = item.type)
+            }
+        ))
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val detailComponent = DaggerProfileComponent.factory().create(appComponent)
-        detailComponent.injectProfileFragment(this)
+        val profileComponent = DaggerProfileComponent.factory().create(appComponent)
+        profileComponent.injectProfileFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +47,7 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is ProfileContract.Effect.OpenMenuItemDetail -> handleEffect(effect.navigator)
+                    is ProfileContract.Effect.OpenOption -> handleEffect(effect.navigator)
                 }
             }
         }

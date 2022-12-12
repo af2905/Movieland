@@ -111,6 +111,10 @@ class MoviesRepositoryImpl @Inject constructor(
         return movieDetailDao.getById(id)
     }
 
+    override suspend fun getAllSavedMovieDetail(): List<MovieDetail> {
+        return movieDetailDao.getAll() ?: emptyList()
+    }
+
     override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail =
         movieDetailMapper.map(
             moviesApi.getMovieDetails(

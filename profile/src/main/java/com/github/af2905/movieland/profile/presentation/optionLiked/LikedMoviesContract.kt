@@ -1,30 +1,24 @@
-package com.github.af2905.movieland.profile.presentation
+package com.github.af2905.movieland.profile.presentation.optionLiked
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.core.common.model.item.UserInfoHeaderItem
 
-class ProfileContract {
+class LikedMoviesContract {
 
     sealed class State : UiState() {
 
-        object Init : State() {
+        object Loading : State() {
             override fun toString(): String = javaClass.simpleName
         }
 
-        data class Content(
-            val list: List<Model>,
-            val userInfoHeader: UserInfoHeaderItem = UserInfoHeaderItem()
-        ) : State()
+        data class Content(val list: List<Model>) : State()
 
         fun toContent(): Content? = if (this is Content) this else null
     }
 
-
     sealed class Effect : UiEffect() {
-
-        data class OpenMenuItemDetail(val navigator: Navigate) : Effect()
+        data class OpenMovieDetail(val navigator: Navigate) : Effect()
     }
 }
