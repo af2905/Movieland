@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.af2905.movieland.core.data.PersonDetailItem
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 import com.github.af2905.movieland.core.R as CoreR

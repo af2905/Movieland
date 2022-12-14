@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.core.data
+package com.github.af2905.movieland.core.common.model.item
 
 import com.github.af2905.movieland.util.extension.getFullPathToImage
 

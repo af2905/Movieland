@@ -3,7 +3,7 @@ package com.github.af2905.movieland.detail.persondetail.presentation
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.ToastMessage
-import com.github.af2905.movieland.core.data.PersonDetailItem
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 
 class PersonDetailContract {
 

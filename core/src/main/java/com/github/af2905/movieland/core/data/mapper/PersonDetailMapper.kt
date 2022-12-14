@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.core.data.mapper
 
 import com.github.af2905.movieland.core.common.mapper.Mapper
-import com.github.af2905.movieland.core.data.PersonDetailItem
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.github.af2905.movieland.core.data.database.entity.PersonDetail
 import com.github.af2905.movieland.core.data.dto.people.PersonDetailDto
 import javax.inject.Inject
