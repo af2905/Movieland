@@ -5,14 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.common.model.item.EmptyResultItem
+import com.github.af2905.movieland.core.common.model.item.ErrorItem
+import com.github.af2905.movieland.core.common.model.item.HeaderItem
+import com.github.af2905.movieland.core.common.model.item.SearchItem
 import com.github.af2905.movieland.core.common.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
 import com.github.af2905.movieland.search.domain.params.PopularMoviesParams
-import com.github.af2905.movieland.search.domain.params.SearchMovieParams
+import com.github.af2905.movieland.search.domain.params.SearchMultiParams
 import com.github.af2905.movieland.search.domain.usecase.GetPopularSearchQueries
 import com.github.af2905.movieland.search.domain.usecase.GetSearchMovie
+import com.github.af2905.movieland.search.domain.usecase.GetSearchMulti
 import com.github.af2905.movieland.util.extension.empty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -21,6 +25,7 @@ import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val getSearchMovie: GetSearchMovie,
+    private val getSearchMulti: GetSearchMulti,
     private val getPopularSearchQueries: GetPopularSearchQueries
 ) : ViewModel() {
 
@@ -48,7 +53,7 @@ class SearchViewModel @Inject constructor(
                 list = listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + queries
             )
         } else {
-            val result = getSearchMovie(SearchMovieParams(query = text))
+            val result = getSearchMulti(SearchMultiParams(query = text))
             if (result.isFailure) {
                 val error = result.exceptionOrNull()
                 SearchContract.State.Error(
@@ -57,14 +62,15 @@ class SearchViewModel @Inject constructor(
                     e = error
                 )
             } else {
-                val movies = result.getOrNull().orEmpty()
-                if (movies.isEmpty()) SearchContract.State.EmptyResult(
+                val multiResult = result.getOrNull().orEmpty()
+                if (multiResult.isEmpty()) SearchContract.State.EmptyResult(
                     searchItem = container.state.value.searchItem.copy(searchString = query.value),
                     list = listOf(EmptyResultItem())
                 )
                 else SearchContract.State.Content(
                     searchItem = container.state.value.searchItem.copy(searchString = query.value),
-                    list = movies.map { MovieItemVariant(it) })
+                    list = multiResult
+                )
             }
         }
         return result

@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.detail.usecase
 
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
-import com.github.af2905.movieland.core.data.PersonDetailItem
 import com.github.af2905.movieland.core.data.mapper.PersonDetailToPersonDetailItemMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
 import com.github.af2905.movieland.detail.usecase.params.PersonDetailParams

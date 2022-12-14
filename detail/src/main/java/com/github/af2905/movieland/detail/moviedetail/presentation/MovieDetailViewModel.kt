@@ -24,7 +24,7 @@ private const val SIMILAR_MOVIE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000
 class MovieDetailViewModel @Inject constructor(
     private val movieId: Int,
     private val getMovieDetail: GetMovieDetail,
-    private val getMovieActors: GetMovieActors,
+    private val getMovieCredits: GetMovieCredits,
     private val getSimilarMovies: GetSimilarMovies,
     private val saveToLikedMovie: SaveToLikedMovie,
     private val removeFromLikedMovie: RemoveFromLikedMovie,
@@ -90,7 +90,7 @@ class MovieDetailViewModel @Inject constructor(
         }
 
         val movieActorsAsync = scope.async {
-            getMovieActors(MovieActorsParams(movieId)).let { result ->
+            getMovieCredits(MovieCreditsParams(movieId)).let { result ->
                 val actors = result
                     .getOrDefault(emptyList())
                     .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }

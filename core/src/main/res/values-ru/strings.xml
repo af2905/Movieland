@@ -41,4 +41,8 @@
     <string name="profile_title">Профиль</string>
 
     <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
+
+    <string name="media_type_tv">сериал</string>
+    <string name="media_type_movie">фильм</string>
+    <string name="media_type_person">персона</string>
 </resources>

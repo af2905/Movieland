@@ -4,15 +4,15 @@ import com.github.af2905.movieland.core.common.mapper.ListMapperImpl
 import com.github.af2905.movieland.core.common.mapper.Mapper
 import com.github.af2905.movieland.core.common.model.item.MovieActorItem
 import com.github.af2905.movieland.core.data.database.entity.plain.MovieActor
-import com.github.af2905.movieland.core.data.dto.movie.MovieActorDto
+import com.github.af2905.movieland.core.data.dto.movie.CastDto
 import javax.inject.Inject
 
 class MovieActorDtoToMovieActorListMapper @Inject constructor(
     mapper: MovieActorDtoToMovieActorMapper
-) : ListMapperImpl<MovieActorDto, MovieActor>(mapper)
+) : ListMapperImpl<CastDto, MovieActor>(mapper)
 
-class MovieActorDtoToMovieActorMapper @Inject constructor() : Mapper<MovieActorDto, MovieActor> {
-    override fun map(input: MovieActorDto): MovieActor = with(input) {
+class MovieActorDtoToMovieActorMapper @Inject constructor() : Mapper<CastDto, MovieActor> {
+    override fun map(input: CastDto): MovieActor = with(input) {
         MovieActor(
             id = id,
             adult = adult,

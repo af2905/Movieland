@@ -91,12 +91,12 @@ class MoviesRepositoryImpl @Inject constructor(
         return movieListMapper.map(response.movies, MovieType.SIMILAR.name, 0)
     }
 
-    override suspend fun getMovieActors(movieId: Int, language: String?): List<MovieActor> =
+    override suspend fun getMovieCredits(movieId: Int, language: String?): List<MovieActor> =
         movieActorListMapper.map(
-            moviesApi.getMovieActors(
+            moviesApi.getMovieCredits(
                 movieId = movieId,
                 language = language ?: resourceDatastore.getLanguage()
-            ).actors
+            ).cast
         )
 
     override suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean {
