@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.repository
 
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.plain.SearchMulti
 
 interface SearchRepository {
 
@@ -12,4 +13,12 @@ interface SearchRepository {
         region: String? = null,
         year: Int? = null
     ): List<Movie>
+
+    suspend fun getSearchMulti(
+        query: String,
+        language: String? = null,
+        page: Int? = null,
+        adult: String? = null,
+        region: String? = null,
+    ): List<SearchMulti>
 }

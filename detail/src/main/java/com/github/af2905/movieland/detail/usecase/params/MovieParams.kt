@@ -9,7 +9,7 @@ data class SimilarMoviesParams(
 )
 
 data class MovieDetailParams(val movieId: Int, val language: String? = null)
-data class MovieActorsParams(val movieId: Int, val language: String? = null)
+data class MovieCreditsParams(val movieId: Int, val language: String? = null)
 
 data class LikedMovieDetailParams(val movieDetail: MovieDetailItem)
 data class UnlikedMovieDetailParams(val movieDetail: MovieDetailItem)

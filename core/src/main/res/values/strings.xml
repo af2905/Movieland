@@ -40,4 +40,9 @@
     <string name="profile_title">Profile</string>
 
     <string name="search_empty_result">No results matching your query</string>
+
+    <string name="media_type_tv">tv show</string>
+    <string name="media_type_movie">movie</string>
+    <string name="media_type_person">person</string>
+
 </resources>

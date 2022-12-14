@@ -35,14 +35,14 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:scrimAnimationDuration="0"
-                app:title="@string/search_title"
+                app:title="@string/search_screen_title"
                 app:titleEnabled="true"
                 app:toolbarId="@+id/toolbar">
 
                 <Space
                     android:id="@+id/expanded_size"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/collapsing_toolbar_min_height"/>
+                    android:layout_height="@dimen/collapsing_toolbar_min_height" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
