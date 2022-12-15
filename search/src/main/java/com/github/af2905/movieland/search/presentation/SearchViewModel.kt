@@ -10,6 +10,7 @@ import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.HeaderItem
 import com.github.af2905.movieland.core.common.model.item.SearchItem
 import com.github.af2905.movieland.core.common.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
+import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
 import com.github.af2905.movieland.search.domain.params.PopularMoviesParams
@@ -98,12 +99,15 @@ class SearchViewModel @Inject constructor(
         searchTextChanged(text = searchItem.searchString)
     }
 
-    fun openDetail(itemId: Int) = navigateToDetail(itemId)
-
-    private fun navigateToDetail(itemId: Int) {
+    fun openDetail(itemId: Int, mediaType: MediaType) {
         container.intent {
-            container.postEffect(SearchContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as SearchNavigator).forwardMovieDetail(itemId)
+            container.postEffect(SearchContract.Effect.OpenDetail(Navigate { navigator ->
+                val searchNavigator = navigator as SearchNavigator
+                when(mediaType) {
+                    MediaType.MOVIE -> searchNavigator.forwardMovieDetail(itemId)
+                    MediaType.PERSON -> searchNavigator.forwardPersonDetail(itemId)
+                    else -> Unit
+                }
             }))
         }
     }

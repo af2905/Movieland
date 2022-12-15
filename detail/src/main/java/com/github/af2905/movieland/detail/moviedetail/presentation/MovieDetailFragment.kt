@@ -57,8 +57,10 @@ class MovieDetailFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val detailComponent = DaggerMovieDetailComponent.factory()
-            .create(appComponent, movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG)))
+        val detailComponent = DaggerMovieDetailComponent.factory().create(
+            coreComponent = appComponent,
+            movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG))
+        )
         detailComponent.injectMovieDetailFragment(this)
     }
 
@@ -137,6 +139,7 @@ class MovieDetailFragment :
     }
 
     companion object {
-        const val MOVIE_ID_ARG = "com.github.af2905.movieland.detail.moviedetail.MOVIE_ID_ARG"
+        const val MOVIE_ID_ARG =
+            "com.github.af2905.movieland.detail.moviedetail.presentation.MOVIE_ID_ARG"
     }
 }
