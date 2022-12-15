@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detail_graph"
+    android:id="@+id/movie_detail_graph"
     app:startDestination="@id/movieDetailFragment">
 
     <fragment
@@ -23,10 +23,6 @@
         android:id="@+id/personDetailFragment"
         android:name="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailFragment"
         android:label="PersonDetailFragment">
-
-        <argument
-            android:name="personId"
-            app:argType="integer" />
     </fragment>
 
 </navigation>

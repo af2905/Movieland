@@ -44,6 +44,6 @@ class SearchContract {
     sealed class Effect : UiEffect() {
 
         data class ShowFailMessage(val message: ToastMessage) : Effect()
-        data class OpenMovieDetail(val navigator: Navigate) : Effect()
+        data class OpenDetail(val navigator: Navigate) : Effect()
     }
 }
