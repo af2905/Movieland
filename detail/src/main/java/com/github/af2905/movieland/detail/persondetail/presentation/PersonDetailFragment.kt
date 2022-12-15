@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.NavController
-import androidx.navigation.fragment.navArgs
 import com.github.af2905.movieland.core.base.navigator.AppNavigator
 import com.github.af2905.movieland.core.compose.BaseComposeFragment
 import com.github.af2905.movieland.core.di.CoreComponentProvider
@@ -16,15 +15,16 @@ import com.github.af2905.movieland.detail.persondetail.di.DaggerPersonDetailComp
 
 class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewModel>() {
 
-    val args: PersonDetailFragmentArgs by navArgs()
-
     override fun getNavigator(navController: NavController) = AppNavigator(navController)
     override fun viewModelClass() = PersonDetailViewModel::class.java
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val detailComponent = DaggerPersonDetailComponent.factory().create(appComponent, args)
+        val detailComponent = DaggerPersonDetailComponent.factory().create(
+            coreComponent = appComponent,
+            personId = requireNotNull(arguments?.getInt(PERSON_ID_ARG))
+        )
         detailComponent.injectPersonDetailFragment(this)
     }
 
@@ -36,5 +36,10 @@ class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewM
         return ComposeView(requireContext()).apply {
             setContent { PersonDetailScreen(viewModel) }
         }
+    }
+
+    companion object {
+        const val PERSON_ID_ARG =
+            "com.github.af2905.movieland.detail.persondetail.presentation.PERSON_ID_ARG"
     }
 }

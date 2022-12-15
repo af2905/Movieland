@@ -3,7 +3,6 @@ package com.github.af2905.movieland.detail.persondetail.di
 import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.core.di.scope.FragmentScope
 import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailFragment
-import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailFragmentArgs
 import dagger.BindsInstance
 import dagger.Component
 
@@ -17,7 +16,7 @@ interface PersonDetailComponent {
     interface Factory {
         fun create(
             coreComponent: CoreComponent,
-            @BindsInstance args: PersonDetailFragmentArgs
+            @BindsInstance personId: Int
         ): PersonDetailComponent
     }
 }

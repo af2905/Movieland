@@ -10,11 +10,9 @@ import com.github.af2905.movieland.detail.usecase.params.PersonDetailParams
 import javax.inject.Inject
 
 class PersonDetailViewModel @Inject constructor(
-    args: PersonDetailFragmentArgs,
+    private  val personId: Int,
     private val getPersonDetail: GetPersonDetail
 ) : ViewModel() {
-
-    private val personId = args.personId
 
     val container: Container<PersonDetailContract.State, PersonDetailContract.Effect> =
         Container(viewModelScope, PersonDetailContract.State.Loading)

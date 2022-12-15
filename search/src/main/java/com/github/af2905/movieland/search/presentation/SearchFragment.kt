@@ -9,7 +9,11 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.common.model.item.ErrorItem
+import com.github.af2905.movieland.core.common.model.item.SearchItem
+import com.github.af2905.movieland.core.common.model.item.SearchMultiItem
+import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
+import com.github.af2905.movieland.core.data.toMediaType
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
@@ -24,7 +28,12 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             SearchMultiItem.VIEW_TYPE,
-            listener = SearchMultiItem.Listener { item -> viewModel.openDetail(item.id) }
+            listener = SearchMultiItem.Listener { item ->
+                viewModel.openDetail(
+                    itemId = item.id,
+                    mediaType = item.mediaType.toMediaType()
+                )
+            }
         ),
         ItemDelegate(
             SearchQueryItem.VIEW_TYPE,
@@ -64,7 +73,7 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is SearchContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is SearchContract.Effect.OpenDetail -> handleEffect(effect.navigator)
                     is SearchContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
