@@ -1,14 +1,12 @@
 package com.github.af2905.movieland.core.data.mapper
 
-import com.github.af2905.movieland.core.common.mapper.ListMapperImpl
-import com.github.af2905.movieland.core.common.mapper.Mapper
 import com.github.af2905.movieland.core.common.model.item.MovieDetailItem
 import com.github.af2905.movieland.core.data.database.entity.Genre
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.ProductionCountry
 import com.github.af2905.movieland.core.data.dto.movie.GenreDto
-import com.github.af2905.movieland.core.data.dto.movie.MovieDetailsDto
+import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 import com.github.af2905.movieland.core.data.dto.movie.ProductionCompanyDto
 import com.github.af2905.movieland.core.data.dto.movie.ProductionCountryDto
 import com.github.af2905.movieland.util.extension.fiveStarRating
@@ -17,199 +15,158 @@ import com.github.af2905.movieland.core.common.model.item.Genre as UiGenre
 import com.github.af2905.movieland.core.common.model.item.ProductionCompany as UiProductionCompany
 import com.github.af2905.movieland.core.common.model.item.ProductionCountry as UiProductionCountry
 
-/**from dto to entity mappers*/
-class MovieDetailDtoToMovieDetailMapper @Inject constructor(
-    private val genreMapper: GenreDtoToGenreListMapper,
-    private val productionCompanyMapper: ProductionCompanyDtoToProductionCompanyListMapper,
-    private val productionCountryMapper: ProductionCountryDtoToProductionCountryListMapper
-) : Mapper<MovieDetailsDto, MovieDetail> {
-    override fun map(input: MovieDetailsDto): MovieDetail =
-        with(input) {
-            MovieDetail(
-                id = id,
-                adult = adult ?: true,
-                budget = budget,
-                genres = genres?.let { genreMapper.map(it) },
-                homepage = homepage.orEmpty(),
-                imdbId = imdbId.orEmpty(),
-                originalLanguage = originalLanguage.orEmpty(),
-                originalTitle = originalTitle.orEmpty(),
-                overview = overview.orEmpty(),
-                popularity = popularity,
-                productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
-                productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
-                releaseDate = releaseDate.orEmpty(),
-                revenue = revenue,
-                runtime = runtime,
-                status = status.orEmpty(),
-                tagline = tagline.orEmpty(),
-                title = title.orEmpty(),
-                video = video ?: false,
-                voteAverage = voteAverage,
-                voteCount = voteCount,
-                backdropPath = backdropPath,
-                posterPath = posterPath
-            )
-        }
-}
+class MovieDetailMapper @Inject constructor(
+    private val genreMapper: GenreMapper,
+    private val productionCompanyMapper: ProductionCompanyMapper,
+    private val productionCountryMapper: ProductionCountryMapper,
+    private val movieCreditsCastMapper: MovieCreditsCastMapper,
+    private val movieMapper: MovieMapper
+) {
+    @JvmName(DTO_TO_UI_ITEM_MAPPER)
+    fun map(input: MovieDetailDto): MovieDetailItem = with(input) {
+        MovieDetailItem(
+            id = id,
+            adult = adult,
+            budget = budget,
+            genres = genres?.let { genreMapper.map(it) },
+            homepage = homepage,
+            imdbId = imdbId,
+            originalLanguage = originalLanguage,
+            originalTitle = originalTitle,
+            overview = overview,
+            popularity = popularity,
+            productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
+            productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
+            releaseDate = releaseDate,
+            revenue = revenue,
+            runtime = runtime,
+            status = status,
+            tagline = tagline,
+            title = title,
+            video = video,
+            voteAverage = voteAverage,
+            voteCount = voteCount,
+            backdropPath = backdropPath,
+            posterPath = posterPath,
+            voteAverageStar = voteAverage?.fiveStarRating()?.toFloat()
+        )
+    }
 
-class ProductionCountryDtoToProductionCountryListMapper @Inject constructor(
-    mapper: ProductionCountryDtoToProductionCountryMapper
-) : ListMapperImpl<ProductionCountryDto, ProductionCountry>(mapper)
+    @JvmName(ENTITY_TO_UI_ITEM_MAPPER)
+    fun map(input: MovieDetail): MovieDetailItem = with(input) {
+        MovieDetailItem(
+            id = id,
+            adult = adult,
+            budget = budget,
+            genres = genres?.let { genreMapper.map(it) },
+            homepage = homepage,
+            imdbId = imdbId,
+            originalLanguage = originalLanguage,
+            originalTitle = originalTitle,
+            overview = overview,
+            popularity = popularity,
+            productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
+            productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
+            releaseDate = releaseDate,
+            revenue = revenue,
+            runtime = runtime,
+            status = status,
+            tagline = tagline,
+            title = title,
+            video = video,
+            voteAverage = voteAverage,
+            voteAverageStar = voteAverage?.fiveStarRating()?.toFloat(),
+            voteCount = voteCount,
+            backdropPath = backdropPath,
+            posterPath = posterPath,
+            liked = liked,
+            movieCreditsCasts = movieCreditsCasts.let { movieCreditsCastMapper.map(it) },
+            similarMovies = movieMapper.map(similarMovies)
+        )
+    }
 
-class ProductionCountryDtoToProductionCountryMapper @Inject constructor() :
-    Mapper<ProductionCountryDto, ProductionCountry> {
-    override fun map(input: ProductionCountryDto) =
-        with(input) { ProductionCountry(iso = iso, name = name) }
-}
-
-class ProductionCompanyDtoToProductionCompanyListMapper @Inject constructor(
-    mapper: ProductionCompanyDtoToProductionCompanyMapper
-) : ListMapperImpl<ProductionCompanyDto, ProductionCompany>(mapper)
-
-class ProductionCompanyDtoToProductionCompanyMapper @Inject constructor() :
-    Mapper<ProductionCompanyDto, ProductionCompany> {
-    override fun map(input: ProductionCompanyDto) = with(input) {
-        ProductionCompany(id = id, name = name, originCountry = originCountry, logoPath = logoPath)
+    @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
+    fun map(input: MovieDetailItem): MovieDetail = with(input) {
+        MovieDetail(
+            id = id,
+            adult = adult,
+            budget = budget,
+            genres = genres?.let { genreMapper.map(it) },
+            homepage = homepage,
+            imdbId = imdbId,
+            originalLanguage = originalLanguage,
+            originalTitle = originalTitle,
+            overview = overview,
+            popularity = popularity,
+            productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
+            productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
+            releaseDate = releaseDate,
+            revenue = revenue,
+            runtime = runtime,
+            status = status,
+            tagline = tagline,
+            title = title,
+            video = video,
+            voteAverage = voteAverage,
+            voteCount = voteCount,
+            backdropPath = backdropPath,
+            posterPath = posterPath,
+            liked = liked,
+            movieCreditsCasts = movieCreditsCastMapper.map(movieCreditsCasts),
+            similarMovies = movieMapper.map(similarMovies)
+        )
     }
 }
 
-class GenreDtoToGenreListMapper @Inject constructor(
-    mapper: GenreDtoToGenreMapper
-) : ListMapperImpl<GenreDto, Genre>(mapper)
+class GenreMapper @Inject constructor() {
+    @JvmName(DTO_TO_UI_ITEM_MAPPER)
+    fun map(input: List<GenreDto>): List<UiGenre> = input.map { dto -> map(dto) }
 
-class GenreDtoToGenreMapper @Inject constructor() : Mapper<GenreDto, Genre> {
-    override fun map(input: GenreDto) = with(input) { Genre(id = id, name = name) }
+    @JvmName(ENTITY_TO_UI_ITEM_MAPPER)
+    fun map(input: List<Genre>): List<UiGenre> = input.map { entity -> map(entity) }
+
+    @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
+    fun map(input: List<UiGenre>): List<Genre> = input.map { item -> map(item) }
+
+    private fun map(input: GenreDto): UiGenre = with(input) { UiGenre(id = id, name = name) }
+
+    private fun map(input: Genre): UiGenre = with(input) { UiGenre(id = id, name = name) }
+
+    private fun map(input: UiGenre): Genre = with(input) { Genre(id = id, name = name) }
 }
 
-/**from entity to item mappers*/
-class MovieDetailToMovieDetailItemListMapper @Inject constructor(
-    mapper: MovieDetailToMovieDetailItemMapper
-) : ListMapperImpl<MovieDetail, MovieDetailItem>(mapper)
+class ProductionCompanyMapper @Inject constructor() {
+    @JvmName(DTO_TO_UI_ITEM_MAPPER)
+    fun map(input: List<ProductionCompanyDto>): List<UiProductionCompany> =
+        input.map { dto -> map(dto) }
 
-class MovieDetailToMovieDetailItemMapper @Inject constructor(
-    private val genreMapper: GenreToUiGenreListMapper,
-    private val productionCompanyMapper: ProductionCompanyToUiProductionCompanyListMapper,
-    private val productionCountryMapper: ProductionCountryToUiProductionCountryListMapper
-) : Mapper<MovieDetail, MovieDetailItem> {
-    override fun map(input: MovieDetail): MovieDetailItem =
-        with(input) {
-            MovieDetailItem(
-                id = id,
-                adult = adult,
-                budget = budget,
-                genres = genres?.let { genreMapper.map(it) },
-                homepage = homepage,
-                imdbId = imdbId,
-                originalLanguage = originalLanguage,
-                originalTitle = originalTitle,
-                overview = overview,
-                popularity = popularity,
-                productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
-                productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
-                releaseDate = releaseDate,
-                revenue = revenue,
-                runtime = runtime,
-                status = status,
-                tagline = tagline,
-                title = title,
-                video = video,
-                voteAverage = voteAverage,
-                voteAverageStar = voteAverage.fiveStarRating().toFloat(),
-                voteCount = voteCount,
-                backdropPath = backdropPath,
-                posterPath = posterPath
-            )
-        }
+    @JvmName(ENTITY_TO_UI_ITEM_MAPPER)
+    fun map(input: List<ProductionCompany>): List<UiProductionCompany> =
+        input.map { entity -> map(entity) }
 
-    class ProductionCountryToUiProductionCountryListMapper @Inject constructor(
-        mapper: ProductionCountryToUiProductionCountryMapper
-    ) : ListMapperImpl<ProductionCountry, UiProductionCountry>(mapper)
+    @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
+    fun map(input: List<UiProductionCompany>): List<ProductionCompany> =
+        input.map { item -> map(item) }
 
-    class ProductionCountryToUiProductionCountryMapper @Inject constructor() :
-        Mapper<ProductionCountry, UiProductionCountry> {
-        override fun map(input: ProductionCountry) =
-            with(input) { UiProductionCountry(iso = iso, name = name) }
+    private fun map(input: ProductionCompanyDto): UiProductionCompany = with(input) {
+        UiProductionCompany(
+            id = id,
+            name = name,
+            originCountry = originCountry,
+            logoPath = logoPath
+        )
     }
 
-    class ProductionCompanyToUiProductionCompanyListMapper @Inject constructor(
-        mapper: ProductionCompanyToUiProductionCompanyMapper
-    ) : ListMapperImpl<ProductionCompany, UiProductionCompany>(mapper)
-
-    class ProductionCompanyToUiProductionCompanyMapper @Inject constructor() :
-        Mapper<ProductionCompany, UiProductionCompany> {
-        override fun map(input: ProductionCompany) = with(input) {
-            UiProductionCompany(
-                id = id,
-                name = name,
-                originCountry = originCountry,
-                logoPath = logoPath
-            )
-        }
+    private fun map(input: ProductionCompany): UiProductionCompany = with(input) {
+        UiProductionCompany(
+            id = id,
+            name = name,
+            originCountry = originCountry,
+            logoPath = logoPath
+        )
     }
 
-    class GenreToUiGenreListMapper @Inject constructor(
-        mapper: GenreToUiGenreMapper
-    ) : ListMapperImpl<Genre, UiGenre>(mapper)
-
-    class GenreToUiGenreMapper @Inject constructor() : Mapper<Genre, UiGenre> {
-        override fun map(input: Genre) = with(input) { UiGenre(id = id, name = name) }
-    }
-}
-
-/**from item to entity mappers*/
-class MovieDetailItemToMovieDetailMapper @Inject constructor(
-    private val genreMapper: UiGenreToGenreListMapper,
-    private val productionCompanyMapper: UiProductionCompanyToProductionCompanyListMapper,
-    private val productionCountryMapper: UiProductionCountryToProductionCountryListMapper
-) : Mapper<MovieDetailItem, MovieDetail> {
-    override fun map(input: MovieDetailItem): MovieDetail =
-        with(input) {
-            MovieDetail(
-                id = id,
-                adult = adult,
-                budget = budget,
-                genres = genres?.let { genreMapper.map(it) },
-                homepage = homepage,
-                imdbId = imdbId,
-                originalLanguage = originalLanguage,
-                originalTitle = originalTitle,
-                overview = overview,
-                popularity = popularity,
-                productionCompanies = productionCompanies?.let { productionCompanyMapper.map(it) },
-                productionCountries = productionCountries?.let { productionCountryMapper.map(it) },
-                releaseDate = releaseDate,
-                revenue = revenue,
-                runtime = runtime,
-                status = status,
-                tagline = tagline,
-                title = title,
-                video = video,
-                voteAverage = voteAverage,
-                voteCount = voteCount,
-                backdropPath = backdropPath,
-                posterPath = posterPath
-            )
-        }
-}
-
-class UiProductionCountryToProductionCountryListMapper @Inject constructor(
-    mapper: UiProductionCountryToProductionCountryMapper
-) : ListMapperImpl<UiProductionCountry, ProductionCountry>(mapper)
-
-class UiProductionCountryToProductionCountryMapper @Inject constructor() :
-    Mapper<UiProductionCountry, ProductionCountry> {
-    override fun map(input: UiProductionCountry) =
-        with(input) { ProductionCountry(iso = iso, name = name) }
-}
-
-class UiProductionCompanyToProductionCompanyListMapper @Inject constructor(
-    mapper: UiProductionCompanyToProductionCompanyMapper
-) : ListMapperImpl<UiProductionCompany, ProductionCompany>(mapper)
-
-class UiProductionCompanyToProductionCompanyMapper @Inject constructor() :
-    Mapper<UiProductionCompany, ProductionCompany> {
-    override fun map(input: UiProductionCompany) = with(input) {
+    private fun map(input: UiProductionCompany): ProductionCompany = with(input) {
         ProductionCompany(
             id = id,
             name = name,
@@ -219,10 +176,25 @@ class UiProductionCompanyToProductionCompanyMapper @Inject constructor() :
     }
 }
 
-class UiGenreToGenreListMapper @Inject constructor(
-    mapper: UiGenreToGenreMapper
-) : ListMapperImpl<UiGenre, Genre>(mapper)
+class ProductionCountryMapper @Inject constructor() {
+    @JvmName(DTO_TO_UI_ITEM_MAPPER)
+    fun map(input: List<ProductionCountryDto>): List<UiProductionCountry> =
+        input.map { dto -> map(dto) }
 
-class UiGenreToGenreMapper @Inject constructor() : Mapper<UiGenre, Genre> {
-    override fun map(input: UiGenre) = with(input) { Genre(id = id, name = name) }
+    @JvmName(ENTITY_TO_UI_ITEM_MAPPER)
+    fun map(input: List<ProductionCountry>): List<UiProductionCountry> =
+        input.map { entity -> map(entity) }
+
+    @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
+    fun map(input: List<UiProductionCountry>): List<ProductionCountry> =
+        input.map { item -> map(item) }
+
+    private fun map(input: ProductionCountryDto): UiProductionCountry =
+        with(input) { UiProductionCountry(iso = iso, name = name) }
+
+    private fun map(input: ProductionCountry): UiProductionCountry =
+        with(input) { UiProductionCountry(iso = iso, name = name) }
+
+    private fun map(input: UiProductionCountry): ProductionCountry =
+        with(input) { ProductionCountry(iso = iso, name = name) }
 }

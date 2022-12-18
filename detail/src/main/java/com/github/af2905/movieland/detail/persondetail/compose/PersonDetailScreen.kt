@@ -54,7 +54,7 @@ fun PersonDetailContent(
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = { Text(state.personDetailItem.name) },
+                title = { state.personDetailItem.name?.let { Text(it) } },
                 navigationIcon = {
                     IconButton(onClick = { scope.launch { } }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = null)

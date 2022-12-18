@@ -2,9 +2,8 @@ package com.github.af2905.movieland.core.data.database.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.github.af2905.movieland.core.data.database.entity.Genre
-import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
-import com.github.af2905.movieland.core.data.database.entity.ProductionCountry
+import com.github.af2905.movieland.core.data.database.entity.*
+import com.github.af2905.movieland.core.data.database.entity.plain.MovieCreditsCast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
@@ -29,12 +28,9 @@ class ListIntConverter @Inject constructor(gson: Gson) : ListConverter<Int>(gson
 @ProvidedTypeConverter
 class GenreConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
-    fun fromString(json: String?): List<Genre> {
-        return if (json != null) {
-            gson.fromJson(json, object : TypeToken<List<Genre>>() {}.type)
-        } else {
-            emptyList()
-        }
+    fun toList(value: String?): List<Genre>? {
+        val listType = object : TypeToken<List<Genre>>() {}.type
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
@@ -47,12 +43,9 @@ class GenreConverter @Inject constructor(private val gson: Gson) {
 @ProvidedTypeConverter
 class ProductionCompanyConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
-    fun fromString(json: String?): List<ProductionCompany> {
-        return if (json != null) {
-            gson.fromJson(json, object : TypeToken<List<ProductionCompany>>() {}.type)
-        } else {
-            emptyList()
-        }
+    fun toList(value: String?): List<ProductionCompany>? {
+        val listType = object : TypeToken<List<ProductionCompany>>() {}.type
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
@@ -65,12 +58,9 @@ class ProductionCompanyConverter @Inject constructor(private val gson: Gson) {
 @ProvidedTypeConverter
 class ProductionCountryConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
-    fun fromString(json: String?): List<ProductionCountry> {
-        return if (json != null) {
-            gson.fromJson(json, object : TypeToken<List<ProductionCountry>>() {}.type)
-        } else {
-            emptyList()
-        }
+    fun toList(value: String?): List<ProductionCountry>? {
+        val listType = object : TypeToken<List<ProductionCountry>>() {}.type
+        return gson.fromJson(value, listType)
     }
 
     @TypeConverter
@@ -80,7 +70,48 @@ class ProductionCountryConverter @Inject constructor(private val gson: Gson) {
     }
 }
 
+@ProvidedTypeConverter
+class PersonMovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<PersonMovieCreditsCast>? {
+        val listType = object : TypeToken<List<PersonMovieCreditsCast>>() {}.type
+        return gson.fromJson(value, listType)
+    }
 
+    @TypeConverter
+    fun fromList(list: List<PersonMovieCreditsCast>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<PersonMovieCreditsCast>>() {}.type)
+    }
+}
 
+@ProvidedTypeConverter
+class MovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<MovieCreditsCast>? {
+        val listType = object : TypeToken<List<MovieCreditsCast>>() {}.type
+        return gson.fromJson(value, listType)
+    }
 
+    @TypeConverter
+    fun fromList(list: List<MovieCreditsCast>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<MovieCreditsCast>>() {}.type)
+    }
+}
+
+@ProvidedTypeConverter
+class MovieConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<Movie>? {
+        val listType = object : TypeToken<List<Movie>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<Movie>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<Movie>>() {}.type)
+    }
+}
 

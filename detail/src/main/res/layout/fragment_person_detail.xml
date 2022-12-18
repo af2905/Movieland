@@ -7,23 +7,22 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailViewModel" />
+            type="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailViewModel" />
 
-        <import type="com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailContract" />
-
+        <import type="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailContract" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/movieDetailsCoordinatorLayout"
+        android:id="@+id/personDetailsCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/movieDetailToolbar"
-            layout="@layout/toolbar_movie_detail"
-            app:item="@{viewModel.container.state.toContent().movieDetailItem}"
-            app:listener="@{viewModel.movieDetailItemClickListener}"
-            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
+            android:id="@+id/personDetailToolbar"
+            layout="@layout/toolbar_person_detail"
+            app:item="@{viewModel.container.state.toContent().personDetailItem}"
+            app:listener="@{viewModel.personDetailClickListener}"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Content}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -32,22 +31,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Content}" />
-
-        <include
-            android:id="@+id/shimmer"
-            layout="@layout/fragment_movie_details_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Loading}"
-            tools:visibility="gone" />
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Content}" />
 
         <include
             android:id="@+id/error"
             layout="@layout/list_item_error"
             app:item="@{viewModel.container.state.toError().errorItem}"
             app:listener="@{viewModel.errorItemClickListener}"
-            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Error}"
             tools:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
