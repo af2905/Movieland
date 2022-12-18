@@ -6,11 +6,10 @@ import com.github.af2905.movieland.core.data.database.dao.MovieDetailDao
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
-import com.github.af2905.movieland.core.data.database.entity.plain.MovieActor
 import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
-import com.github.af2905.movieland.core.data.mapper.MovieActorDtoToMovieActorListMapper
-import com.github.af2905.movieland.core.data.mapper.MovieDetailDtoToMovieDetailMapper
-import com.github.af2905.movieland.core.data.mapper.MovieResponseDtoToMovieListMapper
+import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsCastDto
+import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
+import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.util.extension.isNullOrEmpty
 import java.util.*
@@ -21,9 +20,7 @@ private const val DEFAULT_UPDATE_MOVIE_HOURS = 24L
 
 class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
-    private val movieListMapper: MovieResponseDtoToMovieListMapper,
-    private val movieDetailMapper: MovieDetailDtoToMovieDetailMapper,
-    private val movieActorListMapper: MovieActorDtoToMovieActorListMapper,
+    private val movieMapper: MovieMapper,
     private val movieDao: MovieDao,
     private val movieDetailDao: MovieDetailDao,
     private val resourceDatastore: ResourceDatastore
@@ -77,7 +74,7 @@ class MoviesRepositoryImpl @Inject constructor(
             language = language ?: resourceDatastore.getLanguage(),
             page = page
         )
-        return movieListMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
+        return movieMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
     }
 
     override suspend fun getSimilarMovies(
@@ -88,16 +85,16 @@ class MoviesRepositoryImpl @Inject constructor(
             language = language ?: resourceDatastore.getLanguage(),
             page = page
         )
-        return movieListMapper.map(response.movies, MovieType.SIMILAR.name, 0)
+        return movieMapper.map(response.movies, MovieType.SIMILAR.name, 0)
     }
 
-    override suspend fun getMovieCredits(movieId: Int, language: String?): List<MovieActor> =
-        movieActorListMapper.map(
-            moviesApi.getMovieCredits(
-                movieId = movieId,
-                language = language ?: resourceDatastore.getLanguage()
-            ).cast
-        )
+    override suspend fun getMovieCredits(
+        movieId: Int,
+        language: String?
+    ): List<MovieCreditsCastDto> = moviesApi.getMovieCredits(
+        movieId = movieId,
+        language = language ?: resourceDatastore.getLanguage()
+    ).cast.orEmpty()
 
     override suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean {
         return movieDetailDao.save(movieDetail)?.let { true } ?: false
@@ -115,12 +112,10 @@ class MoviesRepositoryImpl @Inject constructor(
         return movieDetailDao.getAll() ?: emptyList()
     }
 
-    override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetail =
-        movieDetailMapper.map(
-            moviesApi.getMovieDetails(
-                movieId = movieId,
-                language = language ?: resourceDatastore.getLanguage()
-            )
+    override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetailDto =
+        moviesApi.getMovieDetails(
+            movieId = movieId,
+            language = language ?: resourceDatastore.getLanguage()
         )
 
     private suspend fun loadMovies(
@@ -160,7 +155,7 @@ class MoviesRepositoryImpl @Inject constructor(
                 }
                 else -> moviesApi.getSimilarMovies(movieId!!, language, page)
             }
-            movieListMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
+            movieMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
         }
         return movieDao.getByType(type).orEmpty()
     }

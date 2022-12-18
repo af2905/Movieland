@@ -2,21 +2,42 @@ package com.github.af2905.movieland.detail.persondetail.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import com.github.af2905.movieland.core.base.navigator.AppNavigator
-import com.github.af2905.movieland.core.compose.BaseComposeFragment
+import com.github.af2905.movieland.core.base.BaseFragment
+import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.ItemDelegate
+import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
+import com.github.af2905.movieland.core.common.model.item.PersonMovieCreditsCastItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
-import com.github.af2905.movieland.detail.persondetail.compose.PersonDetailScreen
+import com.github.af2905.movieland.detail.R
+import com.github.af2905.movieland.detail.databinding.FragmentPersonDetailBinding
+import com.github.af2905.movieland.detail.persondetail.PersonDetailNavigator
 import com.github.af2905.movieland.detail.persondetail.di.DaggerPersonDetailComponent
 
-class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewModel>() {
+class PersonDetailFragment :
+    BaseFragment<PersonDetailNavigator, FragmentPersonDetailBinding, PersonDetailViewModel>() {
 
-    override fun getNavigator(navController: NavController) = AppNavigator(navController)
+    override fun layoutRes(): Int = R.layout.fragment_person_detail
+    override fun getNavigator(navController: NavController) = PersonDetailNavigator(navController)
     override fun viewModelClass() = PersonDetailViewModel::class.java
+
+    private val baseAdapter: BaseAdapter = BaseAdapter(
+        ItemDelegate(
+            viewType = PersonDetailItem.VIEW_TYPE,
+            listener = PersonDetailItem.Listener {
+
+            }
+        ),
+        ItemDelegate(
+            viewType = PersonMovieCreditsCastItem.VIEW_TYPE,
+            listener = PersonMovieCreditsCastItem.Listener {
+
+            }
+        )
+    )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,13 +49,30 @@ class PersonDetailFragment : BaseComposeFragment<AppNavigator, PersonDetailViewM
         detailComponent.injectPersonDetailFragment(this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent { PersonDetailScreen(viewModel) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.apply {
+            adapter = baseAdapter
+            addItemDecoration(
+                VerticalListItemDecorator(
+                    marginTop = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    marginBottom = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
+                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
+                )
+            )
+        }
+
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(binding.personDetailToolbar.toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
+            }
         }
     }
 

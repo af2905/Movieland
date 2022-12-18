@@ -1,47 +1,44 @@
 package com.github.af2905.movieland.core.data.mapper
 
-import com.github.af2905.movieland.core.common.mapper.ListMapperImpl
-import com.github.af2905.movieland.core.common.mapper.Mapper
-import com.github.af2905.movieland.core.common.mapper.MovieResponseListMapperImpl
-import com.github.af2905.movieland.core.common.mapper.MovieResponseMapper
 import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.dto.movie.MovieDto
 import javax.inject.Inject
 
-class MovieDtoToMovieListMapper @Inject constructor(
-    mapper: MovieDtoToMovieMapper
-) : ListMapperImpl<MovieDto, Movie>(mapper)
+class MovieMapper @Inject constructor() {
 
-class MovieDtoToMovieMapper @Inject constructor() : Mapper<MovieDto, Movie> {
-    override fun map(input: MovieDto) =
-        with(input) {
-            Movie(
-                id = id,
-                adult = adult,
-                genreIds = genreIds,
-                originalLanguage = originalLanguage,
-                originalTitle = originalTitle,
-                overview = overview,
-                popularity = popularity,
-                releaseDate = releaseDate,
-                title = title,
-                video = video,
-                voteAverage = voteAverage,
-                voteCount = voteCount,
-                backdropPath = backdropPath,
-                posterPath = posterPath
-            )
-        }
-}
+    @JvmName(DTO_TO_ENTITY_MAPPER)
+    fun map(input: List<MovieDto>): List<Movie> = input.map { dto -> map(dto) }
 
-class MovieResponseDtoToMovieListMapper @Inject constructor(
-    mapper: MovieResponseDtoToMovieMapper
-) : MovieResponseListMapperImpl<MovieDto, String, Long, Movie>(mapper)
+    fun map(input: List<MovieDto>, type: String, timeStamp: Long): List<Movie> =
+        input.map { dto -> map(dto, type, timeStamp) }
 
-class MovieResponseDtoToMovieMapper @Inject constructor() :
-    MovieResponseMapper<MovieDto, String, Long, Movie> {
-    override fun map(input: MovieDto, type: String, timeStamp: Long) =
+    @JvmName(ENTITY_TO_UI_ITEM_MAPPER)
+    fun map(input: List<Movie>): List<MovieItem> = input.map { entity -> map(entity) }
+
+    @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
+    fun map(input: List<MovieItem>): List<Movie> = input.map { item -> map(item) }
+
+    private fun map(input: MovieDto): Movie = with(input) {
+        Movie(
+            id = id,
+            adult = adult,
+            genreIds = genreIds,
+            originalLanguage = originalLanguage,
+            originalTitle = originalTitle,
+            overview = overview,
+            popularity = popularity,
+            releaseDate = releaseDate,
+            title = title,
+            video = video,
+            voteAverage = voteAverage,
+            voteCount = voteCount,
+            backdropPath = backdropPath,
+            posterPath = posterPath
+        )
+    }
+
+    private fun map(input: MovieDto, type: String, timeStamp: Long): Movie =
         with(input) {
             Movie(
                 id = id,
@@ -62,15 +59,8 @@ class MovieResponseDtoToMovieMapper @Inject constructor() :
                 timeStamp = timeStamp
             )
         }
-}
 
-class MovieToMovieItemListMapper @Inject constructor(
-    mapper: MovieToMovieItemMapper
-) : ListMapperImpl<Movie, MovieItem>(mapper)
-
-class MovieToMovieItemMapper @Inject constructor() :
-    Mapper<Movie, MovieItem> {
-    override fun map(input: Movie) = with(input) {
+    private fun map(input: Movie): MovieItem = with(input) {
         MovieItem(
             id = id,
             adult = adult,
@@ -88,15 +78,8 @@ class MovieToMovieItemMapper @Inject constructor() :
             voteCount = voteCount,
         )
     }
-}
 
-class MovieItemToMovieListMapper @Inject constructor(
-    mapper: MovieItemToMovieMapper
-) : ListMapperImpl<MovieItem, Movie>(mapper)
-
-class MovieItemToMovieMapper @Inject constructor() :
-    Mapper<MovieItem, Movie> {
-    override fun map(input: MovieItem) = with(input) {
+    private fun map(input: MovieItem): Movie = with(input) {
         Movie(
             id = id,
             adult = adult,
