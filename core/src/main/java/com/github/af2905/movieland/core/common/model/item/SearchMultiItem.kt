@@ -29,7 +29,7 @@ data class SearchMultiItem(
     val voteAverage: Double?,
     val voteCount: Int?,
     val profilePath: String?,
-    val knowFor: List<KnownFor>?
+    val knownFor: List<KnownFor>?
 ) : Model(VIEW_TYPE) {
 
     val posterFullPathToImage: String?
@@ -50,7 +50,7 @@ data class SearchMultiItem(
         else -> name
     }
 
-    val personKnowFor = knowFor?.filter { !it.title.isNullOrEmpty() }
+    val personKnowFor = knownFor?.filter { !it.title.isNullOrEmpty() }
         ?.map { it.title }
         .orEmpty()
         .joinToString(SEPARATOR)

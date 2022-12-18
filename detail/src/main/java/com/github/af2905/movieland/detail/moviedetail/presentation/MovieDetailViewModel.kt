@@ -11,7 +11,7 @@ import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.moviedetail.MovieDetailNavigator
-import com.github.af2905.movieland.detail.usecase.*
+import com.github.af2905.movieland.detail.usecase.movie.*
 import com.github.af2905.movieland.detail.usecase.params.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -60,7 +60,13 @@ class MovieDetailViewModel @Inject constructor(
         if (state.movieDetailItem.liked) {
             removeFromLikedMovie(UnlikedMovieDetailParams(state.movieDetailItem))
         } else {
-            saveToLikedMovie(LikedMovieDetailParams(state.movieDetailItem))
+            saveToLikedMovie(
+                LikedMovieDetailParams(
+                    state.movieDetailItem.copy(
+                        liked = !state.movieDetailItem.liked
+                    )
+                )
+            )
         }
         container.reduce {
             state.copy(
@@ -84,71 +90,67 @@ class MovieDetailViewModel @Inject constructor(
 
     private suspend fun handleMovieDetail(scope: CoroutineScope) {
         val list = mutableListOf<Model>()
+        var movieDetailItem = getLikedMovieById(GetLikedMovieDetailByIdParams(movieId)).getOrThrow()
 
-        val movieDetailsAsync = scope.async {
-            MovieDetailDescItem(getMovieDetail(MovieDetailParams(movieId)).getOrThrow())
-        }
-
-        val movieActorsAsync = scope.async {
-            getMovieCredits(MovieCreditsParams(movieId)).let { result ->
-                val actors = result
-                    .getOrDefault(emptyList())
-                    .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
-                if (actors.isNotEmpty()) {
-                    listOf(
-                        emptySpaceNormal,
-                        HeaderItem(R.string.actors_and_crew_title),
-                        emptySpaceNormal,
-                        HorizontalListItem(actors, id = ACTORS_LIST_ID),
-                        emptySpaceBig
-                    )
-                } else {
-                    emptyList()
-                }
+        if (movieDetailItem == null) {
+            val movieDetailsAsync = scope.async {
+                getMovieDetail(MovieDetailParams(movieId)).getOrThrow()
             }
-        }
-
-        val similarMoviesAsync = scope.async {
-            getSimilarMovies.invoke(SimilarMoviesParams(movieId)).let { result ->
-                val similar = result
-                    .getOrDefault(emptyList())
-                    .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
-                if (similar.isNotEmpty()) {
-                    listOf(
-                        HeaderItem(R.string.similar),
-                        emptySpaceNormal,
-                        HorizontalListItem(list = similar, id = SIMILAR_MOVIE_LIST_ID),
-                        emptySpaceHuge
-                    )
-                } else {
-                    emptyList()
-                }
+            val movieCreditsCastAsync = scope.async {
+                getMovieCredits(MovieCreditsParams(movieId)).getOrDefault(emptyList())
             }
-        }
+            val similarMoviesAsync = scope.async {
+                getSimilarMovies.invoke(SimilarMoviesParams(movieId)).getOrDefault(emptyList())
+            }
 
-        val likedMovieDetailItemAsync = scope.async {
-            getLikedMovieById(GetLikedMovieDetailByIdParams(movieId)).getOrNull()
-        }
+            movieDetailItem = movieDetailsAsync.await()
+            val movieCreditsCasts = movieCreditsCastAsync.await()
+            val similarMovies = similarMoviesAsync.await()
 
-        var movieDetail = movieDetailsAsync.await()
-        val movieActors = movieActorsAsync.await()
-        val similarMovies = similarMoviesAsync.await()
-        val likedMovieDetailItem = likedMovieDetailItemAsync.await()
+            val movieCreditCastsBlock = createActorsAndCrewBlock(movieCreditsCasts)
+            val similarMoviesBlock = createSimilarMoviesBlock(similarMovies)
 
-        if (likedMovieDetailItem?.id == movieDetail.id) {
-            movieDetail =
-                movieDetail.copy(movieDetailItem = movieDetail.movieDetailItem.copy(liked = true))
-        }
-
-        list.add(movieDetail)
-        list.addAll(movieActors)
-        list.addAll(similarMovies)
-
-        container.reduce {
-            MovieDetailContract.State.Content(
-                movieDetailItem = movieDetail.movieDetailItem,
-                list = list
+            list.add(MovieDetailDescItem(movieDetailItem))
+            list.addAll(movieCreditCastsBlock)
+            list.addAll(similarMoviesBlock)
+            movieDetailItem = movieDetailItem.copy(
+                movieCreditsCasts = movieCreditsCasts,
+                similarMovies = similarMovies
             )
+        } else {
+            list.add(MovieDetailDescItem(movieDetailItem))
+            list.addAll(createActorsAndCrewBlock(movieDetailItem.movieCreditsCasts))
+            list.addAll(createSimilarMoviesBlock(movieDetailItem.similarMovies))
+        }
+        container.reduce {
+            MovieDetailContract.State.Content(movieDetailItem = movieDetailItem, list = list)
+        }
+    }
+
+    private fun createActorsAndCrewBlock(movieCreditsCasts: List<MovieCreditsCastItem>): List<Model> {
+        return if (movieCreditsCasts.isNotEmpty()) {
+            listOf(
+                emptySpaceNormal,
+                HeaderItem(R.string.actors_and_crew_title),
+                emptySpaceNormal,
+                HorizontalListItem(movieCreditsCasts, id = ACTORS_LIST_ID),
+                emptySpaceBig
+            )
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun createSimilarMoviesBlock(similarMovies: List<MovieItem>): List<Model> {
+        return if (similarMovies.isNotEmpty()) {
+            listOf(
+                HeaderItem(R.string.similar),
+                emptySpaceNormal,
+                HorizontalListItem(list = similarMovies, id = SIMILAR_MOVIE_LIST_ID),
+                emptySpaceHuge
+            )
+        } else {
+            emptyList()
         }
     }
 

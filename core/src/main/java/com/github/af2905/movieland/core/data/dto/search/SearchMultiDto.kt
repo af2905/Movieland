@@ -12,9 +12,9 @@ data class SearchMultiDto(
 
 data class SearchMultiResultDto(
     @SerializedName("id") val id: Int,
+    @SerializedName("media_type") val mediaType: String,
     @SerializedName("name") val name: String?,
     @SerializedName("title") val title: String?,
-    @SerializedName("media_type") val mediaType: String,
     @SerializedName("overview") val overview: String?,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("first_air_date") val firstAirDate: String?,

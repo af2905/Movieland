@@ -45,4 +45,10 @@
     <string name="media_type_tv">сериал</string>
     <string name="media_type_movie">фильм</string>
     <string name="media_type_person">персона</string>
+
+    <string name="birthday_title">День рождения</string>
+    <string name="deathday_title">День смерти</string>
+    <string name="place_of_birth_title">Место рождения</string>
+    <string name="popularity_title">Популярность</string>
+    <string name="biography_title">Биография</string>
 </resources>

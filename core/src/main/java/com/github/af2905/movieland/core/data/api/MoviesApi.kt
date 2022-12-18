@@ -5,7 +5,7 @@ import com.github.af2905.movieland.core.data.ApiParams.MOVIE_ID
 import com.github.af2905.movieland.core.data.ApiParams.PAGE
 import com.github.af2905.movieland.core.data.ApiParams.REGION
 import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsDto
-import com.github.af2905.movieland.core.data.dto.movie.MovieDetailsDto
+import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 import com.github.af2905.movieland.core.data.dto.movie.MoviesDto
 
 import retrofit2.http.GET
@@ -46,7 +46,7 @@ interface MoviesApi {
     suspend fun getMovieDetails(
         @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String? = null
-    ): MovieDetailsDto
+    ): MovieDetailDto
 
     @GET("movie/{$MOVIE_ID}/recommendations")
     suspend fun getRecommendedMovies(

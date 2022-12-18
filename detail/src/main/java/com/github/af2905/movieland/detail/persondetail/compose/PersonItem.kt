@@ -45,13 +45,15 @@ fun PersonItem(item: PersonDetailItem) {
         )
 
         Spacer(Modifier.height(16.dp))
-        Text(
-            text = item.name,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
+        item.name?.let {
+            Text(
+                text = it,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.h6,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         item.birthday?.let { birthday ->
             Spacer(Modifier.height(16.dp))
@@ -64,7 +66,7 @@ fun PersonItem(item: PersonDetailItem) {
         }
 
         Spacer(Modifier.height(16.dp))
-        Text(text = item.knownForDepartment, style = MaterialTheme.typography.body2)
+        item.knownForDepartment?.let { Text(text = it, style = MaterialTheme.typography.body2) }
     }
 }
 
@@ -76,7 +78,7 @@ fun PersonBiography(item: PersonDetailItem) {
             .padding(16.dp)
     ) {
         Spacer(Modifier.height(16.dp))
-        Text(text = item.biography)
+        Text(text = item.biography.orEmpty())
     }
 }
 

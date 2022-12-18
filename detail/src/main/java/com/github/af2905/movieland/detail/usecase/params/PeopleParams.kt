@@ -4,3 +4,8 @@ data class PersonDetailParams(
     val personId: Int,
     val language: String? = null
 )
+
+data class PersonMovieCreditsParams(
+    val personId: Int,
+    val language: String? = null
+)

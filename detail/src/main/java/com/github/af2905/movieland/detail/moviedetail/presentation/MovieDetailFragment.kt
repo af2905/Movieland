@@ -17,7 +17,7 @@ import com.github.af2905.movieland.core.common.helper.ThemeHelper
 import com.github.af2905.movieland.core.common.model.decorator.HorizontalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
-import com.github.af2905.movieland.core.common.model.item.MovieActorItem
+import com.github.af2905.movieland.core.common.model.item.MovieCreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
@@ -44,8 +44,8 @@ class MovieDetailFragment :
                             viewModel.openSimilarMovieDetail(item.id)
                         }),
                     ItemDelegate(
-                        MovieActorItem.VIEW_TYPE,
-                        listener = MovieActorItem.Listener { item, _ ->
+                        MovieCreditsCastItem.VIEW_TYPE,
+                        listener = MovieCreditsCastItem.Listener { item, _ ->
                             viewModel.openPersonDetail(item.id)
                         })
                 )
@@ -73,11 +73,11 @@ class MovieDetailFragment :
 
         val appBarStateChangeListener = getAppBarStateChangeListener()
 
-        binding.movieDetailsToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
-        binding.movieDetailsToolbar.movieDetailCollapsingToolbarLayout
+        binding.movieDetailToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
+        binding.movieDetailToolbar.movieDetailCollapsingToolbarLayout
             .setExpandedTitleColor(Color.WHITE)
 
-        binding.movieDetailsToolbar.movieDetailsAppBar.apply {
+        binding.movieDetailToolbar.movieDetailAppBar.apply {
             removeOnOffsetChangedListener(appBarStateChangeListener)
             addOnOffsetChangedListener(appBarStateChangeListener)
         }
@@ -95,7 +95,7 @@ class MovieDetailFragment :
 
     private fun initToolbar() {
         (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(binding.movieDetailsToolbar.toolbar)
+            setSupportActionBar(binding.movieDetailToolbar.toolbar)
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 setDisplayShowHomeEnabled(true)
@@ -107,7 +107,7 @@ class MovieDetailFragment :
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
             when (state) {
                 State.COLLAPSED -> {
-                    binding.movieDetailsToolbar.toolbar.apply {
+                    binding.movieDetailToolbar.toolbar.apply {
                         if (ThemeHelper.isCurrentThemeDark(context)) {
                             navigationIcon?.setTint(Color.WHITE)
                         } else {
@@ -116,7 +116,7 @@ class MovieDetailFragment :
                     }
                 }
                 State.IDLE -> {
-                    binding.movieDetailsToolbar.toolbar.apply {
+                    binding.movieDetailToolbar.toolbar.apply {
                         background = ColorDrawable(Color.TRANSPARENT)
                         navigationIcon?.setTint(Color.WHITE)
                     }
