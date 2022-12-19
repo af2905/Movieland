@@ -42,13 +42,28 @@
             app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Loading}"
             tools:visibility="gone" />
 
-        <include
-            android:id="@+id/error"
-            layout="@layout/list_item_error"
-            app:item="@{viewModel.container.state.toError().errorItem}"
-            app:listener="@{viewModel.errorItemClickListener}"
-            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}"
-            tools:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}">
 
+            <include
+                android:id="@+id/back"
+                layout="@layout/list_item_back_button"
+                app:item="@{viewModel.container.state.toError().backButtonItem}"
+                app:listener="@{viewModel.backButtonItemClickListener}"
+                app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}" />
+
+            <include
+                android:id="@+id/error"
+                layout="@layout/list_item_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:item="@{viewModel.container.state.toError().errorItem}"
+                app:listener="@{viewModel.errorItemClickListener}"
+                app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Error}" />
+
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

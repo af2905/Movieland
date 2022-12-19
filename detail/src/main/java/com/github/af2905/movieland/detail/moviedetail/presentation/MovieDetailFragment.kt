@@ -87,6 +87,7 @@ class MovieDetailFragment :
                 when (effect) {
                     is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
+                    is MovieDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }

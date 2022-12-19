@@ -47,7 +47,10 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    val errorItemClickListener = ErrorItem.Listener { loadData() }
+    val errorItemClickListener = ErrorItem.Listener {
+        loadData()
+    }
+    val backButtonItemClickListener = BackButtonItem.Listener { openPreviousScreen() }
 
     init {
         loadData()
@@ -80,6 +83,9 @@ class MovieDetailViewModel @Inject constructor(
 
     private fun loadData() {
         container.intent {
+            if (container.state.value !is MovieDetailContract.State.Loading) {
+                container.reduce { MovieDetailContract.State.Loading }
+            }
             try {
                 handleMovieDetail(viewModelScope)
             } catch (e: Exception) {
@@ -157,7 +163,8 @@ class MovieDetailViewModel @Inject constructor(
     private suspend fun handleError(e: Exception) {
         container.reduce {
             MovieDetailContract.State.Error(
-                ErrorItem(errorMessage = e.message.orEmpty()), e
+                errorItem = ErrorItem(errorMessage = e.message.orEmpty()),
+                e = e
             )
         }
         container.intent {
@@ -181,6 +188,14 @@ class MovieDetailViewModel @Inject constructor(
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)
+            }))
+        }
+    }
+
+    private fun openPreviousScreen() {
+        container.intent {
+            container.postEffect(MovieDetailContract.Effect.OpenPreviousScreen(Navigate { navigator ->
+                navigator.back()
             }))
         }
     }
