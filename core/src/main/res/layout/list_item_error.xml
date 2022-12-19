@@ -32,7 +32,6 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            style="@style/TextAlphaStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin_big"

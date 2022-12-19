@@ -38,10 +38,6 @@
         <item name="android:tint">@color/tintSearchBarDark</item>
     </style>
 
-    <style name="TextAlphaStyle">
-        <item name="android:textColor">@color/lightGreyAlpha</item>
-    </style>
-
     <style name="DividerBackground">
         <item name="android:backgroundTint">@color/dividerDark</item>
     </style>
@@ -72,6 +68,10 @@
 
     <style name="ShimmerStyleRoundCornersBig">
         <item name="android:background">@drawable/bg_dark_grey_corner_32</item>
+    </style>
+
+    <style name="BackButtonStyle">
+        <item name="android:tint">@color/darkGrey</item>
     </style>
 
 </resources>
