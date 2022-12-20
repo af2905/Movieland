@@ -23,6 +23,10 @@
         android:id="@+id/personDetailFragment"
         android:name="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailFragment"
         android:label="PersonDetailFragment">
+
+        <action
+            android:id="@+id/openMovieDetail"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
 
 </navigation>

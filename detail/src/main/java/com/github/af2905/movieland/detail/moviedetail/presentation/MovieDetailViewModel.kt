@@ -47,17 +47,12 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    val errorItemClickListener = ErrorItem.Listener {
-        loadData()
-    }
+    val errorItemClickListener = ErrorItem.Listener { loadData() }
     val backButtonItemClickListener = BackButtonItem.Listener { openPreviousScreen() }
 
     init {
         loadData()
     }
-
-    fun openSimilarMovieDetail(itemId: Int) = navigateToMovieDetail(itemId)
-    fun openPersonDetail(itemId: Int) = navigateToPersonDetail(itemId)
 
     private suspend fun handleLikeMovie(state: MovieDetailContract.State.Content) {
         if (state.movieDetailItem.liked) {
@@ -99,7 +94,7 @@ class MovieDetailViewModel @Inject constructor(
         var movieDetailItem = getLikedMovieById(GetLikedMovieDetailByIdParams(movieId)).getOrThrow()
 
         if (movieDetailItem == null) {
-            val movieDetailsAsync = scope.async {
+            val movieDetailAsync = scope.async {
                 getMovieDetail(MovieDetailParams(movieId)).getOrThrow()
             }
             val movieCreditsCastAsync = scope.async {
@@ -109,7 +104,7 @@ class MovieDetailViewModel @Inject constructor(
                 getSimilarMovies.invoke(SimilarMoviesParams(movieId)).getOrDefault(emptyList())
             }
 
-            movieDetailItem = movieDetailsAsync.await()
+            movieDetailItem = movieDetailAsync.await()
             val movieCreditsCasts = movieCreditsCastAsync.await()
             val similarMovies = similarMoviesAsync.await()
 
@@ -176,7 +171,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToMovieDetail(itemId: Int) {
+    fun navigateToMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
@@ -184,7 +179,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToPersonDetail(itemId: Int) {
+    fun navigateToPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)

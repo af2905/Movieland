@@ -7,14 +7,14 @@ import com.github.af2905.movieland.core.data.database.entity.PersonDetail
 interface PersonDetailDao {
 
     @Query("SELECT * FROM PersonDetail")
-    suspend fun getAll(): List<PersonDetail>
+    suspend fun getAll(): List<PersonDetail>?
 
     @Query("SELECT * FROM PersonDetail WHERE id =:id")
-    suspend fun getById(id: Int): PersonDetail
+    suspend fun getById(id: Int): PersonDetail?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(personDetail: PersonDetail)
+    suspend fun save(personDetail: PersonDetail): Long?
 
     @Delete
-    suspend fun delete(personDetail: PersonDetail)
+    suspend fun delete(personDetail: PersonDetail): Int?
 }
