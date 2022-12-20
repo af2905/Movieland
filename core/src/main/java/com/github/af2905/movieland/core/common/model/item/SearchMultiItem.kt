@@ -33,7 +33,7 @@ data class SearchMultiItem(
 ) : Model(VIEW_TYPE) {
 
     val posterFullPathToImage: String?
-        get() = posterPath.getFullPathToImage()
+        get() = posterPath.getFullPathToImage() ?: backdropPath.getFullPathToImage()
 
     val profileFullPathToImage: String?
         get() = profilePath.getFullPathToImage()

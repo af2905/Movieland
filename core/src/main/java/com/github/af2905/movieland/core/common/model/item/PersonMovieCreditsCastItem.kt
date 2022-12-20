@@ -27,11 +27,8 @@ data class PersonMovieCreditsCastItem(
     val order: Int?
 ) : Model(VIEW_TYPE) {
 
-    val posterFullPathToImage: String?
-        get() = posterPath.getFullPathToImage()
-
     val backdropPathToImage: String?
-        get() = backdropPath.getFullPathToImage()
+        get() = backdropPath.getFullPathToImage() ?: posterPath.getFullPathToImage()
 
     val voteAverageStar: Float?
         get() = voteAverage?.fiveStarRating()?.toFloat()
