@@ -29,6 +29,6 @@ data class MovieCreditsCastItem(
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: MovieCreditsCastItem, position: Int)
+        fun onItemClicked(item: MovieCreditsCastItem)
     }
 }
