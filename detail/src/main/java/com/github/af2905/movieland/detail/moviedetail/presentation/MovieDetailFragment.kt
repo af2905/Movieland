@@ -41,12 +41,12 @@ class MovieDetailFragment :
                     ItemDelegate(
                         MovieItem.VIEW_TYPE,
                         listener = MovieItem.Listener { item, _ ->
-                            viewModel.openSimilarMovieDetail(item.id)
+                            viewModel.navigateToMovieDetail(item.id)
                         }),
                     ItemDelegate(
                         MovieCreditsCastItem.VIEW_TYPE,
                         listener = MovieCreditsCastItem.Listener { item, _ ->
-                            viewModel.openPersonDetail(item.id)
+                            viewModel.navigateToPersonDetail(item.id)
                         })
                 )
             },

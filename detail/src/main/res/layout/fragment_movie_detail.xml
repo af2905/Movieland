@@ -36,7 +36,7 @@
 
         <include
             android:id="@+id/shimmer"
-            layout="@layout/fragment_movie_details_placeholder"
+            layout="@layout/fragment_movie_detail_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:visible="@{viewModel.container.state instanceof MovieDetailContract.State.Loading}"

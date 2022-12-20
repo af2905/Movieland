@@ -24,7 +24,7 @@ class GetSearchMulti @Inject constructor(
         ).filter {
             (it.mediaType == MediaType.PERSON.type && it.profilePath != null) ||
                     ((it.mediaType == MediaType.MOVIE.type || it.mediaType == MediaType.TV.type)
-                            && it.posterPath != null
+                            && (it.posterPath != null || it.backdropPath != null)
                             && it.voteAverage != null
                             && !it.overview.isNullOrEmpty())
         }

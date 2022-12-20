@@ -4,12 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.github.af2905.movieland.core.common.model.item.PersonMovieCreditsCastItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
@@ -26,15 +26,9 @@ class PersonDetailFragment :
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            viewType = PersonDetailItem.VIEW_TYPE,
-            listener = PersonDetailItem.Listener {
-
-            }
-        ),
-        ItemDelegate(
             viewType = PersonMovieCreditsCastItem.VIEW_TYPE,
-            listener = PersonMovieCreditsCastItem.Listener {
-
+            listener = PersonMovieCreditsCastItem.Listener { item ->
+                viewModel.navigateToMovieDetail(item.id)
             }
         )
     )
@@ -64,6 +58,16 @@ class PersonDetailFragment :
         }
 
         initToolbar()
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.container.effect.collect { effect ->
+                when (effect) {
+                    is PersonDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is PersonDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
+                    is PersonDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                }
+            }
+        }
     }
 
     private fun initToolbar() {
