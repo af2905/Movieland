@@ -18,7 +18,7 @@ data class MovieDetailDto(
     @SerializedName("production_companies") val productionCompanies: List<ProductionCompanyDto>?,
     @SerializedName("production_countries") val productionCountries: List<ProductionCountryDto>?,
     @SerializedName("release_date") val releaseDate: String?,
-    @SerializedName("revenue") val revenue: Int?,
+    @SerializedName("revenue") val revenue: Long?,
     @SerializedName("runtime") val runtime: Int?,
     @SerializedName("status") val status: String?,
     @SerializedName("tagline") val tagline: String?,

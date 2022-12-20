@@ -21,6 +21,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/movie_card_width"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content"
         android:onClick="@{() -> listener.onItemClicked(item, position)}">
 

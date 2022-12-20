@@ -26,7 +26,7 @@ data class MovieItem(
 ) : Model(VIEW_TYPE) {
 
     val posterFullPathToImage: String?
-        get() = posterPath.getFullPathToImage()
+        get() = posterPath.getFullPathToImage() ?: backdropPath.getFullPathToImage()
 
     val voteAverageStar: Float?
         get() = voteAverage?.fiveStarRating()?.toFloat()

@@ -13,6 +13,11 @@ class GetPersonMovieCredits @Inject constructor(
 ) : CoroutineUseCase<PersonMovieCreditsParams, List<PersonMovieCreditsCastItem>>() {
     override suspend fun execute(params: PersonMovieCreditsParams): List<PersonMovieCreditsCastItem> {
         val response = peopleRepository.getPersonMovieCredits(params.personId, params.language)
-        return mapper.map(response)
+        return mapper.map(response).filterNot {
+            it.releaseDate.isNullOrEmpty()
+                    || it.character.isNullOrEmpty()
+                    || (it.posterPath.isNullOrEmpty() && it.backdropPath.isNullOrEmpty())
+        }
+            .sortedByDescending { it.releaseDate }
     }
 }

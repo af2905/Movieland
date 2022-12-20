@@ -28,7 +28,7 @@ class NowPlayingMovieFragment :
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
             MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item, _ -> viewModel.openDetail(item.id) })
+            listener = MovieItemVariant.Listener { item -> viewModel.openDetail(item.id) })
     )
 
     override fun onAttach(context: Context) {
