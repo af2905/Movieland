@@ -13,28 +13,25 @@
             name="listener"
             type="com.github.af2905.movieland.core.common.model.item.MovieCreditsCastItem.Listener" />
 
-        <variable
-            name="position"
-            type="Integer" />
-
     </data>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:onClick="@{() -> listener.onItemClicked(item, position)}">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> listener.onItemClicked(item)}"
+        android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="@dimen/default_icon_size"
             android:layout_height="@dimen/default_icon_size"
-            android:scaleType="centerCrop"
             android:padding="@dimen/default_stroke"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
             app:src="@{item.profileFullPathToImage}"
             app:strokeColor="@color/darkGrey"
             app:strokeWidth="@dimen/default_stroke_tiny"
-            tools:src="@drawable/ic_placeholder"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+            tools:src="@drawable/ic_placeholder" />
 
         <TextView
             style="@style/TextView.Small"
@@ -42,9 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_small"
             android:ellipsize="end"
-            android:text="@{item.name}"
             android:gravity="center|top"
             android:lines="@integer/max_lines_2"
+            android:text="@{item.name}"
             tools:text="Леонардо Ди Каприо" />
     </LinearLayout>
 

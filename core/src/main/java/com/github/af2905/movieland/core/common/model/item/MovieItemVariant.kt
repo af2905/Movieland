@@ -26,6 +26,6 @@ data class MovieItemVariant(
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: MovieItem, position: Int)
+        fun onItemClicked(item: MovieItem)
     }
 }

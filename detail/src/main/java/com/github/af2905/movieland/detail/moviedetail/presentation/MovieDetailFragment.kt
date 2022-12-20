@@ -45,7 +45,7 @@ class MovieDetailFragment :
                         }),
                     ItemDelegate(
                         MovieCreditsCastItem.VIEW_TYPE,
-                        listener = MovieCreditsCastItem.Listener { item, _ ->
+                        listener = MovieCreditsCastItem.Listener { item ->
                             viewModel.navigateToPersonDetail(item.id)
                         })
                 )
