@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.github.af2905.movieland.core.common.model.item.PersonItemV2" />
+
+        <variable
+            name="listener"
+            type="com.github.af2905.movieland.core.common.model.item.PersonItemV2.Listener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> listener.onItemClicked(item.personItem)}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile"
+            android:layout_width="@dimen/movie_card_variant_width"
+            android:layout_height="@dimen/movie_card_variant_width"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:padding="@dimen/default_stroke"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            app:src="@{item.personItem.profileFullPathToImage}"
+            app:strokeColor="@color/darkGrey"
+            app:strokeWidth="@dimen/default_stroke_tiny"
+            tools:src="@drawable/ic_placeholder" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextView.Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin_small"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:maxLines="@integer/max_lines_3"
+            android:paddingEnd="@dimen/default_margin"
+            android:text="@{item.personItem.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Leo Dicaprio" />
+
+        <TextView
+            style="@style/TextView.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin_tiny"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:ellipsize="end"
+            android:maxLines="@integer/max_lines_4"
+            android:text="@{item.personItem.personKnowFor}"
+            app:layout_constraintLeft_toRightOf="@id/profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie Movie" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

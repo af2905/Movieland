@@ -9,6 +9,6 @@ class ProfileNavigator @Inject constructor(
 ) : Navigator(navController) {
 
     fun forwardLikedMovies() {
-        navController.navigate(ProfileFragmentDirections.openLikedMovies())
+        navController.navigate(ProfileFragmentDirections.openOptionLiked())
     }
 }

@@ -9,7 +9,7 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
+import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentUpcomingMovieBinding
@@ -27,8 +27,8 @@ class UpcomingMovieFragment :
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item -> viewModel.openDetail(item.id) })
+            MovieItemV2.VIEW_TYPE,
+            listener = MovieItemV2.Listener { item -> viewModel.openDetail(item.id) })
     )
 
     override fun onAttach(context: Context) {

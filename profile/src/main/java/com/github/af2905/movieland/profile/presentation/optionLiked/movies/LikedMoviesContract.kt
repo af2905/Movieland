@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.profile.presentation.optionLiked
+package com.github.af2905.movieland.profile.presentation.optionLiked.movies
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
