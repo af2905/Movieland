@@ -4,7 +4,7 @@ import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model
 
-data class MovieItemVariant(
+data class MovieItemV2(
     val movieItem: MovieItem,
     override val id: Int = movieItem.id
 ) : Model(VIEW_TYPE) {
@@ -18,7 +18,7 @@ data class MovieItemVariant(
     }
 
     companion object {
-        val VIEW_TYPE = R.layout.list_item_movie_variant
+        val VIEW_TYPE = R.layout.list_item_movie_v2
 
         private const val SPACE = " "
         private const val LEFT_BRACKET = "("

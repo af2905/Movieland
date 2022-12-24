@@ -6,7 +6,7 @@ import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
-import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
+import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.home.HomeRepository
 import com.github.af2905.movieland.home.domain.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.home.domain.usecase.GetNowPlayingMovies
@@ -53,7 +53,7 @@ class NowPlayingMovieViewModel @Inject constructor(
                 val movies = result.getOrNull().orEmpty()
                 container.reduce {
                     NowPlayingMovieContract.State.Content(
-                        list = movies.map { MovieItemVariant(it) }
+                        list = movies.map { MovieItemV2(it) }
                     )
                 }
             }

@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.popular
+package com.github.af2905.movieland.profile.presentation.optionLiked.people
 
 import android.content.Context
 import android.os.Bundle
@@ -9,34 +9,29 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.MovieItemV2
+import com.github.af2905.movieland.core.common.model.item.PersonItemV2
 import com.github.af2905.movieland.core.di.CoreComponentProvider
-import com.github.af2905.movieland.home.R
-import com.github.af2905.movieland.home.databinding.FragmentPopularMovieBinding
-import com.github.af2905.movieland.home.di.component.DaggerPopularMovieComponent
-import com.github.af2905.movieland.home.di.component.HomeComponentProvider
-import com.github.af2905.movieland.home.presentation.HomeNavigator
+import com.github.af2905.movieland.profile.R
+import com.github.af2905.movieland.profile.databinding.FragmentLikedPeopleBinding
+import com.github.af2905.movieland.profile.di.DaggerProfileComponent
 
-class PopularMovieFragment :
-    BaseFragment<HomeNavigator, FragmentPopularMovieBinding, PopularMovieViewModel>() {
-
-    override fun getNavigator(navController: NavController) = HomeNavigator(navController)
-    override fun layoutRes(): Int = R.layout.fragment_popular_movie
-    override fun viewModelClass(): Class<PopularMovieViewModel> = PopularMovieViewModel::class.java
+class LikedPeopleFragment :
+    BaseFragment<LikedPeopleNavigator, FragmentLikedPeopleBinding, LikedPeopleViewModel>() {
+    override fun getNavigator(navController: NavController) = LikedPeopleNavigator(navController)
+    override fun layoutRes(): Int = R.layout.fragment_liked_people
+    override fun viewModelClass(): Class<LikedPeopleViewModel> = LikedPeopleViewModel::class.java
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            MovieItemV2.VIEW_TYPE,
-            listener = MovieItemV2.Listener { item -> viewModel.openDetail(item.id) })
+            PersonItemV2.VIEW_TYPE,
+            listener = PersonItemV2.Listener { item -> viewModel.openDetail(item.id) })
     )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
-        val popularMovieComponent =
-            DaggerPopularMovieComponent.factory().create(appComponent, homeComponent)
-        popularMovieComponent.injectPopularMovieFragment(this)
+        val profileComponent = DaggerProfileComponent.factory().create(appComponent)
+        profileComponent.injectLikedPeopleFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,8 +50,7 @@ class PopularMovieFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is PopularMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
-                    is PopularMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is LikedPeopleContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
                 }
             }
         }

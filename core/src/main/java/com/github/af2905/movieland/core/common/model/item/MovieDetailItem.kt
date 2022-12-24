@@ -50,6 +50,8 @@ data class MovieDetailItem(
     val titleNextInfo = StringBuilder().apply {
         releaseYear?.let {
             append(releaseYear)
+        }
+        if (!releaseYear.isNullOrEmpty() && genreList.isNotEmpty()) {
             append(SEPARATOR)
         }
         if (genreList.isEmpty().not()) {

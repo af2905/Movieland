@@ -1,16 +1,15 @@
-package com.github.af2905.movieland.profile.presentation.optionLiked
+package com.github.af2905.movieland.profile.presentation.optionLiked.movies
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.MovieItemVariant
+import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.databinding.FragmentLikedMoviesBinding
@@ -24,8 +23,8 @@ class LikedMoviesFragment :
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            MovieItemVariant.VIEW_TYPE,
-            listener = MovieItemVariant.Listener { item -> viewModel.openDetail(item.id) })
+            MovieItemV2.VIEW_TYPE,
+            listener = MovieItemV2.Listener { item -> viewModel.openDetail(item.id) })
     )
 
     override fun onAttach(context: Context) {
@@ -37,8 +36,6 @@ class LikedMoviesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initToolbar()
 
         binding.recyclerView.apply {
             adapter = baseAdapter
@@ -55,16 +52,6 @@ class LikedMoviesFragment :
                 when (effect) {
                     is LikedMoviesContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                 }
-            }
-        }
-    }
-
-    private fun initToolbar() {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(binding.toolbar)
-            supportActionBar?.apply {
-                setDisplayHomeAsUpEnabled(true)
-                setDisplayShowHomeEnabled(true)
             }
         }
     }
