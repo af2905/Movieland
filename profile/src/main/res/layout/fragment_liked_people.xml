@@ -5,9 +5,9 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.profile.presentation.optionLiked.movies.LikedMoviesViewModel" />
+            type="com.github.af2905.movieland.profile.presentation.optionLiked.people.LikedPeopleViewModel" />
 
-        <import type="com.github.af2905.movieland.profile.presentation.optionLiked.movies.LikedMoviesContract" />
+        <import type="com.github.af2905.movieland.profile.presentation.optionLiked.people.LikedPeopleContract" />
     </data>
 
 

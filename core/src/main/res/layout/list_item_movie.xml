@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_tiny"
             android:ellipsize="end"
-            android:lines="@integer/max_lines_1"
+            android:lines="@integer/max_lines_2"
             android:paddingStart="@dimen/default_margin_tiny"
             android:paddingEnd="@dimen/default_margin_tiny"
             android:text="@{item.title}"

@@ -45,5 +45,14 @@ data class PersonDetailItem(
 
     companion object {
         val VIEW_TYPE = R.layout.list_item_person_detail
+
+        fun PersonDetailItem.mapToPersonItem() = with(this) {
+            PersonItem(
+                id = id,
+                name = name,
+                profilePath = profilePath,
+                personMovieCreditsCasts = personMovieCreditsCasts
+            )
+        }
     }
 }
