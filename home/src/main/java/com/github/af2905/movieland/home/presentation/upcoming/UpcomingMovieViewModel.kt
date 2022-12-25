@@ -25,7 +25,7 @@ class UpcomingMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<UpcomingMovieContract.State, UpcomingMovieContract.Effect> =
-        Container(viewModelScope, UpcomingMovieContract.State.Init())
+        Container(viewModelScope, UpcomingMovieContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -44,33 +44,36 @@ class UpcomingMovieViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadData(forceUpdate: Boolean = false) {
-        container.reduce {
-            UpcomingMovieContract.State.Init(list = this.list)
-        }
-        val result = getUpcomingMovies(
-            UpcomingMoviesParams(
-                forceUpdate = forceUpdate
-            )
-        ).getOrThrow()
+    private suspend fun loadData(forceUpdate: Boolean) {
+        val cachedMovies = getCachedMoviesByType(
+            CachedMoviesParams(type = MovieType.UPCOMING)
+        ).getOrDefault(emptyList())
 
-        container.reduce {
-            UpcomingMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+        if (cachedMovies.isNotEmpty()) {
+            container.reduce {
+                UpcomingMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+            }
+        } else {
+            container.reduce {
+                UpcomingMovieContract.State.Loading()
+            }
+            val result =
+                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+
+            container.reduce {
+                UpcomingMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+            }
         }
     }
 
     private suspend fun handleError(e: Exception) {
         val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(
-                type = MovieType.UPCOMING
-            )
+            CachedMoviesParams(type = MovieType.UPCOMING)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                UpcomingMovieContract.State.Content(
-                    list = cachedMovies.map { MovieItemV2(it) }
-                )
+                UpcomingMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
             }
         } else {
             container.reduce {

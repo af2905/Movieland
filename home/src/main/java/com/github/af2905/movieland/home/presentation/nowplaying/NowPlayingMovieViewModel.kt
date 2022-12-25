@@ -25,7 +25,7 @@ class NowPlayingMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<NowPlayingMovieContract.State, NowPlayingMovieContract.Effect> =
-        Container(viewModelScope, NowPlayingMovieContract.State.Init())
+        Container(viewModelScope, NowPlayingMovieContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -44,26 +44,31 @@ class NowPlayingMovieViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadData(forceUpdate: Boolean = false) {
-        container.reduce {
-            NowPlayingMovieContract.State.Init(list = this.list)
-        }
-        val result = getNowPlayingMovies(
-            NowPlayingMoviesParams(
-                forceUpdate = forceUpdate
-            )
-        ).getOrThrow()
+    private suspend fun loadData(forceUpdate: Boolean) {
+        val cachedMovies = getCachedMoviesByType(
+            CachedMoviesParams(type = MovieType.NOW_PLAYING)
+        ).getOrDefault(emptyList())
 
-        container.reduce {
-            NowPlayingMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+        if (cachedMovies.isNotEmpty()) {
+            container.reduce {
+                NowPlayingMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+            }
+        } else {
+            container.reduce {
+                NowPlayingMovieContract.State.Loading()
+            }
+            val result =
+                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+
+            container.reduce {
+                NowPlayingMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+            }
         }
     }
 
     private suspend fun handleError(e: Exception) {
         val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(
-                type = MovieType.NOW_PLAYING
-            )
+            CachedMoviesParams(type = MovieType.NOW_PLAYING)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {

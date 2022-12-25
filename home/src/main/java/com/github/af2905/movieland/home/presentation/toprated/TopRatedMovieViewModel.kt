@@ -25,7 +25,7 @@ class TopRatedMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<TopRatedMovieContract.State, TopRatedMovieContract.Effect> =
-        Container(viewModelScope, TopRatedMovieContract.State.Init())
+        Container(viewModelScope, TopRatedMovieContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -44,35 +44,36 @@ class TopRatedMovieViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadData(forceUpdate: Boolean = false) {
-        container.reduce {
-            TopRatedMovieContract.State.Init(list = this.list)
-        }
-        val result = getTopRatedMovies(
-            TopRatedMoviesParams(
-                forceUpdate = forceUpdate
-            )
-        ).getOrThrow()
+    private suspend fun loadData(forceUpdate: Boolean) {
+        val cachedMovies = getCachedMoviesByType(
+            CachedMoviesParams(type = MovieType.TOP_RATED)
+        ).getOrDefault(emptyList())
 
-        container.reduce {
-            TopRatedMovieContract.State.Content(
-                list = result.map { MovieItemV2(it) }
-            )
+        if (cachedMovies.isNotEmpty()) {
+            container.reduce {
+                TopRatedMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+            }
+        } else {
+            container.reduce {
+                TopRatedMovieContract.State.Loading()
+            }
+            val result =
+                getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+
+            container.reduce {
+                TopRatedMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+            }
         }
     }
 
     private suspend fun handleError(e: Exception) {
         val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(
-                type = MovieType.TOP_RATED
-            )
+            CachedMoviesParams(type = MovieType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                TopRatedMovieContract.State.Content(
-                    list = cachedMovies.map { MovieItemV2(it) }
-                )
+                TopRatedMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
             }
         } else {
             container.reduce {

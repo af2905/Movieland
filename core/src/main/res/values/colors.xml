@@ -20,17 +20,17 @@
     <color name="lightGrey">#D3D3D3</color>
     <color name="darkGrey">#808080</color>
 
-    <color name="lightGreyAlpha">#BFD3D3D3</color>
-    <color name="darkGreyAlpha">#BFA9A9A9</color>
-
     <color name="textColorPrimary">#C7000000</color>
     <color name="textColorSecondary">#94000000</color>
 
-    <color name="searchBarLight">#ebecee</color>
-    <color name="searchBarDark">#2c2c2e</color>
+    <color name="blackAlpha">#1A000000</color>
+    <color name="whiteAlpha">#1AFFFFFF</color>
 
-    <color name="tintSearchBarLight">#9299a3</color>
-    <color name="tintSearchBarDark">#9299a1</color>
+    <color name="searchBarLight">@color/blackAlpha</color>
+    <color name="searchBarDark">@color/whiteAlpha</color>
+
+    <color name="tintSearchBarLight">@color/darkGrey</color>
+    <color name="tintSearchBarDark">@color/darkGrey</color>
 
     <color name="dividerLight">#c9c9cb</color>
     <color name="dividerDark">#333333</color>

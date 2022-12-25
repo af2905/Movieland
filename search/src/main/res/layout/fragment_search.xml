@@ -18,6 +18,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
+            android:elevation="@dimen/size_0"
+            app:elevation="@dimen/size_0"
             style="@style/ColorSurfaceBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
