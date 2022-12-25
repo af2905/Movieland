@@ -7,8 +7,11 @@ import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.MovieItemV2
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.home.HomeRepository
+import com.github.af2905.movieland.home.domain.params.CachedMoviesParams
 import com.github.af2905.movieland.home.domain.params.PopularMoviesParams
+import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
 import com.github.af2905.movieland.home.domain.usecase.GetPopularMovies
 import com.github.af2905.movieland.home.presentation.HomeNavigator
 import kotlinx.coroutines.launch
@@ -17,6 +20,7 @@ import javax.inject.Inject
 class PopularMovieViewModel @Inject constructor(
     private val getPopularMovies: GetPopularMovies,
     private val homeRepository: HomeRepository,
+    private val getCachedMoviesByType: GetCachedMoviesByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
@@ -24,43 +28,65 @@ class PopularMovieViewModel @Inject constructor(
         Container(viewModelScope, PopularMovieContract.State.Init())
 
     init {
-        loadData()
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
             homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
+        savedLoadData()
     }
 
-    private fun loadData(forceUpdate: Boolean = false) {
+    private fun savedLoadData(forceUpdate: Boolean = false) {
         container.intent {
-            container.reduce {
-                PopularMovieContract.State.Init(list = this.list)
-            }
-            val result = getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate))
-            if (result.isFailure) {
-                val error = result.exceptionOrNull()
-                container.reduce {
-                    PopularMovieContract.State.Error(
-                        list = listOf(
-                            ErrorItem(
-                                errorMessage = error?.message.orEmpty(),
-                                errorButtonVisible = false
-                            )
-                        ),
-                        e = error
-                    )
-                }
-            } else {
-                val movies = result.getOrNull().orEmpty()
-                container.reduce {
-                    PopularMovieContract.State.Content(
-                        list = movies.map { MovieItemV2(it) }
-                    )
-                }
+            try {
+                loadData(forceUpdate = forceUpdate)
+            } catch (e: Exception) {
+                handleError(e)
             }
         }
     }
 
-    private fun refresh() = loadData(forceUpdate = true)
+    private suspend fun loadData(forceUpdate: Boolean = false) {
+        container.reduce {
+            PopularMovieContract.State.Init(list = this.list)
+        }
+        val result = getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+
+        container.reduce {
+            PopularMovieContract.State.Content(
+                list = result.map { MovieItemV2(it) }
+            )
+        }
+    }
+
+    private fun refresh() = savedLoadData(forceUpdate = true)
+
+    private suspend fun handleError(e: Exception) {
+        val cachedMovies =
+            getCachedMoviesByType(
+                CachedMoviesParams(
+                    type = MovieType.POPULAR
+                )
+            ).getOrDefault(emptyList())
+
+        if (cachedMovies.isNotEmpty()) {
+            container.reduce {
+                PopularMovieContract.State.Content(
+                    list = cachedMovies.map { MovieItemV2(it) }
+                )
+            }
+        } else {
+            container.reduce {
+                PopularMovieContract.State.Error(
+                    list = listOf(
+                        ErrorItem(
+                            errorMessage = e.message.orEmpty(),
+                            errorButtonVisible = false
+                        )
+                    ),
+                    e = e
+                )
+            }
+        }
+    }
 
     fun openDetail(itemId: Int) = navigateToDetail(itemId)
 

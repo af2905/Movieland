@@ -2,6 +2,7 @@ package com.github.af2905.movieland.core.repository
 
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsCastDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 
@@ -45,4 +46,6 @@ interface MoviesRepository {
     suspend fun removeMovieDetail(movieDetail: MovieDetail): Boolean
     suspend fun getMovieDetailById(id: Int): MovieDetail?
     suspend fun getAllSavedMovieDetail(): List<MovieDetail>
+
+    suspend fun getCachedMoviesByType(type: MovieType): List<Movie>
 }

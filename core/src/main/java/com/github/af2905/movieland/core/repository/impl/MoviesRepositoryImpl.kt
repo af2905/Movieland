@@ -118,6 +118,9 @@ class MoviesRepositoryImpl @Inject constructor(
             language = language ?: resourceDatastore.getLanguage()
         )
 
+    override suspend fun getCachedMoviesByType(type: MovieType): List<Movie> =
+        movieDao.getByType(type.name).orEmpty()
+
     private suspend fun loadMovies(
         type: String,
         language: String?,
