@@ -1,5 +1,7 @@
 package com.github.af2905.movieland.home.domain.params
 
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+
 data class NowPlayingMoviesParams(
     override val language: String? = null,
     override val page: Int? = null,
@@ -33,6 +35,8 @@ data class RecommendedMoviesParams(
     val language: String? = null,
     val page: Int? = null
 )
+
+data class CachedMoviesParams(val type: MovieType)
 
 interface BaseMoviesParams {
     val language: String?
