@@ -25,7 +25,7 @@ class PopularMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<PopularMovieContract.State, PopularMovieContract.Effect> =
-        Container(viewModelScope, PopularMovieContract.State.Init())
+        Container(viewModelScope, PopularMovieContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -44,34 +44,38 @@ class PopularMovieViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadData(forceUpdate: Boolean = false) {
-        container.reduce {
-            PopularMovieContract.State.Init(list = this.list)
-        }
-        val result = getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+    private suspend fun loadData(forceUpdate: Boolean) {
+        val cachedMovies = getCachedMoviesByType(
+            CachedMoviesParams(type = MovieType.POPULAR)
+        ).getOrDefault(emptyList())
 
-        container.reduce {
-            PopularMovieContract.State.Content(
-                list = result.map { MovieItemV2(it) }
-            )
+        if (cachedMovies.isNotEmpty()) {
+            container.reduce {
+                PopularMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+            }
+        } else {
+            container.reduce {
+                PopularMovieContract.State.Loading()
+            }
+            val result =
+                getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+
+            container.reduce {
+                PopularMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+            }
         }
     }
 
     private fun refresh() = savedLoadData(forceUpdate = true)
 
     private suspend fun handleError(e: Exception) {
-        val cachedMovies =
-            getCachedMoviesByType(
-                CachedMoviesParams(
-                    type = MovieType.POPULAR
-                )
-            ).getOrDefault(emptyList())
+        val cachedMovies = getCachedMoviesByType(
+            CachedMoviesParams(type = MovieType.POPULAR)
+        ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                PopularMovieContract.State.Content(
-                    list = cachedMovies.map { MovieItemV2(it) }
-                )
+                PopularMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
             }
         } else {
             container.reduce {
@@ -88,9 +92,7 @@ class PopularMovieViewModel @Inject constructor(
         }
     }
 
-    fun openDetail(itemId: Int) = navigateToDetail(itemId)
-
-    private fun navigateToDetail(itemId: Int) {
+    fun openDetail(itemId: Int) {
         container.intent {
             container.postEffect(PopularMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardMovieDetail(itemId)

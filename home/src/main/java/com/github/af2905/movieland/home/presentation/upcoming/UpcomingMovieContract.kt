@@ -11,7 +11,11 @@ class UpcomingMovieContract {
 
     sealed class State(open val list: List<Model>) : UiState() {
 
-        data class Init(
+        object Init : State(list = emptyList()) {
+            override fun toString(): String = javaClass.simpleName
+        }
+
+        data class Loading(
             override val list: List<Model> = listOf(ListMovieVariantPlaceholderItem())
         ) : State(list)
 
