@@ -2,9 +2,10 @@ package com.github.af2905.movieland.search.domain.usecase
 
 import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
-import com.github.af2905.movieland.search.domain.params.PopularMoviesParams
+import com.github.af2905.movieland.search.domain.params.SearchParams
 import javax.inject.Inject
 
 private const val DEFAULT_SIZE = 10
@@ -12,15 +13,10 @@ private const val DEFAULT_SIZE = 10
 class GetPopularSearchQueries @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val mapper: MovieMapper
-) : CoroutineUseCase<PopularMoviesParams, List<SearchQueryItem>>() {
-    override suspend fun execute(params: PopularMoviesParams): List<SearchQueryItem> {
+) : CoroutineUseCase<SearchParams, List<SearchQueryItem>>() {
+    override suspend fun execute(params: SearchParams): List<SearchQueryItem> {
         val response = mapper.map(
-            moviesRepository.getPopularMovies(
-                language = params.language,
-                page = params.page,
-                region = params.region,
-                forceUpdate = params.forceUpdate
-            )
+            moviesRepository.getCachedMoviesByType(MovieType.NOW_PLAYING)
         )
         return response.mapNotNull { item ->
             item.title?.let {
