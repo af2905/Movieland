@@ -1,31 +1,29 @@
-package com.github.af2905.movieland.home.presentation.popularMovies
+package com.github.af2905.movieland.home.presentation.tvShows.topRatedTvShows
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
-import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
-import com.github.af2905.movieland.core.common.model.item.MovieItemV2
-import com.github.af2905.movieland.core.data.database.entity.MovieType
-import com.github.af2905.movieland.home.domain.params.CachedMoviesParams
-import com.github.af2905.movieland.home.domain.params.PopularMoviesParams
-import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
-import com.github.af2905.movieland.home.domain.usecase.GetPopularMovies
-import com.github.af2905.movieland.home.presentation.HomeNavigator
+import com.github.af2905.movieland.core.common.model.item.TvShowV2Item
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
+import com.github.af2905.movieland.home.domain.params.CachedTvShowsParams
+import com.github.af2905.movieland.home.domain.params.TvShowsParams
+import com.github.af2905.movieland.home.domain.usecase.GetCachedTvShowsByType
+import com.github.af2905.movieland.home.domain.usecase.GetTopRatedTvShows
 import com.github.af2905.movieland.home.repository.HomeRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PopularMovieViewModel @Inject constructor(
-    private val getPopularMovies: GetPopularMovies,
+class TopRatedTvShowsViewModel @Inject constructor(
+    private val getTopRatedTvShows: GetTopRatedTvShows,
     private val homeRepository: HomeRepository,
-    private val getCachedMoviesByType: GetCachedMoviesByType,
+    private val getCachedTvShowsByType: GetCachedTvShowsByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    val container: Container<PopularMovieContract.State, PopularMovieContract.Effect> =
-        Container(viewModelScope, PopularMovieContract.State.Init)
+    val container: Container<TopRatedTvShowsContract.State, TopRatedTvShowsContract.Effect> =
+        Container(viewModelScope, TopRatedTvShowsContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -45,23 +43,23 @@ class PopularMovieViewModel @Inject constructor(
     }
 
     private suspend fun loadData(forceUpdate: Boolean) {
-        val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(type = MovieType.POPULAR)
+        val cachedTvShows = getCachedTvShowsByType(
+            CachedTvShowsParams(type = TvShowType.TOP_RATED)
         ).getOrDefault(emptyList())
 
-        if (cachedMovies.isNotEmpty()) {
+        if (cachedTvShows.isNotEmpty()) {
             container.reduce {
-                PopularMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+                TopRatedTvShowsContract.State.Content(list = cachedTvShows.map { TvShowV2Item(it) })
             }
         } else {
             container.reduce {
-                PopularMovieContract.State.Loading()
+                TopRatedTvShowsContract.State.Loading()
             }
             val result =
-                getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+                getTopRatedTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
 
             container.reduce {
-                PopularMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+                TopRatedTvShowsContract.State.Content(list = result.map { TvShowV2Item(it) })
             }
         }
     }
@@ -69,17 +67,17 @@ class PopularMovieViewModel @Inject constructor(
     private fun refresh() = savedLoadData(forceUpdate = true)
 
     private suspend fun handleError(e: Exception) {
-        val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(type = MovieType.POPULAR)
+        val cachedMovies = getCachedTvShowsByType(
+            CachedTvShowsParams(type = TvShowType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                PopularMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+                TopRatedTvShowsContract.State.Content(list = cachedMovies.map { TvShowV2Item(it) })
             }
         } else {
             container.reduce {
-                PopularMovieContract.State.Error(
+                TopRatedTvShowsContract.State.Error(
                     list = listOf(
                         ErrorItem(
                             errorMessage = e.message.orEmpty(),
@@ -93,10 +91,6 @@ class PopularMovieViewModel @Inject constructor(
     }
 
     fun openDetail(itemId: Int) {
-        container.intent {
-            container.postEffect(PopularMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardMovieDetail(itemId)
-            }))
-        }
+
     }
 }

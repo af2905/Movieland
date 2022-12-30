@@ -1,14 +1,12 @@
-package com.github.af2905.movieland.home.presentation.nowPlayingMovies
+package com.github.af2905.movieland.home.presentation.tvShows.popularTvShows
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.Navigate
-import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.home.presentation.item.ListMovieVariantPlaceholderItem
+import com.github.af2905.movieland.home.presentation.item.ListPlaceholderItem
 
-class NowPlayingMovieContract {
-
+class PopularTvShowsContract {
     sealed class State(open val list: List<Model>) : UiState() {
 
         object Init : State(list = emptyList()) {
@@ -16,7 +14,7 @@ class NowPlayingMovieContract {
         }
 
         data class Loading(
-            override val list: List<Model> = listOf(ListMovieVariantPlaceholderItem())
+            override val list: List<Model> = listOf(ListPlaceholderItem())
         ) : State(list)
 
         data class Content(override val list: List<Model>) : State(list)
@@ -24,8 +22,6 @@ class NowPlayingMovieContract {
     }
 
     sealed class Effect : UiEffect() {
-
-        data class ShowFailMessage(val message: ToastMessage) : Effect()
-        data class OpenMovieDetail(val navigator: Navigate) : Effect()
+        data class OpenTvShowDetail(val navigator: Navigate) : Effect()
     }
 }
