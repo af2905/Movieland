@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.home.di.component
 
 import com.github.af2905.movieland.core.di.CoreComponent
-import com.github.af2905.movieland.home.presentation.upcomingMovies.UpcomingMovieFragment
+import com.github.af2905.movieland.home.presentation.movies.upcomingMovies.UpcomingMovieFragment
 import dagger.Component
 import javax.inject.Scope
 

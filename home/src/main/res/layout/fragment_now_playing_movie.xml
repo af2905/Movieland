@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.home.presentation.nowPlayingMovies.NowPlayingMovieViewModel" />
+            type="com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.NowPlayingMovieViewModel" />
 
     </data>
 

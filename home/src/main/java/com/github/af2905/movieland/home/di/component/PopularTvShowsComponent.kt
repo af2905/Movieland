@@ -1,25 +1,25 @@
 package com.github.af2905.movieland.home.di.component
 
 import com.github.af2905.movieland.core.di.CoreComponent
-import com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.NowPlayingMovieFragment
+import com.github.af2905.movieland.home.presentation.tvShows.popularTvShows.PopularTvShowsFragment
 import dagger.Component
 import javax.inject.Scope
 
-@NowPlayingMovieScope
+@PopularTvShowsScope
 @Component(dependencies = [CoreComponent::class, HomeComponent::class])
-interface NowPlayingMovieComponent {
+interface PopularTvShowsComponent {
 
-    fun injectNowPlayingMovieFragment(fragment: NowPlayingMovieFragment)
+    fun injectPopularTvShowsFragment(fragment: PopularTvShowsFragment)
 
     @Component.Factory
     interface Factory {
         fun create(
             coreComponent: CoreComponent,
             homeComponent: HomeComponent
-        ): NowPlayingMovieComponent
+        ): PopularTvShowsComponent
     }
 }
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class NowPlayingMovieScope
+annotation class PopularTvShowsScope
