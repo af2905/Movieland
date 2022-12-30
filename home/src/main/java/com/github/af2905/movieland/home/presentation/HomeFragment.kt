@@ -23,10 +23,10 @@ import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.home.di.component.DaggerHomeComponent
 import com.github.af2905.movieland.home.di.component.HomeComponent
-import com.github.af2905.movieland.home.presentation.nowplaying.NowPlayingMovieFragment
-import com.github.af2905.movieland.home.presentation.popular.PopularMovieFragment
-import com.github.af2905.movieland.home.presentation.toprated.TopRatedMovieFragment
-import com.github.af2905.movieland.home.presentation.upcoming.UpcomingMovieFragment
+import com.github.af2905.movieland.home.presentation.nowPlayingMovies.NowPlayingMovieFragment
+import com.github.af2905.movieland.home.presentation.popularMovies.PopularMovieFragment
+import com.github.af2905.movieland.home.presentation.topRatedMovies.TopRatedMovieFragment
+import com.github.af2905.movieland.home.presentation.upcomingMovies.UpcomingMovieFragment
 import com.google.android.material.appbar.AppBarLayout
 
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {

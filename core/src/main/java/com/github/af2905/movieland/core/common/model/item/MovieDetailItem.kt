@@ -81,8 +81,7 @@ data class MovieDetailItem(
                 title = title,
                 video = video,
                 voteAverage = voteAverage,
-                voteCount = voteCount,
-                responseMovieType = null
+                voteCount = voteCount
             )
         }
     }

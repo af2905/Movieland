@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.upcoming
+package com.github.af2905.movieland.home.presentation.topRatedMovies
 
 import android.content.Context
 import android.os.Bundle
@@ -12,18 +12,18 @@ import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemD
 import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
-import com.github.af2905.movieland.home.databinding.FragmentUpcomingMovieBinding
-import com.github.af2905.movieland.home.di.component.DaggerUpcomingMovieComponent
+import com.github.af2905.movieland.home.databinding.FragmentTopRatedMovieBinding
+import com.github.af2905.movieland.home.di.component.DaggerTopRatedMovieComponent
 import com.github.af2905.movieland.home.di.component.HomeComponentProvider
 import com.github.af2905.movieland.home.presentation.HomeNavigator
 
-class UpcomingMovieFragment :
-    BaseFragment<HomeNavigator, FragmentUpcomingMovieBinding, UpcomingMovieViewModel>() {
+class TopRatedMovieFragment :
+    BaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
 
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
-    override fun layoutRes(): Int = R.layout.fragment_upcoming_movie
-    override fun viewModelClass(): Class<UpcomingMovieViewModel> =
-        UpcomingMovieViewModel::class.java
+    override fun layoutRes(): Int = R.layout.fragment_top_rated_movie
+    override fun viewModelClass(): Class<TopRatedMovieViewModel> =
+        TopRatedMovieViewModel::class.java
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
@@ -35,9 +35,9 @@ class UpcomingMovieFragment :
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
         val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
-        val upcomingMovieComponent =
-            DaggerUpcomingMovieComponent.factory().create(appComponent, homeComponent)
-        upcomingMovieComponent.injectUpcomingMovieFragment(this)
+        val topRatedMovieComponent =
+            DaggerTopRatedMovieComponent.factory().create(appComponent, homeComponent)
+        topRatedMovieComponent.injectTopRatedMovieFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,8 +56,8 @@ class UpcomingMovieFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is UpcomingMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
-                    is UpcomingMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is TopRatedMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is TopRatedMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
         }

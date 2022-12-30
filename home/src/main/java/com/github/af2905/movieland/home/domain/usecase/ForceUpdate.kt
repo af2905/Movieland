@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.home.domain.usecase
 
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
-import com.github.af2905.movieland.home.HomeRepository
+import com.github.af2905.movieland.home.repository.HomeRepository
 import javax.inject.Inject
 
 class ForceUpdate @Inject constructor(private val homeRepository: HomeRepository) :
