@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@{item.birthday}"
+                android:text="@{item.birthdayDate}"
                 tools:text="10/10/2010" />
         </LinearLayout>
 
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="@{item.deathDay}"
+                android:text="@{item.deathDayDate}"
                 tools:text="10/10/2010" />
         </LinearLayout>
 

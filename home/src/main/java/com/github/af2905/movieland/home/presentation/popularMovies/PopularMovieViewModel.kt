@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.popular
+package com.github.af2905.movieland.home.presentation.popularMovies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,12 +8,12 @@ import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvide
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.core.data.database.entity.MovieType
-import com.github.af2905.movieland.home.HomeRepository
 import com.github.af2905.movieland.home.domain.params.CachedMoviesParams
 import com.github.af2905.movieland.home.domain.params.PopularMoviesParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
 import com.github.af2905.movieland.home.domain.usecase.GetPopularMovies
 import com.github.af2905.movieland.home.presentation.HomeNavigator
+import com.github.af2905.movieland.home.repository.HomeRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.popular
+package com.github.af2905.movieland.home.presentation.topRatedMovies
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
@@ -7,7 +7,7 @@ import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.home.presentation.item.ListMovieVariantPlaceholderItem
 
-class PopularMovieContract {
+class TopRatedMovieContract {
 
     sealed class State(open val list: List<Model>) : UiState() {
 

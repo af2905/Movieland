@@ -1,8 +1,8 @@
 package com.github.af2905.movieland.home.di.module
 
-import com.github.af2905.movieland.home.HomeRepository
-import com.github.af2905.movieland.home.HomeRepositoryImpl
 import com.github.af2905.movieland.home.di.component.HomeScope
+import com.github.af2905.movieland.home.repository.HomeRepository
+import com.github.af2905.movieland.home.repository.HomeRepositoryImpl
 import dagger.Binds
 import dagger.Module
 
