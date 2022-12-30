@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.nowplaying
+package com.github.af2905.movieland.home.presentation.topRatedMovies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,24 +8,24 @@ import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvide
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.MovieItemV2
 import com.github.af2905.movieland.core.data.database.entity.MovieType
-import com.github.af2905.movieland.home.HomeRepository
 import com.github.af2905.movieland.home.domain.params.CachedMoviesParams
-import com.github.af2905.movieland.home.domain.params.NowPlayingMoviesParams
+import com.github.af2905.movieland.home.domain.params.TopRatedMoviesParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
-import com.github.af2905.movieland.home.domain.usecase.GetNowPlayingMovies
+import com.github.af2905.movieland.home.domain.usecase.GetTopRatedMovies
 import com.github.af2905.movieland.home.presentation.HomeNavigator
+import com.github.af2905.movieland.home.repository.HomeRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NowPlayingMovieViewModel @Inject constructor(
-    private val getNowPlayingMovies: GetNowPlayingMovies,
+class TopRatedMovieViewModel @Inject constructor(
+    private val getTopRatedMovies: GetTopRatedMovies,
     private val homeRepository: HomeRepository,
     private val getCachedMoviesByType: GetCachedMoviesByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    val container: Container<NowPlayingMovieContract.State, NowPlayingMovieContract.Effect> =
-        Container(viewModelScope, NowPlayingMovieContract.State.Init)
+    val container: Container<TopRatedMovieContract.State, TopRatedMovieContract.Effect> =
+        Container(viewModelScope, TopRatedMovieContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
@@ -46,40 +46,38 @@ class NowPlayingMovieViewModel @Inject constructor(
 
     private suspend fun loadData(forceUpdate: Boolean) {
         val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(type = MovieType.NOW_PLAYING)
+            CachedMoviesParams(type = MovieType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                NowPlayingMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
+                TopRatedMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
             }
         } else {
             container.reduce {
-                NowPlayingMovieContract.State.Loading()
+                TopRatedMovieContract.State.Loading()
             }
             val result =
-                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+                getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
 
             container.reduce {
-                NowPlayingMovieContract.State.Content(list = result.map { MovieItemV2(it) })
+                TopRatedMovieContract.State.Content(list = result.map { MovieItemV2(it) })
             }
         }
     }
 
     private suspend fun handleError(e: Exception) {
         val cachedMovies = getCachedMoviesByType(
-            CachedMoviesParams(type = MovieType.NOW_PLAYING)
+            CachedMoviesParams(type = MovieType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                NowPlayingMovieContract.State.Content(
-                    list = cachedMovies.map { MovieItemV2(it) }
-                )
+                TopRatedMovieContract.State.Content(list = cachedMovies.map { MovieItemV2(it) })
             }
         } else {
             container.reduce {
-                NowPlayingMovieContract.State.Error(
+                TopRatedMovieContract.State.Error(
                     list = listOf(
                         ErrorItem(
                             errorMessage = e.message.orEmpty(),
@@ -96,7 +94,7 @@ class NowPlayingMovieViewModel @Inject constructor(
 
     fun openDetail(itemId: Int) {
         container.intent {
-            container.postEffect(NowPlayingMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
+            container.postEffect(TopRatedMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardMovieDetail(itemId)
             }))
         }

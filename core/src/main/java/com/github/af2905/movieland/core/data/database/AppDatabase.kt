@@ -4,31 +4,41 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.github.af2905.movieland.core.data.database.converter.*
-import com.github.af2905.movieland.core.data.database.dao.MovieDao
-import com.github.af2905.movieland.core.data.database.dao.MovieDetailDao
-import com.github.af2905.movieland.core.data.database.dao.PersonDetailDao
-import com.github.af2905.movieland.core.data.database.entity.Movie
-import com.github.af2905.movieland.core.data.database.entity.MovieDetail
-import com.github.af2905.movieland.core.data.database.entity.PersonDetail
+import com.github.af2905.movieland.core.data.database.dao.*
+import com.github.af2905.movieland.core.data.database.entity.*
 
 @Database(
-    entities = [Movie::class, MovieDetail::class, PersonDetail::class],
+    entities = [
+        Movie::class,
+        TvShow::class,
+        TvShowDetail::class,
+        MovieDetail::class,
+        PersonDetail::class
+    ],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(
     value = [
         ListIntConverter::class,
+        ListStringConverter::class,
         GenreConverter::class,
         ProductionCompanyConverter::class,
         ProductionCountryConverter::class,
         PersonMovieCreditsCastConverter::class,
         MovieCreditsCastConverter::class,
-        MovieConverter::class]
+        MovieConverter::class,
+        //TvShowConverter::class,
+        CreatedByConverter::class,
+        NetworkConverter::class,
+        SeasonConverter::class
+    ]
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
     abstract fun movieDetailDao(): MovieDetailDao
     abstract fun personDetailDao(): PersonDetailDao
+    abstract fun tvShowDao(): TvShowDao
+    abstract fun tvShowDetailDao(): TvShowDetailDao
 }

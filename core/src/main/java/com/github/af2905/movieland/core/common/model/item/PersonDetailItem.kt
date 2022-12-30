@@ -3,6 +3,7 @@ package com.github.af2905.movieland.core.common.model.item
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model
+import com.github.af2905.movieland.util.extension.formatDate
 import com.github.af2905.movieland.util.extension.getFullPathToImage
 
 data class PersonDetailItem(
@@ -25,13 +26,16 @@ data class PersonDetailItem(
     val profileFullPathToImage: String?
         get() = profilePath.getFullPathToImage()
 
-    val popularityStringValue = popularity.toString()
+    val popularityStringValue = popularity?.toInt().toString()
 
     val birthdayTitle: Int = R.string.birthday_title
     val deathDayTitle: Int = R.string.deathday_title
     val placeOfBirthTitle = R.string.place_of_birth_title
     val biographyTitle = R.string.biography_title
     val popularityTitle = R.string.popularity_title
+
+    val birthdayDate = birthday?.formatDate()
+    val deathDayDate = deathDay?.formatDate()
 
     val birthdayVisible = birthday.isNullOrEmpty().not()
     val deathDayVisible = deathDay.isNullOrEmpty().not()
