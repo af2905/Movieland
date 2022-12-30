@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
-import com.github.af2905.movieland.core.common.model.item.PersonItemV2
+import com.github.af2905.movieland.core.common.model.item.PersonV2Item
 import com.github.af2905.movieland.core.common.model.item.SimpleTextItem
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.usecase.GetAllSavedPeople
@@ -28,7 +28,7 @@ class LikedPeopleViewModel @Inject constructor(
             val savedPeople = getAllSavedPeople.invoke(Params).getOrNull().orEmpty()
 
             val list = if (savedPeople.isNotEmpty()) {
-                savedPeople.map { PersonItemV2(it) }
+                savedPeople.map { PersonV2Item(it) }
             } else {
                 listOf(SimpleTextItem(res = R.string.liked_people_empty_list_text))
             }

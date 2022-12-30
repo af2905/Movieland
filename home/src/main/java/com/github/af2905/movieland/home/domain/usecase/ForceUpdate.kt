@@ -8,5 +8,4 @@ class ForceUpdate @Inject constructor(private val homeRepository: HomeRepository
     CoroutineUseCase<Unit, Unit>() {
 
     override suspend fun execute(params: Unit) = homeRepository.forceUpdate()
-
 }

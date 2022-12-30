@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.home.presentation.topRatedMovies.TopRatedMovieViewModel" />
+            type="com.github.af2905.movieland.home.presentation.movies.topRatedMovies.TopRatedMovieViewModel" />
 
     </data>
 

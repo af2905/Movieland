@@ -5,10 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.HomeMenuItem
-import com.github.af2905.movieland.home.domain.params.NowPlayingMoviesParams
-import com.github.af2905.movieland.home.domain.params.PopularMoviesParams
-import com.github.af2905.movieland.home.domain.params.TopRatedMoviesParams
-import com.github.af2905.movieland.home.domain.params.UpcomingMoviesParams
+import com.github.af2905.movieland.home.domain.params.*
 import com.github.af2905.movieland.home.domain.usecase.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -20,6 +17,8 @@ class HomeViewModel @Inject constructor(
     private val getPopularMovies: GetPopularMovies,
     private val getUpcomingMovies: GetUpcomingMovies,
     private val getTopRatedMovies: GetTopRatedMovies,
+    private val getPopularTvShows: GetPopularTvShows,
+    private val getTopRatedTvShows: GetTopRatedTvShows,
     private val forceUpdate: ForceUpdate,
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
@@ -47,10 +46,19 @@ class HomeViewModel @Inject constructor(
         val nowPlayingMoviesAsync = scope.async {
             getNowPlayingMovies(NowPlayingMoviesParams()).getOrDefault(emptyList())
         }
+        val popularTvShowsAsync = scope.async {
+            getPopularTvShows(TvShowsParams()).getOrDefault(emptyList())
+        }
+        val topRatedTvShowsAsync = scope.async {
+            getTopRatedTvShows(TvShowsParams()).getOrDefault(emptyList())
+        }
+
         popularMoviesAsync.await()
         upcomingMoviesAsync.await()
         topRatedMoviesAsync.await()
         nowPlayingMoviesAsync.await()
+        popularTvShowsAsync.await()
+        topRatedTvShowsAsync.await()
     }
 
     private fun initMenu() = container.intent {

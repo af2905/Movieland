@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.profile.presentation.optionLiked.movies
+package com.github.af2905.movieland.home.presentation.movies.topRatedMovies
 
 import android.content.Context
 import android.os.Bundle
@@ -11,15 +11,19 @@ import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.MovieV2Item
 import com.github.af2905.movieland.core.di.CoreComponentProvider
-import com.github.af2905.movieland.profile.R
-import com.github.af2905.movieland.profile.databinding.FragmentLikedMoviesBinding
-import com.github.af2905.movieland.profile.di.DaggerProfileComponent
+import com.github.af2905.movieland.home.R
+import com.github.af2905.movieland.home.databinding.FragmentTopRatedMovieBinding
+import com.github.af2905.movieland.home.di.component.DaggerTopRatedMovieComponent
+import com.github.af2905.movieland.home.di.component.HomeComponentProvider
+import com.github.af2905.movieland.home.presentation.HomeNavigator
 
-class LikedMoviesFragment :
-    BaseFragment<LikedMoviesNavigator, FragmentLikedMoviesBinding, LikedMoviesViewModel>() {
-    override fun getNavigator(navController: NavController) = LikedMoviesNavigator(navController)
-    override fun layoutRes(): Int = R.layout.fragment_liked_movies
-    override fun viewModelClass(): Class<LikedMoviesViewModel> = LikedMoviesViewModel::class.java
+class TopRatedMovieFragment :
+    BaseFragment<HomeNavigator, FragmentTopRatedMovieBinding, TopRatedMovieViewModel>() {
+
+    override fun getNavigator(navController: NavController) = HomeNavigator(navController)
+    override fun layoutRes(): Int = R.layout.fragment_top_rated_movie
+    override fun viewModelClass(): Class<TopRatedMovieViewModel> =
+        TopRatedMovieViewModel::class.java
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
@@ -30,8 +34,10 @@ class LikedMoviesFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val profileComponent = DaggerProfileComponent.factory().create(appComponent)
-        profileComponent.injectLikedMoviesFragment(this)
+        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val topRatedMovieComponent =
+            DaggerTopRatedMovieComponent.factory().create(appComponent, homeComponent)
+        topRatedMovieComponent.injectTopRatedMovieFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +56,8 @@ class LikedMoviesFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is LikedMoviesContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is TopRatedMovieContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is TopRatedMovieContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                 }
             }
         }
