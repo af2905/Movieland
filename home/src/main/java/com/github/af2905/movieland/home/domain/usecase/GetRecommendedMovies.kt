@@ -18,6 +18,7 @@ class GetRecommendedMovies @Inject constructor(
             language = params.language,
             page = params.page
         )
-        return mapper.map(response)
+        val result = mapper.map(response)
+        return mapper.map(result).filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
     }
 }

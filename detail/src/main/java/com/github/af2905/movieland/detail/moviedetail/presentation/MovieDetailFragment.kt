@@ -40,7 +40,7 @@ class MovieDetailFragment :
                 BaseAdapter(
                     ItemDelegate(
                         MovieItem.VIEW_TYPE,
-                        listener = MovieItem.Listener { item, _ ->
+                        listener = MovieItem.Listener { item ->
                             viewModel.navigateToMovieDetail(item.id)
                         }),
                     ItemDelegate(

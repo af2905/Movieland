@@ -4,7 +4,7 @@ import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.data.MediaType
-import com.github.af2905.movieland.core.data.database.entity.plain.KnownFor
+import com.github.af2905.movieland.core.data.database.entity.KnownFor
 import com.github.af2905.movieland.util.extension.fiveStarRating
 import com.github.af2905.movieland.util.extension.getFullPathToImage
 
