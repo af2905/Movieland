@@ -27,6 +27,7 @@ import com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.Now
 import com.github.af2905.movieland.home.presentation.movies.popularMovies.PopularMovieFragment
 import com.github.af2905.movieland.home.presentation.movies.topRatedMovies.TopRatedMovieFragment
 import com.github.af2905.movieland.home.presentation.movies.upcomingMovies.UpcomingMovieFragment
+import com.github.af2905.movieland.home.presentation.people.PopularPeopleFragment
 import com.github.af2905.movieland.home.presentation.tvShows.popularTvShows.PopularTvShowsFragment
 import com.github.af2905.movieland.home.presentation.tvShows.topRatedTvShows.TopRatedTvShowsFragment
 import com.google.android.material.appbar.AppBarLayout
@@ -99,7 +100,8 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                     PageItem(ResourceUiText(R.string.upcoming)) { UpcomingMovieFragment() },
                     PageItem(ResourceUiText(R.string.now_playing)) { NowPlayingMovieFragment() },
                     PageItem(ResourceUiText(R.string.popular)) { PopularTvShowsFragment() },
-                    PageItem(ResourceUiText(R.string.top_rated)) { TopRatedTvShowsFragment() }
+                    PageItem(ResourceUiText(R.string.top_rated)) { TopRatedTvShowsFragment() },
+                    PageItem(ResourceUiText(R.string.popular)) { PopularPeopleFragment() },
                 )
             )
         )

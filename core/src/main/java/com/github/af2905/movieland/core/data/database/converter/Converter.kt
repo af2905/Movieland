@@ -104,6 +104,21 @@ class MovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
 }
 
 @ProvidedTypeConverter
+class KnownForConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<KnownFor>? {
+        val listType = object : TypeToken<List<KnownFor>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<KnownFor>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<KnownFor>>() {}.type)
+    }
+}
+
+@ProvidedTypeConverter
 class MovieConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
     fun toList(value: String?): List<Movie>? {
