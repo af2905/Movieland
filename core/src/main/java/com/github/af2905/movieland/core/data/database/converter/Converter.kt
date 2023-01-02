@@ -26,6 +26,9 @@ open class ListConverter<I>(private val gson: Gson) {
 class ListIntConverter @Inject constructor(gson: Gson) : ListConverter<Int>(gson)
 
 @ProvidedTypeConverter
+class ListStringConverter @Inject constructor(gson: Gson) : ListConverter<String>(gson)
+
+@ProvidedTypeConverter
 class GenreConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
     fun toList(value: String?): List<Genre>? {
@@ -101,6 +104,21 @@ class MovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
 }
 
 @ProvidedTypeConverter
+class KnownForConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<KnownFor>? {
+        val listType = object : TypeToken<List<KnownFor>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<KnownFor>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<KnownFor>>() {}.type)
+    }
+}
+
+@ProvidedTypeConverter
 class MovieConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
     fun toList(value: String?): List<Movie>? {
@@ -115,3 +133,62 @@ class MovieConverter @Inject constructor(private val gson: Gson) {
     }
 }
 
+/*@ProvidedTypeConverter
+class TvShowConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<TvShow>? {
+        val listType = object : TypeToken<List<TvShow>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<TvShow>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<TvShow>>() {}.type)
+    }
+}*/
+
+@ProvidedTypeConverter
+class CreatedByConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<CreatedBy>? {
+        val listType = object : TypeToken<List<CreatedBy>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<CreatedBy>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<CreatedBy>>() {}.type)
+    }
+}
+
+@ProvidedTypeConverter
+class NetworkConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<Network>? {
+        val listType = object : TypeToken<List<Network>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<Network>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<Network>>() {}.type)
+    }
+}
+
+@ProvidedTypeConverter
+class SeasonConverter @Inject constructor(private val gson: Gson) {
+    @TypeConverter
+    fun toList(value: String?): List<Season>? {
+        val listType = object : TypeToken<List<Season>>() {}.type
+        return gson.fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: List<Season>?): String? {
+        return if (list == null) null
+        else gson.toJson(list, object : TypeToken<List<Season>>() {}.type)
+    }
+}

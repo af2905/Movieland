@@ -4,6 +4,7 @@ import com.github.af2905.movieland.core.BuildConfig
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.api.PeopleApi
 import com.github.af2905.movieland.core.data.api.SearchApi
+import com.github.af2905.movieland.core.data.api.TvShowsApi
 import com.github.af2905.movieland.core.data.interceptor.ApiKeyInterceptor
 import com.github.af2905.movieland.core.data.interceptor.ErrorInterceptor
 import com.github.af2905.movieland.core.data.interceptor.HttpLoggerInterceptor
@@ -37,6 +38,10 @@ class NetworkModule {
     @AppScope
     @Provides
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create(MoviesApi::class.java)
+
+    @AppScope
+    @Provides
+    fun provideTvApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)
 
     @AppScope
     @Provides

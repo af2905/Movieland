@@ -6,6 +6,7 @@ import com.github.af2905.movieland.core.di.scope.AppScope
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.core.repository.PeopleRepository
 import com.github.af2905.movieland.core.repository.SearchRepository
+import com.github.af2905.movieland.core.repository.TvShowsRepository
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -26,6 +27,7 @@ interface CoreComponent {
     fun getMoviesRepository(): MoviesRepository
     fun getPeopleRepository(): PeopleRepository
     fun getSearchRepository(): SearchRepository
+    fun getTvShowsRepository(): TvShowsRepository
     fun getAppWorkerFactory(): AppWorkerFactory
 
     @Component.Factory

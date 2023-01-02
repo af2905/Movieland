@@ -9,6 +9,7 @@ import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
 import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsCastDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
+import com.github.af2905.movieland.core.data.dto.movie.MovieDto
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.util.extension.isNullOrEmpty
@@ -29,7 +30,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getNowPlayingMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
     ): List<Movie> = loadMovies(
-        type = MovieType.NOW_PLAYING.name,
+        type = MovieType.NOW_PLAYING,
         language = language ?: resourceDatastore.getLanguage(),
         page = page,
         region = region,
@@ -39,7 +40,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getPopularMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
     ): List<Movie> = loadMovies(
-        MovieType.POPULAR.name,
+        type = MovieType.POPULAR,
         language = language ?: resourceDatastore.getLanguage(),
         page = page,
         region = region,
@@ -49,7 +50,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getTopRatedMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
     ): List<Movie> = loadMovies(
-        MovieType.TOP_RATED.name,
+        type = MovieType.TOP_RATED,
         language = language ?: resourceDatastore.getLanguage(),
         page = page,
         region = region,
@@ -59,7 +60,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getUpcomingMovies(
         language: String?, page: Int?, region: String?, forceUpdate: Boolean
     ): List<Movie> = loadMovies(
-        MovieType.UPCOMING.name,
+        type = MovieType.UPCOMING,
         language = language ?: resourceDatastore.getLanguage(),
         page = page,
         region = region,
@@ -68,25 +69,19 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getRecommendedMovies(
         movieId: Int, language: String?, page: Int?
-    ): List<Movie> {
-        val response = moviesApi.getRecommendedMovies(
-            movieId = movieId,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page
-        )
-        return movieMapper.map(response.movies, MovieType.RECOMMENDED.name, 0)
-    }
+    ): List<MovieDto> = moviesApi.getRecommendedMovies(
+        movieId = movieId,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page
+    ).movies
 
     override suspend fun getSimilarMovies(
         movieId: Int, language: String?, page: Int?
-    ): List<Movie> {
-        val response = moviesApi.getSimilarMovies(
-            movieId = movieId,
-            language = language ?: resourceDatastore.getLanguage(),
-            page = page
-        )
-        return movieMapper.map(response.movies, MovieType.SIMILAR.name, 0)
-    }
+    ): List<MovieDto> = moviesApi.getSimilarMovies(
+        movieId = movieId,
+        language = language ?: resourceDatastore.getLanguage(),
+        page = page
+    ).movies
 
     override suspend fun getMovieCredits(
         movieId: Int,
@@ -118,18 +113,20 @@ class MoviesRepositoryImpl @Inject constructor(
             language = language ?: resourceDatastore.getLanguage()
         )
 
+    override suspend fun getCachedMoviesByType(type: MovieType): List<Movie> =
+        movieDao.getByType(type.name).orEmpty()
+
     private suspend fun loadMovies(
-        type: String,
+        type: MovieType,
         language: String?,
         page: Int?,
         region: String? = null,
-        movieId: Int? = null,
         forceUpdate: Boolean
     ): List<Movie> {
 
-        val count = movieDao.getCountByType(type)
+        val count = movieDao.getCountByType(type.name)
 
-        val timeStamp = count?.let { movieDao.getTimeStampByType(type) }
+        val timeStamp = count?.let { movieDao.getTimeStampByType(type.name) }
 
         val currentTime = Calendar.getInstance().timeInMillis
 
@@ -146,18 +143,14 @@ class MoviesRepositoryImpl @Inject constructor(
 
         if (count.isNullOrEmpty() || needToUpdate == true || forceUpdate) {
             val dto = when (type) {
-                MovieType.NOW_PLAYING.name -> moviesApi.getNowPlayingMovies(language, page, region)
-                MovieType.POPULAR.name -> moviesApi.getPopularMovies(language, page, region)
-                MovieType.TOP_RATED.name -> moviesApi.getTopRatedMovies(language, page, region)
-                MovieType.UPCOMING.name -> moviesApi.getUpcomingMovies(language, page, region)
-                MovieType.RECOMMENDED.name -> {
-                    moviesApi.getRecommendedMovies(movieId!!, language, page)
-                }
-                else -> moviesApi.getSimilarMovies(movieId!!, language, page)
+                MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page, region)
+                MovieType.POPULAR -> moviesApi.getPopularMovies(language, page, region)
+                MovieType.TOP_RATED -> moviesApi.getTopRatedMovies(language, page, region)
+                MovieType.UPCOMING -> moviesApi.getUpcomingMovies(language, page, region)
             }
-            movieMapper.map(dto.movies, type, currentTime).map { movieDao.save(it) }
+            movieMapper.map(dto.movies, type.name, currentTime).forEach { movieDao.save(it) }
         }
-        return movieDao.getByType(type).orEmpty()
+        return movieDao.getByType(type.name).orEmpty()
     }
 
     private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =

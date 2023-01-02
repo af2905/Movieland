@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.home.di.component
 
 import com.github.af2905.movieland.core.di.CoreComponent
-import com.github.af2905.movieland.home.presentation.nowplaying.NowPlayingMovieFragment
+import com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.NowPlayingMovieFragment
 import dagger.Component
 import javax.inject.Scope
 

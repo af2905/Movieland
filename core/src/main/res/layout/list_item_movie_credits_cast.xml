@@ -34,7 +34,7 @@
             tools:src="@drawable/ic_placeholder" />
 
         <TextView
-            style="@style/TextView.Small"
+            style="@style/TextView.Small.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin_small"

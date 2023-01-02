@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home
+package com.github.af2905.movieland.home.repository
 
 import com.github.af2905.movieland.core.common.helper.launchCollect
 import kotlinx.coroutines.CoroutineScope
