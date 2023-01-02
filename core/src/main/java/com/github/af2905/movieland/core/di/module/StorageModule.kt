@@ -19,12 +19,15 @@ class StorageModule {
 
         @AppScope
         @Provides
+        fun providePersonDao(database: AppDatabase) = database.personDao()
+
+        @AppScope
+        @Provides
         fun providePersonDetailDao(database: AppDatabase) = database.personDetailDao()
 
         @AppScope
         @Provides
         fun provideMovieDetailDao(database: AppDatabase) = database.movieDetailDao()
-
 
         @AppScope
         @Provides
@@ -50,6 +53,7 @@ class StorageModule {
             productionCountryConverter: ProductionCountryConverter,
             personMovieCreditsCastConverter: PersonMovieCreditsCastConverter,
             movieCreditsCastConverter: MovieCreditsCastConverter,
+            knownForConverter: KnownForConverter,
             movieConverter: MovieConverter,
             //tvShowConverter: TvShowConverter,
             createdByConverter: CreatedByConverter,
@@ -63,6 +67,7 @@ class StorageModule {
             .addTypeConverter(productionCountryConverter)
             .addTypeConverter(personMovieCreditsCastConverter)
             .addTypeConverter(movieCreditsCastConverter)
+            .addTypeConverter(knownForConverter)
             .addTypeConverter(movieConverter)
             //.addTypeConverter(tvShowConverter)
             .addTypeConverter(createdByConverter)
