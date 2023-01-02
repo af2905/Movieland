@@ -2,14 +2,14 @@ package com.github.af2905.movieland.core.data.dto.people
 
 import com.google.gson.annotations.SerializedName
 
-data class PersonPopularDto(
+data class PeopleDto(
     @SerializedName("page") val page: Int?,
-    @SerializedName("results") val results: List<PersonPopularResultDto>,
+    @SerializedName("results") val results: List<PersonDto>,
     @SerializedName("total_pages") val totalPages: Int?,
     @SerializedName("total_results") val totalResults: Int?
 )
 
-data class PersonPopularResultDto(
+data class PersonDto(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean?,
     @SerializedName("gender") val gender: Int?,

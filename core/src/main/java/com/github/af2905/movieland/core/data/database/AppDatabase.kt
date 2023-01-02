@@ -13,7 +13,8 @@ import com.github.af2905.movieland.core.data.database.entity.*
         TvShow::class,
         TvShowDetail::class,
         MovieDetail::class,
-        PersonDetail::class
+        PersonDetail::class,
+        Person::class
     ],
     version = 1,
     exportSchema = false
@@ -27,6 +28,7 @@ import com.github.af2905.movieland.core.data.database.entity.*
         ProductionCountryConverter::class,
         PersonMovieCreditsCastConverter::class,
         MovieCreditsCastConverter::class,
+        KnownForConverter::class,
         MovieConverter::class,
         //TvShowConverter::class,
         CreatedByConverter::class,
@@ -38,6 +40,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
     abstract fun movieDetailDao(): MovieDetailDao
+    abstract fun personDao(): PersonDao
     abstract fun personDetailDao(): PersonDetailDao
     abstract fun tvShowDao(): TvShowDao
     abstract fun tvShowDetailDao(): TvShowDetailDao
