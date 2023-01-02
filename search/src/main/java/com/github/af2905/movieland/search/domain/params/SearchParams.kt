@@ -16,3 +16,5 @@ data class SearchMultiParams(
     val adult: String? = null,
     val region: String? = null
 )
+
+object SearchParams

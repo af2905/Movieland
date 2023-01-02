@@ -20,6 +20,6 @@ class GetSimilarMovies @Inject constructor(
             params.page
         )
         val result = mapper.map(response)
-        return result.filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
+        return mapper.map(result).filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
     }
 }

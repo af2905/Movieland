@@ -21,8 +21,7 @@ data class MovieItem(
     val title: String?,
     val video: Boolean?,
     val voteAverage: Double?,
-    val voteCount: Int?,
-    val responseMovieType: String? = null,
+    val voteCount: Int?
 ) : Model(VIEW_TYPE) {
 
     val posterFullPathToImage: String?
@@ -51,6 +50,6 @@ data class MovieItem(
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: MovieItem, position: Int)
+        fun onItemClicked(item: MovieItem)
     }
 }

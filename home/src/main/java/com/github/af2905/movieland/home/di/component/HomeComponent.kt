@@ -2,9 +2,9 @@ package com.github.af2905.movieland.home.di.component
 
 import androidx.fragment.app.Fragment
 import com.github.af2905.movieland.core.di.CoreComponent
-import com.github.af2905.movieland.home.HomeRepository
 import com.github.af2905.movieland.home.di.module.HomeFragmentModule
 import com.github.af2905.movieland.home.presentation.HomeFragment
+import com.github.af2905.movieland.home.repository.HomeRepository
 import dagger.Component
 import javax.inject.Scope
 
