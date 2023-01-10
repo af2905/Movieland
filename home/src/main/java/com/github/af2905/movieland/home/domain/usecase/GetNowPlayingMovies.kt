@@ -19,7 +19,8 @@ class GetNowPlayingMovies @Inject constructor(
             region = params.region,
             forceUpdate = params.forceUpdate
         )
-        return mapper.map(response).filterNot { it.overview.isNullOrEmpty() }
+        return mapper.map(response)
+            .filterNot { it.overview.isNullOrEmpty() }
             .filterNot { it.voteAverage == Double.empty }
             .sortedByDescending { it.releaseYear }
     }

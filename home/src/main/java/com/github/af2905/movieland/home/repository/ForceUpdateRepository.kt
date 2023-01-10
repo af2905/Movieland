@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor() : HomeRepository {
+class ForceUpdateRepositoryImpl @Inject constructor() : ForceUpdateRepository {
 
     private val _forceUpdate =
         MutableSharedFlow<Boolean>(0, 1, BufferOverflow.DROP_OLDEST)
@@ -26,7 +26,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
     }
 }
 
-interface HomeRepository {
+interface ForceUpdateRepository {
     fun forceUpdate()
     fun subscribeOnForceUpdate(scope: CoroutineScope, collector: FlowCollector<Boolean>)
 }

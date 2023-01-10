@@ -27,6 +27,9 @@ data class MovieItem(
     val posterFullPathToImage: String?
         get() = posterPath.getFullPathToImage() ?: backdropPath.getFullPathToImage()
 
+    val backdropFullPathToImage: String?
+        get() = backdropPath.getFullPathToImage()
+
     val voteAverageStar: Float?
         get() = voteAverage?.fiveStarRating()?.toFloat()
 

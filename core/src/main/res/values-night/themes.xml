@@ -43,7 +43,7 @@
     </style>
 
     <style name="DividerBackground">
-        <item name="android:backgroundTint">@color/dividerLight</item>
+        <item name="android:backgroundTint">@color/whiteAlpha</item>
     </style>
 
     <style name="TabsUnderlineBackground">
