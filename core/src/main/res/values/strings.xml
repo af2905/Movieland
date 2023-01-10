@@ -13,10 +13,7 @@
 
     //Headers
     <string name="header">Header</string>
-    <string name="popular">Popular</string>
-    <string name="now_playing">Now playing</string>
-    <string name="top_rated">Top rated</string>
-    <string name="upcoming">Upcoming</string>
+
     <string name="recommended">Recommended</string>
     <string name="similar">Similar</string>
     <string name="adult">Adult</string>
@@ -30,6 +27,10 @@
     <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
 
     <string name="any_screen_try_again">try again</string>
+    <string name="any_screen_view_all">view all</string>
+    <string name="any_screen_movies">Movies</string>
+    <string name="any_screen_tv_shows">TV shows</string>
+    <string name="any_screen_people">People</string>
 
     //Menu item
     <string name="menu_item_recently_viewed_title">Recently viewed</string>

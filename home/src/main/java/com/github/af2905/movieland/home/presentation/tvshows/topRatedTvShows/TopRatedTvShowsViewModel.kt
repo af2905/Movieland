@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.tvShows.popularTvShows
+package com.github.af2905.movieland.home.presentation.tvshows.topRatedTvShows
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,24 +10,24 @@ import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.home.domain.params.CachedTvShowsParams
 import com.github.af2905.movieland.home.domain.params.TvShowsParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedTvShowsByType
-import com.github.af2905.movieland.home.domain.usecase.GetPopularTvShows
-import com.github.af2905.movieland.home.repository.HomeRepository
+import com.github.af2905.movieland.home.domain.usecase.GetTopRatedTvShows
+import com.github.af2905.movieland.home.repository.ForceUpdateRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PopularTvShowsViewModel @Inject constructor(
-    private val getPopularTvShows: GetPopularTvShows,
-    private val homeRepository: HomeRepository,
+class TopRatedTvShowsViewModel @Inject constructor(
+    private val getTopRatedTvShows: GetTopRatedTvShows,
+    private val forceUpdateRepository: ForceUpdateRepository,
     private val getCachedTvShowsByType: GetCachedTvShowsByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    val container: Container<PopularTvShowsContract.State, PopularTvShowsContract.Effect> =
-        Container(viewModelScope, PopularTvShowsContract.State.Init)
+    val container: Container<TopRatedTvShowsContract.State, TopRatedTvShowsContract.Effect> =
+        Container(viewModelScope, TopRatedTvShowsContract.State.Init)
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+            forceUpdateRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
         savedLoadData()
     }
@@ -44,22 +44,22 @@ class PopularTvShowsViewModel @Inject constructor(
 
     private suspend fun loadData(forceUpdate: Boolean) {
         val cachedTvShows = getCachedTvShowsByType(
-            CachedTvShowsParams(type = TvShowType.POPULAR)
+            CachedTvShowsParams(type = TvShowType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedTvShows.isNotEmpty()) {
             container.reduce {
-                PopularTvShowsContract.State.Content(list = cachedTvShows.map { TvShowV2Item(it) })
+                TopRatedTvShowsContract.State.Content(list = cachedTvShows.map { TvShowV2Item(it) })
             }
         } else {
             container.reduce {
-                PopularTvShowsContract.State.Loading()
+                TopRatedTvShowsContract.State.Loading()
             }
             val result =
-                getPopularTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
+                getTopRatedTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
 
             container.reduce {
-                PopularTvShowsContract.State.Content(list = result.map { TvShowV2Item(it) })
+                TopRatedTvShowsContract.State.Content(list = result.map { TvShowV2Item(it) })
             }
         }
     }
@@ -68,16 +68,16 @@ class PopularTvShowsViewModel @Inject constructor(
 
     private suspend fun handleError(e: Exception) {
         val cachedMovies = getCachedTvShowsByType(
-            CachedTvShowsParams(type = TvShowType.POPULAR)
+            CachedTvShowsParams(type = TvShowType.TOP_RATED)
         ).getOrDefault(emptyList())
 
         if (cachedMovies.isNotEmpty()) {
             container.reduce {
-                PopularTvShowsContract.State.Content(list = cachedMovies.map { TvShowV2Item(it) })
+                TopRatedTvShowsContract.State.Content(list = cachedMovies.map { TvShowV2Item(it) })
             }
         } else {
             container.reduce {
-                PopularTvShowsContract.State.Error(
+                TopRatedTvShowsContract.State.Error(
                     list = listOf(
                         ErrorItem(
                             errorMessage = e.message.orEmpty(),

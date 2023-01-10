@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.di.component
+package com.github.af2905.movieland.home.di.component.movie
 
 import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.NowPlayingMovieFragment
@@ -6,7 +6,7 @@ import dagger.Component
 import javax.inject.Scope
 
 @NowPlayingMovieScope
-@Component(dependencies = [CoreComponent::class, HomeComponent::class])
+@Component(dependencies = [CoreComponent::class, MoviesComponent::class])
 interface NowPlayingMovieComponent {
 
     fun injectNowPlayingMovieFragment(fragment: NowPlayingMovieFragment)
@@ -15,7 +15,7 @@ interface NowPlayingMovieComponent {
     interface Factory {
         fun create(
             coreComponent: CoreComponent,
-            homeComponent: HomeComponent
+            moviesComponent: MoviesComponent
         ): NowPlayingMovieComponent
     }
 }

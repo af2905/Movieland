@@ -11,14 +11,14 @@ import com.github.af2905.movieland.home.domain.params.CachedPeopleParams
 import com.github.af2905.movieland.home.domain.params.PeopleParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedPopularPeople
 import com.github.af2905.movieland.home.domain.usecase.GetPopularPeople
-import com.github.af2905.movieland.home.repository.HomeRepository
+import com.github.af2905.movieland.home.repository.ForceUpdateRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PopularPeopleViewModel @Inject constructor(
     private val getPopularPeople: GetPopularPeople,
     private val getCachedPopularPeople: GetCachedPopularPeople,
-    private val homeRepository: HomeRepository,
+    private val forceUpdateRepository: ForceUpdateRepository,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
@@ -27,7 +27,7 @@ class PopularPeopleViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+            forceUpdateRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
         savedLoadData()
     }

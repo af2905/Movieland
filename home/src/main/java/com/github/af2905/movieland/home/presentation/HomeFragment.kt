@@ -12,24 +12,16 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.AppBarStateChangeListener
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
+import com.github.af2905.movieland.core.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.core.common.model.decorator.HorizontalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.HomeMenuItem
-import com.github.af2905.movieland.core.common.pager.FragmentPagerAdapter
-import com.github.af2905.movieland.core.common.pager.PageItem
-import com.github.af2905.movieland.core.common.pager.setupPager
-import com.github.af2905.movieland.core.common.text.ResourceUiText
+import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.home.di.component.DaggerHomeComponent
 import com.github.af2905.movieland.home.di.component.HomeComponent
-import com.github.af2905.movieland.home.presentation.movies.nowPlayingMovies.NowPlayingMovieFragment
-import com.github.af2905.movieland.home.presentation.movies.popularMovies.PopularMovieFragment
-import com.github.af2905.movieland.home.presentation.movies.topRatedMovies.TopRatedMovieFragment
-import com.github.af2905.movieland.home.presentation.movies.upcomingMovies.UpcomingMovieFragment
-import com.github.af2905.movieland.home.presentation.people.PopularPeopleFragment
-import com.github.af2905.movieland.home.presentation.tvShows.popularTvShows.PopularTvShowsFragment
-import com.github.af2905.movieland.home.presentation.tvShows.topRatedTvShows.TopRatedTvShowsFragment
+import com.github.af2905.movieland.home.presentation.movies.item.PagerMovieItem
+import com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem
 import com.google.android.material.appbar.AppBarLayout
 
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
@@ -40,13 +32,55 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
 
     lateinit var homeComponent: HomeComponent
 
-    private val baseAdapter: BaseAdapter =
-        BaseAdapter(
-            ItemDelegate(HomeMenuItem.VIEW_TYPE,
-                listener = HomeMenuItem.Listener { item ->
-
-                }
-            ))
+    private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
+        HorizontalListAdapter(
+            layout = HorizontalListItem.VIEW_TYPE,
+            adapter = {
+                BaseAdapter(
+                    ItemDelegate(
+                        viewType = MovieItem.VIEW_TYPE,
+                        listener = MovieItem.Listener { item ->
+                            viewModel.openMovieDetail(item.id)
+                        }
+                    ),
+                    ItemDelegate(
+                        viewType = PopularPersonItem.VIEW_TYPE,
+                        listener = PopularPersonItem.Listener { item ->
+                            viewModel.openPersonDetail(item.id)
+                        }
+                    )
+                )
+            },
+            decoration = { getHorizontalListItemDecoration(it) },
+        ),
+        PagerAdapter(
+            layout = PagerItem.VIEW_TYPE,
+            adapter = {
+                BaseAdapter(
+                    ItemDelegate(
+                        viewType = MovieItem.VIEW_TYPE,
+                        listener = MovieItem.Listener { item ->
+                            viewModel.openMovieDetail(item.id)
+                        }
+                    )
+                )
+            }
+        ),
+        ItemDelegate(
+            viewType = PagerMovieItem.VIEW_TYPE,
+            listener = PagerMovieItem.Listener { item ->
+                viewModel.openMovieDetail(item.id)
+            }
+        ),
+        ItemDelegate(
+            viewType = HeaderLinkItem.VIEW_TYPE,
+            listener = HeaderLinkItem.Listener { item -> viewModel.openMore(item.type) }
+        ),
+        ItemDelegate(
+            viewType = ErrorItem.VIEW_TYPE,
+            listener = ErrorItem.Listener { viewModel.refresh() }
+        )
+    )
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
@@ -80,31 +114,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             adapter = baseAdapter
             //val snapHelper = LinearSnapHelper()
             //snapHelper.attachToRecyclerView(this)
-            addItemDecoration(
-                HorizontalListItemDecorator(
-                    marginStart = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
-                    marginEnd = this.context.resources.getDimensionPixelSize(R.dimen.default_margin),
-                    spacing = this.context.resources.getDimensionPixelSize(R.dimen.default_margin)
-                )
-            )
         }
-
-        setupPager(
-            tabLayout = binding.pagerTabs,
-            viewPager = binding.pager,
-            adapter = FragmentPagerAdapter(
-                fragment = this,
-                items = listOf(
-                    PageItem(ResourceUiText(R.string.popular)) { PopularMovieFragment() },
-                    PageItem(ResourceUiText(R.string.top_rated)) { TopRatedMovieFragment() },
-                    PageItem(ResourceUiText(R.string.upcoming)) { UpcomingMovieFragment() },
-                    PageItem(ResourceUiText(R.string.now_playing)) { NowPlayingMovieFragment() },
-                    PageItem(ResourceUiText(R.string.popular)) { PopularTvShowsFragment() },
-                    PageItem(ResourceUiText(R.string.top_rated)) { TopRatedTvShowsFragment() },
-                    PageItem(ResourceUiText(R.string.popular)) { PopularPeopleFragment() },
-                )
-            )
-        )
 
         binding.innerAppBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
             binding.homeSwipeRefreshLayout.isEnabled = verticalOffset >= 0
@@ -116,22 +126,33 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
         }
 
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.setForceUpdate()
-            finishRefresh()
+            viewModel.refresh()
         }
 
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is HomeContract.Effect.OpenMenuItemDetail -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
                     is HomeContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is HomeContract.Effect.OpenMovies -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenPeople -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenTvShows -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.FinishRefresh -> finishRefresh()
                 }
             }
         }
-
     }
 
     private fun finishRefresh() {
         binding.homeSwipeRefreshLayout.isRefreshing = false
+    }
+
+    private fun getHorizontalListItemDecoration(context: Context): HorizontalListItemDecorator {
+        return HorizontalListItemDecorator(
+            marginStart = context.resources.getDimensionPixelSize(com.github.af2905.movieland.detail.R.dimen.default_margin),
+            marginEnd = context.resources.getDimensionPixelSize(com.github.af2905.movieland.detail.R.dimen.default_margin),
+            spacing = context.resources.getDimensionPixelSize(com.github.af2905.movieland.detail.R.dimen.default_margin)
+        )
     }
 }

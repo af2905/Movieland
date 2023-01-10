@@ -13,13 +13,13 @@ import com.github.af2905.movieland.home.domain.params.TopRatedMoviesParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
 import com.github.af2905.movieland.home.domain.usecase.GetTopRatedMovies
 import com.github.af2905.movieland.home.presentation.HomeNavigator
-import com.github.af2905.movieland.home.repository.HomeRepository
+import com.github.af2905.movieland.home.repository.ForceUpdateRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TopRatedMovieViewModel @Inject constructor(
     private val getTopRatedMovies: GetTopRatedMovies,
-    private val homeRepository: HomeRepository,
+    private val forceUpdateRepository: ForceUpdateRepository,
     private val getCachedMoviesByType: GetCachedMoviesByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
@@ -29,7 +29,7 @@ class TopRatedMovieViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+            forceUpdateRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
         savedLoadData()
     }
@@ -95,7 +95,7 @@ class TopRatedMovieViewModel @Inject constructor(
     fun openDetail(itemId: Int) {
         container.intent {
             container.postEffect(TopRatedMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardMovieDetail(itemId)
+                (navigator as HomeNavigator).forwardToMovieDetailScreen(itemId)
             }))
         }
     }
