@@ -13,13 +13,13 @@ import com.github.af2905.movieland.home.domain.params.NowPlayingMoviesParams
 import com.github.af2905.movieland.home.domain.usecase.GetCachedMoviesByType
 import com.github.af2905.movieland.home.domain.usecase.GetNowPlayingMovies
 import com.github.af2905.movieland.home.presentation.HomeNavigator
-import com.github.af2905.movieland.home.repository.HomeRepository
+import com.github.af2905.movieland.home.repository.ForceUpdateRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NowPlayingMovieViewModel @Inject constructor(
     private val getNowPlayingMovies: GetNowPlayingMovies,
-    private val homeRepository: HomeRepository,
+    private val forceUpdateRepository: ForceUpdateRepository,
     private val getCachedMoviesByType: GetCachedMoviesByType,
     coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
@@ -29,7 +29,7 @@ class NowPlayingMovieViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(coroutineDispatcherProvider.main()) {
-            homeRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
+            forceUpdateRepository.subscribeOnForceUpdate(this) { force -> if (force) refresh() }
         }
         savedLoadData()
     }
@@ -97,7 +97,7 @@ class NowPlayingMovieViewModel @Inject constructor(
     fun openDetail(itemId: Int) {
         container.intent {
             container.postEffect(NowPlayingMovieContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardMovieDetail(itemId)
+                (navigator as HomeNavigator).forwardToMovieDetailScreen(itemId)
             }))
         }
     }

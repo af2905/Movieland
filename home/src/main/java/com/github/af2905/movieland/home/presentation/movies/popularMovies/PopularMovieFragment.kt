@@ -13,8 +13,8 @@ import com.github.af2905.movieland.core.common.model.item.MovieV2Item
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentPopularMovieBinding
-import com.github.af2905.movieland.home.di.component.DaggerPopularMovieComponent
-import com.github.af2905.movieland.home.di.component.HomeComponentProvider
+import com.github.af2905.movieland.home.di.component.movie.DaggerPopularMovieComponent
+import com.github.af2905.movieland.home.di.component.movie.MoviesComponentProvider
 import com.github.af2905.movieland.home.presentation.HomeNavigator
 
 class PopularMovieFragment :
@@ -33,9 +33,9 @@ class PopularMovieFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val homeComponent = HomeComponentProvider.getHomeComponent(parentFragment)!!
+        val moviesComponent = MoviesComponentProvider.getMoviesComponent(parentFragment)!!
         val popularMovieComponent =
-            DaggerPopularMovieComponent.factory().create(appComponent, homeComponent)
+            DaggerPopularMovieComponent.factory().create(appComponent, moviesComponent)
         popularMovieComponent.injectPopularMovieFragment(this)
     }
 

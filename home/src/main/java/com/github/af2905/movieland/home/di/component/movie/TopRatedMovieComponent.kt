@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.di.component
+package com.github.af2905.movieland.home.di.component.movie
 
 import com.github.af2905.movieland.core.di.CoreComponent
 import com.github.af2905.movieland.home.presentation.movies.topRatedMovies.TopRatedMovieFragment
@@ -6,14 +6,17 @@ import dagger.Component
 import javax.inject.Scope
 
 @TopRatedMovieScope
-@Component(dependencies = [CoreComponent::class, HomeComponent::class])
+@Component(dependencies = [CoreComponent::class, MoviesComponent::class])
 interface TopRatedMovieComponent {
 
     fun injectTopRatedMovieFragment(fragment: TopRatedMovieFragment)
 
     @Component.Factory
     interface Factory {
-        fun create(coreComponent: CoreComponent, homeComponent: HomeComponent): TopRatedMovieComponent
+        fun create(
+            coreComponent: CoreComponent,
+            moviesComponent: MoviesComponent
+        ): TopRatedMovieComponent
     }
 }
 

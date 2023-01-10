@@ -1,3 +1,17 @@
 <resources>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="now_playing">Now playing</string>
+
+    <string name="popular_people">Popular people</string>
+
+    <string name="popular_movies">Popular movies</string>
+    <string name="now_playing_movies">Now playing movies</string>
+    <string name="top_rated_movies">Top rated movies</string>
+    <string name="upcoming_movies">Upcoming movies</string>
+
+    <string name="popular_tv_shows">Popular TV shows</string>
+    <string name="top_rated_tv_shows">Top rated TV shows</string>
 
 </resources>

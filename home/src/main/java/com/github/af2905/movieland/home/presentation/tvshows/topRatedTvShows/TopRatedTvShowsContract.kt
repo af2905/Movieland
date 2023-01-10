@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.tvShows.topRatedTvShows
+package com.github.af2905.movieland.home.presentation.tvshows.topRatedTvShows
 
 import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState

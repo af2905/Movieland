@@ -1,10 +1,6 @@
-package com.github.af2905.movieland.home.di.component
+package com.github.af2905.movieland.home.di.component.people
 
-import com.github.af2905.movieland.core.di.CoreComponent
-import com.github.af2905.movieland.home.presentation.people.PopularPeopleFragment
-import dagger.Component
-import javax.inject.Scope
-
+/*
 @PopularPeopleScope
 @Component(dependencies = [CoreComponent::class, HomeComponent::class])
 interface PopularPeopleComponent {
@@ -22,4 +18,4 @@ interface PopularPeopleComponent {
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class PopularPeopleScope
+annotation class PopularPeopleScope*/
