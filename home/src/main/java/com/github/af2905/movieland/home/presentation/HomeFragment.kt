@@ -19,7 +19,6 @@ import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.home.di.component.DaggerHomeComponent
-import com.github.af2905.movieland.home.di.component.HomeComponent
 import com.github.af2905.movieland.home.presentation.movies.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem
 import com.google.android.material.appbar.AppBarLayout
@@ -29,8 +28,6 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun getNavigator(navController: NavController) = HomeNavigator(navController)
     override fun layoutRes(): Int = R.layout.fragment_home
     override fun viewModelClass(): Class<HomeViewModel> = HomeViewModel::class.java
-
-    lateinit var homeComponent: HomeComponent
 
     private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
         HorizontalListAdapter(
@@ -58,18 +55,12 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
             adapter = {
                 BaseAdapter(
                     ItemDelegate(
-                        viewType = MovieItem.VIEW_TYPE,
-                        listener = MovieItem.Listener { item ->
+                        viewType = PagerMovieItem.VIEW_TYPE,
+                        listener = PagerMovieItem.Listener { item ->
                             viewModel.openMovieDetail(item.id)
                         }
                     )
                 )
-            }
-        ),
-        ItemDelegate(
-            viewType = PagerMovieItem.VIEW_TYPE,
-            listener = PagerMovieItem.Listener { item ->
-                viewModel.openMovieDetail(item.id)
             }
         ),
         ItemDelegate(
@@ -103,7 +94,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        homeComponent = DaggerHomeComponent.factory().create(appComponent)
+        val homeComponent = DaggerHomeComponent.factory().create(appComponent)
         homeComponent.injectHomeFragment(this)
     }
 
