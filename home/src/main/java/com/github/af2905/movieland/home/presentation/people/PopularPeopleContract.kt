@@ -4,7 +4,7 @@ import com.github.af2905.movieland.core.base.UiEffect
 import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.home.presentation.item.ListPlaceholderItem
+import com.github.af2905.movieland.core.common.model.item.ListPlaceholderItem
 
 class PopularPeopleContract {
     sealed class State(open val list: List<Model>) : UiState() {

@@ -8,10 +8,14 @@ import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.ItemIds
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.shared.*
 import com.github.af2905.movieland.detail.R
-import com.github.af2905.movieland.home.domain.params.*
-import com.github.af2905.movieland.home.domain.usecase.*
-import com.github.af2905.movieland.home.presentation.movies.item.PagerMovieItem
+import com.github.af2905.movieland.home.domain.params.PeopleParams
+import com.github.af2905.movieland.home.domain.params.TvShowsParams
+import com.github.af2905.movieland.home.domain.usecase.GetPopularPeople
+import com.github.af2905.movieland.home.domain.usecase.GetPopularTvShows
+import com.github.af2905.movieland.home.domain.usecase.GetTopRatedTvShows
+import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
