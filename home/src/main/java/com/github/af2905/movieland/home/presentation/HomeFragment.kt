@@ -19,7 +19,7 @@ import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.home.di.component.DaggerHomeComponent
-import com.github.af2905.movieland.home.presentation.movies.item.PagerMovieItem
+import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem
 import com.google.android.material.appbar.AppBarLayout
 
@@ -101,11 +101,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.apply {
-            adapter = baseAdapter
-            //val snapHelper = LinearSnapHelper()
-            //snapHelper.attachToRecyclerView(this)
-        }
+        binding.recyclerView.apply { adapter = baseAdapter }
 
         binding.innerAppBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
             binding.homeSwipeRefreshLayout.isEnabled = verticalOffset >= 0
