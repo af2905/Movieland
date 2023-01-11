@@ -17,8 +17,6 @@
 
     <string name="recommended">Рекомендуемые</string>
     <string name="similar">Похожие</string>
-    <string name="adult">Для взрослых</string>
-    <string name="top_3_rated">Топ 3 рейтинга</string>
 
     //Movie detail
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>

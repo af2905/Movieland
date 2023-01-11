@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="popular">Популярные</string>
-    <string name="top_rated">Топ просмотров</string>
-    <string name="upcoming">Ожидаемые</string>
-    <string name="now_playing">Сейчас смотрят</string>
-
-
     <string name="popular_people">Популярные люди</string>
-
     <string name="popular_movies">Популярные фильмы</string>
-    <string name="now_playing_movies">Сейчас смотрят фильмы</string>
-    <string name="top_rated_movies">Топ просмотров фильмы</string>
-    <string name="upcoming_movies">Ожидаемые фильмы</string>
-
     <string name="popular_tv_shows">Популярные сериалы</string>
-    <string name="top_rated_tv_shows">Топ просмотров сериалы</string>
+
 </resources>

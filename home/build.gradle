@@ -48,6 +48,7 @@ dependencies {
     implementation(project(':core'))
     implementation(project(':util'))
     implementation(project(':detail'))
+    implementation(project(':movies'))
 
     implementation libraries.kotlin
     implementation libraries.coreKtx

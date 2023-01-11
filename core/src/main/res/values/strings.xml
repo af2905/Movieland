@@ -16,8 +16,6 @@
 
     <string name="recommended">Recommended</string>
     <string name="similar">Similar</string>
-    <string name="adult">Adult</string>
-    <string name="top_3_rated">Top 3 rated</string>
 
     //Movie detail
     <string name="actors_and_crew_title">Actors and crew</string>
