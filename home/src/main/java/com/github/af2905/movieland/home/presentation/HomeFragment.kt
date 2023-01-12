@@ -20,7 +20,7 @@ import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
 import com.github.af2905.movieland.home.di.component.DaggerHomeComponent
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
-import com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem
+import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
 import com.google.android.material.appbar.AppBarLayout
 
 class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewModel>() {
