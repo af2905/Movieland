@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.people.item
+package com.github.af2905.movieland.home.presentation.item
 
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model

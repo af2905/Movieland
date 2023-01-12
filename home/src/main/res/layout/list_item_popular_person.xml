@@ -7,11 +7,11 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem" />
+            type="com.github.af2905.movieland.home.presentation.item.PopularPersonItem" />
 
         <variable
             name="listener"
-            type="com.github.af2905.movieland.home.presentation.people.item.PopularPersonItem.Listener" />
+            type="com.github.af2905.movieland.home.presentation.item.PopularPersonItem.Listener" />
 
     </data>
 
