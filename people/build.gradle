@@ -48,11 +48,6 @@ dependencies {
     implementation(project(':core'))
     implementation(project(':util'))
     implementation(project(':detail'))
-    implementation(project(':movies'))
-    implementation(project(':people'))
-
-    implementation libraries.kotlin
-    implementation libraries.coreKtx
 
     implementation libraries.daggerAndroidSupport
     implementation libraries.monitor

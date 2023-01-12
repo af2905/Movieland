@@ -40,4 +40,13 @@ class HomeNavigator @Inject constructor(
             navOptions = NavOptions.optionsAnimSlide()
         )
     }
+
+    fun forwardToPeopleScreen() {
+        val action = HomeFragmentDirections.openPeople()
+
+        navController.navigate(
+            directions = action,
+            navOptions = NavOptions.optionsAnimSlide()
+        )
+    }
 }

@@ -1,10 +1,9 @@
-package com.github.af2905.movieland.home.domain.usecase
+package com.github.af2905.movieland.core.shared
 
 import com.github.af2905.movieland.core.common.model.item.PersonItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.PersonMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
-import com.github.af2905.movieland.home.domain.params.PeopleParams
 import javax.inject.Inject
 
 class GetPopularPeople @Inject constructor(
@@ -22,3 +21,9 @@ class GetPopularPeople @Inject constructor(
         }
     }
 }
+
+data class PeopleParams(
+    val language: String? = null,
+    val page: Int? = null,
+    val forceUpdate: Boolean = false
+)
