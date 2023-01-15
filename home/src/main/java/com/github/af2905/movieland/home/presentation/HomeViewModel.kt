@@ -8,13 +8,19 @@ import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.ItemIds
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.core.shared.*
 import com.github.af2905.movieland.detail.R
+import com.github.af2905.movieland.home.domain.params.CachedTvShowsParams
 import com.github.af2905.movieland.home.domain.params.TvShowsParams
+import com.github.af2905.movieland.home.domain.usecase.GetCachedTvShowsByType
 import com.github.af2905.movieland.home.domain.usecase.GetPopularTvShows
 import com.github.af2905.movieland.home.domain.usecase.GetTopRatedTvShows
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +38,9 @@ class HomeViewModel @Inject constructor(
     private val getPopularTvShows: GetPopularTvShows,
     private val getTopRatedTvShows: GetTopRatedTvShows,
     private val getPopularPeople: GetPopularPeople,
+    private val getCachedPopularPeople: GetCachedPopularPeople,
+    private val getCachedMoviesByType: GetCachedMoviesByType,
+    private val getCachedTvShowsByType: GetCachedTvShowsByType
 ) : ViewModel() {
 
     val container: Container<HomeContract.State, HomeContract.Effect> =
@@ -41,39 +50,60 @@ class HomeViewModel @Inject constructor(
     private val emptySpaceNormal = EmptySpaceItem(R.dimen.default_margin)
 
     init {
-        loadData()
+        savedLoadData()
     }
 
-    private fun loadData(forceUpdate: Boolean = false) {
-        viewModelScope.launch {
+    private fun savedLoadData(forceUpdate: Boolean = false) {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable -> handleError(throwable) }
+        viewModelScope.launch(exceptionHandler) {
+            loadData(scope = this, forceUpdate = forceUpdate)
+        }
+    }
 
-            val popularMoviesAsync = this.async {
-                getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+    private suspend fun loadData(scope: CoroutineScope, forceUpdate: Boolean) {
+
+        val cachedPeople = getCachedPopularPeople(Unit).getOrDefault(emptyList())
+        val cachedPopularMovies =
+            getCachedMoviesByType(CachedMoviesParams(MovieType.POPULAR)).getOrDefault(emptyList())
+        val cachedNowPlayingMovies =
+            getCachedMoviesByType(CachedMoviesParams(MovieType.NOW_PLAYING)).getOrDefault(emptyList())
+        val cachedTvShows =
+            getCachedTvShowsByType(CachedTvShowsParams(TvShowType.TOP_RATED)).getOrDefault(emptyList())
+
+        val cachedList = getHomeScreenItemList(
+            nowPlayingMovies = cachedNowPlayingMovies,
+            popularMovies = cachedPopularMovies,
+            popularTvShows = cachedTvShows,
+            popularPeople = cachedPeople
+        )
+
+        if (cachedList.isEmpty()) {
+            container.intent {
+                container.reduce {
+                    HomeContract.State.Loading()
+                }
             }
-            val upcomingMoviesAsync = this.async {
-                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+
+            val popularMoviesAsync = scope.async {
+                getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
             }
-            val topRatedMoviesAsync = this.async {
-                getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+            val upcomingMoviesAsync = scope.async {
+                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
             }
-            val nowPlayingMoviesAsync = this.async {
-                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+            val topRatedMoviesAsync = scope.async {
+                getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
             }
-            val popularTvShowsAsync = this.async {
-                getPopularTvShows(TvShowsParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+            val nowPlayingMoviesAsync = scope.async {
+                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
             }
-            val topRatedTvShowsAsync = this.async {
-                getTopRatedTvShows(TvShowsParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+            val popularTvShowsAsync = scope.async {
+                getPopularTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
             }
-            val popularPeopleAsync = this.async {
-                getPopularPeople(PeopleParams(forceUpdate = forceUpdate))
-                    .getOrDefault(emptyList())
+            val topRatedTvShowsAsync = scope.async {
+                getTopRatedTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
+            }
+            val popularPeopleAsync = scope.async {
+                getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
             }
 
             val popularPeople = popularPeopleAsync.await()
@@ -85,47 +115,108 @@ class HomeViewModel @Inject constructor(
             topRatedMoviesAsync.await()
             popularTvShowsAsync.await()
 
-            val list = mutableListOf<Model>()
-
-            list.addAll(
-                createNowPlayingMoviesPagerBlock(
-                    list = nowPlayingMovies,
-                    headerName = HomeResources.string.now_playing
-                )
-            )
-
-            list.addAll(
-                createMoviesBlock(
-                    list = popularMovies,
-                    headerName = HomeResources.string.popular_movies
-                )
-            )
-
-            list.addAll(
-                createTvShowsBlock(
-                    list = topRatedTvShows,
-                    headerName = HomeResources.string.popular_tv_shows
-                )
-            )
-
-            list.addAll(
-                createPeopleBlock(
-                    people = popularPeople,
-                    headerName = HomeResources.string.popular_people
-                )
-            )
-
-            val currentState = if (list.isEmpty()) {
-                HomeContract.State.Empty()
-            } else {
-                HomeContract.State.Content(list = list)
-            }
-
             container.intent {
-                container.reduce { currentState }
+                container.reduce {
+                    HomeContract.State.Content(
+                        list = getHomeScreenItemList(
+                            nowPlayingMovies = nowPlayingMovies,
+                            popularMovies = popularMovies,
+                            popularTvShows = topRatedTvShows,
+                            popularPeople = popularPeople
+                        )
+                    )
+                }
                 container.postEffect(HomeContract.Effect.FinishRefresh)
             }
+        } else {
+            container.intent {
+                container.reduce {
+                    HomeContract.State.Content(list = cachedList)
+                }
+            }
+            container.postEffect(HomeContract.Effect.FinishRefresh)
         }
+    }
+
+    private fun handleError(e: Throwable) {
+        container.intent {
+            val cachedPeople = getCachedPopularPeople(Unit).getOrDefault(emptyList())
+            val cachedPopularMovies =
+                getCachedMoviesByType(CachedMoviesParams(MovieType.POPULAR)).getOrDefault(emptyList())
+            val cachedNowPlayingMovies =
+                getCachedMoviesByType(CachedMoviesParams(MovieType.NOW_PLAYING)).getOrDefault(
+                    emptyList()
+                )
+            val cachedTvShows =
+                getCachedTvShowsByType(CachedTvShowsParams(TvShowType.TOP_RATED)).getOrDefault(
+                    emptyList()
+                )
+
+            val cachedList = getHomeScreenItemList(
+                nowPlayingMovies = cachedNowPlayingMovies,
+                popularMovies = cachedPopularMovies,
+                popularTvShows = cachedTvShows,
+                popularPeople = cachedPeople
+            )
+
+            if (cachedList.isEmpty()) {
+                container.reduce {
+                    HomeContract.State.Error(
+                        list = listOf(
+                            ErrorItem(
+                                errorMessage = e.message.orEmpty(),
+                                errorButtonVisible = true
+                            )
+                        ),
+                        e = e
+                    )
+                }
+            } else {
+                container.reduce {
+                    HomeContract.State.Content(list = cachedList)
+                }
+            }
+            container.postEffect(HomeContract.Effect.FinishRefresh)
+        }
+    }
+
+    private fun getHomeScreenItemList(
+        nowPlayingMovies: List<MovieItem>,
+        popularMovies: List<MovieItem>,
+        popularTvShows: List<TvShowItem>,
+        popularPeople: List<PersonItem>
+    ): List<Model> {
+        val list = mutableListOf<Model>()
+
+        list.addAll(
+            createNowPlayingMoviesPagerBlock(
+                list = nowPlayingMovies,
+                headerName = HomeResources.string.now_playing
+            )
+        )
+
+        list.addAll(
+            createMoviesBlock(
+                list = popularMovies,
+                headerName = HomeResources.string.popular_movies
+            )
+        )
+
+        list.addAll(
+            createTvShowsBlock(
+                list = popularTvShows,
+                headerName = HomeResources.string.popular_tv_shows
+            )
+        )
+
+        list.addAll(
+            createPeopleBlock(
+                people = popularPeople,
+                headerName = HomeResources.string.popular_people
+            )
+        )
+
+        return list
     }
 
     private fun createMoviesBlock(
@@ -186,10 +277,12 @@ class HomeViewModel @Inject constructor(
     ): List<Model> {
         val result = if (list.isNotEmpty()) {
             val items = list.map { PagerMovieItem(it) }
+            val pagerItem = PagerItem(list = items)
+
             listOf(
                 HeaderItem(headerName),
                 emptySpaceNormal,
-                PagerItem(list = items),
+                pagerItem,
                 emptySpaceNormal
             )
         } else {
@@ -198,7 +291,9 @@ class HomeViewModel @Inject constructor(
         return result
     }
 
-    fun refresh() = loadData(forceUpdate = true)
+    fun refresh() {
+        savedLoadData(forceUpdate = true)
+    }
 
     fun openMovieDetail(itemId: Int) {
         container.intent {
