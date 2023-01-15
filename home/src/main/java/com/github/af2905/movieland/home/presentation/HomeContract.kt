@@ -5,7 +5,6 @@ import com.github.af2905.movieland.core.base.UiState
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.effect.ToastMessage
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.home.presentation.item.HomePlaceholderItem
 
 class HomeContract {
@@ -16,8 +15,8 @@ class HomeContract {
             override val list: List<Model> = listOf(HomePlaceholderItem())
         ) : State(list)
 
-        data class Empty(
-            override val list: List<Model> = listOf(ErrorItem())
+        data class Error(
+            override val list: List<Model>, val e: Throwable?
         ) : State(list)
 
         data class Content(override val list: List<Model>) : State(list)
