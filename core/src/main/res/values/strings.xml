@@ -47,7 +47,6 @@
     <string name="birthday_title">Birthday</string>
     <string name="deathday_title">Death day</string>
     <string name="place_of_birth_title">Place of birth</string>
-    <string name="popularity_title">Popularity</string>
     <string name="biography_title">Biography</string>
 
 </resources>

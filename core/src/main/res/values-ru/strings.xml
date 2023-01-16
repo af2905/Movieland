@@ -48,6 +48,5 @@
     <string name="birthday_title">День рождения</string>
     <string name="deathday_title">День смерти</string>
     <string name="place_of_birth_title">Место рождения</string>
-    <string name="popularity_title">Популярность</string>
     <string name="biography_title">Биография</string>
 </resources>
