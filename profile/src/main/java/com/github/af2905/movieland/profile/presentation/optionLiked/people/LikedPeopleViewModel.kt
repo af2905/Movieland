@@ -8,7 +8,6 @@ import com.github.af2905.movieland.core.common.model.item.PersonV2Item
 import com.github.af2905.movieland.core.common.model.item.SimpleTextItem
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.usecase.GetAllSavedPeople
-import com.github.af2905.movieland.profile.usecase.params.Params
 
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class LikedPeopleViewModel @Inject constructor(
 
     private fun loadData() {
         container.intent {
-            val savedPeople = getAllSavedPeople.invoke(Params).getOrNull().orEmpty()
+            val savedPeople = getAllSavedPeople.invoke(Unit).getOrNull().orEmpty()
 
             val list = if (savedPeople.isNotEmpty()) {
                 savedPeople.map { PersonV2Item(it) }
