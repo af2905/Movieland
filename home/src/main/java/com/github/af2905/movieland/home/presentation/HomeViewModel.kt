@@ -62,22 +62,6 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadData(scope: CoroutineScope, forceUpdate: Boolean) {
 
-        val cachedPeople = getCachedPopularPeople(Unit).getOrDefault(emptyList())
-        val cachedPopularMovies =
-            getCachedMoviesByType(CachedMoviesParams(MovieType.POPULAR)).getOrDefault(emptyList())
-        val cachedNowPlayingMovies =
-            getCachedMoviesByType(CachedMoviesParams(MovieType.NOW_PLAYING)).getOrDefault(emptyList())
-        val cachedTvShows =
-            getCachedTvShowsByType(CachedTvShowsParams(TvShowType.TOP_RATED)).getOrDefault(emptyList())
-
-        val cachedList = getHomeScreenItemList(
-            nowPlayingMovies = cachedNowPlayingMovies,
-            popularMovies = cachedPopularMovies,
-            popularTvShows = cachedTvShows,
-            popularPeople = cachedPeople
-        )
-
-        if (cachedList.isEmpty()) {
             container.intent {
                 container.reduce {
                     HomeContract.State.Loading()
@@ -128,14 +112,6 @@ class HomeViewModel @Inject constructor(
                 }
                 container.postEffect(HomeContract.Effect.FinishRefresh)
             }
-        } else {
-            container.intent {
-                container.reduce {
-                    HomeContract.State.Content(list = cachedList)
-                }
-            }
-            container.postEffect(HomeContract.Effect.FinishRefresh)
-        }
     }
 
     private fun handleError(e: Throwable) {
