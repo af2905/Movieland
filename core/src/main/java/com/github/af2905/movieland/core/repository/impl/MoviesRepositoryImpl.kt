@@ -141,7 +141,7 @@ class MoviesRepositoryImpl @Inject constructor(
             it > TimeUnit.HOURS.toMillis(DEFAULT_UPDATE_MOVIE_HOURS)
         }
 
-        if (count.isNullOrEmpty() || needToUpdate == true || (forceUpdate && count.isNullOrEmpty())) {
+        if (count.isNullOrEmpty() || needToUpdate == true || forceUpdate) {
             val dto = when (type) {
                 MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page, region)
                 MovieType.POPULAR -> moviesApi.getPopularMovies(language, page, region)

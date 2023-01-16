@@ -49,4 +49,13 @@ class HomeNavigator @Inject constructor(
             navOptions = NavOptions.optionsAnimSlide()
         )
     }
+
+    fun forwardToTvShowsScreen() {
+        val action = HomeFragmentDirections.openTvShows()
+
+        navController.navigate(
+            directions = action,
+            navOptions = NavOptions.optionsAnimSlide()
+        )
+    }
 }
