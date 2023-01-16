@@ -6,6 +6,10 @@
     app:startDestination="@id/homeFragment">
 
     <include app:graph="@navigation/movie_detail_graph" />
+    <include app:graph="@navigation/person_detail_graph" />
+    <include app:graph="@navigation/movies_graph" />
+    <include app:graph="@navigation/people_graph" />
+    <include app:graph="@navigation/tv_shows_graph" />
 
     <fragment
         android:id="@+id/homeFragment"
@@ -15,6 +19,18 @@
         <action
             android:id="@+id/openMovieDetail"
             app:destination="@id/movie_detail_graph" />
-
+        <action
+            android:id="@+id/openPersonDetail"
+            app:destination="@id/person_detail_graph" />
+        <action
+            android:id="@+id/openMovies"
+            app:destination="@id/movies_graph" />
+        <action
+            android:id="@+id/openPeople"
+            app:destination="@id/people_graph" />
+        <action
+            android:id="@+id/openTvShows"
+            app:destination="@id/tv_shows_graph" />
     </fragment>
+
 </navigation>
