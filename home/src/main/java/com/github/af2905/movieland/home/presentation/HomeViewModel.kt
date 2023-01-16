@@ -12,11 +12,6 @@ import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.core.shared.*
 import com.github.af2905.movieland.detail.R
-import com.github.af2905.movieland.home.domain.params.CachedTvShowsParams
-import com.github.af2905.movieland.home.domain.params.TvShowsParams
-import com.github.af2905.movieland.home.domain.usecase.GetCachedTvShowsByType
-import com.github.af2905.movieland.home.domain.usecase.GetPopularTvShows
-import com.github.af2905.movieland.home.domain.usecase.GetTopRatedTvShows
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -62,56 +57,56 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadData(scope: CoroutineScope, forceUpdate: Boolean) {
 
-            container.intent {
-                container.reduce {
-                    HomeContract.State.Loading()
-                }
+        container.intent {
+            container.reduce {
+                HomeContract.State.Loading()
             }
+        }
 
-            val popularMoviesAsync = scope.async {
-                getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val upcomingMoviesAsync = scope.async {
-                getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val topRatedMoviesAsync = scope.async {
-                getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val nowPlayingMoviesAsync = scope.async {
-                getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val popularTvShowsAsync = scope.async {
-                getPopularTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val topRatedTvShowsAsync = scope.async {
-                getTopRatedTvShows(TvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
-            val popularPeopleAsync = scope.async {
-                getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
-            }
+        val popularMoviesAsync = scope.async {
+            getPopularMovies(PopularMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val upcomingMoviesAsync = scope.async {
+            getUpcomingMovies(UpcomingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val topRatedMoviesAsync = scope.async {
+            getTopRatedMovies(TopRatedMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val nowPlayingMoviesAsync = scope.async {
+            getNowPlayingMovies(NowPlayingMoviesParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val popularTvShowsAsync = scope.async {
+            getPopularTvShows(PopularTvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val topRatedTvShowsAsync = scope.async {
+            getTopRatedTvShows(TopRatedTvShowsParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
+        val popularPeopleAsync = scope.async {
+            getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
+        }
 
-            val popularPeople = popularPeopleAsync.await()
-            val popularMovies = popularMoviesAsync.await()
-            val nowPlayingMovies = nowPlayingMoviesAsync.await()
-            val topRatedTvShows = topRatedTvShowsAsync.await()
+        val popularPeople = popularPeopleAsync.await()
+        val popularMovies = popularMoviesAsync.await()
+        val nowPlayingMovies = nowPlayingMoviesAsync.await()
+        val topRatedTvShows = topRatedTvShowsAsync.await()
 
-            upcomingMoviesAsync.await()
-            topRatedMoviesAsync.await()
-            popularTvShowsAsync.await()
+        upcomingMoviesAsync.await()
+        topRatedMoviesAsync.await()
+        popularTvShowsAsync.await()
 
-            container.intent {
-                container.reduce {
-                    HomeContract.State.Content(
-                        list = getHomeScreenItemList(
-                            nowPlayingMovies = nowPlayingMovies,
-                            popularMovies = popularMovies,
-                            popularTvShows = topRatedTvShows,
-                            popularPeople = popularPeople
-                        )
+        container.intent {
+            container.reduce {
+                HomeContract.State.Content(
+                    list = getHomeScreenItemList(
+                        nowPlayingMovies = nowPlayingMovies,
+                        popularMovies = popularMovies,
+                        popularTvShows = topRatedTvShows,
+                        popularPeople = popularPeople
                     )
-                }
-                container.postEffect(HomeContract.Effect.FinishRefresh)
+                )
             }
+            container.postEffect(HomeContract.Effect.FinishRefresh)
+        }
     }
 
     private fun handleError(e: Throwable) {
@@ -297,7 +292,9 @@ class HomeViewModel @Inject constructor(
             HeaderLinkItemType.PEOPLE -> HomeContract.Effect.OpenPeople(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardToPeopleScreen()
             })
-            HeaderLinkItemType.TV_SHOWS -> HomeContract.Effect.OpenTvShows(Navigate { })
+            HeaderLinkItemType.TV_SHOWS -> HomeContract.Effect.OpenTvShows(Navigate { navigator ->
+                (navigator as HomeNavigator).forwardToTvShowsScreen()
+            })
         }
 
         container.intent {
