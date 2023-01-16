@@ -50,6 +50,7 @@ dependencies {
     implementation(project(':detail'))
     implementation(project(':movies'))
     implementation(project(':people'))
+    implementation(project(':tvshows'))
 
     implementation libraries.kotlin
     implementation libraries.coreKtx
