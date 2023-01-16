@@ -1,15 +1,19 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs'
 }
 
+apply from: '../dependencies.gradle'
+
 android {
-    namespace 'com.github.af2905.movieland.tvshows'
-    compileSdk 32
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
-        minSdk 23
-        targetSdk 32
+        minSdk androidMinSdkVersion
+        targetSdk androidTargetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -26,16 +30,35 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8
+
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+    }
+
+    buildFeatures {
+        dataBinding true
     }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation(project(':core'))
+    implementation(project(':util'))
+    implementation(project(':detail'))
+
+    implementation libraries.daggerAndroidSupport
+    implementation libraries.monitor
+    implementation libraries.junitExt
+    androidTestImplementation libraries.junit
+    kapt libraries.daggerCompiler
+    kapt libraries.daggerAndroidProcessor
+    implementation libraries.navigationFragment
+    implementation libraries.glide
+    implementation libraries.material
+    implementation libraries.swipeRefreshLayout
+    implementation libraries.recyclerView
+    implementation libraries.shimmer
 }
