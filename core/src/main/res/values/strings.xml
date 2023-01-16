@@ -13,14 +13,9 @@
 
     //Headers
     <string name="header">Header</string>
-    <string name="popular">Popular</string>
-    <string name="now_playing">Now playing</string>
-    <string name="top_rated">Top rated</string>
-    <string name="upcoming">Upcoming</string>
+
     <string name="recommended">Recommended</string>
     <string name="similar">Similar</string>
-    <string name="adult">Adult</string>
-    <string name="top_3_rated">Top 3 rated</string>
 
     //Movie detail
     <string name="actors_and_crew_title">Actors and crew</string>
@@ -30,6 +25,10 @@
     <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
 
     <string name="any_screen_try_again">try again</string>
+    <string name="any_screen_view_all">view all</string>
+    <string name="any_screen_movies">Movies</string>
+    <string name="any_screen_tv_shows">TV shows</string>
+    <string name="any_screen_people">People</string>
 
     //Menu item
     <string name="menu_item_recently_viewed_title">Recently viewed</string>
@@ -48,7 +47,6 @@
     <string name="birthday_title">Birthday</string>
     <string name="deathday_title">Death day</string>
     <string name="place_of_birth_title">Place of birth</string>
-    <string name="popularity_title">Popularity</string>
     <string name="biography_title">Biography</string>
 
 </resources>

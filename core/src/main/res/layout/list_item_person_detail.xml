@@ -114,40 +114,13 @@
                 tools:text="New York" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/popularity"
-            android:layout_width="@dimen/size_0"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/profile_image"
-            app:layout_constraintTop_toBottomOf="@id/place_of_birth"
-            app:visible="@{item.popularityVisible}">
-
-            <TextView
-                style="@style/TextView.Bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.popularityTitle}"
-                tools:text="Popularity" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.popularityStringValue}"
-                tools:text="23.12" />
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="profile_image, popularity, place_of_birth"
+            app:constraint_referenced_ids="profile_image, place_of_birth"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

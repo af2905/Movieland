@@ -8,7 +8,6 @@ import com.github.af2905.movieland.core.common.model.item.MovieV2Item
 import com.github.af2905.movieland.core.common.model.item.SimpleTextItem
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.usecase.GetAllSavedMovies
-import com.github.af2905.movieland.profile.usecase.params.Params
 import javax.inject.Inject
 
 class LikedMoviesViewModel @Inject constructor(
@@ -24,7 +23,7 @@ class LikedMoviesViewModel @Inject constructor(
 
     private fun loadData() {
         container.intent {
-            val savedMovies = getAllSavedMovies.invoke(Params).getOrNull().orEmpty()
+            val savedMovies = getAllSavedMovies.invoke(Unit).getOrNull().orEmpty()
 
             val list = if (savedMovies.isNotEmpty()) {
                 savedMovies.map { MovieV2Item(it) }
