@@ -6,9 +6,9 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.profile.presentation.ProfileViewModel" />
+            type="com.github.af2905.movieland.profile.presentation.profile.ProfileViewModel" />
 
-        <import type="com.github.af2905.movieland.profile.presentation.ProfileContract" />
+        <import type="com.github.af2905.movieland.profile.presentation.profile.ProfileContract" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

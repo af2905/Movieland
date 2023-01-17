@@ -7,18 +7,18 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailsItem" />
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem" />
 
         <variable
             name="listener"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailsItem.Listener" />
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem.Listener" />
 
     </data>
 
     <merge>
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/movieDetailsAppBar"
+            android:id="@+id/movieDetailAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -49,7 +49,7 @@
                         android:layout_height="@dimen/backdrop_height"
                         android:layout_gravity="center"
                         android:scaleType="center"
-                        app:src="@{item.backdropPath}" />
+                        app:src="@{item.backdropFullPathToImage}" />
 
                 </FrameLayout>
 
@@ -58,8 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:elevation="@dimen/default_elevation"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/Theme.Movieland.PopupOverlay" />
+                    app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -70,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             android:onClick="@{() -> listener.onLikedClick(item)}"
-            app:layout_anchor="@id/movieDetailsAppBar"
+            app:layout_anchor="@id/movieDetailAppBar"
             app:layout_anchorGravity="bottom|end"
             app:liked="@{item.liked}"
             tools:ignore="ContentDescription"

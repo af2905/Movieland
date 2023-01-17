@@ -55,7 +55,7 @@ dependencies {
     implementation libraries.daggerAndroidSupport
     implementation libraries.monitor
     implementation libraries.junitExt
-    implementation labraries.navigationUi
+    implementation libraries.navigationUi
     androidTestImplementation libraries.junit
     kapt libraries.daggerCompiler
     kapt libraries.daggerAndroidProcessor

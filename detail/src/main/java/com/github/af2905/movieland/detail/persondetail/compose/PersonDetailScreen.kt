@@ -29,7 +29,9 @@ fun PersonDetailScreen(personDetailViewModel: PersonDetailViewModel) {
             scaffoldState = scaffoldState,
             state = state
         )
-        is PersonDetailContract.State.Error -> {}
+        is PersonDetailContract.State.Error -> {
+            Unit
+        }
     }
 }
 
@@ -52,7 +54,7 @@ fun PersonDetailContent(
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = { Text(state.personItem.name) },
+                title = { state.personDetailItem.name?.let { Text(it) } },
                 navigationIcon = {
                     IconButton(onClick = { scope.launch { } }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = null)
@@ -74,7 +76,7 @@ fun PersonDetailContent(
                 backgroundColor = Color.Transparent
             )
         },
-        backLayerContent = { PersonItem(state.personItem) },
-        frontLayerContent = { PersonBiography(state.personItem) }
+        backLayerContent = { PersonItem(state.personDetailItem) },
+        frontLayerContent = { PersonBiography(state.personDetailItem) }
     )
 }

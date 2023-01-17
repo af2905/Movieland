@@ -14,4 +14,7 @@ object ItemIds {
     const val ERROR_ITEM_ID = -109
     const val EMPTY_RESULT_ITEM_ID = -110
     const val SHIMMER_ITEM_ID = -111
+    const val BACK_BUTTON_ITEM_ID = -112
+    const val HEADER_LINK_ITEM_ID = -113
+    const val PAGER_ITEM_ID = -114
 }

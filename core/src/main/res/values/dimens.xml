@@ -26,16 +26,17 @@
 
     <dimen name="movie_card_width">130dp</dimen>
     <dimen name="movie_card_height">200dp</dimen>
-    <dimen name="movie_card_variant_width">130dp</dimen>
-    <dimen name="movie_card_variant_height">170dp</dimen>
+    <dimen name="card_variant_width">130dp</dimen>
+    <dimen name="card_variant_height">170dp</dimen>
 
     <dimen name="default_button_size_small">20dp</dimen>
 
     <dimen name="default_icon_size">90dp</dimen>
-    <dimen name="default_icon_size_medium">120dp</dimen>
+    <dimen name="default_icon_size_medium">130dp</dimen>
 
     <dimen name="backdrop_height">280dp</dimen>
     <dimen name="collapsing_toolbar_min_height">100dp</dimen>
+    <dimen name="collapsing_toolbar_default_height">120dp</dimen>
     <dimen name="searchbar_height">56dp</dimen>
 
     <dimen name="default_simple_dialog_size">280dp</dimen>
