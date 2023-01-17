@@ -23,8 +23,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/poster"
-            android:layout_width="@dimen/movie_card_variant_width"
-            android:layout_height="@dimen/movie_card_variant_height"
+            android:layout_width="@dimen/card_variant_width"
+            android:layout_height="@dimen/card_variant_height"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"

@@ -32,15 +32,8 @@ data class SearchMultiItem(
     val knownFor: List<KnownFor>?
 ) : Model(VIEW_TYPE) {
 
-    val posterFullPathToImage: String?
-        get() = posterPath.getFullPathToImage() ?: backdropPath.getFullPathToImage()
-
-    val profileFullPathToImage: String?
-        get() = profilePath.getFullPathToImage()
-
     val voteAverageStar: Float?
         get() = voteAverage?.fiveStarRating()?.toFloat()
-
 
     val personType = mediaType == MediaType.PERSON.type
     val movieType = mediaType == MediaType.MOVIE.type || mediaType == MediaType.TV.type
@@ -63,6 +56,19 @@ data class SearchMultiItem(
     }
 
     val mediaTypeVisible = mediaTypeName != MEDIA_TYPE_NAME_EMPTY
+
+    val fullPathToImage: String?
+        get() = when (mediaType) {
+            MediaType.MOVIE.type, MediaType.TV.type -> posterFullPathToImage
+            MediaType.PERSON.type -> profileFullPathToImage
+            else -> null
+        }
+
+    private val posterFullPathToImage: String?
+        get() = posterPath.getFullPathToImage() ?: backdropPath.getFullPathToImage()
+
+    private val profileFullPathToImage: String?
+        get() = profilePath.getFullPathToImage()
 
     companion object {
         val VIEW_TYPE = R.layout.list_item_search_multi

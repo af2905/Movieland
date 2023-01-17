@@ -33,8 +33,8 @@
                 android:orientation="horizontal">
 
                 <View
-                    android:layout_width="@dimen/movie_card_variant_width"
-                    android:layout_height="@dimen/movie_card_variant_height"
+                    android:layout_width="@dimen/card_variant_width"
+                    android:layout_height="@dimen/card_variant_height"
                     style="@style/ShimmerStyleRoundCorners" />
 
                 <LinearLayout
