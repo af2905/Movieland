@@ -23,8 +23,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/poster"
-            android:layout_width="@dimen/movie_card_variant_width"
-            android:layout_height="@dimen/movie_card_variant_height"
+            android:layout_width="@dimen/card_variant_width"
+            android:layout_height="@dimen/card_variant_height"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
@@ -32,29 +32,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize5Percent"
-            app:src="@{item.posterFullPathToImage}"
+            app:src="@{item.fullPathToImage}"
             app:strokeColor="@color/darkGrey"
             app:strokeWidth="@dimen/default_stroke_tiny"
-            app:visible="@{item.movieType}"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_placeholder" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profile"
-            android:layout_width="@dimen/movie_card_variant_width"
-            android:layout_height="@dimen/movie_card_variant_width"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:padding="@dimen/default_stroke"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:src="@{item.profileFullPathToImage}"
-            app:strokeColor="@color/darkGrey"
-            app:strokeWidth="@dimen/default_stroke_tiny"
-            app:visible="@{item.personType}"
             tools:src="@drawable/ic_placeholder" />
 
         <com.google.android.material.chip.Chip
@@ -86,7 +67,8 @@
             app:layout_constraintRight_toLeftOf="@id/content_type"
             app:layout_constraintTop_toTopOf="@id/content_type"
             app:visible="@{item.movieType}"
-            tools:text="Мир дикого запада" />
+            tools:text="Bla bla bla bla bla bla"
+            tools:textColor="@color/black" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/title_barrier"
@@ -148,7 +130,8 @@
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toBottomOf="@id/rating"
             app:visible="@{item.movieType}"
-            tools:text="Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада" />
+            tools:text="Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+            tools:textColor="@color/black" />
 
         <TextView
             android:id="@+id/name"
@@ -163,7 +146,7 @@
             android:paddingEnd="@dimen/default_margin"
             android:text="@{item.name}"
             app:layout_constraintBottom_toBottomOf="@id/name_barrier"
-            app:layout_constraintLeft_toRightOf="@id/profile"
+            app:layout_constraintLeft_toRightOf="@id/poster"
             app:layout_constraintRight_toLeftOf="@id/content_type"
             app:layout_constraintTop_toTopOf="@id/content_type"
             app:visible="@{item.personType}"
@@ -188,7 +171,7 @@
             android:ellipsize="end"
             android:maxLines="@integer/max_lines_4"
             android:text="@{item.personKnowFor}"
-            app:layout_constraintLeft_toRightOf="@id/profile"
+            app:layout_constraintLeft_toRightOf="@id/poster"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name_barrier"
             app:visible="@{item.personType}"

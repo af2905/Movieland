@@ -23,8 +23,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/poster"
-            android:layout_width="@dimen/movie_card_variant_width"
-            android:layout_height="@dimen/movie_card_variant_height"
+            android:layout_width="@dimen/card_variant_width"
+            android:layout_height="@dimen/card_variant_height"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:scaleType="centerCrop"
@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Мир дикого запада" />
+            tools:text="Title" />
 
         <LinearLayout
             android:id="@+id/rating"
@@ -106,7 +106,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/poster"
             app:layout_constraintTop_toBottomOf="@id/rating"
-            tools:text="Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада Мир дикого запада" />
+            tools:text="Description bla bla bla bla bla bla bla bla bla" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
