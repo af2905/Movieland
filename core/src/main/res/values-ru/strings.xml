@@ -14,14 +14,9 @@
 
     //Headers
     <string name="header">Заголовок</string>
-    <string name="popular">Популярные</string>
-    <string name="now_playing">Сейчас смотрят</string>
-    <string name="top_rated">Топ просмотров</string>
-    <string name="upcoming">Ожидаемые</string>
+
     <string name="recommended">Рекомендуемые</string>
     <string name="similar">Похожие</string>
-    <string name="adult">Для взрослых</string>
-    <string name="top_3_rated">Топ 3 рейтинга</string>
 
     //Movie detail
     <string name="actors_and_crew_title">Актеры и съемочная команда</string>
@@ -31,6 +26,10 @@
     <string name="message_no_internet_connection">Что-то пошло не так, проверьте интернет соединение и попробуйте снова</string>
 
     <string name="any_screen_try_again">Попробовать снова</string>
+    <string name="any_screen_view_all">Показать все</string>
+    <string name="any_screen_movies">Фильмы</string>
+    <string name="any_screen_tv_shows">Сериалы</string>
+    <string name="any_screen_people">Люди</string>
 
     //Menu item
     <string name="menu_item_recently_viewed_title">История просмотров</string>
@@ -41,4 +40,13 @@
     <string name="profile_title">Профиль</string>
 
     <string name="search_empty_result">Ничего не найдено, попробуйте изменить запрос</string>
+
+    <string name="media_type_tv">сериал</string>
+    <string name="media_type_movie">фильм</string>
+    <string name="media_type_person">персона</string>
+
+    <string name="birthday_title">День рождения</string>
+    <string name="deathday_title">День смерти</string>
+    <string name="place_of_birth_title">Место рождения</string>
+    <string name="biography_title">Биография</string>
 </resources>

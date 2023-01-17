@@ -2,66 +2,101 @@ package com.github.af2905.movieland.core.common.model.item
 
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.util.extension.empty
+import com.github.af2905.movieland.util.extension.getFullPathToImage
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
 import java.util.*
 
-private const val COMMA_SEPARATOR = ", "
+private const val SEPARATOR = ", "
 
-data class MovieDetailsItem(
-    val id: Int = Int.empty,
-    val adult: Boolean = false,
-    val budget: Int = Int.empty,
-    val genres: List<Genre>? = null,
-    val homepage: String = String.empty,
-    val imdbId: String = String.empty,
-    val originalLanguage: String = String.empty,
-    val originalTitle: String = String.empty,
-    val overview: String = String.empty,
-    val popularity: Double = Double.empty,
-    val productionCompanies: List<ProductionCompany>? = null,
-    val productionCountries: List<ProductionCountry>? = null,
-    val releaseDate: String = String.empty,
-    val revenue: Int = Int.empty,
-    val runtime: Int = Int.empty,
-    val status: String = String.empty,
-    val tagline: String = String.empty,
-    val title: String = String.empty,
-    val video: Boolean = false,
-    val voteAverage: Double = Double.empty,
-    val voteAverageStar: Float = Float.empty,
-    val voteCount: Int = Int.empty,
-    val backdropPath: String? = null,
-    val posterPath: String? = null,
-    val liked: Boolean = false
+data class MovieDetailItem(
+    val id: Int,
+    val adult: Boolean?,
+    val budget: Int?,
+    val genres: List<Genre>?,
+    val homepage: String?,
+    val imdbId: String?,
+    val originalLanguage: String?,
+    val originalTitle: String?,
+    val overview: String?,
+    val popularity: Double?,
+    val productionCompanies: List<ProductionCompany>?,
+    val productionCountries: List<ProductionCountry>?,
+    val releaseDate: String?,
+    val revenue: Long?,
+    val runtime: Int?,
+    val status: String?,
+    val tagline: String?,
+    val title: String?,
+    val video: Boolean?,
+    val voteCount: Int?,
+    val backdropPath: String?,
+    val posterPath: String?,
+    val voteAverage: Double? = Double.empty,
+    val voteAverageStar: Float? = Float.empty,
+    val liked: Boolean = false,
+    val movieCreditsCasts: List<MovieCreditsCastItem> = emptyList(),
+    val similarMovies: List<MovieItem> = emptyList()
 ) {
-    private val releaseYear = releaseDate.getYearFromReleaseDate()
+    val backdropFullPathToImage: String?
+        get() = backdropPath.getFullPathToImage() ?: posterPath.getFullPathToImage()
 
-    private val genreList = genres
-        ?.map { genre -> genre.name }
-        ?.map { it.lowercase(Locale.getDefault()) }
+    private val releaseYear = releaseDate?.getYearFromReleaseDate()
+
+    private val genreList = genres?.map { genre -> genre.name }
+        ?.map { it?.lowercase(Locale.getDefault()) }
         .orEmpty()
-        .joinToString(COMMA_SEPARATOR)
+        .joinToString(SEPARATOR)
 
     val titleNextInfo = StringBuilder().apply {
-        append(releaseYear)
-        append(COMMA_SEPARATOR)
-        append(genreList)
+        releaseYear?.let {
+            append(releaseYear)
+        }
+        if (!releaseYear.isNullOrEmpty() && genreList.isNotEmpty()) {
+            append(SEPARATOR)
+        }
+        if (genreList.isEmpty().not()) {
+            append(genreList)
+        }
     }
 
-    val taglineVisible : Boolean = tagline.isNotEmpty()
+    val taglineVisible: Boolean = tagline.isNullOrEmpty().not()
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onLikedClick(item: MovieDetailsItem)
+        fun onLikedClick(item: MovieDetailItem)
+    }
+
+    companion object {
+        fun MovieDetailItem.mapToMovieItem() = with(this) {
+            MovieItem(
+                id = id,
+                adult = adult,
+                backdropPath = backdropPath,
+                genreIds = genres?.map { it.id },
+                originalLanguage = originalLanguage,
+                originalTitle = originalTitle,
+                overview = overview,
+                popularity = popularity,
+                posterPath = posterPath,
+                releaseDate = releaseDate,
+                title = title,
+                video = video,
+                voteAverage = voteAverage,
+                voteCount = voteCount
+            )
+        }
     }
 }
 
-data class Genre(val id: Int, val name: String)
+data class Genre(val id: Int, val name: String?)
 
-data class ProductionCountry(val iso: String, val name: String)
+data class ProductionCountry(val iso: String?, val name: String?)
 
 data class ProductionCompany(
     val id: Int,
-    val name: String,
-    val originCountry: String,
-    var logoPath: String?
-)
+    val name: String?,
+    val originCountry: String?,
+    val logoPath: String?
+) {
+    val logoFullPathToImage: String?
+        get() = logoPath.getFullPathToImage()
+}
