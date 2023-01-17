@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="option_liked_fragment_name">Вам понравилось</string>
+
+    <string name="liked_movies_fragment_name">Фильмы</string>
+    <string name="liked_people_fragment_name">Люди</string>
+
+    <string name="liked_movies_empty_list_text">Вы еще ничего не добавили.
+        Нажимайте кнопку нравится у фильмов и они появятся здесь</string>
+
+    <string name="liked_people_empty_list_text">Вы еще ничего не добавили.
+        Нажимайте кнопку нравится у людей и они появятся здесь</string>
+
+</resources>

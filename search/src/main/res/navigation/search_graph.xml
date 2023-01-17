@@ -5,7 +5,8 @@
     android:id="@+id/search_graph"
     app:startDestination="@id/searchFragment">
 
-    <include app:graph="@navigation/detail_graph" />
+    <include app:graph="@navigation/movie_detail_graph" />
+    <include app:graph="@navigation/person_detail_graph" />
 
     <fragment
         android:id="@+id/searchFragment"
@@ -14,7 +15,10 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/openMovieDetail"
-            app:destination="@id/detail_graph" />
+            app:destination="@id/movie_detail_graph" />
+        <action
+            android:id="@+id/openPersonDetail"
+            app:destination="@id/person_detail_graph" />
     </fragment>
 
 </navigation>

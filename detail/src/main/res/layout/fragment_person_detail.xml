@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailViewModel" />
+
+        <import type="com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailContract" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/personDetailsCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/personDetailToolbar"
+            layout="@layout/toolbar_person_detail"
+            app:item="@{viewModel.container.state.toContent().personDetailItem}"
+            app:listener="@{viewModel.personDetailClickListener}"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Content}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            linearLayoutManager="@{false}"
+            recyclerSetData="@{viewModel.container.state.toContent().list}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Content}" />
+
+        <include
+            android:id="@+id/shimmer"
+            layout="@layout/fragment_person_detail_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Loading}"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Error}">
+
+            <include
+                android:id="@+id/back"
+                layout="@layout/list_item_back_button"
+                app:item="@{viewModel.container.state.toError().backButtonItem}"
+                app:listener="@{viewModel.backButtonItemClickListener}"
+                app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Error}" />
+
+            <include
+                android:id="@+id/error"
+                layout="@layout/list_item_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:item="@{viewModel.container.state.toError().errorItem}"
+                app:listener="@{viewModel.errorItemClickListener}"
+                app:visible="@{viewModel.container.state instanceof PersonDetailContract.State.Error}" />
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

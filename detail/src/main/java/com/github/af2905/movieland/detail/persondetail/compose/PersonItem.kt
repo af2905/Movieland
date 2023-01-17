@@ -16,20 +16,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.af2905.movieland.core.data.PersonItem
-import com.github.af2905.movieland.util.extension.getFullPathToImage
+import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 import com.github.af2905.movieland.core.R as CoreR
 
 @Composable
-fun PersonItem(item: PersonItem) {
+fun PersonItem(item: PersonDetailItem) {
 
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
         GlideImage(
-            imageModel = item.profilePath,
+            imageModel = item.profileFullPathToImage,
             contentScale = ContentScale.FillWidth,
             error = painterResource(id = CoreR.drawable.ic_account),
             modifier = Modifier
@@ -46,13 +45,15 @@ fun PersonItem(item: PersonItem) {
         )
 
         Spacer(Modifier.height(16.dp))
-        Text(
-            text = item.name,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.h6,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
+        item.name?.let {
+            Text(
+                text = it,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.h6,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         item.birthday?.let { birthday ->
             Spacer(Modifier.height(16.dp))
@@ -65,19 +66,19 @@ fun PersonItem(item: PersonItem) {
         }
 
         Spacer(Modifier.height(16.dp))
-        Text(text = item.knownForDepartment, style = MaterialTheme.typography.body2)
+        item.knownForDepartment?.let { Text(text = it, style = MaterialTheme.typography.body2) }
     }
 }
 
 @Composable
-fun PersonBiography(item: PersonItem) {
+fun PersonBiography(item: PersonDetailItem) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         Spacer(Modifier.height(16.dp))
-        Text(text = item.biography)
+        Text(text = item.biography.orEmpty())
     }
 }
 
@@ -85,24 +86,12 @@ fun PersonBiography(item: PersonItem) {
 @Composable
 fun PreviewPersonItem() {
 
-    val person = PersonItem(
+    val person = PersonDetailItem(
         id = 287,
         name = "Brad Pitt",
         birthday = "1963-12-18",
         knownForDepartment = "Acting",
-        deathday = null,
-        alsoKnownAs = listOf(
-            "برد پیت",
-            "Бред Питт",
-            "Бред Пітт",
-            "Buratto Pitto",
-            "Брэд Питт",
-            "畢·彼特",
-            "ブラッド・ピット",
-            "브래드 피트",
-            "براد بيت",
-            "แบรด พิตต์"
-        ),
+        deathDay = null,
         gender = 2,
         popularity = 10.647,
         biography = "William Bradley \"Brad\" Pitt (born December 18, 1963) " +
@@ -138,9 +127,8 @@ fun PreviewPersonItem() {
         placeOfBirth = "Shawnee, Oklahoma, USA",
         adult = false,
         homepage = null,
-    ).apply {
-        profilePath = "/kU3B75TyRiCgE270EyZnHjfivoq.jpg".getFullPathToImage()
-    }
+        profilePath = "/kU3B75TyRiCgE270EyZnHjfivoq.jpg"
+    )
 
     PersonItem(item = person)
 }

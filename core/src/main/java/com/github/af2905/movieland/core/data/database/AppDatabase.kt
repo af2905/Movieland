@@ -3,29 +3,45 @@ package com.github.af2905.movieland.core.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.github.af2905.movieland.core.data.database.converter.GenreConverter
-import com.github.af2905.movieland.core.data.database.converter.ListIntConverter
-import com.github.af2905.movieland.core.data.database.converter.ProductionCompanyConverter
-import com.github.af2905.movieland.core.data.database.converter.ProductionCountryConverter
-import com.github.af2905.movieland.core.data.database.dao.MovieDao
-import com.github.af2905.movieland.core.data.database.dao.MovieDetailsDao
-import com.github.af2905.movieland.core.data.database.entity.MovieDetailsEntity
-import com.github.af2905.movieland.core.data.database.entity.MovieEntity
+import com.github.af2905.movieland.core.data.database.converter.*
+import com.github.af2905.movieland.core.data.database.dao.*
+import com.github.af2905.movieland.core.data.database.entity.*
 
 @Database(
-    entities = [MovieEntity::class, MovieDetailsEntity::class],
+    entities = [
+        Movie::class,
+        TvShow::class,
+        TvShowDetail::class,
+        MovieDetail::class,
+        PersonDetail::class,
+        Person::class
+    ],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(
     value = [
         ListIntConverter::class,
+        ListStringConverter::class,
         GenreConverter::class,
         ProductionCompanyConverter::class,
-        ProductionCountryConverter::class]
+        ProductionCountryConverter::class,
+        PersonMovieCreditsCastConverter::class,
+        MovieCreditsCastConverter::class,
+        KnownForConverter::class,
+        MovieConverter::class,
+        //TvShowConverter::class,
+        CreatedByConverter::class,
+        NetworkConverter::class,
+        SeasonConverter::class
+    ]
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
-    abstract fun movieDetailsDao(): MovieDetailsDao
+    abstract fun movieDetailDao(): MovieDetailDao
+    abstract fun personDao(): PersonDao
+    abstract fun personDetailDao(): PersonDetailDao
+    abstract fun tvShowDao(): TvShowDao
+    abstract fun tvShowDetailDao(): TvShowDetailDao
 }

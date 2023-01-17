@@ -11,12 +11,8 @@ import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.moviedetail.MovieDetailNavigator
-import com.github.af2905.movieland.detail.usecase.GetMovieActors
-import com.github.af2905.movieland.detail.usecase.GetMovieDetail
-import com.github.af2905.movieland.detail.usecase.GetSimilarMovies
-import com.github.af2905.movieland.detail.usecase.params.MovieActorsParams
-import com.github.af2905.movieland.detail.usecase.params.MovieDetailsParams
-import com.github.af2905.movieland.detail.usecase.params.SimilarMoviesParams
+import com.github.af2905.movieland.detail.usecase.movie.*
+import com.github.af2905.movieland.detail.usecase.params.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import java.util.Collections.emptyList
@@ -28,8 +24,11 @@ private const val SIMILAR_MOVIE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000
 class MovieDetailViewModel @Inject constructor(
     private val movieId: Int,
     private val getMovieDetail: GetMovieDetail,
-    private val getMovieActors: GetMovieActors,
-    private val getSimilarMovies: GetSimilarMovies
+    private val getMovieCredits: GetMovieCredits,
+    private val getSimilarMovies: GetSimilarMovies,
+    private val saveToLikedMovie: SaveToLikedMovie,
+    private val removeFromLikedMovie: RemoveFromLikedMovie,
+    private val getLikedMovieById: GetLikedMovieById
 ) : ViewModel() {
 
     val container: Container<MovieDetailContract.State, MovieDetailContract.Effect> =
@@ -39,31 +38,49 @@ class MovieDetailViewModel @Inject constructor(
     private val emptySpaceBig = EmptySpaceItem(R.dimen.default_margin_big)
     private val emptySpaceHuge = EmptySpaceItem(R.dimen.default_margin_huge)
 
-    val movieDetailsItemClickListener = MovieDetailsItem.Listener {
+    val movieDetailItemClickListener = MovieDetailItem.Listener {
         container.intent {
-            container.reduce {
-                if (this is MovieDetailContract.State.Content) {
-                    MovieDetailContract.State.Content(
-                        movieDetailsItem = this.movieDetailsItem.copy(
-                            liked = !this.movieDetailsItem.liked
-                        ),
-                        list = this.list
-                    )
-                } else {
-                    this
-                }
+            if (this.state.value is MovieDetailContract.State.Content) {
+                val contentState = this.state.value as MovieDetailContract.State.Content
+                handleLikeMovie(contentState)
             }
         }
     }
 
     val errorItemClickListener = ErrorItem.Listener { loadData() }
+    val backButtonItemClickListener = BackButtonItem.Listener { openPreviousScreen() }
 
     init {
         loadData()
     }
 
+    private suspend fun handleLikeMovie(state: MovieDetailContract.State.Content) {
+        if (state.movieDetailItem.liked) {
+            removeFromLikedMovie(UnlikedMovieDetailParams(state.movieDetailItem))
+        } else {
+            saveToLikedMovie(
+                LikedMovieDetailParams(
+                    state.movieDetailItem.copy(
+                        liked = !state.movieDetailItem.liked
+                    )
+                )
+            )
+        }
+        container.reduce {
+            state.copy(
+                movieDetailItem = state.movieDetailItem.copy(
+                    liked = !state.movieDetailItem.liked
+                ),
+                list = state.list
+            )
+        }
+    }
+
     private fun loadData() {
         container.intent {
+            if (container.state.value !is MovieDetailContract.State.Loading) {
+                container.reduce { MovieDetailContract.State.Loading }
+            }
             try {
                 handleMovieDetail(viewModelScope)
             } catch (e: Exception) {
@@ -72,73 +89,77 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    fun openSimilarMovieDetail(itemId: Int) = navigateToMovieDetail(itemId)
-    fun openPersonDetail(itemId: Int) = navigateToPersonDetail(itemId)
-
     private suspend fun handleMovieDetail(scope: CoroutineScope) {
         val list = mutableListOf<Model>()
+        var movieDetailItem = getLikedMovieById(GetLikedMovieDetailByIdParams(movieId)).getOrThrow()
 
-        val movieDetailsAsync = scope.async {
-            MovieDetailDescItem(getMovieDetail(MovieDetailsParams(movieId)).getOrThrow())
-        }
-
-        val movieActorsAsync = scope.async {
-            getMovieActors(MovieActorsParams(movieId)).let { result ->
-                val actors = result
-                    .getOrDefault(emptyList())
-                    .filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
-                if (actors.isNotEmpty()) {
-                    listOf(
-                        emptySpaceNormal,
-                        HeaderItem(R.string.actors_and_crew_title),
-                        emptySpaceNormal,
-                        HorizontalListItem(actors, id = ACTORS_LIST_ID),
-                        emptySpaceBig
-                    )
-                } else {
-                    emptyList()
-                }
+        if (movieDetailItem == null) {
+            val movieDetailAsync = scope.async {
+                getMovieDetail(MovieDetailParams(movieId)).getOrThrow()
             }
-        }
-
-        val similarMoviesAsync = scope.async {
-            getSimilarMovies.invoke(SimilarMoviesParams(movieId)).let { result ->
-                val similar = result
-                    .getOrDefault(emptyList())
-                    .filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
-                if (similar.isNotEmpty()) {
-                    listOf(
-                        HeaderItem(R.string.similar),
-                        emptySpaceNormal,
-                        HorizontalListItem(similar, id = SIMILAR_MOVIE_LIST_ID),
-                        emptySpaceHuge
-                    )
-                } else {
-                    emptyList()
-                }
+            val movieCreditsCastAsync = scope.async {
+                getMovieCredits(MovieCreditsParams(movieId)).getOrDefault(emptyList())
             }
-        }
+            val similarMoviesAsync = scope.async {
+                getSimilarMovies.invoke(SimilarMoviesParams(movieId)).getOrDefault(emptyList())
+            }
 
-        val movieDetails = movieDetailsAsync.await()
-        val movieActors = movieActorsAsync.await()
-        val similarMovies = similarMoviesAsync.await()
+            movieDetailItem = movieDetailAsync.await()
+            val movieCreditsCasts = movieCreditsCastAsync.await()
+            val similarMovies = similarMoviesAsync.await()
 
-        list.add(movieDetails)
-        list.addAll(movieActors)
-        list.addAll(similarMovies)
+            val movieCreditCastsBlock = createActorsAndCrewBlock(movieCreditsCasts)
+            val similarMoviesBlock = createSimilarMoviesBlock(similarMovies)
 
-        container.reduce {
-            MovieDetailContract.State.Content(
-                movieDetailsItem = movieDetails.movieDetailsItem,
-                list = list
+            list.add(MovieDetailDescItem(movieDetailItem))
+            list.addAll(movieCreditCastsBlock)
+            list.addAll(similarMoviesBlock)
+            movieDetailItem = movieDetailItem.copy(
+                movieCreditsCasts = movieCreditsCasts,
+                similarMovies = similarMovies
             )
+        } else {
+            list.add(MovieDetailDescItem(movieDetailItem))
+            list.addAll(createActorsAndCrewBlock(movieDetailItem.movieCreditsCasts))
+            list.addAll(createSimilarMoviesBlock(movieDetailItem.similarMovies))
+        }
+        container.reduce {
+            MovieDetailContract.State.Content(movieDetailItem = movieDetailItem, list = list)
+        }
+    }
+
+    private fun createActorsAndCrewBlock(movieCreditsCasts: List<MovieCreditsCastItem>): List<Model> {
+        return if (movieCreditsCasts.isNotEmpty()) {
+            listOf(
+                emptySpaceNormal,
+                HeaderItem(R.string.actors_and_crew_title),
+                emptySpaceNormal,
+                HorizontalListItem(movieCreditsCasts, id = ACTORS_LIST_ID),
+                emptySpaceBig
+            )
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun createSimilarMoviesBlock(similarMovies: List<MovieItem>): List<Model> {
+        return if (similarMovies.isNotEmpty()) {
+            listOf(
+                HeaderItem(R.string.similar),
+                emptySpaceNormal,
+                HorizontalListItem(list = similarMovies, id = SIMILAR_MOVIE_LIST_ID),
+                emptySpaceHuge
+            )
+        } else {
+            emptyList()
         }
     }
 
     private suspend fun handleError(e: Exception) {
         container.reduce {
             MovieDetailContract.State.Error(
-                ErrorItem(errorMessage = e.message.orEmpty()), e
+                errorItem = ErrorItem(errorMessage = e.message.orEmpty()),
+                e = e
             )
         }
         container.intent {
@@ -150,7 +171,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToMovieDetail(itemId: Int) {
+    fun navigateToMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
@@ -158,10 +179,18 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToPersonDetail(itemId: Int) {
+    fun navigateToPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
                 (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)
+            }))
+        }
+    }
+
+    private fun openPreviousScreen() {
+        container.intent {
+            container.postEffect(MovieDetailContract.Effect.OpenPreviousScreen(Navigate { navigator ->
+                navigator.back()
             }))
         }
     }

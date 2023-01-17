@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.repository
 
-import com.github.af2905.movieland.core.data.dto.movie.MoviesResponseDto
+import com.github.af2905.movieland.core.data.dto.movie.MovieDto
+import com.github.af2905.movieland.core.data.dto.search.SearchMultiResultDto
 
 interface SearchRepository {
 
@@ -11,5 +12,13 @@ interface SearchRepository {
         adult: String? = null,
         region: String? = null,
         year: Int? = null
-    ): MoviesResponseDto
+    ): List<MovieDto>
+
+    suspend fun getSearchMulti(
+        query: String,
+        language: String? = null,
+        page: Int? = null,
+        adult: String? = null,
+        region: String? = null,
+    ): List<SearchMultiResultDto>
 }
