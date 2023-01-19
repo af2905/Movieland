@@ -37,5 +37,6 @@ class PersonDetailContract {
         data class ShowFailMessage(val message: ToastMessage) : Effect()
         data class OpenMovieDetail(val navigator: Navigate) : Effect()
         data class OpenPreviousScreen(val navigator: Navigate) : Effect()
+        object LikeClicked : Effect()
     }
 }
