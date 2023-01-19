@@ -18,12 +18,12 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
-            android:elevation="@dimen/size_0"
-            app:elevation="@dimen/size_0"
             style="@style/ColorSurfaceBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:elevation="@dimen/size_0"
+            android:fitsSystemWindows="true"
+            app:elevation="@dimen/size_0">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbarLayout"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?colorSurface"
-                app:expandedTitleGravity="top"
+                app:expandedTitleGravity="bottom"
                 app:expandedTitleMarginStart="@dimen/default_margin"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_collapseMode="pin"
@@ -44,14 +44,13 @@
                 <Space
                     android:id="@+id/expanded_size"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/collapsing_toolbar_min_height" />
+                    android:layout_height="@dimen/collapsing_toolbar_default_height" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/Theme.Movieland.PopupOverlay" />
+                    app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

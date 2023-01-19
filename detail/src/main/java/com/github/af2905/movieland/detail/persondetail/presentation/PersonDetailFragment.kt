@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.detail.persondetail.presentation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.IntentFilterKey
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.PersonMovieCreditsCastItem
@@ -65,6 +67,9 @@ class PersonDetailFragment :
                     is PersonDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is PersonDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
                     is PersonDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is PersonDetailContract.Effect.LikeClicked -> {
+                        context?.sendBroadcast(Intent(IntentFilterKey.LIKED_PERSON))
+                    }
                 }
             }
         }

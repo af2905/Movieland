@@ -64,6 +64,7 @@ dependencies {
     implementation(project(':search'))
     implementation(project(':profile'))
     implementation(project(':home'))
+    implementation(project(':liked'))
 
     implementation libraries.kotlin
     implementation libraries.coreKtx
