@@ -74,6 +74,9 @@ class MovieDetailViewModel @Inject constructor(
                 list = state.list
             )
         }
+        container.postEffect(
+            MovieDetailContract.Effect.LikeClicked
+        )
     }
 
     private fun loadData() {
