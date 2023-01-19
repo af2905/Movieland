@@ -21,7 +21,7 @@ class LikedMoviesViewModel @Inject constructor(
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
         container.intent {
             val savedMovies = getAllSavedMovies.invoke(Unit).getOrNull().orEmpty()
 

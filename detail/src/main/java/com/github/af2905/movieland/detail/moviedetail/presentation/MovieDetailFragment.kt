@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.detail.moviedetail.presentation
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -9,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
-import com.github.af2905.movieland.core.common.AppBarStateChangeListener
-import com.github.af2905.movieland.core.common.BaseAdapter
-import com.github.af2905.movieland.core.common.ItemDelegate
-import com.github.af2905.movieland.core.common.NestedRecyclerViewStateAdapter
+import com.github.af2905.movieland.core.common.*
 import com.github.af2905.movieland.core.common.helper.ThemeHelper
 import com.github.af2905.movieland.core.common.model.decorator.HorizontalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
@@ -89,6 +87,9 @@ class MovieDetailFragment :
                     is MovieDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
                     is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is MovieDetailContract.Effect.LikeClicked -> {
+                        context?.sendBroadcast(Intent(IntentFilterKey.LIKED_MOVIE))
+                    }
                 }
             }
         }

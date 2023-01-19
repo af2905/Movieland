@@ -1,12 +1,16 @@
 package com.github.af2905.movieland.liked.presentation.movies
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.IntentFilterKey
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.MovieV2Item
@@ -23,9 +27,15 @@ class LikedMoviesFragment :
 
     private val baseAdapter: BaseAdapter = BaseAdapter(
         ItemDelegate(
-            MovieV2Item.VIEW_TYPE,
+            viewType = MovieV2Item.VIEW_TYPE,
             listener = MovieV2Item.Listener { item -> viewModel.openDetail(item.id) })
     )
+
+    private val likedMoviesBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            viewModel.loadData()
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,6 +46,11 @@ class LikedMoviesFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        context?.registerReceiver(
+            likedMoviesBroadcastReceiver,
+            IntentFilter(IntentFilterKey.LIKED_MOVIE)
+        )
 
         binding.recyclerView.apply {
             adapter = baseAdapter
