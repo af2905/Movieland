@@ -61,4 +61,5 @@ dependencies {
     implementation libraries.navigationFragment
     implementation libraries.material
     implementation libraries.recyclerView
+    implementation libraries.timber
 }

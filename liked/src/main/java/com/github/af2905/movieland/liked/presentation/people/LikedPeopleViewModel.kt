@@ -23,7 +23,7 @@ class LikedPeopleViewModel @Inject constructor(
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
         container.intent {
             val savedPeople = getAllSavedPeople.invoke(Unit).getOrNull().orEmpty()
 
