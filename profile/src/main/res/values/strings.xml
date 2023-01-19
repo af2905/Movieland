@@ -1,14 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="option_liked_fragment_name">Liked</string>
-
-    <string name="liked_movies_fragment_name">Movies</string>
-    <string name="liked_people_fragment_name">People</string>
-
-    <string name="liked_movies_empty_list_text">You have not added anything yet.
-        Click the like button for movies and they will appear here</string>
-
-    <string name="liked_people_empty_list_text">You have not added anything yet.
-        Click the like button for people and they will appear here</string>
-
-</resources>
+<resources />

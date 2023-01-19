@@ -64,6 +64,9 @@ class PersonDetailViewModel @Inject constructor(
                 list = state.list
             )
         }
+        container.postEffect(
+            PersonDetailContract.Effect.LikeClicked
+        )
     }
 
     private fun loadData() {

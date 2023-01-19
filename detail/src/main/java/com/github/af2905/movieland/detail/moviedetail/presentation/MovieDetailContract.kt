@@ -34,5 +34,6 @@ class MovieDetailContract {
         data class OpenMovieDetail(val navigator: Navigate) : Effect()
         data class OpenPersonDetail(val navigator: Navigate) : Effect()
         data class OpenPreviousScreen(val navigator: Navigate) : Effect()
+        object LikeClicked : Effect()
     }
 }
