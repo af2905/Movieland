@@ -107,6 +107,10 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (binding.homeSwipeRefreshLayout.isRefreshing) {
+            finishRefresh()
+        }
+
         binding.recyclerView.apply { adapter = baseAdapter }
 
         binding.innerAppBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
