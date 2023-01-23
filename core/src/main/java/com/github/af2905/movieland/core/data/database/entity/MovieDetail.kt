@@ -2,7 +2,7 @@ package com.github.af2905.movieland.core.data.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.af2905.movieland.core.data.database.entity.plain.MovieCreditsCast
+import com.github.af2905.movieland.core.data.database.entity.plain.CreditsCast
 
 @Entity
 data class MovieDetail(
@@ -30,7 +30,7 @@ data class MovieDetail(
     val backdropPath: String?,
     val posterPath: String?,
     val liked: Boolean,
-    val movieCreditsCasts: List<MovieCreditsCast>,
+    val creditsCasts: List<CreditsCast>,
     val similarMovies: List<Movie>
 )
 

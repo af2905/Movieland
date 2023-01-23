@@ -30,7 +30,7 @@ import com.github.af2905.movieland.core.data.database.entity.*
         MovieCreditsCastConverter::class,
         KnownForConverter::class,
         MovieConverter::class,
-        //TvShowConverter::class,
+        TvShowConverter::class,
         CreatedByConverter::class,
         NetworkConverter::class,
         SeasonConverter::class

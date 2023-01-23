@@ -45,6 +45,12 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                         listener = PopularPersonItem.Listener { item ->
                             viewModel.openPersonDetail(item.id)
                         }
+                    ),
+                    ItemDelegate(
+                        viewType = TvShowItem.VIEW_TYPE,
+                        listener = TvShowItem.Listener { item ->
+                            viewModel.openTvShowDetail(item.id)
+                        }
                     )
                 )
             },
@@ -121,6 +127,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                 when (effect) {
                     is HomeContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
                     is HomeContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
+                    is HomeContract.Effect.OpenTvShowDetail -> handleEffect(effect.navigator)
                     is HomeContract.Effect.ShowFailMessage -> handleEffect(effect.message)
                     is HomeContract.Effect.OpenMovies -> handleEffect(effect.navigator)
                     is HomeContract.Effect.OpenPeople -> handleEffect(effect.navigator)
