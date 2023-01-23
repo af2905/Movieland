@@ -21,6 +21,7 @@ import com.github.af2905.movieland.util.extension.empty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
@@ -29,12 +30,16 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val container: Container<SearchContract.State, SearchContract.Effect> =
-        Container(viewModelScope, SearchContract.State.EmptyQuery())
+        Container(viewModelScope, SearchContract.State.Loading(SearchItem()))
 
     private val query = MutableStateFlow(String.empty)
 
     init {
-        container.intent {
+        initQuery()
+    }
+
+    private fun initQuery() {
+        viewModelScope.launch {
             query.debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .mapLatest(::handleQuery)
                 .collect { state -> container.reduce { state } }
@@ -89,6 +94,7 @@ class SearchViewModel @Inject constructor(
                 )
             }
         }
+        initQuery()
         query.tryEmit(text)
     }
 
