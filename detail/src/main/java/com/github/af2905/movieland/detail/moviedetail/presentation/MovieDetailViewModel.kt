@@ -176,7 +176,7 @@ class MovieDetailViewModel @Inject constructor(
     fun navigateToMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
+                (navigator as MovieDetailNavigator).forwardToMovieDetailScreen(itemId)
             }))
         }
     }
@@ -184,7 +184,7 @@ class MovieDetailViewModel @Inject constructor(
     fun navigateToPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
-                (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)
+                (navigator as MovieDetailNavigator).forwardToPersonDetailScreen(itemId)
             }))
         }
     }
