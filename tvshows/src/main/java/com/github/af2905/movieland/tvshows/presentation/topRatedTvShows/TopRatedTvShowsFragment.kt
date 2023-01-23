@@ -7,7 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
+import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
+import com.github.af2905.movieland.core.common.model.item.TvShowV2Item
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.tvshows.R
 import com.github.af2905.movieland.tvshows.databinding.FragmentTopRatedTvShowsBinding
@@ -23,7 +25,12 @@ class TopRatedTvShowsFragment :
     override fun viewModelClass(): Class<TopRatedTvShowsViewModel> =
         TopRatedTvShowsViewModel::class.java
 
-    private val baseAdapter: BaseAdapter = BaseAdapter()
+    private val baseAdapter: BaseAdapter = BaseAdapter(
+        ItemDelegate(
+            viewType = TvShowV2Item.VIEW_TYPE,
+            listener = TvShowV2Item.Listener { item -> viewModel.openDetail(item.id) }
+        )
+    )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,7 +56,9 @@ class TopRatedTvShowsFragment :
         }
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
-
+                when (effect) {
+                    is TopRatedTvShowsContract.Effect.OpenTvShowDetail -> handleEffect(effect.navigator)
+                }
             }
         }
     }

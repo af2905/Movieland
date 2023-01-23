@@ -49,4 +49,7 @@
     <string name="place_of_birth_title">Place of birth</string>
     <string name="biography_title">Biography</string>
 
+    <string name="first_air_date_title">First air date</string>
+    <string name="last_air_date_title">Last air date</string>
+
 </resources>

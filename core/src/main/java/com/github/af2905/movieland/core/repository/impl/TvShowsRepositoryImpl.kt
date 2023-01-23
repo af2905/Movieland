@@ -49,12 +49,15 @@ class TvShowsRepositoryImpl @Inject constructor(
     )
 
     override suspend fun getTvShowDetail(tvShowId: Int, language: String?): TvShowDetailDto =
-        tvShowsApi.getTvShowDetail(tvId = tvShowId, language = language)
+        tvShowsApi.getTvShowDetail(
+            tvId = tvShowId,
+            language = language ?: resourceDatastore.getLanguage()
+        )
 
     override suspend fun getTvShowCredits(tvShowId: Int, language: String?): List<CreditsCastDto> =
         tvShowsApi.getTvShowCredits(
             tvId = tvShowId,
-            language = language
+            language = language ?: resourceDatastore.getLanguage()
         ).cast.orEmpty()
 
     override suspend fun getSimilarTvShows(tvShowId: Int, language: String?): List<TvShowDto> =

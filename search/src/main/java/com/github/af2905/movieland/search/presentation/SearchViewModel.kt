@@ -16,7 +16,6 @@ import com.github.af2905.movieland.search.SearchNavigator
 import com.github.af2905.movieland.search.domain.params.SearchMultiParams
 import com.github.af2905.movieland.search.domain.params.SearchParams
 import com.github.af2905.movieland.search.domain.usecase.GetPopularSearchQueries
-import com.github.af2905.movieland.search.domain.usecase.GetSearchMovie
 import com.github.af2905.movieland.search.domain.usecase.GetSearchMulti
 import com.github.af2905.movieland.util.extension.empty
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-    private val getSearchMovie: GetSearchMovie,
     private val getSearchMulti: GetSearchMulti,
     private val getPopularSearchQueries: GetPopularSearchQueries
 ) : ViewModel() {
@@ -37,9 +35,6 @@ class SearchViewModel @Inject constructor(
 
     init {
         container.intent {
-            container.reduce {
-                SearchContract.State.Loading(SearchItem())
-            }
             query.debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .mapLatest(::handleQuery)
                 .collect { state -> container.reduce { state } }
@@ -50,7 +45,7 @@ class SearchViewModel @Inject constructor(
         val result = if (text.isEmpty()) {
             val queries = getPopularSearchQueries(SearchParams).getOrDefault(emptyList())
             val popularSearchQueries = if (queries.isNotEmpty()) {
-                 listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + queries
+                listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + queries
             } else {
                 emptyList()
             }
@@ -108,10 +103,10 @@ class SearchViewModel @Inject constructor(
         container.intent {
             container.postEffect(SearchContract.Effect.OpenDetail(Navigate { navigator ->
                 val searchNavigator = navigator as SearchNavigator
-                when(mediaType) {
-                    MediaType.MOVIE -> searchNavigator.forwardMovieDetail(itemId)
-                    MediaType.PERSON -> searchNavigator.forwardPersonDetail(itemId)
-                    else -> Unit
+                when (mediaType) {
+                    MediaType.MOVIE -> searchNavigator.forwardToMovieDetailScreen(itemId)
+                    MediaType.PERSON -> searchNavigator.forwardToPersonDetailScreen(itemId)
+                    MediaType.TV -> searchNavigator.forwardToTvShowDetailScreen(itemId)
                 }
             }))
         }

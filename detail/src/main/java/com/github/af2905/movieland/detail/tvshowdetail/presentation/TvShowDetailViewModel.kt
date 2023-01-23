@@ -112,7 +112,7 @@ class TvShowDetailViewModel @Inject constructor(
             val movieCreditCastsBlock = createActorsAndCrewBlock(tvShowCreditsCasts)
             val similarMoviesBlock = createSimilarTvShowsBlock(similarTvShows)
 
-            //list.add(MovieDetailDescItem(tvShowDetailItem))
+            list.add(TvShowDetailDescItem(tvShowDetailItem))
             list.addAll(movieCreditCastsBlock)
             list.addAll(similarMoviesBlock)
             tvShowDetailItem = tvShowDetailItem.copy(
@@ -120,7 +120,7 @@ class TvShowDetailViewModel @Inject constructor(
                 similarTvShows = similarTvShows
             )
         } else {
-            //list.add(MovieDetailDescItem(tvShowDetailItem))
+            list.add(TvShowDetailDescItem(tvShowDetailItem))
             list.addAll(createActorsAndCrewBlock(tvShowDetailItem.creditsCasts))
             list.addAll(createSimilarTvShowsBlock(tvShowDetailItem.similarTvShows))
         }
