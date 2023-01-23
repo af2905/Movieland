@@ -5,6 +5,7 @@ import com.github.af2905.movieland.core.di.scope.FragmentScope
 import com.github.af2905.movieland.liked.presentation.LikedFragment
 import com.github.af2905.movieland.liked.presentation.movies.LikedMoviesFragment
 import com.github.af2905.movieland.liked.presentation.people.LikedPeopleFragment
+import com.github.af2905.movieland.liked.presentation.tvshows.LikedTvShowsFragment
 import dagger.Component
 
 @FragmentScope
@@ -14,6 +15,7 @@ interface LikedComponent {
     fun injectLikedFragment(fragment: LikedFragment)
     fun injectLikedMoviesFragment(fragment: LikedMoviesFragment)
     fun injectLikedPeopleFragment(fragment: LikedPeopleFragment)
+    fun injectLikedTvShowsFragment(fragment: LikedTvShowsFragment)
 
     @Component.Factory
     interface Factory {

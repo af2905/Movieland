@@ -5,10 +5,8 @@
 
         <variable
             name="viewModel"
-            type="com.github.af2905.movieland.liked.presentation.people.LikedPeopleViewModel" />
-
+            type="com.github.af2905.movieland.liked.presentation.tvshows.LikedTvShowsViewModel" />
     </data>
-
 
     <FrameLayout
         android:layout_width="match_parent"
