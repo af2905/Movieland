@@ -12,7 +12,7 @@ class MovieDetailNavigator @Inject constructor(
     navController: NavController
 ) : Navigator(navController) {
 
-    fun forwardMovieDetail(id: Int) {
+    fun forwardToMovieDetailScreen(id: Int) {
         val action = MovieDetailFragmentDirections.openMovieDetail().apply {
             arguments.putInt(MOVIE_ID_ARG, id)
         }
@@ -23,7 +23,7 @@ class MovieDetailNavigator @Inject constructor(
         )
     }
 
-    fun forwardPersonDetail(id: Int) {
+    fun forwardToPersonDetailScreen(id: Int) {
         val action = MovieDetailFragmentDirections.openPersonDetail().apply {
             arguments.putInt(PERSON_ID_ARG, id)
         }

@@ -34,7 +34,7 @@ data class MovieDetailItem(
     val voteAverage: Double? = Double.empty,
     val voteAverageStar: Float? = Float.empty,
     val liked: Boolean = false,
-    val movieCreditsCasts: List<MovieCreditsCastItem> = emptyList(),
+    val creditsCasts: List<CreditsCastItem> = emptyList(),
     val similarMovies: List<MovieItem> = emptyList()
 ) {
     val backdropFullPathToImage: String?
@@ -59,7 +59,8 @@ data class MovieDetailItem(
         }
     }
 
-    val taglineVisible: Boolean = tagline.isNullOrEmpty().not()
+    val taglineVisible = tagline.isNullOrEmpty().not()
+    val overviewVisible = overview.isNullOrEmpty().not()
 
     fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: MovieDetailItem)

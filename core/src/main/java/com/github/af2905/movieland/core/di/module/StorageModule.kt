@@ -55,7 +55,7 @@ class StorageModule {
             movieCreditsCastConverter: MovieCreditsCastConverter,
             knownForConverter: KnownForConverter,
             movieConverter: MovieConverter,
-            //tvShowConverter: TvShowConverter,
+            tvShowConverter: TvShowConverter,
             createdByConverter: CreatedByConverter,
             networkConverter: NetworkConverter,
             seasonConverter: SeasonConverter
@@ -69,7 +69,7 @@ class StorageModule {
             .addTypeConverter(movieCreditsCastConverter)
             .addTypeConverter(knownForConverter)
             .addTypeConverter(movieConverter)
-            //.addTypeConverter(tvShowConverter)
+            .addTypeConverter(tvShowConverter)
             .addTypeConverter(createdByConverter)
             .addTypeConverter(networkConverter)
             .addTypeConverter(seasonConverter)

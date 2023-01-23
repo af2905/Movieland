@@ -13,9 +13,9 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.*
 import com.github.af2905.movieland.core.common.helper.ThemeHelper
 import com.github.af2905.movieland.core.common.model.decorator.HorizontalListItemDecorator
+import com.github.af2905.movieland.core.common.model.item.CreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
-import com.github.af2905.movieland.core.common.model.item.MovieCreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
@@ -42,8 +42,8 @@ class MovieDetailFragment :
                             viewModel.navigateToMovieDetail(item.id)
                         }),
                     ItemDelegate(
-                        MovieCreditsCastItem.VIEW_TYPE,
-                        listener = MovieCreditsCastItem.Listener { item ->
+                        CreditsCastItem.VIEW_TYPE,
+                        listener = CreditsCastItem.Listener { item ->
                             viewModel.navigateToPersonDetail(item.id)
                         })
                 )
