@@ -60,6 +60,28 @@
             android:textColor="@color/darkGrey"
             tools:text="action" />
 
+        <TextView
+            style="@style/TextView.Medium.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@{item.tvShowDetailItem.tagline}"
+            app:visible="@{item.tvShowDetailItem.taglineVisible}"
+            tools:text="«Tagline bla bla bla»" />
+
+        <TextView
+            style="@style/TextView.LineSpacingMultiplier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:text="@{item.tvShowDetailItem.overview}"
+            app:visible="@{item.tvShowDetailItem.overviewVisible}"
+            tools:text="description bla bla bla bla bla bla bla bla" />
+
         <LinearLayout
             android:id="@+id/firstAirDate"
             android:layout_width="match_parent"
@@ -111,28 +133,6 @@
                 android:text="@{item.tvShowDetailItem.lastAirDateFormatted}"
                 tools:text="10/10/2010" />
         </LinearLayout>
-
-        <TextView
-            style="@style/TextView.Medium.Bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:text="@{item.tvShowDetailItem.tagline}"
-            app:visible="@{item.tvShowDetailItem.taglineVisible}"
-            tools:text="«Tagline bla bla bla»" />
-
-        <TextView
-            style="@style/TextView.LineSpacingMultiplier"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:text="@{item.tvShowDetailItem.overview}"
-            app:visible="@{item.tvShowDetailItem.overviewVisible}"
-            tools:text="description bla bla bla bla bla bla bla bla" />
 
     </LinearLayout>
 </layout>

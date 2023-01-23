@@ -183,7 +183,7 @@ class TvShowDetailViewModel @Inject constructor(
     fun navigateToPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(TvShowDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
-
+                (navigator as TvShowDetailNavigator).forwardToPersonDetail(itemId)
             }))
         }
     }
