@@ -16,6 +16,7 @@ import com.github.af2905.movieland.liked.databinding.FragmentLikedBinding
 import com.github.af2905.movieland.liked.di.DaggerLikedComponent
 import com.github.af2905.movieland.liked.presentation.movies.LikedMoviesFragment
 import com.github.af2905.movieland.liked.presentation.people.LikedPeopleFragment
+import com.github.af2905.movieland.liked.presentation.tvshows.LikedTvShowsFragment
 
 class LikedFragment : BaseFragment<AppNavigator, FragmentLikedBinding, LikedViewModel>() {
 
@@ -40,8 +41,8 @@ class LikedFragment : BaseFragment<AppNavigator, FragmentLikedBinding, LikedView
                 fragment = this,
                 items = listOf(
                     PageItem(ResourceUiText(R.string.liked_movies_fragment_name)) { LikedMoviesFragment() },
+                    PageItem(ResourceUiText(R.string.liked_tv_shows_fragment_name)) { LikedTvShowsFragment() },
                     PageItem(ResourceUiText(R.string.liked_people_fragment_name)) { LikedPeopleFragment() }
-
                 )
             )
         )

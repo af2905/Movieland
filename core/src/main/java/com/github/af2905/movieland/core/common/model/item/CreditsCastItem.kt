@@ -5,7 +5,7 @@ import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.util.extension.getFullPathToImage
 
-data class MovieCreditsCastItem(
+data class CreditsCastItem(
     override val id: Int,
     val adult: Boolean?,
     val gender: Int?,
@@ -24,11 +24,11 @@ data class MovieCreditsCastItem(
         get() = profilePath.getFullPathToImage()
 
     companion object {
-        val VIEW_TYPE = R.layout.list_item_movie_credits_cast
+        val VIEW_TYPE = R.layout.list_item_credits_cast
 
     }
 
     fun interface Listener : ItemDelegate.Listener {
-        fun onItemClicked(item: MovieCreditsCastItem)
+        fun onItemClicked(item: CreditsCastItem)
     }
 }

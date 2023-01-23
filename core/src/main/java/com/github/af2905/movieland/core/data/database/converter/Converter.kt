@@ -3,7 +3,7 @@ package com.github.af2905.movieland.core.data.database.converter
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.github.af2905.movieland.core.data.database.entity.*
-import com.github.af2905.movieland.core.data.database.entity.plain.MovieCreditsCast
+import com.github.af2905.movieland.core.data.database.entity.plain.CreditsCast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
@@ -91,15 +91,15 @@ class PersonMovieCreditsCastConverter @Inject constructor(private val gson: Gson
 @ProvidedTypeConverter
 class MovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
-    fun toList(value: String?): List<MovieCreditsCast>? {
-        val listType = object : TypeToken<List<MovieCreditsCast>>() {}.type
+    fun toList(value: String?): List<CreditsCast>? {
+        val listType = object : TypeToken<List<CreditsCast>>() {}.type
         return gson.fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromList(list: List<MovieCreditsCast>?): String? {
+    fun fromList(list: List<CreditsCast>?): String? {
         return if (list == null) null
-        else gson.toJson(list, object : TypeToken<List<MovieCreditsCast>>() {}.type)
+        else gson.toJson(list, object : TypeToken<List<CreditsCast>>() {}.type)
     }
 }
 
@@ -133,7 +133,7 @@ class MovieConverter @Inject constructor(private val gson: Gson) {
     }
 }
 
-/*@ProvidedTypeConverter
+@ProvidedTypeConverter
 class TvShowConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
     fun toList(value: String?): List<TvShow>? {
@@ -146,7 +146,7 @@ class TvShowConverter @Inject constructor(private val gson: Gson) {
         return if (list == null) null
         else gson.toJson(list, object : TypeToken<List<TvShow>>() {}.type)
     }
-}*/
+}
 
 @ProvidedTypeConverter
 class CreatedByConverter @Inject constructor(private val gson: Gson) {

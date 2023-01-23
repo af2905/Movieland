@@ -12,7 +12,6 @@ import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.moviedetail.MovieDetailNavigator
 import com.github.af2905.movieland.detail.usecase.movie.*
-import com.github.af2905.movieland.detail.usecase.params.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import java.util.Collections.emptyList
@@ -94,7 +93,7 @@ class MovieDetailViewModel @Inject constructor(
 
     private suspend fun handleMovieDetail(scope: CoroutineScope) {
         val list = mutableListOf<Model>()
-        var movieDetailItem = getLikedMovieById(GetLikedMovieDetailByIdParams(movieId)).getOrThrow()
+        var movieDetailItem = getLikedMovieById(LikedMovieDetailByIdParams(movieId)).getOrThrow()
 
         if (movieDetailItem == null) {
             val movieDetailAsync = scope.async {
@@ -118,12 +117,12 @@ class MovieDetailViewModel @Inject constructor(
             list.addAll(movieCreditCastsBlock)
             list.addAll(similarMoviesBlock)
             movieDetailItem = movieDetailItem.copy(
-                movieCreditsCasts = movieCreditsCasts,
+                creditsCasts = movieCreditsCasts,
                 similarMovies = similarMovies
             )
         } else {
             list.add(MovieDetailDescItem(movieDetailItem))
-            list.addAll(createActorsAndCrewBlock(movieDetailItem.movieCreditsCasts))
+            list.addAll(createActorsAndCrewBlock(movieDetailItem.creditsCasts))
             list.addAll(createSimilarMoviesBlock(movieDetailItem.similarMovies))
         }
         container.reduce {
@@ -131,7 +130,7 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun createActorsAndCrewBlock(movieCreditsCasts: List<MovieCreditsCastItem>): List<Model> {
+    private fun createActorsAndCrewBlock(movieCreditsCasts: List<CreditsCastItem>): List<Model> {
         return if (movieCreditsCasts.isNotEmpty()) {
             listOf(
                 emptySpaceNormal,
@@ -177,7 +176,7 @@ class MovieDetailViewModel @Inject constructor(
     fun navigateToMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as MovieDetailNavigator).forwardMovieDetail(itemId)
+                (navigator as MovieDetailNavigator).forwardToMovieDetailScreen(itemId)
             }))
         }
     }
@@ -185,7 +184,7 @@ class MovieDetailViewModel @Inject constructor(
     fun navigateToPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(MovieDetailContract.Effect.OpenPersonDetail(Navigate { navigator ->
-                (navigator as MovieDetailNavigator).forwardPersonDetail(itemId)
+                (navigator as MovieDetailNavigator).forwardToPersonDetailScreen(itemId)
             }))
         }
     }
