@@ -282,6 +282,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun openTvShowDetail(itemId: Int) {
+        container.intent {
+            container.postEffect(HomeContract.Effect.OpenTvShowDetail(Navigate { navigator ->
+                (navigator as HomeNavigator).forwardToTvShowDetailScreen(itemId)
+            }))
+        }
+    }
+
     fun openMore(type: HeaderLinkItemType) {
         val effect = when (type) {
             HeaderLinkItemType.MOVIES -> {

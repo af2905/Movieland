@@ -69,7 +69,7 @@
             android:layout_marginBottom="@dimen/default_margin"
             android:text="@{item.movieDetailItem.tagline}"
             app:visible="@{item.movieDetailItem.taglineVisible}"
-            tools:text="«Два мира - одна судьба»" />
+            tools:text="«Tagline bla bla bla»" />
 
         <TextView
             style="@style/TextView.LineSpacingMultiplier"
@@ -79,7 +79,8 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
             android:text="@{item.movieDetailItem.overview}"
-            tools:text="Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма Какое-то описание фильма" />
+            app:visible="@{item.movieDetailItem.overviewVisible}"
+            tools:text="description bla bla bla bla bla bla bla bla" />
 
     </LinearLayout>
 </layout>

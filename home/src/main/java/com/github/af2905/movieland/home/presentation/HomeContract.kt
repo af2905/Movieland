@@ -27,6 +27,7 @@ class HomeContract {
         data class ShowFailMessage(val message: ToastMessage) : Effect()
         data class OpenMovieDetail(val navigator: Navigate) : Effect()
         data class OpenPersonDetail(val navigator: Navigate) : Effect()
+        data class OpenTvShowDetail(val navigator: Navigate) : Effect()
         data class OpenMovies(val navigator: Navigate) : Effect()
         data class OpenPeople(val navigator: Navigate) : Effect()
         data class OpenTvShows(val navigator: Navigate) : Effect()

@@ -10,7 +10,6 @@ import com.github.af2905.movieland.core.common.model.Model
 import com.github.af2905.movieland.core.common.model.item.*
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.persondetail.PersonDetailNavigator
-import com.github.af2905.movieland.detail.usecase.params.*
 import com.github.af2905.movieland.detail.usecase.person.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

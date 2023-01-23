@@ -7,7 +7,7 @@ import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
-import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsCastDto
+import com.github.af2905.movieland.core.data.dto.CreditsCastDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDto
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
@@ -86,7 +86,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getMovieCredits(
         movieId: Int,
         language: String?
-    ): List<MovieCreditsCastDto> = moviesApi.getMovieCredits(
+    ): List<CreditsCastDto> = moviesApi.getMovieCredits(
         movieId = movieId,
         language = language ?: resourceDatastore.getLanguage()
     ).cast.orEmpty()
