@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.core.data.database.entity.plain
 
-data class MovieCreditsCast(
+data class CreditsCast(
     val id: Int,
     val adult: Boolean?,
     val gender: Int?,

@@ -4,7 +4,6 @@ import com.github.af2905.movieland.core.common.model.item.MovieDetailItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
-import com.github.af2905.movieland.detail.usecase.params.MovieDetailParams
 
 import javax.inject.Inject
 
@@ -22,3 +21,5 @@ class GetMovieDetail @Inject constructor(
         )
     }
 }
+
+data class MovieDetailParams(val movieId: Int, val language: String? = null)

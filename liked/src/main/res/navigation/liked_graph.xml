@@ -7,6 +7,7 @@
 
     <include app:graph="@navigation/movie_detail_graph" />
     <include app:graph="@navigation/person_detail_graph" />
+    <include app:graph="@navigation/tv_show_detail_graph" />
 
     <fragment
         android:id="@+id/likedFragment"
@@ -17,10 +18,12 @@
         <action
             android:id="@+id/openMovieDetail"
             app:destination="@id/movie_detail_graph" />
-
         <action
             android:id="@+id/openPersonDetail"
             app:destination="@id/person_detail_graph" />
+        <action
+            android:id="@+id/openTvShowDetail"
+            app:destination="@id/tv_show_detail_graph" />
 
     </fragment>
 

@@ -49,4 +49,9 @@
     <string name="deathday_title">День смерти</string>
     <string name="place_of_birth_title">Место рождения</string>
     <string name="biography_title">Биография</string>
+
+
+    <string name="first_air_date_title">Дата первого выхода в эфир</string>
+    <string name="last_air_date_title">Дата последнего выхода в эфир</string>
+
 </resources>

@@ -3,6 +3,7 @@ package com.github.af2905.movieland.tvshows.presentation.popularTvShows
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.base.Container
+import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.helper.CoroutineDispatcherProvider
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.TvShowV2Item
@@ -11,6 +12,7 @@ import com.github.af2905.movieland.core.shared.CachedTvShowsParams
 import com.github.af2905.movieland.core.shared.GetCachedTvShowsByType
 import com.github.af2905.movieland.core.shared.GetPopularTvShows
 import com.github.af2905.movieland.core.shared.PopularTvShowsParams
+import com.github.af2905.movieland.tvshows.presentation.TvShowsNavigator
 import com.github.af2905.movieland.tvshows.repository.TvShowsForceUpdateRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -91,6 +93,10 @@ class PopularTvShowsViewModel @Inject constructor(
     }
 
     fun openDetail(itemId: Int) {
-
+        container.intent {
+            container.postEffect(PopularTvShowsContract.Effect.OpenTvShowDetail(Navigate { navigator ->
+                (navigator as TvShowsNavigator).forwardToTvShowDetailScreen(itemId)
+            }))
+        }
     }
 }

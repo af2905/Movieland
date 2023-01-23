@@ -4,7 +4,6 @@ import com.github.af2905.movieland.core.common.model.item.PersonMovieCreditsCast
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.PersonMovieCreditsCastMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
-import com.github.af2905.movieland.detail.usecase.params.PersonMovieCreditsParams
 import javax.inject.Inject
 
 class GetPersonMovieCredits @Inject constructor(
@@ -21,3 +20,8 @@ class GetPersonMovieCredits @Inject constructor(
             .sortedByDescending { it.releaseDate }
     }
 }
+
+data class PersonMovieCreditsParams(
+    val personId: Int,
+    val language: String? = null
+)

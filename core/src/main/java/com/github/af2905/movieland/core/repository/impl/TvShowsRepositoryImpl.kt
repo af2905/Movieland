@@ -4,8 +4,10 @@ import com.github.af2905.movieland.core.data.api.TvShowsApi
 import com.github.af2905.movieland.core.data.database.dao.TvShowDao
 import com.github.af2905.movieland.core.data.database.dao.TvShowDetailDao
 import com.github.af2905.movieland.core.data.database.entity.TvShow
+import com.github.af2905.movieland.core.data.database.entity.TvShowDetail
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
+import com.github.af2905.movieland.core.data.dto.CreditsCastDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowDetailDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowDto
 import com.github.af2905.movieland.core.data.mapper.TvShowMapper
@@ -47,13 +49,38 @@ class TvShowsRepositoryImpl @Inject constructor(
     )
 
     override suspend fun getTvShowDetail(tvShowId: Int, language: String?): TvShowDetailDto =
-        tvShowsApi.getTvShowDetail(tvId = tvShowId, language = language)
+        tvShowsApi.getTvShowDetail(
+            tvId = tvShowId,
+            language = language ?: resourceDatastore.getLanguage()
+        )
+
+    override suspend fun getTvShowCredits(tvShowId: Int, language: String?): List<CreditsCastDto> =
+        tvShowsApi.getTvShowCredits(
+            tvId = tvShowId,
+            language = language ?: resourceDatastore.getLanguage()
+        ).cast.orEmpty()
 
     override suspend fun getSimilarTvShows(tvShowId: Int, language: String?): List<TvShowDto> =
         tvShowsApi.getSimilarTvShows(tvId = tvShowId, language = language).tvShows
 
     override suspend fun getCachedTvShowsByType(type: TvShowType): List<TvShow> =
         tvShowDao.getByType(type.name).orEmpty()
+
+    override suspend fun saveTvShowDetail(tvShowDetail: TvShowDetail): Boolean {
+        return tvShowDetailDao.save(tvShowDetail)?.let { true } ?: false
+    }
+
+    override suspend fun removeTvShowDetail(tvShowDetail: TvShowDetail): Boolean {
+        return tvShowDetailDao.delete(tvShowDetail)?.let { true } ?: false
+    }
+
+    override suspend fun getTvShowDetailById(id: Int): TvShowDetail? {
+        return tvShowDetailDao.getById(id)
+    }
+
+    override suspend fun getAllSavedTvShowDetail(): List<TvShowDetail> {
+        return tvShowDetailDao.getAll() ?: emptyList()
+    }
 
     private suspend fun loadTvShows(
         type: TvShowType,

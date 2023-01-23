@@ -4,7 +4,7 @@ import com.github.af2905.movieland.core.data.ApiParams.LANGUAGE
 import com.github.af2905.movieland.core.data.ApiParams.MOVIE_ID
 import com.github.af2905.movieland.core.data.ApiParams.PAGE
 import com.github.af2905.movieland.core.data.ApiParams.REGION
-import com.github.af2905.movieland.core.data.dto.movie.MovieCreditsDto
+import com.github.af2905.movieland.core.data.dto.CreditsDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 import com.github.af2905.movieland.core.data.dto.movie.MoviesDto
 
@@ -66,5 +66,5 @@ interface MoviesApi {
     suspend fun getMovieCredits(
         @Path(MOVIE_ID) movieId: Int,
         @Query(LANGUAGE) language: String? = null
-    ): MovieCreditsDto
+    ): CreditsDto
 }

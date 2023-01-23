@@ -1,13 +1,13 @@
-package com.github.af2905.movieland.core.data.dto.movie
+package com.github.af2905.movieland.core.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieCreditsDto(
+data class CreditsDto(
     @SerializedName("id") val id: Int,
-    @SerializedName("cast") val cast: List<MovieCreditsCastDto>?
+    @SerializedName("cast") val cast: List<CreditsCastDto>?
 )
 
-data class MovieCreditsCastDto(
+data class CreditsCastDto(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean?,
     @SerializedName("gender") val gender: Int?,

@@ -7,7 +7,6 @@
             name="viewModel"
             type="com.github.af2905.movieland.liked.presentation.movies.LikedMoviesViewModel" />
 
-        <import type="com.github.af2905.movieland.liked.presentation.movies.LikedMoviesContract" />
     </data>
 
     <FrameLayout
