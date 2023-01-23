@@ -62,6 +62,26 @@ data class TvShowDetailItem(
     fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: TvShowDetailItem)
     }
+
+    companion object {
+        fun TvShowDetailItem.mapToTvShowItem() = with(this) {
+            TvShowItem(
+                id = id,
+                posterPath = posterPath,
+                popularity = popularity,
+                backdropPath = backdropPath,
+                voteAverage = voteAverage,
+                overview = overview,
+                firstAirDate = firstAirDate,
+                originCountry = originCountry,
+                genreIds = genres?.map { it.id },
+                originalLanguage = originalLanguage,
+                voteCount = voteCount,
+                name = name,
+                originalName = originalName
+            )
+        }
+    }
 }
 
 data class LastEpisodeToAir(
