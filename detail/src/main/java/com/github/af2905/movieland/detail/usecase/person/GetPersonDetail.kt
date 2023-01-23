@@ -4,7 +4,6 @@ import com.github.af2905.movieland.core.common.model.item.PersonDetailItem
 import com.github.af2905.movieland.core.common.usecase.CoroutineUseCase
 import com.github.af2905.movieland.core.data.mapper.PersonDetailMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
-import com.github.af2905.movieland.detail.usecase.params.PersonDetailParams
 import javax.inject.Inject
 
 class GetPersonDetail @Inject constructor(
@@ -20,3 +19,8 @@ class GetPersonDetail @Inject constructor(
         )
     }
 }
+
+data class PersonDetailParams(
+    val personId: Int,
+    val language: String? = null
+)

@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.detail.moviedetail.presentation
+package com.github.af2905.movieland.detail.tvshowdetail.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -16,20 +16,20 @@ import com.github.af2905.movieland.core.common.model.decorator.HorizontalListIte
 import com.github.af2905.movieland.core.common.model.item.CreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
-import com.github.af2905.movieland.core.common.model.item.MovieItem
+import com.github.af2905.movieland.core.common.model.item.TvShowItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
-import com.github.af2905.movieland.detail.databinding.FragmentMovieDetailBinding
-import com.github.af2905.movieland.detail.moviedetail.MovieDetailNavigator
-import com.github.af2905.movieland.detail.moviedetail.di.DaggerMovieDetailComponent
+import com.github.af2905.movieland.detail.databinding.FragmentTvShowDetailBinding
+import com.github.af2905.movieland.detail.tvshowdetail.TvShowDetailNavigator
+import com.github.af2905.movieland.detail.tvshowdetail.di.DaggerTvShowDetailComponent
 import com.google.android.material.appbar.AppBarLayout
 
-class MovieDetailFragment :
-    BaseFragment<MovieDetailNavigator, FragmentMovieDetailBinding, MovieDetailViewModel>() {
+class TvShowDetailFragment :
+    BaseFragment<TvShowDetailNavigator, FragmentTvShowDetailBinding, TvShowDetailViewModel>() {
 
-    override fun layoutRes(): Int = R.layout.fragment_movie_detail
-    override fun viewModelClass(): Class<MovieDetailViewModel> = MovieDetailViewModel::class.java
-    override fun getNavigator(navController: NavController) = MovieDetailNavigator(navController)
+    override fun layoutRes(): Int = R.layout.fragment_tv_show_detail
+    override fun viewModelClass(): Class<TvShowDetailViewModel> = TvShowDetailViewModel::class.java
+    override fun getNavigator(navController: NavController) = TvShowDetailNavigator(navController)
 
     private val baseAdapter: BaseAdapter = NestedRecyclerViewStateAdapter(
         HorizontalListAdapter(
@@ -37,9 +37,9 @@ class MovieDetailFragment :
             adapter = {
                 BaseAdapter(
                     ItemDelegate(
-                        MovieItem.VIEW_TYPE,
-                        listener = MovieItem.Listener { item ->
-                            viewModel.navigateToMovieDetail(item.id)
+                        TvShowItem.VIEW_TYPE,
+                        listener = TvShowItem.Listener { item ->
+                            viewModel.navigateToTvShowDetail(item.id)
                         }),
                     ItemDelegate(
                         CreditsCastItem.VIEW_TYPE,
@@ -55,11 +55,11 @@ class MovieDetailFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val appComponent = CoreComponentProvider.getAppComponent(context)
-        val detailComponent = DaggerMovieDetailComponent.factory().create(
+        val detailComponent = DaggerTvShowDetailComponent.factory().create(
             coreComponent = appComponent,
-            movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG))
+            tvShowId = requireNotNull(arguments?.getInt(TV_SHOW_ID_ARG))
         )
-        detailComponent.injectMovieDetailFragment(this)
+        detailComponent.injectTvShowDetailFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,11 +71,11 @@ class MovieDetailFragment :
 
         val appBarStateChangeListener = getAppBarStateChangeListener()
 
-        binding.movieDetailToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
-        binding.movieDetailToolbar.movieDetailCollapsingToolbarLayout
+        binding.tvShowDetailToolbar.toolbar.navigationIcon?.setTint(Color.WHITE)
+        binding.tvShowDetailToolbar.tvShowDetailCollapsingToolbarLayout
             .setExpandedTitleColor(Color.WHITE)
 
-        binding.movieDetailToolbar.movieDetailAppBar.apply {
+        binding.tvShowDetailToolbar.tvShowDetailAppBar.apply {
             removeOnOffsetChangedListener(appBarStateChangeListener)
             addOnOffsetChangedListener(appBarStateChangeListener)
         }
@@ -83,12 +83,12 @@ class MovieDetailFragment :
         lifecycleScope.launchWhenCreated {
             viewModel.container.effect.collect { effect ->
                 when (effect) {
-                    is MovieDetailContract.Effect.OpenMovieDetail -> handleEffect(effect.navigator)
-                    is MovieDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
-                    is MovieDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
-                    is MovieDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
-                    is MovieDetailContract.Effect.LikeClicked -> {
-                        context?.sendBroadcast(Intent(IntentFilterKey.LIKED_MOVIE))
+                    is TvShowDetailContract.Effect.OpenTvShowDetail -> handleEffect(effect.navigator)
+                    is TvShowDetailContract.Effect.OpenPersonDetail -> handleEffect(effect.navigator)
+                    is TvShowDetailContract.Effect.OpenPreviousScreen -> handleEffect(effect.navigator)
+                    is TvShowDetailContract.Effect.ShowFailMessage -> handleEffect(effect.message)
+                    is TvShowDetailContract.Effect.LikeClicked -> {
+                        context?.sendBroadcast(Intent(IntentFilterKey.LIKED_TV_SHOW))
                     }
                 }
             }
@@ -97,7 +97,7 @@ class MovieDetailFragment :
 
     private fun initToolbar() {
         (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(binding.movieDetailToolbar.toolbar)
+            setSupportActionBar(binding.tvShowDetailToolbar.toolbar)
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 setDisplayShowHomeEnabled(true)
@@ -109,7 +109,7 @@ class MovieDetailFragment :
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
             when (state) {
                 State.COLLAPSED -> {
-                    binding.movieDetailToolbar.toolbar.apply {
+                    binding.tvShowDetailToolbar.toolbar.apply {
                         if (ThemeHelper.isCurrentThemeDark(context)) {
                             navigationIcon?.setTint(Color.WHITE)
                         } else {
@@ -118,7 +118,7 @@ class MovieDetailFragment :
                     }
                 }
                 State.IDLE -> {
-                    binding.movieDetailToolbar.toolbar.apply {
+                    binding.tvShowDetailToolbar.toolbar.apply {
                         background = ColorDrawable(Color.TRANSPARENT)
                         navigationIcon?.setTint(Color.WHITE)
                     }
@@ -141,7 +141,7 @@ class MovieDetailFragment :
     }
 
     companion object {
-        const val MOVIE_ID_ARG =
-            "com.github.af2905.movieland.detail.moviedetail.presentation.MOVIE_ID_ARG"
+        const val TV_SHOW_ID_ARG =
+            "com.github.af2905.movieland.detail.tvshowdetail.presentation.TV_SHOW_ID_ARG"
     }
 }

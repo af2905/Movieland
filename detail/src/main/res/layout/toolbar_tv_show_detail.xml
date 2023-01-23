@@ -7,23 +7,23 @@
 
         <variable
             name="item"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem" />
+            type="com.github.af2905.movieland.core.common.model.item.TvShowDetailItem" />
 
         <variable
             name="listener"
-            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem.Listener" />
+            type="com.github.af2905.movieland.core.common.model.item.TvShowDetailItem.Listener" />
 
     </data>
 
     <merge>
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/movieDetailAppBar"
+            android:id="@+id/tvShowDetailAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/movieDetailCollapsingToolbarLayout"
+                android:id="@+id/tvShowDetailCollapsingToolbarLayout"
                 style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,18 +33,18 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                 app:scrimAnimationDuration="0"
-                app:title="@{item.title}"
+                app:title="@{item.name}"
                 app:titleEnabled="true"
                 app:toolbarId="@+id/toolbar">
 
                 <FrameLayout
-                    android:id="@+id/movieDetailFrameLayout"
+                    android:id="@+id/tvShowDetailFrameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?colorSurface">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/movieDetailImageView"
+                        android:id="@+id/tvShowDetailImageView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/backdrop_height"
                         android:layout_gravity="center"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             android:onClick="@{() -> listener.onLikedClick(item)}"
-            app:layout_anchor="@id/movieDetailAppBar"
+            app:layout_anchor="@id/tvShowDetailAppBar"
             app:layout_anchorGravity="bottom|end"
             app:liked="@{item.liked}"
             tools:ignore="ContentDescription"

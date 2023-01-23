@@ -19,7 +19,7 @@ class MovieDetailMapper @Inject constructor(
     private val genreMapper: GenreMapper,
     private val productionCompanyMapper: ProductionCompanyMapper,
     private val productionCountryMapper: ProductionCountryMapper,
-    private val movieCreditsCastMapper: MovieCreditsCastMapper,
+    private val creditsCastMapper: CreditsCastMapper,
     private val movieMapper: MovieMapper
 ) {
     @JvmName(DTO_TO_UI_ITEM_MAPPER)
@@ -80,7 +80,7 @@ class MovieDetailMapper @Inject constructor(
             backdropPath = backdropPath,
             posterPath = posterPath,
             liked = liked,
-            movieCreditsCasts = movieCreditsCasts.let { movieCreditsCastMapper.map(it) },
+            creditsCasts = creditsCasts.let { creditsCastMapper.map(it) },
             similarMovies = movieMapper.map(similarMovies)
         )
     }
@@ -112,7 +112,7 @@ class MovieDetailMapper @Inject constructor(
             backdropPath = backdropPath,
             posterPath = posterPath,
             liked = liked,
-            movieCreditsCasts = movieCreditsCastMapper.map(movieCreditsCasts),
+            creditsCasts = creditsCastMapper.map(creditsCasts),
             similarMovies = movieMapper.map(similarMovies)
         )
     }
