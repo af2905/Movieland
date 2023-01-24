@@ -1,0 +1,79 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem" />
+
+        <variable
+            name="listener"
+            type="com.github.af2905.movieland.core.common.model.item.MovieDetailItem.Listener" />
+
+    </data>
+
+    <merge>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/movieDetailAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/movieDetailCollapsingToolbarLayout"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?colorSurface"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+                app:scrimAnimationDuration="0"
+                app:title="@{item.title}"
+                app:titleEnabled="true"
+                app:toolbarId="@+id/toolbar">
+
+                <FrameLayout
+                    android:id="@+id/movieDetailFrameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?colorSurface">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/movieDetailImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/backdrop_height"
+                        android:layout_gravity="center"
+                        android:scaleType="center"
+                        app:src="@{item.backdropFullPathToImage}" />
+
+                </FrameLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:elevation="@dimen/size_0"
+                    app:layout_collapseMode="pin" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:onClick="@{() -> listener.onLikedClick(item)}"
+            app:layout_anchor="@id/movieDetailAppBar"
+            app:layout_anchorGravity="bottom|end"
+            app:liked="@{item.liked}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_heart"
+            tools:tint="@color/indianRed" />
+    </merge>
+</layout>

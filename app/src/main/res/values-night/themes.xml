@@ -1,0 +1,34 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Movieland" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorPrimaryVariant">@color/blue_700</item>
+        <item name="colorOnPrimary">@color/dark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@color/dark</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" >?attr/colorSurface</item>
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TabsUnderlineBackground">
+        <item name="android:background">@drawable/bg_tab_underline_dark</item>
+    </style>
+
+    <style name="TabsLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">@dimen/default_tab_indicator_height</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+    </style>
+
+    <style name="ColorSurfaceBackground">
+        <item name="android:background">@drawable/bg_color_surface</item>
+    </style>
+
+</resources>
