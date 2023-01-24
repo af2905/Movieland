@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shimmer_auto_start="true"
+        app:shimmer_direction="left_to_right"
+        app:shimmer_duration="1000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="@dimen/movie_card_width"
+                    android:layout_height="@dimen/movie_card_height" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small"
+                    android:layout_marginEnd="@dimen/default_margin_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="@dimen/movie_card_width"
+                    android:layout_height="@dimen/movie_card_height" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small"
+                    android:layout_marginEnd="@dimen/default_margin_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="@dimen/movie_card_width"
+                    android:layout_height="@dimen/movie_card_height" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small" />
+
+                <View
+                    style="@style/ShimmerStyleRoundCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin_small"
+                    android:layout_marginEnd="@dimen/default_margin_medium" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</layout>
