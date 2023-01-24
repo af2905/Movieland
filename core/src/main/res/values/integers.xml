@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="max_lines_1">1</integer>
+    <integer name="max_lines_2">2</integer>
+    <integer name="max_lines_3">3</integer>
+    <integer name="max_lines_4">4</integer>
+    <integer name="max_lines_6">6</integer>
+
+    <integer name="default_num_stars">5</integer>
+
+</resources>
