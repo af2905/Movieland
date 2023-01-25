@@ -45,8 +45,10 @@ Dagger2 is used for dependency injection.
 ## Usage
 An application to search, watch and save movies, TV shows and popular people.
 
+If you want to run the application, then you need to get an api key on the site https://www.themoviedb.org and place it in keystore.properties in the field THE_MOVIE_DATABASE_API_KEY="your_key"
+
 ## TODO list
-* 
+* add module - Settings
 * 
 * 
 
