@@ -4,6 +4,7 @@ import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.util.extension.empty
 import com.github.af2905.movieland.util.extension.formatDate
 import com.github.af2905.movieland.util.extension.getFullPathToImage
+import com.github.af2905.movieland.util.extension.isNullOrEmpty
 import java.util.*
 
 private const val SEPARATOR = ", "
@@ -48,6 +49,7 @@ data class TvShowDetailItem(
 
     val firstAirDateFormatted = firstAirDate?.formatDate()
     val lastAirDateFormatted = lastAirDate?.formatDate()
+    val numberOfSeasonsString = numberOfSeasons?.toString() ?: String.empty
 
     val genreList = genres?.map { genre -> genre.name }
         ?.map { it?.lowercase(Locale.getDefault()) }
@@ -58,6 +60,7 @@ data class TvShowDetailItem(
     val overviewVisible = overview.isNullOrEmpty().not()
     val firstAirDateVisible = firstAirDate.isNullOrEmpty().not()
     val lastAirDateVisible = lastAirDate.isNullOrEmpty().not()
+    val numberOfSeasonsVisible = numberOfSeasons.isNullOrEmpty().not()
 
     fun interface Listener : ItemDelegate.Listener {
         fun onLikedClick(item: TvShowDetailItem)
