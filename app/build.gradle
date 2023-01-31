@@ -55,14 +55,14 @@ android {
         dataBinding true
     }
 
-    flavorDimensions "version"
+/*    flavorDimensions "version"
     
     productFlavors {
         dev {
             dimension "version"
             applicationIdSuffix ".dev"
         }
-    }
+    }*/
 }
 
 dependencies {
