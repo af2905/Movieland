@@ -31,6 +31,5 @@ class HomeContract {
         data class OpenMovies(val navigator: Navigate) : Effect()
         data class OpenPeople(val navigator: Navigate) : Effect()
         data class OpenTvShows(val navigator: Navigate) : Effect()
-        object FinishRefresh : Effect()
     }
 }

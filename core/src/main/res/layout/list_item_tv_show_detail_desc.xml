@@ -60,6 +60,39 @@
             android:textColor="@color/darkGrey"
             tools:text="action" />
 
+            <TextView
+                style="@style/TextView.Bold"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_tiny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:visible="@{item.tvShowDetailItem.numberOfSeasonsVisible}"
+                android:text="@{@string/number_of_seasons_title(item.tvShowDetailItem.numberOfSeasonsString)}"
+                tools:text="Number of seasons: 2" />
+
+            <TextView
+                style="@style/TextView.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin_tiny"
+                app:visible="@{item.tvShowDetailItem.firstAirDateVisible}"
+                android:text="@{@string/first_air_date_title(item.tvShowDetailItem.firstAirDateFormatted)}"
+                tools:text="First air date: 31/01/2023" />
+
+        <TextView
+            style="@style/TextView.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            app:visible="@{item.tvShowDetailItem.lastAirDateVisible}"
+            android:text="@{@string/last_air_date_title(item.tvShowDetailItem.lastAirDateFormatted)}"
+            tools:text="Last air date: 31/01/2023" />
+
         <TextView
             style="@style/TextView.Medium.Bold"
             android:layout_width="match_parent"
@@ -81,58 +114,6 @@
             android:text="@{item.tvShowDetailItem.overview}"
             app:visible="@{item.tvShowDetailItem.overviewVisible}"
             tools:text="description bla bla bla bla bla bla bla bla" />
-
-        <LinearLayout
-            android:id="@+id/firstAirDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:orientation="vertical"
-            app:visible="@{item.tvShowDetailItem.firstAirDateVisible}">
-
-            <TextView
-                style="@style/TextView.Bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.firstAirDateTitle}"
-                tools:text="First air date" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.tvShowDetailItem.firstAirDateFormatted}"
-                tools:text="10/10/2010" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lastAirDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:orientation="vertical"
-            app:visible="@{item.tvShowDetailItem.lastAirDateVisible}">
-
-            <TextView
-                style="@style/TextView.Bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.lastAirDateTitle}"
-                tools:text="Last air date" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@{item.tvShowDetailItem.lastAirDateFormatted}"
-                tools:text="10/10/2010" />
-        </LinearLayout>
 
     </LinearLayout>
 </layout>

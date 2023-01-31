@@ -16,8 +16,8 @@ android {
         applicationId "com.github.af2905.movieland"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,6 +53,15 @@ android {
 
     buildFeatures {
         dataBinding true
+    }
+
+    flavorDimensions "version"
+    
+    productFlavors {
+        dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+        }
     }
 }
 

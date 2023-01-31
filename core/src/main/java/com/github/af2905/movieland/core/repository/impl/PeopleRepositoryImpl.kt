@@ -15,7 +15,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val DEFAULT_UPDATE_PEOPLE_HOURS = 24L
+private const val DEFAULT_UPDATE_PEOPLE_HOURS = 4L
 
 class PeopleRepositoryImpl @Inject constructor(
     private val peopleApi: PeopleApi,
