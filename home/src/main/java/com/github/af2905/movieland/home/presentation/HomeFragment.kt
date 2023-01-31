@@ -107,10 +107,6 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (binding.homeSwipeRefreshLayout.isRefreshing) {
-            finishRefresh()
-        }
-
         binding.recyclerView.apply { adapter = baseAdapter }
 
         binding.innerAppBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
@@ -124,6 +120,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
 
         binding.homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.refresh()
+            finishRefresh()
         }
 
         lifecycleScope.launchWhenCreated {
@@ -136,7 +133,6 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                     is HomeContract.Effect.OpenMovies -> handleEffect(effect.navigator)
                     is HomeContract.Effect.OpenPeople -> handleEffect(effect.navigator)
                     is HomeContract.Effect.OpenTvShows -> handleEffect(effect.navigator)
-                    is HomeContract.Effect.FinishRefresh -> finishRefresh()
                 }
             }
         }
