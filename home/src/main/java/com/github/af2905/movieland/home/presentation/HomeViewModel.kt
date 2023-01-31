@@ -105,7 +105,6 @@ class HomeViewModel @Inject constructor(
                     )
                 )
             }
-            container.postEffect(HomeContract.Effect.FinishRefresh)
         }
     }
 
@@ -147,7 +146,6 @@ class HomeViewModel @Inject constructor(
                     HomeContract.State.Content(list = cachedList)
                 }
             }
-            container.postEffect(HomeContract.Effect.FinishRefresh)
         }
     }
 

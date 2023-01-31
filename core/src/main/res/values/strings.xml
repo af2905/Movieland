@@ -18,7 +18,7 @@
     <string name="similar">Similar</string>
 
     //Movie detail
-    <string name="actors_and_crew_title">Actors and crew</string>
+    <string name="actors_and_crew_title">Actors</string>
 
     //Fail to connect
     <string name="message_fail_to_connect">Failed to connect</string>
@@ -49,7 +49,8 @@
     <string name="place_of_birth_title">Place of birth</string>
     <string name="biography_title">Biography</string>
 
-    <string name="first_air_date_title">First air date</string>
-    <string name="last_air_date_title">Last air date</string>
+    <string name="first_air_date_title">First air date: %1$s</string>
+    <string name="last_air_date_title">Last air date: %1$s</string>
+    <string name="number_of_seasons_title">Number of seasons: %1$s</string>
 
 </resources>
