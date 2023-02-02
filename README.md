@@ -1,3 +1,6 @@
+[![API](https://img.shields.io/badge/API-23%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=23)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+
 # Movieland
 
 ### An application to search, watch and save movies, TV shows and popular people.
