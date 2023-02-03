@@ -54,15 +54,6 @@ android {
     buildFeatures {
         dataBinding true
     }
-
-/*    flavorDimensions "version"
-    
-    productFlavors {
-        dev {
-            dimension "version"
-            applicationIdSuffix ".dev"
-        }
-    }*/
 }
 
 dependencies {
