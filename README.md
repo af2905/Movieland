@@ -1,6 +1,12 @@
+[![API](https://img.shields.io/badge/API-23%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=23)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+
 # Movieland
 
 ### An application to search, watch and save movies, TV shows and popular people.
+
+![Image of Yaktocat](https://github.com/af2905/Movieland/blob/main/app/images/google_play_icon.png) [Link to app on Google Play](https://play.google.com/store/apps/details?id=com.github.af2905.movieland)
+
 
 ![Image of Yaktocat](https://github.com/af2905/Movieland/blob/dev/app/images/movieland_github_pic1.png)
 
@@ -45,7 +51,7 @@ Dagger2 is used for dependency injection.
 ## Usage
 An application to search, watch and save movies, TV shows and popular people.
 
-If you want to run the application, then you need to get an api key on the site https://www.themoviedb.org and place it in keystore.properties in the field THE_MOVIE_DATABASE_API_KEY="your_key"
+If you want to run the application, then you need to get an api key on the site https://www.themoviedb.org and place "your_key" in keystore.properties in the field THE_MOVIE_DATABASE_API_KEY="your_key" or [link to app on Google Play](https://play.google.com/store/apps/details?id=com.github.af2905.movieland)
 
 ## TODO list
 * add module - Settings
