@@ -17,9 +17,8 @@ class GetPopularTvShows @Inject constructor(
             page = params.page,
             forceUpdate = params.forceUpdate
         )
-        return mapper.map(response).filter {
-            !it.overview.isNullOrEmpty() && it.voteAverage != Double.empty
-        }
+        return mapper.map(response)
+            .filter { !it.overview.isNullOrEmpty() && it.voteAverage != Double.empty && it.posterFullPathToImage != null }
             .sortedByDescending { it.releaseYear }
     }
 }

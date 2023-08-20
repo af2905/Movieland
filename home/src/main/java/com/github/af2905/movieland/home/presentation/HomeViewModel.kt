@@ -7,10 +7,37 @@ import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.ItemIds
 import com.github.af2905.movieland.core.common.model.Model
-import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.common.model.item.EmptySpaceItem
+import com.github.af2905.movieland.core.common.model.item.ErrorItem
+import com.github.af2905.movieland.core.common.model.item.HeaderItem
+import com.github.af2905.movieland.core.common.model.item.HeaderLinkItem
+import com.github.af2905.movieland.core.common.model.item.HeaderLinkItemType
+import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
+import com.github.af2905.movieland.core.common.model.item.MovieItem
+import com.github.af2905.movieland.core.common.model.item.PagerItem
+import com.github.af2905.movieland.core.common.model.item.PersonItem
+import com.github.af2905.movieland.core.common.model.item.TvShowItem
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
-import com.github.af2905.movieland.core.shared.*
+import com.github.af2905.movieland.core.shared.CachedMoviesParams
+import com.github.af2905.movieland.core.shared.CachedTvShowsParams
+import com.github.af2905.movieland.core.shared.GetCachedMoviesByType
+import com.github.af2905.movieland.core.shared.GetCachedPopularPeople
+import com.github.af2905.movieland.core.shared.GetCachedTvShowsByType
+import com.github.af2905.movieland.core.shared.GetNowPlayingMovies
+import com.github.af2905.movieland.core.shared.GetPopularMovies
+import com.github.af2905.movieland.core.shared.GetPopularPeople
+import com.github.af2905.movieland.core.shared.GetPopularTvShows
+import com.github.af2905.movieland.core.shared.GetTopRatedMovies
+import com.github.af2905.movieland.core.shared.GetTopRatedTvShows
+import com.github.af2905.movieland.core.shared.GetUpcomingMovies
+import com.github.af2905.movieland.core.shared.NowPlayingMoviesParams
+import com.github.af2905.movieland.core.shared.PeopleParams
+import com.github.af2905.movieland.core.shared.PopularMoviesParams
+import com.github.af2905.movieland.core.shared.PopularTvShowsParams
+import com.github.af2905.movieland.core.shared.TopRatedMoviesParams
+import com.github.af2905.movieland.core.shared.TopRatedTvShowsParams
+import com.github.af2905.movieland.core.shared.UpcomingMoviesParams
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
@@ -24,6 +51,8 @@ import com.github.af2905.movieland.home.R as HomeResources
 private const val PEOPLE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
 private const val MOVIES_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
 private const val TV_SHOWS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 3
+
+private const val DEFAULT_TAKE = 10
 
 class HomeViewModel @Inject constructor(
     private val getNowPlayingMovies: GetNowPlayingMovies,
@@ -85,14 +114,14 @@ class HomeViewModel @Inject constructor(
             getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
         }
 
-        val popularPeople = popularPeopleAsync.await()
-        val popularMovies = popularMoviesAsync.await()
-        val nowPlayingMovies = nowPlayingMoviesAsync.await()
-        val topRatedTvShows = topRatedTvShowsAsync.await()
+        val nowPlayingMovies = nowPlayingMoviesAsync.await().sortedByDescending { it.voteAverage }
+        val popularMovies = popularMoviesAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+        val popularTvShows = popularTvShowsAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+        val popularPeople = popularPeopleAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.name }
 
         upcomingMoviesAsync.await()
         topRatedMoviesAsync.await()
-        popularTvShowsAsync.await()
+        topRatedTvShowsAsync.await()
 
         container.intent {
             container.reduce {
@@ -100,7 +129,7 @@ class HomeViewModel @Inject constructor(
                     list = getHomeScreenItemList(
                         nowPlayingMovies = nowPlayingMovies,
                         popularMovies = popularMovies,
-                        popularTvShows = topRatedTvShows,
+                        popularTvShows = popularTvShows,
                         popularPeople = popularPeople
                     )
                 )
