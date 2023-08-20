@@ -1,8 +1,8 @@
 ext {
-    androidBuildToolsVersion = '30.0.3'
-    androidCompileSdkVersion = 32
+    androidBuildToolsVersion = '34.0.0'
+    androidCompileSdkVersion = 33
     androidMinSdkVersion = 23
-    androidTargetSdkVersion = 31
+    androidTargetSdkVersion = 33
 
     coreKtxVersion = '1.8.0'
     appcompatVersion = '1.4.1'

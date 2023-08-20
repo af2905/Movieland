@@ -1,13 +1,15 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
-
 package com.github.af2905.movieland.core.base
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.concurrent.Executors
 
 class Container<STATE, EFFECT>(private val scope: CoroutineScope, initialState: STATE) {
 
@@ -32,7 +34,6 @@ class Container<STATE, EFFECT>(private val scope: CoroutineScope, initialState: 
     }
 
     companion object {
-        @OptIn(DelicateCoroutinesApi::class)
-        val SINGLE_THREAD = newSingleThreadContext("mvi")
+        val SINGLE_THREAD = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
 }
