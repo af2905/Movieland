@@ -17,4 +17,5 @@ object ItemIds {
     const val BACK_BUTTON_ITEM_ID = -112
     const val HEADER_LINK_ITEM_ID = -113
     const val PAGER_ITEM_ID = -114
+    const val NEXT_ITEM_ID = -115
 }
