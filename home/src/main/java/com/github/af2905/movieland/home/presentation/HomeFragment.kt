@@ -14,7 +14,15 @@ import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.NestedRecyclerViewStateAdapter
 import com.github.af2905.movieland.core.common.model.decorator.HorizontalListItemDecorator
-import com.github.af2905.movieland.core.common.model.item.*
+import com.github.af2905.movieland.core.common.model.item.ArrowNextItem
+import com.github.af2905.movieland.core.common.model.item.ErrorItem
+import com.github.af2905.movieland.core.common.model.item.HeaderLinkItem
+import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
+import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
+import com.github.af2905.movieland.core.common.model.item.MovieItem
+import com.github.af2905.movieland.core.common.model.item.PagerAdapter
+import com.github.af2905.movieland.core.common.model.item.PagerItem
+import com.github.af2905.movieland.core.common.model.item.TvShowItem
 import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
@@ -51,6 +59,12 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                         listener = TvShowItem.Listener { item ->
                             viewModel.openTvShowDetail(item.id)
                         }
+                    ),
+                    ItemDelegate(
+                        viewType = ArrowNextItem.VIEW_TYPE,
+                        listener = ArrowNextItem.Listener { type ->
+                            viewModel.openMore(type)
+                        }
                     )
                 )
             },
@@ -71,7 +85,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
         ),
         ItemDelegate(
             viewType = HeaderLinkItem.VIEW_TYPE,
-            listener = HeaderLinkItem.Listener { item -> viewModel.openMore(item.type) }
+            listener = HeaderLinkItem.Listener { type -> viewModel.openMore(type) }
         ),
         ItemDelegate(
             viewType = ErrorItem.VIEW_TYPE,
@@ -87,6 +101,7 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
                     requireActivity().theme.resolveAttribute(R.attr.colorSurface, typedValue, true)
                     binding.toolbar.background = ColorDrawable(typedValue.data)
                 }
+
                 State.IDLE -> binding.toolbar.background = ColorDrawable(Color.TRANSPARENT)
                 else -> Unit
             }

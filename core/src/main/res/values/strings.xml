@@ -9,6 +9,7 @@
     <string name="action_search">Search</string>
 
     <string name="any_screen_more">more…</string>
+    <string name="any_screen_show_all">show all</string>
     <string name="hint_search_query">Enter search query…</string>
 
     //Headers
