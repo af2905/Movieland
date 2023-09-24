@@ -10,6 +10,7 @@
     <string name="action_search">Поиск</string>
 
     <string name="any_screen_more">ещё…</string>
+    <string name="any_screen_show_all">показать все</string>
     <string name="hint_search_query">Введите поисковый запрос…</string>
 
     //Headers
