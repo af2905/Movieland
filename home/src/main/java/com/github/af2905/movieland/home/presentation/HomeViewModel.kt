@@ -7,12 +7,13 @@ import com.github.af2905.movieland.core.base.Container
 import com.github.af2905.movieland.core.common.effect.Navigate
 import com.github.af2905.movieland.core.common.model.ItemIds
 import com.github.af2905.movieland.core.common.model.Model
+import com.github.af2905.movieland.core.common.model.item.ArrowNextItem
 import com.github.af2905.movieland.core.common.model.item.EmptySpaceItem
 import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.HeaderItem
 import com.github.af2905.movieland.core.common.model.item.HeaderLinkItem
-import com.github.af2905.movieland.core.common.model.item.HeaderLinkItemType
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
+import com.github.af2905.movieland.core.common.model.item.LinkItemType
 import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.common.model.item.PagerItem
 import com.github.af2905.movieland.core.common.model.item.PersonItem
@@ -115,9 +116,12 @@ class HomeViewModel @Inject constructor(
         }
 
         val nowPlayingMovies = nowPlayingMoviesAsync.await().sortedByDescending { it.voteAverage }
-        val popularMovies = popularMoviesAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
-        val popularTvShows = popularTvShowsAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
-        val popularPeople = popularPeopleAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.name }
+        val popularMovies =
+            popularMoviesAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+        val popularTvShows =
+            popularTvShowsAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+        val popularPeople =
+            popularPeopleAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.name }
 
         upcomingMoviesAsync.await()
         topRatedMoviesAsync.await()
@@ -224,9 +228,12 @@ class HomeViewModel @Inject constructor(
     ): List<Model> {
         return if (list.isNotEmpty()) {
             listOf(
-                HeaderLinkItem(headerName, headerLink, HeaderLinkItemType.MOVIES),
+                HeaderLinkItem(headerName, headerLink, LinkItemType.MOVIES),
                 emptySpaceSmall,
-                HorizontalListItem(list = list, id = MOVIES_LIST_ID),
+                HorizontalListItem(
+                    list = list + ArrowNextItem(type = LinkItemType.MOVIES),
+                    id = MOVIES_LIST_ID
+                ),
                 emptySpaceNormal
             )
         } else {
@@ -241,9 +248,12 @@ class HomeViewModel @Inject constructor(
     ): List<Model> {
         return if (list.isNotEmpty()) {
             listOf(
-                HeaderLinkItem(headerName, headerLink, HeaderLinkItemType.TV_SHOWS),
+                HeaderLinkItem(headerName, headerLink, LinkItemType.TV_SHOWS),
                 emptySpaceSmall,
-                HorizontalListItem(list = list, id = TV_SHOWS_LIST_ID),
+                HorizontalListItem(
+                    list = list + ArrowNextItem(type = LinkItemType.TV_SHOWS),
+                    id = TV_SHOWS_LIST_ID
+                ),
                 emptySpaceNormal
             )
         } else {
@@ -258,10 +268,15 @@ class HomeViewModel @Inject constructor(
     ): List<Model> {
         return if (people.isNotEmpty()) {
             val list = mutableListOf<Model>()
-            list.add(HeaderLinkItem(headerName, headerLink, HeaderLinkItemType.PEOPLE))
+            list.add(HeaderLinkItem(headerName, headerLink, LinkItemType.PEOPLE))
             list.add(emptySpaceSmall)
             val items = people.map { PopularPersonItem(it) }
-            list.add(HorizontalListItem(list = items, id = PEOPLE_LIST_ID))
+            list.add(
+                HorizontalListItem(
+                    list = items + ArrowNextItem(type = LinkItemType.PEOPLE),
+                    id = PEOPLE_LIST_ID
+                )
+            )
             list.add(emptySpaceNormal)
             list
         } else {
@@ -317,17 +332,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun openMore(type: HeaderLinkItemType) {
+    fun openMore(type: LinkItemType) {
         val effect = when (type) {
-            HeaderLinkItemType.MOVIES -> {
+            LinkItemType.MOVIES -> {
                 HomeContract.Effect.OpenMovies(Navigate { navigator ->
                     (navigator as HomeNavigator).forwardToMoviesScreen()
                 })
             }
-            HeaderLinkItemType.PEOPLE -> HomeContract.Effect.OpenPeople(Navigate { navigator ->
+
+            LinkItemType.PEOPLE -> HomeContract.Effect.OpenPeople(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardToPeopleScreen()
             })
-            HeaderLinkItemType.TV_SHOWS -> HomeContract.Effect.OpenTvShows(Navigate { navigator ->
+
+            LinkItemType.TV_SHOWS -> HomeContract.Effect.OpenTvShows(Navigate { navigator ->
                 (navigator as HomeNavigator).forwardToTvShowsScreen()
             })
         }
