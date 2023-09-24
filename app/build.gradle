@@ -16,8 +16,8 @@ android {
         applicationId "com.github.af2905.movieland"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode 6
-        versionName "1.4"
+        versionCode 7
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
