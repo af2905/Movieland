@@ -31,6 +31,7 @@
 
     <dimen name="default_button_size_small">20dp</dimen>
 
+    <dimen name="default_icon_size_small">50dp</dimen>
     <dimen name="default_icon_size">90dp</dimen>
     <dimen name="default_icon_size_medium">130dp</dimen>
 
