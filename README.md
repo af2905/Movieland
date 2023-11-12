@@ -5,7 +5,7 @@
 
 ### An application to search, watch and save movies, TV shows and popular people.
 
-<img src="https://github.com/af2905/Movieland/assets/54403828/be6c16f1-2e64-4183-b4be-9917e5d825f9" width="200" link="https://play.google.com/store/apps/details?id=com.github.af2905.movieland" />
+<a href='https://play.google.com/store/apps/details?id=com.github.af2905.movieland&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200" height="80"/></a>
 
 
 ![Image of Yaktocat](https://github.com/af2905/Movieland/blob/dev/app/images/movieland_github_pic1.png)
