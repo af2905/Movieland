@@ -5,10 +5,10 @@
 
 ### An application to search, watch and save movies, TV shows and popular people.
 
-<img src="https://github.com/af2905/Movieland/assets/54403828/be6c16f1-2e64-4183-b4be-9917e5d825f9" width="200" />
+<img src="https://github.com/af2905/Movieland/assets/54403828/be6c16f1-2e64-4183-b4be-9917e5d825f9" width="200" link="https://play.google.com/store/apps/details?id=com.github.af2905.movieland" />
+
 
 ![Image of Yaktocat](https://github.com/af2905/Movieland/blob/dev/app/images/movieland_github_pic1.png)
-
 
 
 ![Image of Yaktocat](https://github.com/af2905/Movieland/blob/dev/app/images/movieland_github_pic2.png)
