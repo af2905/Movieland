@@ -53,7 +53,7 @@ private const val PEOPLE_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 1
 private const val MOVIES_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 2
 private const val TV_SHOWS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 3
 
-private const val DEFAULT_TAKE = 10
+private const val DEFAULT_TAKE = 15
 
 class HomeViewModel @Inject constructor(
     private val getNowPlayingMovies: GetNowPlayingMovies,
@@ -115,13 +115,18 @@ class HomeViewModel @Inject constructor(
             getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
         }
 
-        val nowPlayingMovies = nowPlayingMoviesAsync.await().sortedByDescending { it.voteAverage }
-        val popularMovies =
-            popularMoviesAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
-        val popularTvShows =
-            popularTvShowsAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
-        val popularPeople =
-            popularPeopleAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.name }
+        val nowPlayingMovies = nowPlayingMoviesAsync.await()
+
+        val popularMovies = popularMoviesAsync.await()
+            .take(DEFAULT_TAKE)
+            .sortedByDescending { it.voteAverage }
+
+        val popularTvShows = popularTvShowsAsync.await()
+            .take(DEFAULT_TAKE)
+            .sortedByDescending { it.voteAverage }
+
+        val popularPeople = popularPeopleAsync.await()
+            .take(DEFAULT_TAKE)
 
         upcomingMoviesAsync.await()
         topRatedMoviesAsync.await()
