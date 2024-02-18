@@ -15,10 +15,19 @@ class GetPopularSearchQueries @Inject constructor(
     private val mapper: MovieMapper
 ) : CoroutineUseCase<SearchParams, List<SearchQueryItem>>() {
     override suspend fun execute(params: SearchParams): List<SearchQueryItem> {
-        val response = mapper.map(
+        val nowPlayingMovies = mapper.map(
             moviesRepository.getCachedMoviesByType(MovieType.NOW_PLAYING)
         )
-        return response.mapNotNull { item ->
+        val popularMovies = mapper.map(
+            moviesRepository.getCachedMoviesByType(MovieType.POPULAR)
+        )
+        val upcomingMovies = mapper.map(
+            moviesRepository.getCachedMoviesByType(MovieType.UPCOMING)
+        )
+
+        val shuffledResult = (nowPlayingMovies + popularMovies + upcomingMovies).shuffled()
+
+        return shuffledResult.mapNotNull { item ->
             item.title?.let {
                 SearchQueryItem(
                     id = item.id,
