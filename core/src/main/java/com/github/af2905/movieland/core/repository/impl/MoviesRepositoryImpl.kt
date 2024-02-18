@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.core.repository.impl
 
+import com.github.af2905.movieland.core.common.helper.DateTimeHelper
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
 import com.github.af2905.movieland.core.data.database.dao.MovieDetailDao
@@ -13,8 +14,7 @@ import com.github.af2905.movieland.core.data.dto.movie.MovieDto
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.util.extension.isNullOrEmpty
-import java.util.*
-import java.util.concurrent.TimeUnit
+import java.util.Calendar
 import javax.inject.Inject
 
 private const val DEFAULT_UPDATE_MOVIE_HOURS = 4L
@@ -126,22 +126,23 @@ class MoviesRepositoryImpl @Inject constructor(
 
         val count = movieDao.getCountByType(type.name)
 
-        val timeStamp = count?.let { movieDao.getTimeStampByType(type.name) }
+        val timeStamp = count
+            ?.let { movieDao.getByType(type.name) }
+            ?.mapNotNull { it.timeStamp }
+            ?.maxOrNull()
 
         val currentTime = Calendar.getInstance().timeInMillis
 
         val timeDiff = timeStamp?.let {
-            periodOfTimeInHours(
+            DateTimeHelper.getHoursDifference(
                 timeStamp = it,
                 currentTime = currentTime
             )
         }
 
-        val needToUpdate = timeDiff?.let {
-            it > TimeUnit.HOURS.toMillis(DEFAULT_UPDATE_MOVIE_HOURS)
-        }
+        val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
 
-        if (count.isNullOrEmpty() || needToUpdate == true || forceUpdate) {
+        if (count.isNullOrEmpty() || forceUpdate || needToUpdate == true) {
             val dto = when (type) {
                 MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page, region)
                 MovieType.POPULAR -> moviesApi.getPopularMovies(language, page, region)
@@ -152,7 +153,4 @@ class MoviesRepositoryImpl @Inject constructor(
         }
         return movieDao.getByType(type.name).orEmpty()
     }
-
-    private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =
-        TimeUnit.MILLISECONDS.toHours(currentTime - timeStamp)
 }

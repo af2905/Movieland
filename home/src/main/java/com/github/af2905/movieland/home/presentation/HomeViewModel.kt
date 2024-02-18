@@ -115,13 +115,14 @@ class HomeViewModel @Inject constructor(
             getPopularPeople(PeopleParams(forceUpdate = forceUpdate)).getOrThrow()
         }
 
-        val nowPlayingMovies = nowPlayingMoviesAsync.await().sortedByDescending { it.voteAverage }
+        val nowPlayingMovies =
+            nowPlayingMoviesAsync.await().sortedByDescending { it.voteAverage }.take(DEFAULT_TAKE)
         val popularMovies =
-            popularMoviesAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+            popularMoviesAsync.await().sortedByDescending { it.voteAverage }.take(DEFAULT_TAKE)
         val popularTvShows =
-            popularTvShowsAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.voteAverage }
+            popularTvShowsAsync.await().sortedByDescending { it.voteAverage }.take(DEFAULT_TAKE)
         val popularPeople =
-            popularPeopleAsync.await().take(DEFAULT_TAKE).sortedByDescending { it.name }
+            popularPeopleAsync.await().sortedByDescending { it.name }.take(DEFAULT_TAKE)
 
         upcomingMoviesAsync.await()
         topRatedMoviesAsync.await()

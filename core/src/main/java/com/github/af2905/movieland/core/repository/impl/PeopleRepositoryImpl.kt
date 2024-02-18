@@ -11,7 +11,7 @@ import com.github.af2905.movieland.core.data.dto.people.PersonMovieCreditsCastDt
 import com.github.af2905.movieland.core.data.mapper.PersonMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
 import com.github.af2905.movieland.util.extension.isNullOrEmpty
-import java.util.*
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -76,7 +76,6 @@ class PeopleRepositoryImpl @Inject constructor(
             personMapper.map(dto.results, currentTime).forEach { personDao.save(it) }
         }
         return personDao.get().orEmpty()
-
     }
 
     override suspend fun savePersonDetail(personDetail: PersonDetail): Boolean {

@@ -33,7 +33,7 @@
 
     //Menu item
     <string name="menu_item_recently_viewed_title">Recently viewed</string>
-    <string name="menu_item_liked_title">Liked</string>
+    <string name="menu_item_liked_title">My Favorites</string>
     <string name="menu_item_settings_title">Settings</string>
 
     //Profile

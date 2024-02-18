@@ -5,6 +5,6 @@
     <string name="bottom_nav_menu_home_title">Главная</string>
     <string name="bottom_nav_menu_search_title">Поиск</string>
     <string name="bottom_nav_menu_profile_title">Профиль</string>
-    <string name="bottom_nav_menu_liked_title">Нравится</string>
+    <string name="bottom_nav_menu_liked_title">Избранное</string>
 
 </resources>

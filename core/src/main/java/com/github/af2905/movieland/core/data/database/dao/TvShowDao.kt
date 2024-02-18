@@ -20,4 +20,7 @@ interface TvShowDao {
 
     @Delete
     suspend fun delete(tvShow: TvShow)
+
+    @Query("DELETE FROM TvShow")
+    suspend fun deleteAll()
 }

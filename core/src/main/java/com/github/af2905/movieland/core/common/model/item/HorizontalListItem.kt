@@ -18,11 +18,11 @@ data class HorizontalListItem(
 ) : Model(VIEW_TYPE) {
 
     override fun areItemsTheSame(item: Model): Boolean {
-        return item is HorizontalListItem && item.list == list
+        return item is HorizontalListItem && item.id == id
     }
 
     override fun areContentsTheSame(item: Model): Boolean {
-        return super.areContentsTheSame(item)
+        return item is HorizontalListItem && item.list == list
     }
 
     companion object {
