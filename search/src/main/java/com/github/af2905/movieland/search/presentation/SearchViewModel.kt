@@ -10,6 +10,7 @@ import com.github.af2905.movieland.core.common.model.item.ErrorItem
 import com.github.af2905.movieland.core.common.model.item.HeaderItem
 import com.github.af2905.movieland.core.common.model.item.SearchItem
 import com.github.af2905.movieland.core.common.model.item.SearchItem.Companion.TEXT_ENTERED_DEBOUNCE_MILLIS
+import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
 import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
@@ -33,6 +34,7 @@ class SearchViewModel @Inject constructor(
         Container(viewModelScope, SearchContract.State.Loading(SearchItem()))
 
     private val query = MutableStateFlow(String.empty)
+    private var popularSearchQueries = listOf<SearchQueryItem>()
 
     init {
         initQuery()
@@ -40,6 +42,10 @@ class SearchViewModel @Inject constructor(
 
     private fun initQuery() {
         viewModelScope.launch {
+            if (popularSearchQueries.isEmpty()) {
+                popularSearchQueries =
+                    getPopularSearchQueries(SearchParams).getOrDefault(emptyList())
+            }
             query.debounce(TEXT_ENTERED_DEBOUNCE_MILLIS)
                 .mapLatest(::handleQuery)
                 .collect { state -> container.reduce { state } }
@@ -48,9 +54,8 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun handleQuery(text: String): SearchContract.State {
         val result = if (text.isEmpty()) {
-            val queries = getPopularSearchQueries(SearchParams).getOrDefault(emptyList())
-            val popularSearchQueries = if (queries.isNotEmpty()) {
-                listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + queries
+            val popularSearchQueries = if (popularSearchQueries.isNotEmpty()) {
+                listOf<Model>(HeaderItem(R.string.search_popular_search_queries)) + popularSearchQueries
             } else {
                 emptyList()
             }
