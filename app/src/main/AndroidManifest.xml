@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.github.af2905.movieland">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,7 +12,8 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Movieland">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,8 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data android:name="androidx.work.WorkManagerInitializer"
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
                 tools:node="remove" />
         </provider>
     </application>
