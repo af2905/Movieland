@@ -28,7 +28,7 @@ abstract class BaseFragment<NV : Navigator, DB : ViewDataBinding, VM : ViewModel
     lateinit var viewModel: VM
 
     @Inject
-    protected lateinit var viewModelFactory: ViewModelFactory<VM>
+    lateinit var viewModelFactory: ViewModelFactory<VM>
 
     lateinit var navController: NavController
     lateinit var base: Base<NV>
