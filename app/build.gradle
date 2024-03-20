@@ -9,11 +9,12 @@ plugins {
 apply from: '../dependencies.gradle'
 
 android {
-    compileSdkVersion androidCompileSdkVersion
-    buildToolsVersion androidBuildToolsVersion
+    compileSdk androidCompileSdkVersion
+    buildToolsVersion = androidBuildToolsVersion
+
+    namespace 'com.github.af2905.movieland'
 
     defaultConfig {
-        applicationId "com.github.af2905.movieland"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
         versionCode 9
@@ -37,12 +38,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "17"
 
         // Enable Coroutines and Flow APIs
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
@@ -53,6 +54,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig true
         dataBinding true
     }
 }
