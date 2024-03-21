@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.BaseFragment
@@ -47,10 +49,20 @@ class LikedMoviesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context?.registerReceiver(
-            likedMoviesBroadcastReceiver,
-            IntentFilter(IntentFilterKey.LIKED_MOVIE)
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.registerReceiver(
+                requireContext(),
+                likedMoviesBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_MOVIE),
+                ContextCompat.RECEIVER_EXPORTED
+            )
+        } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            context?.registerReceiver(
+                likedMoviesBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_MOVIE)
+            )
+        }
 
         binding.recyclerView.apply {
             adapter = baseAdapter

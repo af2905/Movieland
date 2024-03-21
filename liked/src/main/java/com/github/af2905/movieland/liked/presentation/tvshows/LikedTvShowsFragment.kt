@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -47,10 +48,19 @@ class LikedTvShowsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context?.registerReceiver(
-            likedTvShowsBroadcastReceiver,
-            IntentFilter(IntentFilterKey.LIKED_TV_SHOW)
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context?.registerReceiver(
+                likedTvShowsBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_TV_SHOW),
+                Context.RECEIVER_EXPORTED
+            )
+        } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            context?.registerReceiver(
+                likedTvShowsBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_TV_SHOW)
+            )
+        }
 
         binding.recyclerView.apply {
             adapter = baseAdapter

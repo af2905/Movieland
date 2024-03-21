@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -47,10 +48,19 @@ class LikedPeopleFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        context?.registerReceiver(
-            likedPeopleBroadcastReceiver,
-            IntentFilter(IntentFilterKey.LIKED_PERSON)
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context?.registerReceiver(
+                likedPeopleBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_PERSON),
+                Context.RECEIVER_EXPORTED
+            )
+        } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            context?.registerReceiver(
+                likedPeopleBroadcastReceiver,
+                IntentFilter(IntentFilterKey.LIKED_PERSON)
+            )
+        }
 
         binding.recyclerView.apply {
             adapter = baseAdapter

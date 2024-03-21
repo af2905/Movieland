@@ -9,9 +9,7 @@ class LikedMoviesContract {
 
     sealed class State : UiState() {
 
-        object Loading : State() {
-            override fun toString(): String = javaClass.simpleName
-        }
+        data object Loading : State()
 
         data class Content(val list: List<Model>) : State()
 
