@@ -1,11 +1,11 @@
-package com.github.af2905.movieland.compose
+package com.github.af2905.movieland.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.github.af2905.movieland.compose.AppColors.Companion.defaultColorsDark
-import com.github.af2905.movieland.compose.AppColors.Companion.defaultColorsLight
+import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsDark
+import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsLight
 
 private val LocalAppColors = staticCompositionLocalOf { defaultColorsLight }
 private val LocalAppDimens = staticCompositionLocalOf { dimens }
@@ -26,7 +26,10 @@ fun AppTheme(
         LocalAppDimens provides dimens,
         LocalAppTypography provides typography
     ) {
-        content()
+        RippleTheme(
+            darkTheme = darkTheme,
+            content = content
+        )
     }
 }
 
