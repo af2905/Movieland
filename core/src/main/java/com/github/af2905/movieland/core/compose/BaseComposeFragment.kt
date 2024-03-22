@@ -1,5 +1,3 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
-
 package com.github.af2905.movieland.core.compose
 
 import android.os.Bundle
