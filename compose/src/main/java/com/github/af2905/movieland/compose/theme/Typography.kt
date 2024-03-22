@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.compose
+package com.github.af2905.movieland.compose.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.github.af2905.movieland.compose.R
 
 internal val defaultFontFamily = FontFamily(
     Font(resId = R.font.roboto_light, weight = FontWeight.Light),

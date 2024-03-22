@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.compose
+package com.github.af2905.movieland.compose.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -48,6 +48,7 @@ data class TypeColors(
 data class BackgroundColors(
     val default: Color = Color.Unspecified,
     val divider: Color = Color.Unspecified,
+    val actionRipple: Color = Color.Unspecified,
     val white: Color = Color.Unspecified,
     val black: Color = Color.Unspecified
 ) {
@@ -55,6 +56,7 @@ data class BackgroundColors(
         val defaultColorsLight = BackgroundColors(
             default = Color(0xFFF7F7F7),
             divider = Color(0x0D000000),
+            actionRipple = Color(0x14000000),
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A)
         )
@@ -62,6 +64,7 @@ data class BackgroundColors(
         val defaultColorsDark = BackgroundColors(
             default = Color(0xFF18191A),
             divider = Color(0x0DFFFFFF),
+            actionRipple = Color(0x14FFFFFF),
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A)
         )
