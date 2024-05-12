@@ -27,10 +27,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
 
@@ -40,8 +42,13 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.5.13'
+    }
+
     buildFeatures {
         dataBinding true
+        compose true
     }
 }
 
@@ -54,7 +61,7 @@ dependencies {
     implementation(project(':people'))
     implementation(project(':tvshows'))
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.23"
+    implementation libraries.kotlin
     implementation libraries.coreKtx
 
     implementation libraries.daggerAndroidSupport
@@ -69,4 +76,12 @@ dependencies {
     implementation libraries.swipeRefreshLayout
     implementation libraries.recyclerView
     implementation libraries.shimmer
+
+    //Compose
+    implementation libraries.activityCompose
+    implementation libraries.composeMaterial
+    implementation libraries.composeAnimation
+    implementation libraries.lifecycleViewModelCompose
+    implementation libraries.landscapist
+    implementation libraries.composeMaterialIcons
 }

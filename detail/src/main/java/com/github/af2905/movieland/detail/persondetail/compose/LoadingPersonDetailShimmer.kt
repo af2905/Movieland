@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.detail.persondetail.compose
 
+/*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -113,4 +114,4 @@ fun ShimmerPersonDetailItem(
             }
         }
     }
-}
+}*/

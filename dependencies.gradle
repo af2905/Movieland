@@ -28,8 +28,6 @@ ext {
     daggerAssistVersion = '0.5.2'
     shimmerVersion = '0.5.0'
 
-    kotlinCompilerExtensionVersion = '1.5.10'
-
     libraries = [
             kotlin                      : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             coreKtx                     : "androidx.core:core-ktx:$coreKtxVersion",
@@ -65,13 +63,13 @@ ext {
             workManager                 : "androidx.work:work-runtime-ktx:$workVersion",
             shimmer                     : "com.facebook.shimmer:shimmer:$shimmerVersion",
             //Compose
-            activityCompose             : 'androidx.activity:activity-compose:1.4.0',
-            composeMaterial             : 'androidx.compose.material:material:1.1.1',
-            composeAnimation            : 'androidx.compose.animation:animation:1.1.1',
+            activityCompose             : 'androidx.activity:activity-compose:1.9.0',
+            composeMaterial             : 'androidx.compose.material3:material3',
+            composeAnimation            : 'androidx.compose.animation:animation:1.6.7',
             composeUiTooling            : 'androidx.compose.ui:ui-tooling:1.1.1',
-            lifecycleViewModelCompose   : 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1',
+            lifecycleViewModelCompose   : 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1',
             composeJUnit                : 'androidx.compose.ui:ui-test-junit4:1.1.1',
-            landscapist                 : "com.github.skydoves:landscapist-glide:1.5.1",
-            composeMaterialIcons        : "androidx.compose.material:material-icons-extended:1.1.1"
+            landscapist                 : "com.github.skydoves:landscapist-glide:2.3.3",
+            composeMaterialIcons        : 'androidx.compose.material:material-icons-extended'
     ]
 }

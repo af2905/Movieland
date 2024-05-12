@@ -42,13 +42,8 @@ android {
         freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = '1.5.10'
-    }
-
     buildFeatures {
         dataBinding true
-        compose true
     }
 }
 
@@ -71,12 +66,4 @@ dependencies {
     implementation libraries.monitor
     implementation libraries.junitExt
     androidTestImplementation libraries.junit
-
-    implementation libraries.activityCompose
-    implementation libraries.composeMaterial
-    implementation libraries.composeAnimation
-    implementation libraries.composeUiTooling
-    implementation libraries.lifecycleViewModelCompose
-    implementation libraries.landscapist
-    implementation libraries.composeMaterialIcons
 }
