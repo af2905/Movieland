@@ -24,12 +24,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.5.13'
     }
 
     buildFeatures {
@@ -41,13 +47,15 @@ dependencies {
 
     implementation libraries.kotlin
     implementation libraries.coreKtx
+    implementation 'androidx.compose.foundation:foundation-layout-android:1.6.7'
     testImplementation libraries.junit
     androidTestImplementation libraries.junit
     implementation libraries.junitExt
-    
-    //compose
-    implementation libraries.activityCompose
+
+    //Compose
     implementation libraries.composeMaterial
-    implementation libraries.composeUiTooling
+    implementation libraries.composeAnimation
     implementation libraries.lifecycleViewModelCompose
+    implementation libraries.landscapist
+    implementation libraries.composeMaterialIcons
 }
