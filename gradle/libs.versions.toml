@@ -4,7 +4,7 @@ androidCompileSdk = "34"
 androidMinSdk = "23"
 androidTargetSdk = "34"
 
-kotlin = "1.9.22" # General Kotlin version
+kotlin = "1.9.23" # General Kotlin version
 kotlinCompilerExtensionVersion = "1.5.11"
 
 core-ktx = "1.12.0"
