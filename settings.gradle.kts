@@ -24,9 +24,9 @@ pluginManagement {
     plugins {
         id("com.android.application") version "8.3.1"
         id("com.android.library") version "8.3.1"
-        id("org.jetbrains.kotlin.android") version "1.9.22"
-        id("org.jetbrains.kotlin.kapt") version "1.9.22"
-        id("org.jetbrains.kotlin.plugin.parcelize") version "1.9.22"
+        id("org.jetbrains.kotlin.android") version "1.9.23"
+        id("org.jetbrains.kotlin.kapt") version "1.9.23"
+        id("org.jetbrains.kotlin.plugin.parcelize") version "1.9.23"
         id("androidx.navigation.safeargs") version "2.7.7"
     }
 }
