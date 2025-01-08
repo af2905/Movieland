@@ -82,6 +82,5 @@ dependencies {
     implementation(libs.compose.animation)
     implementation(libs.compose.ui.tooling)
     implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.landscapist)
     implementation(libs.compose.material.icons)
 }
