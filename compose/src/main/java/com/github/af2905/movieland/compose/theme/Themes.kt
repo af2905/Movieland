@@ -4,6 +4,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontFamily
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsDark
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsLight
 
@@ -15,21 +17,19 @@ private val LocalAppTypography = staticCompositionLocalOf { typography }
 fun AppTheme(
     palette: Palette = Palette(light = defaultColorsLight, dark = defaultColorsDark),
     darkTheme: Boolean = isSystemInDarkTheme(),
+    fonts: FontFamily? = null,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) palette.dark else palette.light
-    val dimens = dimens
-    val typography = Typography(defaultFontFamily, colors.type.primary)
+    val dimens = if (LocalConfiguration.current.screenWidthDp > 600) dimens600 else dimens
+    val typography = Typography(fonts ?: defaultFontFamily, colors.type.primary)
 
     CompositionLocalProvider(
         LocalAppColors provides colors,
         LocalAppDimens provides dimens,
-        LocalAppTypography provides typography
+        LocalAppTypography provides typography,
     ) {
-        RippleTheme(
-            darkTheme = darkTheme,
-            content = content
-        )
+        content()
     }
 }
 
