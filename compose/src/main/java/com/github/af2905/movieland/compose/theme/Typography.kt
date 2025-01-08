@@ -27,6 +27,21 @@ data class Typography(
         fontFamily = fontFamily,
         lineHeight = 50.sp
     ),
+    val display1: TextStyle = TextStyle(
+        color = color,
+        fontSize = 60.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = fontFamily,
+        letterSpacing = 0.82.sp,
+        lineHeight = 64.sp
+    ),
+    val display2: TextStyle = TextStyle(
+        color = color,
+        fontSize = 48.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = fontFamily,
+        lineHeight = 52.sp
+    ),
     val title1: TextStyle = TextStyle(
         color = color,
         fontSize = 34.sp,
@@ -81,6 +96,38 @@ data class Typography(
         fontFamily = fontFamily,
         letterSpacing = 0.2.sp,
         lineHeight = 22.sp
+    ),
+    val caption1: TextStyle = TextStyle(
+        color = color,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        letterSpacing = (-0.08).sp,
+        lineHeight = 16.sp
+    ),
+    val caption1Medium: TextStyle = TextStyle(
+        color = color,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
+        fontFamily = fontFamily,
+        letterSpacing = (-0.08).sp,
+        lineHeight = 16.sp
+    ),
+    val caption2: TextStyle = TextStyle(
+        color = color,
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = fontFamily,
+        letterSpacing = 0.07.sp,
+        lineHeight = 13.sp
+    ),
+    val captionBar: TextStyle = TextStyle(
+        color = color,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
+        fontFamily = fontFamily,
+        letterSpacing = (-0.08).sp,
+        lineHeight = 16.sp
     )
 )
 
