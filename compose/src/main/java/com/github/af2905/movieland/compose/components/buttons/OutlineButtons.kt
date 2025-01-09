@@ -1,7 +1,9 @@
 package com.github.af2905.movieland.compose.components.buttons
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.theme.AppTheme
 
@@ -84,4 +87,29 @@ private fun ButtonText(text: String) {
         maxLines = 1,
         style = AppTheme.typography.bodyMedium.copy(color = Color.Unspecified)
     )
+}
+
+/*Previews*/
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewOutlineButtonView() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        OutlineButtonView(
+            text = "Outline Button",
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlineButtonView(
+            text = "Disabled",
+            enabled = false,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlineButtonView(
+            text = "Loading",
+            isProgress = true,
+            onClick = {}
+        )
+    }
 }
