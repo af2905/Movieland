@@ -1,8 +1,10 @@
 package com.github.af2905.movieland.compose.components.buttons
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.theme.AppTheme
 
@@ -171,6 +175,107 @@ private fun ButtonContent(text: String, painter: Painter) {
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
             style = AppTheme.typography.bodyMedium.copy(color = Color.Unspecified)
+        )
+    }
+}
+
+/*Previews*/
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPrimaryButtonView() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        PrimaryButtonView(
+            text = "Primary Button",
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButtonView(
+            text = "Loading...",
+            isProgress = true,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButtonView(
+            text = "Disabled",
+            enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPrimaryButtonInverseView() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        PrimaryButtonInverseView(
+            text = "Inverse Button",
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButtonInverseView(
+            text = "Loading...",
+            isProgress = true,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButtonInverseView(
+            text = "Disabled",
+            enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewSecondaryButtonView() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        SecondaryButtonView(
+            text = "Secondary Button",
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SecondaryButtonView(
+            text = "Loading...",
+            isProgress = true,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SecondaryButtonView(
+            text = "Disabled",
+            enabled = false,
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewPrimaryIconColoredButton() {
+    val painter = painterResource(id = android.R.drawable.ic_menu_camera)
+    Column(modifier = Modifier.padding(16.dp)) {
+        PrimaryIconColoredButton(
+            text = "Button with Icon",
+            painter = painter,
+            backgroundColor = AppTheme.colors.theme.tint,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryIconColoredButton(
+            text = "Loading...",
+            painter = painter,
+            isProgress = true,
+            backgroundColor = AppTheme.colors.theme.tint,
+            onClick = {}
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryIconColoredButton(
+            text = "Disabled",
+            painter = painter,
+            enabled = false,
+            backgroundColor = AppTheme.colors.theme.tint,
+            onClick = {}
         )
     }
 }
