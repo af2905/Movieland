@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.theme.AppTheme
 
-
 @Composable
 fun VerticalButtonView(
     text: String,

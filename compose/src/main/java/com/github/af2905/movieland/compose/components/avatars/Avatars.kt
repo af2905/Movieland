@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.compose.theme.CircleBadgeShape
 
-
 @Composable
 fun AvatarDefaultView(
     painter: Painter,
