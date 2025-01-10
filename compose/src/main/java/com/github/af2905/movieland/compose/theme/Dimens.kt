@@ -102,7 +102,10 @@ data class Dimens(
     val tooltipMaxWidth: Dp = 264.dp,
     val tooltipArrowWidth: Dp = 11.dp,
     val tooltipArrowHeight: Dp = 6.dp,
-    val tooltipMinHorizontalPadding: Dp = 8.dp
+    val tooltipMinHorizontalPadding: Dp = 8.dp,
+
+    // Star size
+    val starSize: Dp = 16.dp
 )
 
 internal val dimens: Dimens = Dimens()

@@ -45,6 +45,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":util"))
+
     implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
     testImplementation(libs.junit)
@@ -60,4 +62,5 @@ dependencies {
     implementation(libs.foundation)
     implementation(libs.compose.animation)
     implementation(libs.compose.material.icons)
+    implementation(libs.coil.compose)
 }
