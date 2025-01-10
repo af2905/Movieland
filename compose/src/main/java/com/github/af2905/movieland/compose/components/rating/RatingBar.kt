@@ -25,9 +25,7 @@ fun RatingBar(
     val highRange = 7.0..10.0
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.dimens.spaceXS),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -42,7 +40,6 @@ fun RatingBar(
             modifier = Modifier.padding(end = AppTheme.dimens.spaceXS)
         )
         Row(
-            modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (i in 1..numStars) {
