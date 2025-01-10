@@ -56,7 +56,9 @@ fun MovieCard(
                 RatingBar(
                     voteAverage = item.voteAverage,
                     rating = item.voteAverageStar ?: 0.0,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.dimens.spaceXS)
                 )
             }
 
@@ -79,6 +81,106 @@ fun MovieCard(
                     .then(
                         if (item.title == null) Modifier.alpha(0.0f) else Modifier
                     )
+            )
+        }
+    }
+}
+
+@Composable
+fun MovieCardLarge(
+    modifier: Modifier = Modifier,
+    item: MovieItemModel,
+    onItemClick: (MovieItemModel) -> Unit
+) {
+    ElevatedCard(
+        onClick = {
+            onItemClick(item)
+        },
+        modifier = modifier.height(250.dp),
+        shape = RoundedCornerShape(AppTheme.dimens.radiusM),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = AppTheme.colors.background.card
+        ),
+        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            AsyncImage(
+                model = item.backdropFullPathToImage,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+                error = rememberVectorPainter(image = Icons.Outlined.Image),
+                contentScale = ContentScale.FillBounds
+            )
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
+
+            Row {
+                Text(
+                    text = item.title.orEmpty(),
+                    style = AppTheme.typography.bodyMedium,
+                    minLines = 2,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            start = AppTheme.dimens.spaceS,
+                            end = AppTheme.dimens.spaceXS,
+                            bottom = AppTheme.dimens.space2XS
+                        )
+                        .then(
+                            if (item.title == null) Modifier.alpha(0.0f) else Modifier
+                        )
+                )
+
+                if (item.voteAverage != null && item.voteAverageStar != null) {
+                    RatingBar(
+                        voteAverage = item.voteAverage,
+                        rating = item.voteAverageStar ?: 0.0,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(horizontal = AppTheme.dimens.spaceS)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
+@Composable
+fun PreviewMovieCardLargeWithSampleData() {
+    val sampleMovieItem = MovieItemModel(
+        id = 1,
+        adult = false,
+        backdropPath = "/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
+        genreIds = listOf(35),
+        originalLanguage = "en",
+        originalTitle = "High Vote Movie",
+        overview = "This is a movie with a high vote average.",
+        popularity = 345.67,
+        posterPath = "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
+        releaseDate = "2023-12-15",
+        title = "Sample Movie Title Sample Movie Title Sample Movie Title Sample Movie Title",
+        video = false,
+        voteAverage = 7.8,
+        voteCount = 1234
+    )
+
+    AppTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = AppTheme.colors.background.default)
+        ) {
+            MovieCardLarge(
+                modifier = Modifier.padding(all = 16.dp),
+                item = sampleMovieItem,
+                onItemClick = { movieItem ->
+                    println("Clicked on movie: ${movieItem.title}")
+                }
             )
         }
     }
