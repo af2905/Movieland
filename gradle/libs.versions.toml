@@ -85,5 +85,5 @@ compose-animation = { module = "androidx.compose.animation:animation", version.r
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-tooling" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-junit" }
-compose-material-icons = { module = "androidx.compose.material:material-icons-core", version.ref = "compose-material-icons" }
+compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icons" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
