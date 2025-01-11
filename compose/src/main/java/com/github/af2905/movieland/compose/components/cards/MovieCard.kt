@@ -22,16 +22,18 @@ import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.rating.RatingBar
 import com.github.af2905.movieland.compose.theme.AppTheme
 
+private fun Double?.orDefault(): Double = this ?: 0.0
+
 @Composable
 fun MovieCard(
     modifier: Modifier = Modifier,
-    item: MovieItemModel,
-    onItemClick: (MovieItemModel) -> Unit
+    title: String?,
+    imageUrl: String?,
+    rating: Double?,
+    onItemClick: () -> Unit
 ) {
     ElevatedCard(
-        onClick = {
-            onItemClick(item)
-        },
+        onClick = { onItemClick() },
         modifier = modifier
             .width(150.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
@@ -42,7 +44,7 @@ fun MovieCard(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
-                model = item.posterFullPathToImage,
+                model = imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -52,20 +54,19 @@ fun MovieCard(
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
-            if (item.voteAverage != null && item.voteAverageStar != null) {
-                RatingBar(
-                    voteAverage = item.voteAverage,
-                    rating = item.voteAverageStar ?: 0.0,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.dimens.spaceXS)
-                )
-            }
+            RatingBar(
+                rating = rating.orDefault(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.spaceXS)
+                        then (
+                        if (rating == null) Modifier.alpha(0.0f) else Modifier)
+            )
 
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
             Text(
-                text = item.title.orEmpty(),
+                text = title.orEmpty(),
                 style = AppTheme.typography.caption1,
                 minLines = 2,
                 maxLines = 2,
@@ -79,7 +80,7 @@ fun MovieCard(
                         bottom = AppTheme.dimens.space2XS
                     )
                     .then(
-                        if (item.title == null) Modifier.alpha(0.0f) else Modifier
+                        if (title == null) Modifier.alpha(0.0f) else Modifier
                     )
             )
         }
@@ -89,13 +90,13 @@ fun MovieCard(
 @Composable
 fun MovieCardLarge(
     modifier: Modifier = Modifier,
-    item: MovieItemModel,
-    onItemClick: (MovieItemModel) -> Unit
+    title: String?,
+    imageUrl: String?,
+    rating: Double?,
+    onItemClick: () -> Unit
 ) {
     ElevatedCard(
-        onClick = {
-            onItemClick(item)
-        },
+        onClick = { onItemClick() },
         modifier = modifier.height(250.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
@@ -105,7 +106,7 @@ fun MovieCardLarge(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
-                model = item.backdropFullPathToImage,
+                model = imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,7 +118,7 @@ fun MovieCardLarge(
 
             Row {
                 Text(
-                    text = item.title.orEmpty(),
+                    text = title.orEmpty(),
                     style = AppTheme.typography.bodyMedium,
                     minLines = 2,
                     maxLines = 2,
@@ -131,19 +132,18 @@ fun MovieCardLarge(
                             bottom = AppTheme.dimens.space2XS
                         )
                         .then(
-                            if (item.title == null) Modifier.alpha(0.0f) else Modifier
+                            if (title == null) Modifier.alpha(0.0f) else Modifier
                         )
                 )
 
-                if (item.voteAverage != null && item.voteAverageStar != null) {
-                    RatingBar(
-                        voteAverage = item.voteAverage,
-                        rating = item.voteAverageStar ?: 0.0,
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(horizontal = AppTheme.dimens.spaceS)
-                    )
-                }
+                RatingBar(
+                    rating = rating.orDefault(),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(horizontal = AppTheme.dimens.spaceS)
+                            then (
+                            if (rating == null) Modifier.alpha(0.0f) else Modifier)
+                )
             }
         }
     }
@@ -152,23 +152,6 @@ fun MovieCardLarge(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
 @Composable
 fun PreviewMovieCardLargeWithSampleData() {
-    val sampleMovieItem = MovieItemModel(
-        id = 1,
-        adult = false,
-        backdropPath = "/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
-        genreIds = listOf(35),
-        originalLanguage = "en",
-        originalTitle = "High Vote Movie",
-        overview = "This is a movie with a high vote average.",
-        popularity = 345.67,
-        posterPath = "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
-        releaseDate = "2023-12-15",
-        title = "Sample Movie Title Sample Movie Title Sample Movie Title Sample Movie Title",
-        video = false,
-        voteAverage = 7.8,
-        voteCount = 1234
-    )
-
     AppTheme(darkTheme = true) {
         Box(
             modifier = Modifier
@@ -177,10 +160,10 @@ fun PreviewMovieCardLargeWithSampleData() {
         ) {
             MovieCardLarge(
                 modifier = Modifier.padding(all = 16.dp),
-                item = sampleMovieItem,
-                onItemClick = { movieItem ->
-                    println("Clicked on movie: ${movieItem.title}")
-                }
+                title = "Lion King",
+                imageUrl = "https://image.tmdb.org/t/p/original/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
+                rating = 6.7,
+                onItemClick = {}
             )
         }
     }
@@ -189,23 +172,6 @@ fun PreviewMovieCardLargeWithSampleData() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
 @Composable
 fun PreviewMovieCardWithSampleData() {
-    val sampleMovieItem = MovieItemModel(
-        id = 1,
-        adult = false,
-        backdropPath = "/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
-        genreIds = listOf(35),
-        originalLanguage = "en",
-        originalTitle = "High Vote Movie",
-        overview = "This is a movie with a high vote average.",
-        popularity = 345.67,
-        posterPath = "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
-        releaseDate = "2023-12-15",
-        title = "Sample Movie Title",
-        video = false,
-        voteAverage = 7.8,
-        voteCount = 1234
-    )
-
     AppTheme(darkTheme = true) {
         Box(
             modifier = Modifier
@@ -214,67 +180,11 @@ fun PreviewMovieCardWithSampleData() {
         ) {
             MovieCard(
                 modifier = Modifier.padding(all = 16.dp),
-                item = sampleMovieItem,
-                onItemClick = { movieItem ->
-                    println("Clicked on movie: ${movieItem.title}")
-                }
+                title = "Lion King",
+                imageUrl = "https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
+                rating = 6.7,
+                onItemClick = {}
             )
         }
     }
-}
-
-@Preview(showBackground = true, name = "MovieCard with High Vote Average")
-@Composable
-fun PreviewMovieCardHighVote() {
-    val highVoteMovie = MovieItemModel(
-        id = 2,
-        adult = false,
-        backdropPath = "/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
-        genreIds = listOf(35),
-        originalLanguage = "en",
-        originalTitle = "High Vote Movie",
-        overview = "This is a movie with a high vote average.",
-        popularity = 345.67,
-        posterPath = "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
-        releaseDate = "2021-07-20",
-        title = "High Vote Movie",
-        video = false,
-        voteAverage = 9.2,
-        voteCount = 5678
-    )
-
-    MovieCard(
-        item = highVoteMovie,
-        onItemClick = { movieItem ->
-            println("Clicked on movie: ${movieItem.title}")
-        }
-    )
-}
-
-@Preview(showBackground = true, name = "MovieCard with Low Vote Average")
-@Composable
-fun PreviewMovieCardLowVote() {
-    val lowVoteMovie = MovieItemModel(
-        id = 3,
-        adult = false,
-        backdropPath = null,
-        genreIds = listOf(18),
-        originalLanguage = "en",
-        originalTitle = "Low Vote Movie",
-        overview = "This is a movie with a low vote average.",
-        popularity = 789.12,
-        posterPath = null,
-        releaseDate = "2019-04-10",
-        title = "Low Vote Movie",
-        video = false,
-        voteAverage = 4.3,
-        voteCount = 234
-    )
-
-    MovieCard(
-        item = lowVoteMovie,
-        onItemClick = { movieItem ->
-            println("Clicked on movie: ${movieItem.title}")
-        }
-    )
 }
