@@ -9,9 +9,12 @@ class ApiKeyInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val url = request.url.newBuilder()
-            .addQueryParameter(ApiParams.API_KEY, BuildConfig.THE_MOVIE_DATABASE_API_KEY).build()
-        val newRequest = request.newBuilder().url(url).build()
+        val requestWithAuthHeader = request.newBuilder()
+            .header("Authorization", "Bearer ${BuildConfig.THE_MOVIE_DATABASE_API_KEY}").build()
+        val url = requestWithAuthHeader.url.newBuilder()
+            .addQueryParameter(ApiParams.API_KEY, BuildConfig.THE_MOVIE_DATABASE_API_KEY)
+            .build()
+        val newRequest = requestWithAuthHeader.newBuilder().url(url).build()
         return chain.proceed(newRequest)
     }
 }
