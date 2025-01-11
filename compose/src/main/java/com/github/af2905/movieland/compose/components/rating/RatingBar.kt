@@ -39,8 +39,8 @@ fun RatingBar(
             color = when (rating) {
                 in lowRange -> AppTheme.colors.background.alert
                 in highRange -> AppTheme.colors.background.success
-                in normalRange -> AppTheme.colors.background.actionRippleInverse
-                else -> AppTheme.colors.background.actionRippleInverse
+                in normalRange -> AppTheme.colors.type.disable
+                else -> AppTheme.colors.type.disable
             },
             modifier = Modifier.padding(end = AppTheme.dimens.spaceXS)
         )
