@@ -126,7 +126,7 @@ data class BackgroundColors(
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
-            iconBar = Color(0xCCFFFFCC)
+            iconBar = Color(0xFFEBEBEB)
         )
     }
 }
