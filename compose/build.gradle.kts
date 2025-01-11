@@ -45,8 +45,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":util"))
-
     implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
     testImplementation(libs.junit)
