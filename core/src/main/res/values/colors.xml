@@ -10,8 +10,8 @@
 
     <color name="accent">@color/gold_200</color>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF18191A</color>
+    <color name="white">#FFF7F7F7</color>
 
     <color name="dark">#121212</color>
 
@@ -20,8 +20,8 @@
     <color name="lightGrey">#D3D3D3</color>
     <color name="darkGrey">#808080</color>
 
-    <color name="textColorPrimary">#C7000000</color>
-    <color name="textColorSecondary">#94000000</color>
+    <color name="textColorPrimary">#FF18191A</color>
+    <color name="textColorSecondary">#FF18191A</color>
 
     <color name="blackAlpha">#1A000000</color>
     <color name="whiteAlpha">#1AFFFFFF</color>
@@ -32,7 +32,7 @@
     <color name="tintSearchBarLight">@color/darkGrey</color>
     <color name="tintSearchBarDark">@color/darkGrey</color>
 
-    <color name="dividerLight">#c9c9cb</color>
-    <color name="dividerDark">#333333</color>
+    <color name="dividerLight">#0D000000</color>
+    <color name="dividerDark">#0DFFFFFF</color>
 
 </resources>
