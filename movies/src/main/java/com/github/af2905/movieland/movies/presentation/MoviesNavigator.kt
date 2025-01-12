@@ -11,12 +11,12 @@ class MoviesNavigator @Inject constructor(
 ) : Navigator(navController) {
 
     fun forwardToMovieDetailScreen(movieId: Int) {
-        val action = MoviesFragmentDirections.openMovieDetail()
+  /*      val action = MoviesFragmentDirections.openMovieDetail()
             .apply { arguments.putInt(MOVIE_ID_ARG, movieId) }
 
         navController.navigate(
             directions = action,
             navOptions = NavOptions.optionsAnimSlide()
-        )
+        )*/
     }
 }

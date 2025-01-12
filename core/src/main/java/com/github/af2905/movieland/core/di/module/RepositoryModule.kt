@@ -11,8 +11,11 @@ import com.github.af2905.movieland.core.repository.impl.TvShowsRepositoryImpl
 
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 interface RepositoryModule {
 
     @Binds

@@ -15,10 +15,8 @@ import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.PersonV2Item
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.people.R
 import com.github.af2905.movieland.people.databinding.FragmentPeopleBinding
-import com.github.af2905.movieland.people.di.DaggerPeopleComponent
 import com.google.android.material.appbar.AppBarLayout
 
 class PeopleFragment :
@@ -54,9 +52,9 @@ class PeopleFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         val popularPeopleComponent = DaggerPeopleComponent.factory().create(appComponent)
-        popularPeopleComponent.injectPeopleFragment(this)
+        popularPeopleComponent.injectPeopleFragment(this)*/
     }
 
 
