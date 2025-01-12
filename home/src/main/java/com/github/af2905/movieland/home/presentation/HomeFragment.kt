@@ -23,10 +23,8 @@ import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.common.model.item.PagerAdapter
 import com.github.af2905.movieland.core.common.model.item.PagerItem
 import com.github.af2905.movieland.core.common.model.item.TvShowItem
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.home.R
 import com.github.af2905.movieland.home.databinding.FragmentHomeBinding
-import com.github.af2905.movieland.home.di.DaggerHomeComponent
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
 import com.google.android.material.appbar.AppBarLayout
@@ -114,9 +112,9 @@ class HomeFragment : BaseFragment<HomeNavigator, FragmentHomeBinding, HomeViewMo
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         val homeComponent = DaggerHomeComponent.factory().create(appComponent)
-        homeComponent.injectHomeFragment(this)
+        homeComponent.injectHomeFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

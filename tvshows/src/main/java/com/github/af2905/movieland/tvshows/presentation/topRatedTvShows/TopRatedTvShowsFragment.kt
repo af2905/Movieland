@@ -10,11 +10,8 @@ import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.TvShowV2Item
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.tvshows.R
 import com.github.af2905.movieland.tvshows.databinding.FragmentTopRatedTvShowsBinding
-import com.github.af2905.movieland.tvshows.di.component.DaggerTopRatedTvShowsComponent
-import com.github.af2905.movieland.tvshows.di.component.TvShowsComponentProvider
 import com.github.af2905.movieland.tvshows.presentation.TvShowsNavigator
 
 class TopRatedTvShowsFragment :
@@ -34,11 +31,11 @@ class TopRatedTvShowsFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+/*        val appComponent = CoreComponentProvider.getAppComponent(context)
         val tvShowsComponent = TvShowsComponentProvider.getTvShowsComponent(parentFragment)!!
         val topRatedTvShowsComponent =
             DaggerTopRatedTvShowsComponent.factory().create(appComponent, tvShowsComponent)
-        topRatedTvShowsComponent.injectTopRatedTvShowsFragment(this)
+        topRatedTvShowsComponent.injectTopRatedTvShowsFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

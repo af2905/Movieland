@@ -10,11 +10,8 @@ import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.TvShowV2Item
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.tvshows.R
 import com.github.af2905.movieland.tvshows.databinding.FragmentPopularTvShowsBinding
-import com.github.af2905.movieland.tvshows.di.component.DaggerPopularTvShowsComponent
-import com.github.af2905.movieland.tvshows.di.component.TvShowsComponentProvider
 import com.github.af2905.movieland.tvshows.presentation.TvShowsNavigator
 
 class PopularTvShowsFragment :
@@ -34,11 +31,11 @@ class PopularTvShowsFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         val tvShowsComponent = TvShowsComponentProvider.getTvShowsComponent(parentFragment)!!
         val popularTvShowsComponent =
             DaggerPopularTvShowsComponent.factory().create(appComponent, tvShowsComponent)
-        popularTvShowsComponent.injectPopularTvShowsFragment(this)
+        popularTvShowsComponent.injectPopularTvShowsFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

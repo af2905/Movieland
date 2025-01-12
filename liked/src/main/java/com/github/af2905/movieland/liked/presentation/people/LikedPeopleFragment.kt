@@ -15,10 +15,8 @@ import com.github.af2905.movieland.core.common.IntentFilterKey
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.PersonV2Item
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.liked.R
 import com.github.af2905.movieland.liked.databinding.FragmentLikedPeopleBinding
-import com.github.af2905.movieland.liked.di.DaggerLikedComponent
 
 class LikedPeopleFragment :
     BaseFragment<LikedPeopleNavigator, FragmentLikedPeopleBinding, LikedPeopleViewModel>() {
@@ -40,9 +38,9 @@ class LikedPeopleFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+/*        val appComponent = CoreComponentProvider.getAppComponent(context)
         val likedComponent = DaggerLikedComponent.factory().create(appComponent)
-        likedComponent.injectLikedPeopleFragment(this)
+        likedComponent.injectLikedPeopleFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
