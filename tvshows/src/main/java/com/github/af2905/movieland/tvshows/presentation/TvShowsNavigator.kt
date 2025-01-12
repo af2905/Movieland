@@ -11,13 +11,13 @@ class TvShowsNavigator @Inject constructor(
 ) : Navigator(navController) {
 
     fun forwardToTvShowDetailScreen(id: Int) {
-        val action = TvShowsFragmentDirections.openTvShowDetail().apply {
+        /*val action = TvShowsFragmentDirections.openTvShowDetail().apply {
             arguments.putInt(TV_SHOW_ID_ARG, id)
         }
 
         navController.navigate(
             directions = action,
             navOptions = NavOptions.optionsAnimSlide()
-        )
+        )*/
     }
 }
