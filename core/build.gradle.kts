@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,6 +61,10 @@ android {
         buildConfig = true
         dataBinding = true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -71,6 +76,7 @@ dependencies {
     implementation(libs.core.ktx)
 
     implementation(libs.dagger.android.support)
+    implementation(libs.hilt.common)
     kapt(libs.dagger.compiler)
     kapt(libs.dagger.android.processor)
     implementation(libs.room.runtime)
@@ -91,4 +97,19 @@ dependencies {
 
     testImplementation(libs.junit)
     implementation(libs.junit.ext)
+
+    // Compose
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.ui)
+    implementation(libs.navigation.compose)
+    implementation(libs.activity.compose)
+    implementation(libs.compose.material)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
+
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+
+    // Hilt navigation for Jetpack Compose
+    implementation(libs.hilt.navigation.compose)
 }

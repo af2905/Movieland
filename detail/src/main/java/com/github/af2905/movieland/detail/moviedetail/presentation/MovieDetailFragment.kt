@@ -17,11 +17,9 @@ import com.github.af2905.movieland.core.common.model.item.CreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
 import com.github.af2905.movieland.core.common.model.item.MovieItem
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.databinding.FragmentMovieDetailBinding
 import com.github.af2905.movieland.detail.moviedetail.MovieDetailNavigator
-import com.github.af2905.movieland.detail.moviedetail.di.DaggerMovieDetailComponent
 import com.google.android.material.appbar.AppBarLayout
 
 class MovieDetailFragment :
@@ -54,12 +52,12 @@ class MovieDetailFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+/*        val appComponent = CoreComponentProvider.getAppComponent(context)
         val detailComponent = DaggerMovieDetailComponent.factory().create(
             coreComponent = appComponent,
             movieId = requireNotNull(arguments?.getInt(MOVIE_ID_ARG))
         )
-        detailComponent.injectMovieDetailFragment(this)
+        detailComponent.injectMovieDetailFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

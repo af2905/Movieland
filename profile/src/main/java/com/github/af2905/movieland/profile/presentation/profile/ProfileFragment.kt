@@ -10,10 +10,8 @@ import com.github.af2905.movieland.core.base.BaseFragment
 import com.github.af2905.movieland.core.common.BaseAdapter
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.item.ProfileMenuItem
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.profile.R
 import com.github.af2905.movieland.profile.databinding.FragmentProfileBinding
-import com.github.af2905.movieland.profile.di.DaggerProfileComponent
 
 class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, ProfileViewModel>() {
     override fun getNavigator(navController: NavController) = ProfileNavigator(navController)
@@ -30,9 +28,9 @@ class ProfileFragment : BaseFragment<ProfileNavigator, FragmentProfileBinding, P
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         val profileComponent = DaggerProfileComponent.factory().create(appComponent)
-        profileComponent.injectProfileFragment(this)
+        profileComponent.injectProfileFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
