@@ -13,11 +13,9 @@ import com.github.af2905.movieland.core.common.IntentFilterKey
 import com.github.af2905.movieland.core.common.ItemDelegate
 import com.github.af2905.movieland.core.common.model.decorator.VerticalListItemDecorator
 import com.github.af2905.movieland.core.common.model.item.PersonMovieCreditsCastItem
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.databinding.FragmentPersonDetailBinding
 import com.github.af2905.movieland.detail.persondetail.PersonDetailNavigator
-import com.github.af2905.movieland.detail.persondetail.di.DaggerPersonDetailComponent
 
 class PersonDetailFragment :
     BaseFragment<PersonDetailNavigator, FragmentPersonDetailBinding, PersonDetailViewModel>() {
@@ -37,12 +35,12 @@ class PersonDetailFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         val detailComponent = DaggerPersonDetailComponent.factory().create(
             coreComponent = appComponent,
             personId = requireNotNull(arguments?.getInt(PERSON_ID_ARG))
         )
-        detailComponent.injectPersonDetailFragment(this)
+        detailComponent.injectPersonDetailFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -14,11 +14,9 @@ import com.github.af2905.movieland.core.common.model.item.SearchItem
 import com.github.af2905.movieland.core.common.model.item.SearchMultiItem
 import com.github.af2905.movieland.core.common.model.item.SearchQueryItem
 import com.github.af2905.movieland.core.data.toMediaType
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.search.R
 import com.github.af2905.movieland.search.SearchNavigator
 import com.github.af2905.movieland.search.databinding.FragmentSearchBinding
-import com.github.af2905.movieland.search.di.DaggerSearchComponent
 
 class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, SearchViewModel>() {
     override fun layoutRes(): Int = R.layout.fragment_search
@@ -47,9 +45,9 @@ class SearchFragment : BaseFragment<SearchNavigator, FragmentSearchBinding, Sear
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
-        val searchComponent = DaggerSearchComponent.factory().create(appComponent)
-        searchComponent.injectSearchFragment(this)
+        //val appComponent = CoreComponentProvider.getAppComponent(context)
+        //val searchComponent = DaggerSearchComponent.factory().create(appComponent)
+        //searchComponent.injectSearchFragment(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
     id("androidx.navigation.safeargs")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -47,6 +48,10 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -68,4 +73,10 @@ dependencies {
     implementation(libs.monitor)
     implementation(libs.junit.ext)
     androidTestImplementation(libs.junit)
+
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+
+    // Hilt navigation for Jetpack Compose
+    implementation(libs.hilt.navigation.compose)
 }

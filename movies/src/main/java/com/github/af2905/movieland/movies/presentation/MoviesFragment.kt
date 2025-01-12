@@ -14,11 +14,8 @@ import com.github.af2905.movieland.core.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.core.common.pager.PageItem
 import com.github.af2905.movieland.core.common.pager.setupPager
 import com.github.af2905.movieland.core.common.text.ResourceUiText
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.movies.R
 import com.github.af2905.movieland.movies.databinding.FragmentMoviesBinding
-import com.github.af2905.movieland.movies.di.component.DaggerMoviesComponent
-import com.github.af2905.movieland.movies.di.component.MoviesComponent
 import com.github.af2905.movieland.movies.presentation.nowPlayingMovies.NowPlayingMovieFragment
 import com.github.af2905.movieland.movies.presentation.popularMovies.PopularMovieFragment
 import com.github.af2905.movieland.movies.presentation.topRatedMovies.TopRatedMovieFragment
@@ -31,7 +28,7 @@ class MoviesFragment : BaseFragment<MoviesNavigator, FragmentMoviesBinding, Movi
     override fun layoutRes(): Int = R.layout.fragment_movies
     override fun viewModelClass(): Class<MoviesViewModel> = MoviesViewModel::class.java
 
-    lateinit var moviesComponent: MoviesComponent
+    //lateinit var moviesComponent: MoviesComponent
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
@@ -53,9 +50,9 @@ class MoviesFragment : BaseFragment<MoviesNavigator, FragmentMoviesBinding, Movi
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+       /* val appComponent = CoreComponentProvider.getAppComponent(context)
         moviesComponent = DaggerMoviesComponent.factory().create(appComponent)
-        moviesComponent.injectMoviesFragment(this)
+        moviesComponent.injectMoviesFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

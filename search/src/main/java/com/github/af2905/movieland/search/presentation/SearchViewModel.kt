@@ -115,9 +115,9 @@ class SearchViewModel @Inject constructor(
             container.postEffect(SearchContract.Effect.OpenDetail(Navigate { navigator ->
                 val searchNavigator = navigator as SearchNavigator
                 when (mediaType) {
-                    MediaType.MOVIE -> searchNavigator.forwardToMovieDetailScreen(itemId)
-                    MediaType.PERSON -> searchNavigator.forwardToPersonDetailScreen(itemId)
-                    MediaType.TV -> searchNavigator.forwardToTvShowDetailScreen(itemId)
+                    MediaType.MOVIE -> {}
+                    MediaType.PERSON -> {}
+                    MediaType.TV -> {}
                 }
             }))
         }
