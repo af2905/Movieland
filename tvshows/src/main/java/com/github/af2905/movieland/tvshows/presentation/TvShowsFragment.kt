@@ -14,11 +14,8 @@ import com.github.af2905.movieland.core.common.pager.FragmentPagerAdapter
 import com.github.af2905.movieland.core.common.pager.PageItem
 import com.github.af2905.movieland.core.common.pager.setupPager
 import com.github.af2905.movieland.core.common.text.ResourceUiText
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.tvshows.R
 import com.github.af2905.movieland.tvshows.databinding.FragmentTvShowsBinding
-import com.github.af2905.movieland.tvshows.di.component.DaggerTvShowsComponent
-import com.github.af2905.movieland.tvshows.di.component.TvShowsComponent
 import com.github.af2905.movieland.tvshows.presentation.popularTvShows.PopularTvShowsFragment
 import com.github.af2905.movieland.tvshows.presentation.topRatedTvShows.TopRatedTvShowsFragment
 import com.google.android.material.appbar.AppBarLayout
@@ -29,7 +26,7 @@ class TvShowsFragment : BaseFragment<TvShowsNavigator, FragmentTvShowsBinding, T
     override fun layoutRes(): Int = R.layout.fragment_tv_shows
     override fun viewModelClass(): Class<TvShowsViewModel> = TvShowsViewModel::class.java
 
-    lateinit var tvShowsComponent: TvShowsComponent
+    //lateinit var tvShowsComponent: TvShowsComponent
 
     private val appBarStateChangeListener = object : AppBarStateChangeListener() {
         override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
@@ -51,9 +48,9 @@ class TvShowsFragment : BaseFragment<TvShowsNavigator, FragmentTvShowsBinding, T
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+        /*val appComponent = CoreComponentProvider.getAppComponent(context)
         tvShowsComponent = DaggerTvShowsComponent.factory().create(appComponent)
-        tvShowsComponent.injectTvShowsFragment(this)
+        tvShowsComponent.injectTvShowsFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

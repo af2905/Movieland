@@ -28,6 +28,7 @@ pluginManagement {
         id("org.jetbrains.kotlin.kapt") version "1.9.23"
         id("org.jetbrains.kotlin.plugin.parcelize") version "1.9.23"
         id("androidx.navigation.safeargs") version "2.7.7"
+        id("com.google.dagger.hilt.android") version "2.51.1" apply false
     }
 }
 
