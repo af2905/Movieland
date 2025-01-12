@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.data.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
@@ -9,6 +10,7 @@ import com.github.af2905.movieland.core.repository.MoviesRepository
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltWorker
 class UpdateMoviesWorker(
     context: Context,
     params: WorkerParameters,

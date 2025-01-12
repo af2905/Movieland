@@ -11,13 +11,13 @@ class PeopleNavigator @Inject constructor(
 ) : Navigator(navController) {
 
     fun forwardToPersonDetailScreen(id: Int) {
-        val action = PeopleFragmentDirections.openPersonDetail().apply {
+        /*val action = PeopleFragmentDirections.openPersonDetail().apply {
             arguments.putInt(PersonDetailFragment.PERSON_ID_ARG, id)
         }
 
         navController.navigate(
             directions = action,
             navOptions = NavOptions.optionsAnimSlide()
-        )
+        )*/
     }
 }
