@@ -17,11 +17,9 @@ import com.github.af2905.movieland.core.common.model.item.CreditsCastItem
 import com.github.af2905.movieland.core.common.model.item.HorizontalListAdapter
 import com.github.af2905.movieland.core.common.model.item.HorizontalListItem
 import com.github.af2905.movieland.core.common.model.item.TvShowItem
-import com.github.af2905.movieland.core.di.CoreComponentProvider
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.detail.databinding.FragmentTvShowDetailBinding
 import com.github.af2905.movieland.detail.tvshowdetail.TvShowDetailNavigator
-import com.github.af2905.movieland.detail.tvshowdetail.di.DaggerTvShowDetailComponent
 import com.google.android.material.appbar.AppBarLayout
 
 class TvShowDetailFragment :
@@ -54,12 +52,12 @@ class TvShowDetailFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val appComponent = CoreComponentProvider.getAppComponent(context)
+/*        val appComponent = CoreComponentProvider.getAppComponent(context)
         val detailComponent = DaggerTvShowDetailComponent.factory().create(
             coreComponent = appComponent,
             tvShowId = requireNotNull(arguments?.getInt(TV_SHOW_ID_ARG))
         )
-        detailComponent.injectTvShowDetailFragment(this)
+        detailComponent.injectTvShowDetailFragment(this)*/
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

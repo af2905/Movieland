@@ -11,7 +11,7 @@ import javax.inject.Inject
 class HomeNavigator @Inject constructor(
     navController: NavController
 ) : Navigator(navController) {
-
+/*
     fun forwardToMovieDetailScreen(movieId: Int) {
         val action = HomeFragmentDirections.openMovieDetail()
             .apply { arguments.putInt(MOVIE_ID_ARG, movieId) }
@@ -69,5 +69,5 @@ class HomeNavigator @Inject constructor(
             directions = action,
             navOptions = NavOptions.optionsAnimSlide()
         )
-    }
+    }*/
 }

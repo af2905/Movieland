@@ -312,7 +312,7 @@ class HomeViewModel @Inject constructor(
     fun openMovieDetail(itemId: Int) {
         container.intent {
             container.postEffect(HomeContract.Effect.OpenMovieDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardToMovieDetailScreen(itemId)
+                //(navigator as HomeNavigator).forwardToMovieDetailScreen(itemId)
             }))
         }
     }
@@ -320,7 +320,7 @@ class HomeViewModel @Inject constructor(
     fun openPersonDetail(itemId: Int) {
         container.intent {
             container.postEffect(HomeContract.Effect.OpenPersonDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardToPersonDetailScreen(itemId)
+                //(navigator as HomeNavigator).forwardToPersonDetailScreen(itemId)
             }))
         }
     }
@@ -328,7 +328,7 @@ class HomeViewModel @Inject constructor(
     fun openTvShowDetail(itemId: Int) {
         container.intent {
             container.postEffect(HomeContract.Effect.OpenTvShowDetail(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardToTvShowDetailScreen(itemId)
+                //(navigator as HomeNavigator).forwardToTvShowDetailScreen(itemId)
             }))
         }
     }
@@ -337,16 +337,16 @@ class HomeViewModel @Inject constructor(
         val effect = when (type) {
             LinkItemType.MOVIES -> {
                 HomeContract.Effect.OpenMovies(Navigate { navigator ->
-                    (navigator as HomeNavigator).forwardToMoviesScreen()
+                    //(navigator as HomeNavigator).forwardToMoviesScreen()
                 })
             }
 
             LinkItemType.PEOPLE -> HomeContract.Effect.OpenPeople(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardToPeopleScreen()
+                //(navigator as HomeNavigator).forwardToPeopleScreen()
             })
 
             LinkItemType.TV_SHOWS -> HomeContract.Effect.OpenTvShows(Navigate { navigator ->
-                (navigator as HomeNavigator).forwardToTvShowsScreen()
+                //(navigator as HomeNavigator).forwardToTvShowsScreen()
             })
         }
 

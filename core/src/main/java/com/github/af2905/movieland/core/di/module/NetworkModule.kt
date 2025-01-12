@@ -13,6 +13,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,6 +27,7 @@ const val MAX_IDLE_CONNECTION = 5
 const val KEEP_ALIVE_DURATION = 30L
 
 @Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @AppScope
