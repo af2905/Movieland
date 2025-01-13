@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":movies"))
     implementation(project(":people"))
     implementation(project(":tvshows"))
+    implementation(project(":compose"))
 
     // Libraries from version catalog
     implementation(libs.kotlin.stdlib)
