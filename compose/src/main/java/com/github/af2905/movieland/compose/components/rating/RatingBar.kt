@@ -50,7 +50,7 @@ fun RatingBar(
             val fiveStarRating = rating.fiveStarRating()
             for (i in 1..numStars) {
                 val starColor =
-                    if (i <= fiveStarRating) AppTheme.colors.theme.rating else AppTheme.colors.theme.ratingGhost
+                    if (i <= fiveStarRating) AppTheme.colors.theme.tint else AppTheme.colors.theme.tintGhost
                 Icon(
                     imageVector = Icons.Outlined.Star,
                     contentDescription = null,

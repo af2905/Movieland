@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsDark
@@ -44,3 +45,218 @@ object AppTheme {
         @Composable
         get() = LocalAppTypography.current
 }
+
+enum class Themes {
+    EPIC,
+    SCI_FI,
+    COMEDY,
+    ADVENTURE,
+    FANTASY,
+    WESTERN,
+    DRAMA,
+    MELODRAMA,
+    DETECTIVE,
+    ACTION,
+    THRILLER;
+
+    fun getTheme(): Palette = when (this) {
+        EPIC -> epicTheme
+        SCI_FI -> sciFiTheme
+        COMEDY -> comedyTheme
+        ADVENTURE -> adventureTheme
+        FANTASY -> fantasyTheme
+        WESTERN -> westernTheme
+        DRAMA -> dramaTheme
+        MELODRAMA -> melodramaTheme
+        DETECTIVE -> detectiveTheme
+        ACTION -> actionTheme
+        THRILLER -> thrillerTheme
+    }
+}
+
+private val epicTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFf9a825),
+            tintBg = Color(0xFFECEDEA),
+            tintCard = Color(0xFFFAFAFA)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFf9a825),
+            tintBg = Color(0xFF1C1C1C),
+            tintCard = Color(0xFF383838)
+        )
+    )
+)
+
+private val sciFiTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFFECE8F0),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFF17181F),
+            tintCard = Color(0xFF303240)
+        )
+    )
+)
+
+private val comedyTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFFD553F),
+            tintBg = Color(0xFFF3F1F0),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFFD553F),
+            tintBg = Color(0xFF1E1619),
+            tintCard = Color(0xFF403037)
+        )
+    )
+)
+
+private val adventureTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF58C537),
+            tintBg = Color(0xFFEEF3EC),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF5FC241),
+            tintBg = Color(0xFF141613),
+            tintCard = Color(0xFF242922)
+        )
+    )
+)
+
+private val fantasyTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF54A0ED),
+            tintBg = Color(0xFFE5EAF1),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF54A0ED),
+            tintBg = Color(0xFF161A1B),
+            tintCard = Color(0xFF3D424A)
+        )
+    )
+)
+
+private val westernTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFBFA973),
+            tintBg = Color(0xFFECEDEA),
+            tintCard = Color(0xFFFAFAFA)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFBEA17E),
+            tintBg = Color(0xFF1C1C1C),
+            tintCard = Color(0xFF383838)
+        )
+    )
+)
+
+private val dramaTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF6FC1C0),
+            tintBg = Color(0xFFE9EBF3),
+            tintCard = Color(0xFFFCFDFC)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF74C3C8),
+            tintBg = Color(0xFF1B1C1D),
+            tintCard = Color(0xFF322A2C)
+        )
+    )
+)
+
+private val melodramaTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFA6C874),
+            tintBg = Color(0xFFEFF3F0),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFA6C874),
+            tintBg = Color(0xFF1B1D1C),
+            tintCard = Color(0xFF383838)
+        )
+    )
+)
+
+private val detectiveTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF7398BF),
+            tintBg = Color(0xFFDFE3E8),
+            tintCard = Color(0xFFFAFAFA)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF819BBB),
+            tintBg = Color(0xFF1F2228),
+            tintCard = Color(0xFF424957)
+        )
+    )
+)
+
+private val actionTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFFE1DDE9),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFF191422),
+            tintCard = Color(0xFF363149)
+        )
+    )
+)
+
+private val thrillerTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF865138),
+            tintBg = Color(0xFFEFDFDB),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFE4A058),
+            tintBg = Color(0xFF271112),
+            tintCard = Color(0xFF4E2224)
+        )
+    )
+)
