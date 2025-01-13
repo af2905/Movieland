@@ -43,7 +43,7 @@ fun ItemCard(
         modifier = modifier.width(150.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = AppTheme.colors.background.card
+            containerColor = AppTheme.colors.theme.tintCard
         ),
         elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
     ) {
@@ -105,7 +105,7 @@ fun ItemCardLarge(
         modifier = modifier.height(250.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = AppTheme.colors.background.card
+            containerColor = AppTheme.colors.theme.tintCard
         ),
         elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
     ) {
@@ -170,7 +170,7 @@ fun ItemCardHorizontal(
             .height(150.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = AppTheme.colors.background.card
+            containerColor = AppTheme.colors.theme.tintCard
         ),
         elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
     ) {
