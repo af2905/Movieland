@@ -1,10 +1,10 @@
 package com.github.af2905.movieland.compose.components.navigation
 
-import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.vector.ImageVector
 
 data class BottomNavItem(
     val text: String,
-    @DrawableRes val imageId: Int,
+    val icon : ImageVector,
     val route: String,
     val hasBadge: Boolean = false
 )
