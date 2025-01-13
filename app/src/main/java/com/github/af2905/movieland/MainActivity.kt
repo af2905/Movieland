@@ -3,24 +3,53 @@ package com.github.af2905.movieland
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.github.af2905.movieland.navigation.AppBottomNavigation
+import com.github.af2905.movieland.compose.components.navigation.AppBottomNavigationView
+import com.github.af2905.movieland.compose.theme.AppTheme
+import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.navigation.AppNavigation
+import com.github.af2905.movieland.navigation.bottomNavItems
 import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
-fun MainApp() {
+fun MainApp(
+    isDarkTheme: Boolean,
+    currentTheme: Themes,
+    onDarkThemeClick: () -> Unit,
+    onThemeClick: (Themes) -> Unit
+) {
     val navController = rememberNavController()
     Scaffold(
-        bottomBar = { AppBottomNavigation(navController) }
+        modifier = Modifier.background(AppTheme.colors.theme.tintBg),
+        bottomBar = {
+            AppBottomNavigationView(
+                navController,
+                items = bottomNavItems,
+                onItemClick = {
+
+                }
+            )
+        },
+        contentColor = AppTheme.colors.theme.tintGhost,
+        containerColor = AppTheme.colors.theme.tintBg
     ) { paddingValues ->
         AppNavigation(
             navController = navController,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            isDarkTheme = isDarkTheme,
+            currentTheme = currentTheme,
+            onDarkThemeClick = onDarkThemeClick,
+            onThemeClick = onThemeClick
         )
     }
 }
@@ -29,8 +58,23 @@ fun MainApp() {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            MainApp()
+            var currentTheme by rememberSaveable { mutableStateOf(Themes.MELODRAMA) }
+            var darkTheme by rememberSaveable { mutableStateOf(false) }
+            val currentPalette by remember(currentTheme) { mutableStateOf(currentTheme.getTheme()) }
+
+            AppTheme(
+                palette = currentPalette,
+                darkTheme = darkTheme
+            ) {
+                MainApp(
+                    isDarkTheme = darkTheme,
+                    currentTheme = currentTheme,
+                    onDarkThemeClick = { darkTheme = !darkTheme },
+                    onThemeClick = { theme -> currentTheme = theme }
+                )
+            }
         }
     }
 }

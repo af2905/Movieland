@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.compose
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +34,10 @@ fun MovieDetailsScreen(
 
 @Composable
 fun PersonDetailsScreen(personId: Int) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
         Text(text = "Person Details Screen for ID: $personId")
     }
 }
