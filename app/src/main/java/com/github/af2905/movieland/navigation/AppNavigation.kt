@@ -29,12 +29,12 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AppNavRoutes.Home.route,
+        startDestination = AppNavRoutes.MainHome.route,
         modifier = modifier
     ) {
         // Home Tab
-        navigation(startDestination = "home/main", route = AppNavRoutes.Home.route) {
-            composable("home/main") {
+        navigation(startDestination = AppNavRoutes.Home.route, route = AppNavRoutes.MainHome.route) {
+            composable(AppNavRoutes.Home.route) {
                 HomeScreen(
                     navController = navController,
                     isDarkTheme = isDarkTheme,
@@ -66,64 +66,19 @@ fun AppNavigation(
             }
         }
 
-        composable(AppNavRoutes.Search.route) { SearchScreen(navController) }
-        composable(AppNavRoutes.Library.route) { LibraryScreen(navController) }
-        composable(AppNavRoutes.Profile.route) { ProfileScreen(navController) }
-
-    }
-}
-
-/*@Composable
-fun AppNavigation(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-    isDarkTheme: Boolean,
-    currentTheme: Themes,
-    onDarkThemeClick: () -> Unit,
-    onThemeClick: (Themes) -> Unit
-) {
-    NavHost(
-        navController = navController,
-        startDestination = AppNavRoutes.Home.route,
-        modifier = modifier
-    ) {
-        // Home Tab
-        navigation(startDestination = "home/main", route = AppNavRoutes.Home.route) {
-            composable("home/main") {
-                HomeScreen(
-                    navController = navController,
-                    isDarkTheme = isDarkTheme,
-                    currentTheme = currentTheme,
-                    onDarkThemeClick = onDarkThemeClick,
-                    onThemeClick = onThemeClick
-                )
-            }
-            composable(
-                route = AppNavRoutes.MovieDetails.route,
-                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsScreen(itemId, navController) }
-            }
-        }
-
         // Search Tab
-        navigation(startDestination = "search/main", route = AppNavRoutes.Search.route) {
-            composable("search/main") { SearchScreen(navController) }
-            composable(
-                route = AppNavRoutes.MovieDetails.route,
-                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsScreen(itemId, navController) }
-            }
+        navigation(startDestination = AppNavRoutes.Search.route, route = AppNavRoutes.MainSearch.route) {
+            composable(AppNavRoutes.Search.route) { SearchScreen(navController) }
         }
 
         // Library Tab
-        composable(AppNavRoutes.Library.route) { LibraryScreen(navController) }
+        navigation(startDestination = AppNavRoutes.Library.route, route = AppNavRoutes.MainLibrary.route) {
+            composable(AppNavRoutes.Library.route) { LibraryScreen(navController) }
+        }
 
         // Profile Tab
-        composable(AppNavRoutes.Profile.route) { ProfileScreen(navController) }
+        navigation(startDestination = AppNavRoutes.Profile.route, route = AppNavRoutes.MainProfile.route) {
+            composable(AppNavRoutes.Profile.route) { ProfileScreen(navController) }
+        }
     }
 }
-*/
