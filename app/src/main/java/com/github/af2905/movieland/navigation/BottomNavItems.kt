@@ -10,8 +10,8 @@ import com.github.af2905.movieland.core.compose.AppNavRoutes
 
 //TODO localize strings
 val bottomNavItems = listOf(
-    BottomNavItem("Home", Icons.Outlined.Home, AppNavRoutes.Home.route),
-    BottomNavItem("Search", Icons.Outlined.Search, AppNavRoutes.Search.route),
-    BottomNavItem("Library", Icons.Outlined.Bookmarks, AppNavRoutes.Library.route),
-    BottomNavItem("Profile", Icons.Outlined.Person, AppNavRoutes.Profile.route)
+    BottomNavItem("Home", Icons.Outlined.Home, AppNavRoutes.MainHome.route),
+    BottomNavItem("Search", Icons.Outlined.Search, AppNavRoutes.MainSearch.route),
+    BottomNavItem("Library", Icons.Outlined.Bookmarks, AppNavRoutes.MainLibrary.route),
+    BottomNavItem("Profile", Icons.Outlined.Person, AppNavRoutes.MainProfile.route)
 )
