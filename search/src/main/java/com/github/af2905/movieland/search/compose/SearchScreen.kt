@@ -10,6 +10,6 @@ fun SearchScreen(
     navController: NavHostController
 ) {
     Surface {
-        Text("Profile Screen")
+        Text("Search Screen")
     }
 }
