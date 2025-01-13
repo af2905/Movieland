@@ -32,7 +32,7 @@ fun AppBottomNavigationView(
     alwaysShowLabel: Boolean = true,
     onItemClick: (BottomNavItem) -> Unit
 ) {
-    var selectedTab by rememberSaveable { mutableStateOf(AppNavRoutes.Home.route) }
+    var selectedTab by rememberSaveable { mutableStateOf(AppNavRoutes.MainHome.route) }
     NavigationBar(
         containerColor = backgroundColor,
     ) {
@@ -57,9 +57,8 @@ fun AppBottomNavigationView(
                 icon = { TabIcon(item) },
                 label = {
                     Text(
-                        text = item.route.replaceFirstChar { it.uppercaseChar() },
-                        textAlign = TextAlign.Center,
-                        style = AppTheme.typography.captionBar
+                        text = item.text,
+                        textAlign = TextAlign.Center
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(

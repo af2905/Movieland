@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
@@ -46,9 +47,10 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ChipIconView(
             image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
@@ -76,14 +78,18 @@ fun HomeScreen(
                 )
             }
         }
-/*
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         ItemCardLarge(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = "Lion King",
             imageUrl = "https://image.tmdb.org/t/p/original/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
             rating = 6.7,
             onItemClick = {}
-        )*/
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         ItemCardHorizontal(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -93,6 +99,8 @@ fun HomeScreen(
             itemTypeName = "Movie",
             onItemClick = {}
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         ItemCard(
             modifier = Modifier.padding(horizontal = 16.dp),
