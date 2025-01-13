@@ -149,8 +149,7 @@ data class ThemeColors(
             tintGhost = Color(0x268B3FFD),
             tintBg = Color(0xFFECE8F0),
             tintCard = Color(0xFFFFFFFF),
-            tintSelection = Color(0xFFBA8CFF),
-            rating = Color(0xFFFCD307)
+            tintSelection = Color(0xFFBA8CFF)
         )
 
         val defaultColorsDark = ThemeColors(
@@ -159,8 +158,7 @@ data class ThemeColors(
             tintGhost = Color(0x268B3FFD),
             tintBg = Color(0xFF17181F),
             tintCard = Color(0xFF303240),
-            tintSelection = Color(0xFFBA8CFF),
-            rating = Color(0xFFf9a825)
+            tintSelection = Color(0xFFBA8CFF)
         )
     }
 }

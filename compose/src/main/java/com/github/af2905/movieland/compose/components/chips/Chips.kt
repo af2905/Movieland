@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -78,30 +79,33 @@ enum class ChipViewStyle {
 }
 
 enum class ChipIconViewStyle {
+    FadeTint,
     InverseTint,
     InverseDark;
 
     @Composable
     internal fun getTextColor(): Color = when (this) {
+        FadeTint -> AppTheme.colors.theme.tint
         InverseTint -> AppTheme.colors.theme.tint
         InverseDark -> AppTheme.colors.background.black
     }
 
     @Composable
     internal fun getDisabledTextColor(): Color = when (this) {
-        InverseTint -> AppTheme.colors.type.disable
+        InverseTint, FadeTint -> AppTheme.colors.type.disable
         InverseDark -> AppTheme.colors.type.ghostInverse
     }
 
     @Composable
     internal fun getBackgroundColor(): Color = when (this) {
+        FadeTint -> AppTheme.colors.theme.tintGhost
         InverseTint -> AppTheme.colors.theme.tintCard
         InverseDark -> AppTheme.colors.background.white
     }
 
     @Composable
     internal fun getDisabledBackgroundColor(): Color = when (this) {
-        InverseTint -> AppTheme.colors.background.actionRipple
+        InverseTint, FadeTint -> AppTheme.colors.background.actionRipple
         InverseDark -> AppTheme.colors.background.actionRippleInverse
     }
 }
@@ -277,7 +281,7 @@ fun ChipChoiceView(
 
 @Composable
 fun ChipIconView(
-    painter: Painter,
+    image: ImageVector,
     modifier: Modifier = Modifier,
     text: String? = null,
     enabled: Boolean = true,
@@ -285,7 +289,7 @@ fun ChipIconView(
     onClick: () -> Unit = {}
 ) {
     ChipIcon(
-        painter = painter,
+        image = image,
         modifier = modifier,
         text = text,
         enabled = enabled,
@@ -299,7 +303,7 @@ fun ChipIconView(
 
 @Composable
 fun ChipIconView(
-    painter: Painter,
+    image: ImageVector,
     modifier: Modifier = Modifier,
     text: String? = null,
     enabled: Boolean = true,
@@ -310,7 +314,7 @@ fun ChipIconView(
     onClick: () -> Unit = {}
 ) {
     ChipIcon(
-        painter = painter,
+        image = image,
         modifier = modifier,
         text = text,
         enabled = enabled,
@@ -324,7 +328,7 @@ fun ChipIconView(
 
 @Composable
 internal fun ChipIcon(
-    painter: Painter,
+    image: ImageVector,
     modifier: Modifier,
     text: String?,
     enabled: Boolean,
@@ -348,8 +352,8 @@ internal fun ChipIcon(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painter,
-            modifier = Modifier.size(AppTheme.dimens.spaceM),
+            imageVector = image,
+            modifier = Modifier.size(AppTheme.dimens.spaceL),
             contentDescription = null,
             tint = if (enabled) textColor else disabledTextColor
         )
@@ -450,20 +454,20 @@ fun PreviewChipChoiceView() {
 fun PreviewChipIconView() {
     Column(modifier = Modifier.padding(16.dp)) {
         ChipIconView(
-            painter = painterResource(id = android.R.drawable.ic_menu_camera),
+            image = Icons.Default.Close,
             text = "With Icon",
             onClick = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
         ChipIconView(
-            painter = painterResource(id = android.R.drawable.ic_menu_camera),
+            image = Icons.Default.Close,
             text = "Disabled",
             enabled = false,
             onClick = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
         ChipIconView(
-            painter = painterResource(id = android.R.drawable.ic_menu_camera),
+            image = Icons.Default.Close,
             text = null,
             onClick = {}
         )
