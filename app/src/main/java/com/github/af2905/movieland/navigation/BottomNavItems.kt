@@ -5,14 +5,8 @@ import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.github.af2905.movieland.compose.components.navigation.BottomNavItem
 import com.github.af2905.movieland.core.compose.AppNavRoutes
-
-data class BottomNavItem(
-    val text: String,
-    val icon: ImageVector,
-    val route: String
-)
 
 //TODO localize strings
 val bottomNavItems = listOf(
