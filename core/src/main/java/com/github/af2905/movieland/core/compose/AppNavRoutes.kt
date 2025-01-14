@@ -1,13 +1,7 @@
 package com.github.af2905.movieland.core.compose
 
 sealed class AppNavRoutes(val route: String) {
-    /*For bottom routes*/
-    data object MainHome : AppNavRoutes("home/main")
-    data object MainSearch : AppNavRoutes("search/main")
-    data object MainLibrary : AppNavRoutes("library/main")
-    data object MainProfile : AppNavRoutes("profile/main")
 
-    /*For screens*/
     data object Home : AppNavRoutes("home")
     data object Search : AppNavRoutes("search")
     data object Library : AppNavRoutes("library")

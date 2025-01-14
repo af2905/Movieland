@@ -29,11 +29,14 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AppNavRoutes.MainHome.route,
+        startDestination = "home/main",
         modifier = modifier
     ) {
         // Home Tab
-        navigation(startDestination = AppNavRoutes.Home.route, route = AppNavRoutes.MainHome.route) {
+        navigation(
+            startDestination = AppNavRoutes.Home.route,
+            route = "home/main"
+        ) {
             composable(AppNavRoutes.Home.route) {
                 HomeScreen(
                     navController = navController,
@@ -67,17 +70,72 @@ fun AppNavigation(
         }
 
         // Search Tab
-        navigation(startDestination = AppNavRoutes.Search.route, route = AppNavRoutes.MainSearch.route) {
-            composable(AppNavRoutes.Search.route) { SearchScreen(navController) }
+        navigation(
+            startDestination = AppNavRoutes.Search.route,
+            route = "search/main"
+        ) {
+            composable(AppNavRoutes.Search.route) {
+                SearchScreen(navController)
+            }
+            composable(
+                route = AppNavRoutes.MovieDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { MovieDetailsScreen(itemId, navController) }
+            }
+            composable(
+                route = AppNavRoutes.PersonDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { PersonDetailsScreen(itemId) }
+            }
+            composable(
+                route = AppNavRoutes.TVShowDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { TVShowDetailsScreen(itemId) }
+            }
         }
 
         // Library Tab
-        navigation(startDestination = AppNavRoutes.Library.route, route = AppNavRoutes.MainLibrary.route) {
-            composable(AppNavRoutes.Library.route) { LibraryScreen(navController) }
+        navigation(
+            startDestination = AppNavRoutes.Library.route,
+            route = "library/main"
+        ) {
+            composable(AppNavRoutes.Library.route) {
+                LibraryScreen(navController)
+            }
+            composable(
+                route = AppNavRoutes.MovieDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { MovieDetailsScreen(itemId, navController) }
+            }
+            composable(
+                route = AppNavRoutes.PersonDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { PersonDetailsScreen(itemId) }
+            }
+            composable(
+                route = AppNavRoutes.TVShowDetails.route,
+                arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getInt("itemId")
+                itemId?.let { TVShowDetailsScreen(itemId) }
+            }
         }
 
         // Profile Tab
-        navigation(startDestination = AppNavRoutes.Profile.route, route = AppNavRoutes.MainProfile.route) {
+        navigation(
+            startDestination = AppNavRoutes.Profile.route,
+            route = "profile/main"
+        ) {
             composable(AppNavRoutes.Profile.route) { ProfileScreen(navController) }
         }
     }
