@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.compose
 
 sealed class AppNavRoutes(val route: String) {
+
     data object Home : AppNavRoutes("home")
     data object Search : AppNavRoutes("search")
     data object Library : AppNavRoutes("library")
