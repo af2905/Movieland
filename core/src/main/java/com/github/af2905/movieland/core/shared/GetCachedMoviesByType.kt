@@ -12,8 +12,9 @@ class GetCachedMoviesByType @Inject constructor(
     private val mapper: MovieMapper
 ) : CoroutineUseCase<CachedMoviesParams, List<MovieItem>>() {
     override suspend fun execute(params: CachedMoviesParams): List<MovieItem> {
-        val movies = moviesRepository.getCachedMoviesByType(params.type)
-        return mapper.map(movies)
+        //val movies = moviesRepository.getCachedMoviesByType(params.type)
+        //return mapper.map(movies)
+        return emptyList() // TODO remove after check
     }
 }
 

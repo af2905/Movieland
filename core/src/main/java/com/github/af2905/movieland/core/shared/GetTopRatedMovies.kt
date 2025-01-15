@@ -12,7 +12,7 @@ class GetTopRatedMovies @Inject constructor(
     private val mapper: MovieMapper
 ) : CoroutineUseCase<TopRatedMoviesParams, List<MovieItem>>() {
     override suspend fun execute(params: TopRatedMoviesParams): List<MovieItem> {
-        val response = moviesRepository.getTopRatedMovies(
+        /*val response = moviesRepository.getTopRatedMovies(
             language = params.language,
             page = params.page,
             region = params.region,
@@ -20,7 +20,8 @@ class GetTopRatedMovies @Inject constructor(
         )
         return mapper.map(response).filterNot { it.overview.isNullOrEmpty() }
             .filterNot { it.voteAverage == Double.empty }
-            .sortedByDescending { it.releaseYear }
+            .sortedByDescending { it.releaseYear }*/
+        return emptyList() // TODO remove after check
     }
 }
 

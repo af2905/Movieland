@@ -12,12 +12,13 @@ class GetMovieCredits @Inject constructor(
 ) : CoroutineUseCase<MovieCreditsParams, List<CreditsCastItem>>() {
 
     override suspend fun execute(params: MovieCreditsParams): List<CreditsCastItem> {
-        val response = moviesRepository.getMovieCredits(
+        /*val response = moviesRepository.getMovieCredits(
             movieId = params.movieId,
             language = params.language
         )
         val result = mapper.map(response)
-        return result.filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
+        return result.filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }*/
+        return emptyList() // TODO remove after check
     }
 }
 
