@@ -13,13 +13,14 @@ class GetSimilarMovies @Inject constructor(
 ) : CoroutineUseCase<SimilarMoviesParams, List<MovieItem>>() {
 
     override suspend fun execute(params: SimilarMoviesParams): List<MovieItem> {
-        val response = moviesRepository.getSimilarMovies(
+        /*val response = moviesRepository.getSimilarMovies(
             params.movieId,
             params.language,
             params.page
         )
         val result = mapper.map(response)
-        return mapper.map(result).filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }
+        return mapper.map(result).filterNot { movieItem -> movieItem.posterPath.isNullOrEmpty() }*/
+        return emptyList() // TODO remove after check
     }
 }
 

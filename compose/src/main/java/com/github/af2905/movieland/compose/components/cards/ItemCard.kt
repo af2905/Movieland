@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,8 +75,8 @@ fun ItemCard(
             Text(
                 text = title.orEmpty(),
                 style = AppTheme.typography.caption1,
-                minLines = 2,
-                maxLines = 2,
+                minLines = 1,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
@@ -82,7 +84,7 @@ fun ItemCard(
                     .padding(
                         start = AppTheme.dimens.spaceXS,
                         end = AppTheme.dimens.spaceXS,
-                        bottom = AppTheme.dimens.space2XS
+                        bottom = AppTheme.dimens.spaceXS
                     )
                     .then(
                         if (title == null) Modifier.alpha(0.0f) else Modifier
@@ -102,7 +104,7 @@ fun ItemCardLarge(
 ) {
     ElevatedCard(
         onClick = { onItemClick() },
-        modifier = modifier.height(250.dp),
+        modifier = modifier.height(240.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
@@ -115,17 +117,20 @@ fun ItemCardLarge(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp),
+                    .height(190.dp), // TODO change dynamic
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
-            Row {
+            Row(
+                modifier = Modifier.fillMaxHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = title.orEmpty(),
                     style = AppTheme.typography.bodyMedium,
-                    minLines = 2,
+                    minLines = 1,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,

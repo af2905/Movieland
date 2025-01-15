@@ -18,8 +18,11 @@ import com.github.af2905.movieland.core.common.model.item.MovieItem
 import com.github.af2905.movieland.core.common.model.item.PagerItem
 import com.github.af2905.movieland.core.common.model.item.PersonItem
 import com.github.af2905.movieland.core.common.model.item.TvShowItem
+import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
+import com.github.af2905.movieland.core.repository.MoviesRepository
+import com.github.af2905.movieland.core.repository.TrendingRepository
 import com.github.af2905.movieland.core.shared.CachedMoviesParams
 import com.github.af2905.movieland.core.shared.CachedTvShowsParams
 import com.github.af2905.movieland.core.shared.GetCachedMoviesByType
@@ -42,9 +45,11 @@ import com.github.af2905.movieland.core.shared.UpcomingMoviesParams
 import com.github.af2905.movieland.detail.R
 import com.github.af2905.movieland.home.presentation.item.PagerMovieItem
 import com.github.af2905.movieland.home.presentation.item.PopularPersonItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.github.af2905.movieland.home.R as HomeResources
@@ -55,20 +60,55 @@ private const val TV_SHOWS_LIST_ID = ItemIds.HORIZONTAL_ITEM_LIST_ID * 1000 + 3
 
 private const val DEFAULT_TAKE = 10
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getNowPlayingMovies: GetNowPlayingMovies,
-    private val getPopularMovies: GetPopularMovies,
-    private val getUpcomingMovies: GetUpcomingMovies,
-    private val getTopRatedMovies: GetTopRatedMovies,
-    private val getPopularTvShows: GetPopularTvShows,
-    private val getTopRatedTvShows: GetTopRatedTvShows,
-    private val getPopularPeople: GetPopularPeople,
-    private val getCachedPopularPeople: GetCachedPopularPeople,
-    private val getCachedMoviesByType: GetCachedMoviesByType,
-    private val getCachedTvShowsByType: GetCachedTvShowsByType
+    /*    private val getNowPlayingMovies: GetNowPlayingMovies,
+        private val getPopularMovies: GetPopularMovies,
+        private val getUpcomingMovies: GetUpcomingMovies,
+        private val getTopRatedMovies: GetTopRatedMovies,
+        private val getPopularTvShows: GetPopularTvShows,
+        private val getTopRatedTvShows: GetTopRatedTvShows,
+        private val getPopularPeople: GetPopularPeople,
+        private val getCachedPopularPeople: GetCachedPopularPeople,
+        private val getCachedMoviesByType: GetCachedMoviesByType,
+        private val getCachedTvShowsByType: GetCachedTvShowsByType*/
+
+    private val moviesRepository: MoviesRepository,
+    private val trendingRepository: TrendingRepository
 ) : ViewModel() {
 
-    val container: Container<HomeContract.State, HomeContract.Effect> =
+    fun getMovies(): Flow<List<Movie>> {
+        return moviesRepository.getMovies(
+            movieType = "TOP_RATED",
+            language = "en-US",
+            page = 1,
+        )
+    }
+
+    fun getTrendingMovies(): Flow<List<Movie>> {
+        return trendingRepository.getTrendingMovies(
+            timeWindow = "day",
+            language = "en-US",
+        )
+
+
+    /*@HiltViewModel
+class MoviesViewModel @Inject constructor(
+    private val moviesRepository: MoviesRepository
+) : ViewModel() {
+
+    fun getMovies(type: MovieType): Flow<List<Movie>> {
+        return moviesRepository.getMoviesByType(
+            type = type,
+            language = "en",
+            page = 1,
+            region = "US"
+        )
+    }
+}*/
+
+
+    /*val container: Container<HomeContract.State, HomeContract.Effect> =
         Container(viewModelScope, HomeContract.State.Loading())
 
     private val emptySpaceSmall = EmptySpaceItem(R.dimen.default_margin_small)
@@ -353,5 +393,5 @@ class HomeViewModel @Inject constructor(
         container.intent {
             container.postEffect(effect)
         }
-    }
-}
+    }*/
+}}

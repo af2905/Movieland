@@ -12,7 +12,8 @@ class RemoveFromLikedMovie @Inject constructor(
 ) : CoroutineUseCase<UnlikedMovieDetailParams, Boolean>() {
 
     override suspend fun execute(params: UnlikedMovieDetailParams): Boolean {
-        return moviesRepository.removeMovieDetail(movieDetail = mapper.map(params.movieDetail))
+        //return moviesRepository.removeMovieDetail(movieDetail = mapper.map(params.movieDetail))
+        return false //TODO remove after check
     }
 }
 
