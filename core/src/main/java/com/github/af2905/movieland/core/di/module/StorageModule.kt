@@ -11,7 +11,9 @@ import com.github.af2905.movieland.core.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,35 +22,35 @@ class StorageModule {
     companion object {
         private const val DATABASE_NAME = "database"
 
-        @AppScope
+        @Singleton
         @Provides
         fun providePersonDao(database: AppDatabase) = database.personDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun providePersonDetailDao(database: AppDatabase) = database.personDetailDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun provideMovieDetailDao(database: AppDatabase) = database.movieDetailDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun provideMovieDao(database: AppDatabase): MovieDao = database.movieDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun provideTvShowDetailDao(database: AppDatabase): TvShowDetailDao =
             database.tvShowDetailDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun provideTvShowDao(database: AppDatabase): TvShowDao = database.tvShowDao()
 
-        @AppScope
+        @Singleton
         @Provides
         fun provideRoomDatabase(
-            context: Context,
+            @ApplicationContext context: Context,
             listIntConverter: ListIntConverter,
             listStringConverter: ListStringConverter,
             genreConverter: GenreConverter,

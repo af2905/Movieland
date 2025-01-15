@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
@@ -20,9 +22,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.cards.ItemCardHorizontal
@@ -34,6 +39,9 @@ import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
+import com.github.af2905.movieland.home.presentation.HomeViewModel
+import androidx.compose.foundation.lazy.items
+
 
 @Composable
 fun HomeScreen(
@@ -43,7 +51,31 @@ fun HomeScreen(
     onDarkThemeClick: () -> Unit,
     onThemeClick: (Themes) -> Unit
 ) {
-    Column(
+
+    val viewModel : HomeViewModel = hiltViewModel()
+
+    val movies by viewModel.getMovies().collectAsState(initial = emptyList())
+
+    LazyRow {
+        items(movies) { movie ->
+
+            println("MOVIES_TAG: movie -> $movie")
+
+            ItemCardLarge(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                title = movie.title.orEmpty(),
+                imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                rating = movie.voteAverage,
+                onItemClick = {}
+            )
+        }
+    }
+
+
+
+
+
+    /*Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
@@ -76,14 +108,14 @@ fun HomeScreen(
                 )
             }
         }
-/*
+*//*
         ItemCardLarge(
             modifier = Modifier.padding(horizontal = 16.dp),
             title = "Lion King",
             imageUrl = "https://image.tmdb.org/t/p/original/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
             rating = 6.7,
             onItemClick = {}
-        )*/
+        )*//*
 
         ItemCardHorizontal(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -123,5 +155,5 @@ fun HomeScreen(
         }) {
             Text(text = "Go to TV Show Details")
         }
-    }
+    }*/
 }

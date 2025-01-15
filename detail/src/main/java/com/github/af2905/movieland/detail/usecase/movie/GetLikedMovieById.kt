@@ -12,7 +12,8 @@ class GetLikedMovieById @Inject constructor(
 ) : CoroutineUseCase<LikedMovieDetailByIdParams, MovieDetailItem?>() {
 
     override suspend fun execute(params: LikedMovieDetailByIdParams): MovieDetailItem? {
-        return moviesRepository.getMovieDetailById(params.movieId)?.let { mapper.map(it) }
+        //return moviesRepository.getMovieDetailById(params.movieId)?.let { mapper.map(it) }
+        return null
     }
 }
 

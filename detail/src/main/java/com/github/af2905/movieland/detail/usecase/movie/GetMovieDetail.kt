@@ -10,15 +10,16 @@ import javax.inject.Inject
 class GetMovieDetail @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val mapper: MovieDetailMapper
-) : CoroutineUseCase<MovieDetailParams, MovieDetailItem>() {
+) : CoroutineUseCase<MovieDetailParams, MovieDetailItem?>() {
 
-    override suspend fun execute(params: MovieDetailParams): MovieDetailItem {
-        return mapper.map(
+    override suspend fun execute(params: MovieDetailParams): MovieDetailItem? {
+        /*return mapper.map(
             moviesRepository.getMovieDetail(
                 movieId = params.movieId,
                 language = params.language
             )
-        )
+        )*/
+        return null // TODO remove after check
     }
 }
 

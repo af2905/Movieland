@@ -112,4 +112,8 @@ dependencies {
 
     // Hilt navigation for Jetpack Compose
     implementation(libs.hilt.navigation.compose)
+
+    // Datastore
+    implementation(libs.datastore.preferences)
+    implementation(libs.datastore)
 }
