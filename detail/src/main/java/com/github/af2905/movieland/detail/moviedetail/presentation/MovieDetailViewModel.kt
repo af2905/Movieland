@@ -113,10 +113,10 @@ class MovieDetailViewModel @Inject constructor(
             val movieCreditCastsBlock = createActorsAndCrewBlock(movieCreditsCasts)
             val similarMoviesBlock = createSimilarMoviesBlock(similarMovies)
 
-            list.add(MovieDetailDescItem(movieDetailItem))
+            //list.add(MovieDetailDescItem(movieDetailItem))
             list.addAll(movieCreditCastsBlock)
             list.addAll(similarMoviesBlock)
-            movieDetailItem = movieDetailItem.copy(
+            movieDetailItem = movieDetailItem?.copy(
                 creditsCasts = movieCreditsCasts,
                 similarMovies = similarMovies
             )
@@ -125,9 +125,9 @@ class MovieDetailViewModel @Inject constructor(
             list.addAll(createActorsAndCrewBlock(movieDetailItem.creditsCasts))
             list.addAll(createSimilarMoviesBlock(movieDetailItem.similarMovies))
         }
-        container.reduce {
+        /*container.reduce {
             MovieDetailContract.State.Content(movieDetailItem = movieDetailItem, list = list)
-        }
+        }*/
     }
 
     private fun createActorsAndCrewBlock(movieCreditsCasts: List<CreditsCastItem>): List<Model> {

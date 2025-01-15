@@ -11,14 +11,15 @@ class GetUpcomingMovies @Inject constructor(
     private val mapper: MovieMapper
 ) : CoroutineUseCase<UpcomingMoviesParams, List<MovieItem>>() {
     override suspend fun execute(params: UpcomingMoviesParams): List<MovieItem> {
-        val response = moviesRepository.getUpcomingMovies(
+        /*val response = moviesRepository.getUpcomingMovies(
             language = params.language,
             page = params.page,
             region = params.region,
             forceUpdate = params.forceUpdate
         )
         return mapper.map(response).filterNot { it.overview.isNullOrEmpty() }
-            .sortedByDescending { it.releaseYear }
+            .sortedByDescending { it.releaseYear }*/
+        return emptyList() //TODO remove after check
     }
 }
 

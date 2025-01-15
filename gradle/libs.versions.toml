@@ -3,6 +3,7 @@ androidBuildTools = "34.0.0"
 androidCompileSdk = "34"
 androidMinSdk = "23"
 androidTargetSdk = "34"
+datastorePreferences = "1.1.1"
 kotlinCompilerExtensionVersion = "1.5.11"
 
 hiltNavigationCompose = "1.2.0"
@@ -49,6 +50,8 @@ hiltCommon = "1.2.0"
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 dagger-hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastorePreferences" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
