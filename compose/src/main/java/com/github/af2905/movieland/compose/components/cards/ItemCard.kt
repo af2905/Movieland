@@ -104,48 +104,26 @@ fun ItemCardLarge(
 ) {
     ElevatedCard(
         onClick = { onItemClick() },
-        modifier = modifier.height(240.dp),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
         ),
         elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(190.dp), // TODO change dynamic
+                modifier = Modifier.height(180.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
-            Row(
-                modifier = Modifier.fillMaxHeight(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.space2XS)
             ) {
-                Text(
-                    text = title.orEmpty(),
-                    style = AppTheme.typography.bodyMedium,
-                    minLines = 1,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(
-                            start = AppTheme.dimens.spaceS,
-                            end = AppTheme.dimens.spaceXS,
-                            bottom = AppTheme.dimens.space2XS
-                        )
-                        .then(
-                            if (title == null) Modifier.alpha(0.0f) else Modifier
-                        )
-                )
-
                 RatingBar(
                     rating = rating.orDefault(),
                     modifier = Modifier
@@ -153,6 +131,21 @@ fun ItemCardLarge(
                         .padding(horizontal = AppTheme.dimens.spaceS)
                             then (
                             if (rating == null) Modifier.alpha(0.0f) else Modifier)
+                )
+                Text(
+                    text = title.orEmpty(),
+                    style = AppTheme.typography.bodyMedium,
+                    minLines = 1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = AppTheme.dimens.spaceS,
+                            end = AppTheme.dimens.spaceXS,
+                            bottom = AppTheme.dimens.spaceXS
+                        )
                 )
             }
         }

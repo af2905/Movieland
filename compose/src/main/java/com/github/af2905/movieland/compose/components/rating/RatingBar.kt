@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.theme.AppTheme
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 private fun Double.fiveStarRating(): Double = this / 2
 
@@ -34,7 +36,7 @@ fun RatingBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = rating.toString(),
+            text = BigDecimal(rating).setScale(1, RoundingMode.FLOOR).toString(),
             style = AppTheme.typography.bodyMedium,
             color = when (rating) {
                 in lowRange -> AppTheme.colors.background.alert
