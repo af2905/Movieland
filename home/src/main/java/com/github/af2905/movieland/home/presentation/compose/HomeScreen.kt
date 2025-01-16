@@ -52,27 +52,60 @@ fun HomeScreen(
     onThemeClick: (Themes) -> Unit
 ) {
 
-    val viewModel : HomeViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
 
-    val movies by viewModel.getMovies().collectAsState(initial = emptyList())
+    val movies by viewModel.getTrendingMovies().collectAsState(initial = emptyList())
 
-    LazyRow {
-        items(movies) { movie ->
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ChipIconView(
+            image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+            style = ChipIconViewStyle.FadeTint,
+            onClick = {
+                onDarkThemeClick()
+            }
+        )
 
-            println("MOVIES_TAG: movie -> $movie")
-
-            ItemCardLarge(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                title = movie.title.orEmpty(),
-                imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
-                rating = movie.voteAverage,
-                onItemClick = {}
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.spaceM)
+                .horizontalScroll((rememberScrollState()))
+                .padding(horizontal = AppTheme.dimens.spaceM),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
+        ) {
+            for (theme in Themes.entries) {
+                ChipView(
+                    text = theme.name,
+                    isLarge = true,
+                    style = ChipViewStyle.FadeTint,
+                    onClick = { onThemeClick(theme) }
+                )
+            }
         }
+
+        LazyRow {
+            items(movies) { movie ->
+
+                println("MOVIES_TAG: movie -> $movie")
+
+                ItemCardLarge(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = movie.title,
+                    imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                    rating = movie.voteAverage,
+                    onItemClick = {}
+                )
+            }
+        }
+
     }
-
-
-
 
 
     /*Column(
