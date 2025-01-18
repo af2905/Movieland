@@ -107,7 +107,7 @@ data class BackgroundColors(
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
-            iconBar = Color(0xCC000000)
+            iconBar = Color(0x44000000)
         )
 
         val defaultColorsDark = BackgroundColors(
@@ -126,7 +126,7 @@ data class BackgroundColors(
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
-            iconBar = Color(0xFFEBEBEB)
+            iconBar = Color(0xFF5E5E5E)
         )
     }
 }
@@ -139,8 +139,6 @@ data class ThemeColors(
     val tintBg: Color = Color.Unspecified,
     val tintCard: Color = Color.Unspecified,
     val tintSelection: Color = getTintSelection(tint),
-    val rating: Color = Color.Unspecified,
-    val ratingGhost: Color = rating.copy(alpha = 0.15f)
 ) {
     companion object {
         val defaultColorsLight = ThemeColors(
