@@ -1,15 +1,20 @@
 package com.github.af2905.movieland.home.presentation.compose
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
@@ -41,6 +46,11 @@ import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 import com.github.af2905.movieland.home.presentation.HomeViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 
 
 @Composable
@@ -56,13 +66,55 @@ fun HomeScreen(
 
     val movies by viewModel.getTrendingMovies().collectAsState(initial = emptyList())
 
+    val pagerState = rememberPagerState(
+        pageCount = { movies.size }
+    )
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        HorizontalPager(
+            contentPadding = PaddingValues(horizontal = 32.dp),
+            pageSpacing = 16.dp,
+            state = pagerState
+        ) { page ->
+            val movie = movies[page]
+
+            ItemCardLarge(
+                modifier = Modifier.padding(horizontal = 6.dp),
+                title = movie.title,
+                imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                rating = movie.voteAverage,
+                onItemClick = {}
+            )
+
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(movies.size) { iteration ->
+                val animatedColor by animateColorAsState(
+                    if (pagerState.currentPage == iteration) AppTheme.colors.theme.tint else AppTheme.colors.background.border,
+                    label = "",
+                )
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(4.dp)
+                        .background(animatedColor, CircleShape)
+                        .size(if(pagerState.currentPage == iteration) 10.dp else 6.dp)
+                )
+            }
+        }
+
+
         ChipIconView(
             image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
             style = ChipIconViewStyle.FadeTint,
