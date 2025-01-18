@@ -66,8 +66,7 @@ fun ItemCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.dimens.spaceXS)
-                        then (
-                        if (rating == null) Modifier.alpha(0.0f) else Modifier)
+                        then (if (rating == null) Modifier.alpha(0.0f) else Modifier)
             )
 
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
