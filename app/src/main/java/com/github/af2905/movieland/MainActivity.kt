@@ -45,7 +45,6 @@ fun MainApp(
     }
 
     Scaffold(
-        modifier = Modifier.background(AppTheme.colors.theme.tintBg),
         bottomBar = {
             AppBottomNavigationView(
                 navController = navController,
@@ -62,7 +61,7 @@ fun MainApp(
             )
         },
         contentColor = AppTheme.colors.theme.tintGhost,
-        containerColor = AppTheme.colors.theme.tintBg
+        containerColor = AppTheme.colors.background.default
     ) { paddingValues ->
         AppNavigation(
             navController = navController,
