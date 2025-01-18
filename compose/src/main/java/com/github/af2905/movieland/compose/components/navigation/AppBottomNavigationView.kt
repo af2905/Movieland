@@ -3,6 +3,7 @@ package com.github.af2905.movieland.compose.components.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -14,54 +15,65 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import com.github.af2905.movieland.compose.theme.AppTheme
 
 @Composable
 fun AppBottomNavigationView(
     navController: NavController,
-    currentTab: String, // Currently selected tab
-    items: List<BottomNavItem>, // Bottom navigation items
+    currentTab: String,
+    items: List<BottomNavItem>,
     backgroundColor: Color = AppTheme.colors.theme.tintBg,
     alwaysShowLabel: Boolean = true,
-    onTabSelected: (String) -> Unit // Callback for tab selection
+    elevation: Dp = AppTheme.dimens.elevationS,
+    onTabSelected: (String) -> Unit
 ) {
-    NavigationBar(
-        containerColor = backgroundColor,
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation, shape = RectangleShape)
     ) {
-        items.forEach { item ->
-            NavigationBarItem(
-                selected = currentTab == item.route,
-                onClick = {
-                    if (currentTab != item.route) {
-                        onTabSelected(item.route)
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
+        NavigationBar(
+            containerColor = backgroundColor,
+        ) {
+            items.forEach { item ->
+                NavigationBarItem(
+                    selected = currentTab == item.route,
+                    onClick = {
+                        if (currentTab != item.route) {
+                            onTabSelected(item.route)
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                },
-                icon = { TabIcon(item) },
-                label = {
-                    Text(
-                        text = item.text,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = AppTheme.colors.theme.tintGhost,
-                    selectedIconColor = AppTheme.colors.theme.tint,
-                    unselectedIconColor = AppTheme.colors.background.iconBar,
-                    selectedTextColor = AppTheme.colors.theme.tint,
-                    unselectedTextColor = AppTheme.colors.background.iconBar
-                ),
-                alwaysShowLabel = alwaysShowLabel
-            )
+                    },
+                    icon = { TabIcon(item) },
+                    label = {
+                        Text(
+                            text = item.text,
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = AppTheme.colors.theme.tintGhost,
+                        selectedIconColor = AppTheme.colors.theme.tint,
+                        unselectedIconColor = AppTheme.colors.background.iconBar,
+                        selectedTextColor = AppTheme.colors.theme.tint,
+                        unselectedTextColor = AppTheme.colors.background.iconBar
+                    ),
+                    alwaysShowLabel = alwaysShowLabel
+                )
+            }
         }
     }
 }
