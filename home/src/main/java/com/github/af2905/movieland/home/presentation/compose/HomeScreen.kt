@@ -50,7 +50,12 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
+import com.github.af2905.movieland.home.R
 
 
 @Composable
@@ -70,23 +75,50 @@ fun HomeScreen(
         pageCount = { movies.size }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
+    Column {
+        AppCenterAlignedTopAppBar(
+            title = stringResource(R.string.popular_movies),
+            onBackClick = { },
+            endButtons = {
+                ChipIconView(
+                    image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                    style = ChipIconViewStyle.FadeTint,
+                    onClick = {
+                        onDarkThemeClick()
+                    }
+                )
+            }
+        )
 
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.spaceM)
+                .horizontalScroll((rememberScrollState()))
+                .padding(horizontal = AppTheme.dimens.spaceM),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
+        ) {
+            for (theme in Themes.entries) {
+                ChipView(
+                    text = theme.name,
+                    isLarge = true,
+                    style = ChipViewStyle.FadeTint,
+                    onClick = { onThemeClick(theme) }
+                )
+            }
+        }
 
         HorizontalPager(
-            contentPadding = PaddingValues(horizontal = 32.dp),
-            pageSpacing = 16.dp,
+            modifier = Modifier.padding(top =  AppTheme.dimens.spaceM),
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.space2XL),
+            pageSpacing = AppTheme.dimens.spaceM,
             state = pagerState
         ) { page ->
             val movie = movies[page]
 
             ItemCardLarge(
-                modifier = Modifier.padding(horizontal = 6.dp),
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.space2XS),
                 title = movie.title,
                 imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
                 rating = movie.voteAverage,
@@ -94,6 +126,7 @@ fun HomeScreen(
             )
 
         }
+
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -113,39 +146,41 @@ fun HomeScreen(
                 )
             }
         }
+    }
 
 
-        ChipIconView(
-            image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
-            style = ChipIconViewStyle.FadeTint,
-            onClick = {
-                onDarkThemeClick()
-            }
-        )
+    // Dynamically set background color based on the theme
+    /*val scaffoldBackgroundColor = if (isDarkTheme) {
+        AppTheme.colors.background.default
+    } else {
+        AppTheme.colors.background.inverse
+    }*/
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = AppTheme.dimens.spaceM)
-                .horizontalScroll((rememberScrollState()))
-                .padding(horizontal = AppTheme.dimens.spaceM),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
-        ) {
-            for (theme in Themes.entries) {
-                ChipView(
-                    text = theme.name,
-                    isLarge = true,
-                    style = ChipViewStyle.FadeTint,
-                    onClick = { onThemeClick(theme) }
-                )
-            }
+    /*Scaffold(
+        modifier = Modifier.background(scaffoldBackgroundColor),
+        topBar = {
+            AppCenterAlignedTopAppBar(
+                title = stringResource(R.string.popular_movies),
+                onBackClick = { },
+                endButtons = {
+                    ChipIconView(
+                        image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+                        style = ChipIconViewStyle.FadeTint,
+                        onClick = {
+                            onDarkThemeClick()
+                        }
+                    )
+                }
+            )
         }
-
-        LazyRow {
-            items(movies) { movie ->
-
-                println("MOVIES_TAG: movie -> $movie")
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+            HorizontalPager(
+                contentPadding = PaddingValues(horizontal = 32.dp),
+                pageSpacing = 16.dp,
+                state = pagerState
+            ) { page ->
+                val movie = movies[page]
 
                 ItemCardLarge(
                     modifier = Modifier.padding(horizontal = 6.dp),
@@ -154,45 +189,157 @@ fun HomeScreen(
                     rating = movie.voteAverage,
                     onItemClick = {}
                 )
+
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                repeat(movies.size) { iteration ->
+                    val animatedColor by animateColorAsState(
+                        if (pagerState.currentPage == iteration) AppTheme.colors.theme.tint else AppTheme.colors.background.border,
+                        label = "",
+                    )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(4.dp)
+                            .background(animatedColor, CircleShape)
+                            .size(if(pagerState.currentPage == iteration) 10.dp else 6.dp)
+                    )
+                }
             }
         }
 
+
+    }*/
+}
+
+/*Column(
+    modifier = Modifier
+        .fillMaxSize(),
+
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
+
+    HorizontalPager(
+        contentPadding = PaddingValues(horizontal = 32.dp),
+        pageSpacing = 16.dp,
+        state = pagerState
+    ) { page ->
+        val movie = movies[page]
+
+        ItemCardLarge(
+            modifier = Modifier.padding(horizontal = 6.dp),
+            title = movie.title,
+            imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+            rating = movie.voteAverage,
+            onItemClick = {}
+        )
+
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        repeat(movies.size) { iteration ->
+            val animatedColor by animateColorAsState(
+                if (pagerState.currentPage == iteration) AppTheme.colors.theme.tint else AppTheme.colors.background.border,
+                label = "",
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(4.dp)
+                    .background(animatedColor, CircleShape)
+                    .size(if(pagerState.currentPage == iteration) 10.dp else 6.dp)
+            )
+        }
     }
 
 
-    /*Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ChipIconView(
-            image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
-            style = ChipIconViewStyle.FadeTint,
-            onClick = {
-                onDarkThemeClick()
-            }
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = AppTheme.dimens.spaceM)
-                .horizontalScroll((rememberScrollState()))
-                .padding(horizontal = AppTheme.dimens.spaceM),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
-        ) {
-            for (theme in Themes.entries) {
-                ChipView(
-                    text = theme.name,
-                    isLarge = true,
-                    style = ChipViewStyle.FadeTint,
-                    onClick = { onThemeClick(theme) }
-                )
-            }
+    ChipIconView(
+        image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+        style = ChipIconViewStyle.FadeTint,
+        onClick = {
+            onDarkThemeClick()
         }
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = AppTheme.dimens.spaceM)
+            .horizontalScroll((rememberScrollState()))
+            .padding(horizontal = AppTheme.dimens.spaceM),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
+    ) {
+        for (theme in Themes.entries) {
+            ChipView(
+                text = theme.name,
+                isLarge = true,
+                style = ChipViewStyle.FadeTint,
+                onClick = { onThemeClick(theme) }
+            )
+        }
+    }
+
+    LazyRow {
+        items(movies) { movie ->
+
+            println("MOVIES_TAG: movie -> $movie")
+
+            ItemCardLarge(
+                modifier = Modifier.padding(horizontal = 6.dp),
+                title = movie.title,
+                imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                rating = movie.voteAverage,
+                onItemClick = {}
+            )
+        }
+    }
+
+}*/
+
+
+/*Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
+    ChipIconView(
+        image = if (isDarkTheme) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
+        style = ChipIconViewStyle.FadeTint,
+        onClick = {
+            onDarkThemeClick()
+        }
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = AppTheme.dimens.spaceM)
+            .horizontalScroll((rememberScrollState()))
+            .padding(horizontal = AppTheme.dimens.spaceM),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
+    ) {
+        for (theme in Themes.entries) {
+            ChipView(
+                text = theme.name,
+                isLarge = true,
+                style = ChipViewStyle.FadeTint,
+                onClick = { onThemeClick(theme) }
+            )
+        }
+    }
 *//*
         ItemCardLarge(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -241,4 +388,4 @@ fun HomeScreen(
             Text(text = "Go to TV Show Details")
         }
     }*/
-}
+//}

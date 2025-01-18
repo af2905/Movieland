@@ -47,7 +47,7 @@ fun ItemCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
         ),
-        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
+        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
@@ -108,7 +108,7 @@ fun ItemCardLarge(
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
         ),
-        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
+        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
     ) {
         Column {
             AsyncImage(
@@ -169,7 +169,7 @@ fun ItemCardHorizontal(
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
         ),
-        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationS)
+        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
@@ -236,7 +236,6 @@ fun ItemCardHorizontal(
                 Text(
                     text = title.orEmpty(),
                     style = AppTheme.typography.caption1,
-                    color = AppTheme.colors.type.secondary,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
