@@ -14,9 +14,10 @@ import com.github.af2905.movieland.core.data.database.entity.*
         TvShowDetail::class,
         MovieDetail::class,
         PersonDetail::class,
-        Person::class
+        Person::class,
+        Genres::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(
@@ -44,4 +45,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun personDetailDao(): PersonDetailDao
     abstract fun tvShowDao(): TvShowDao
     abstract fun tvShowDetailDao(): TvShowDetailDao
+    abstract fun genresDao(): GenresDao
 }
