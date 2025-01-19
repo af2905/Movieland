@@ -11,14 +11,15 @@ class GetTopRatedTvShows @Inject constructor(
     private val mapper: TvShowMapper
 ) : CoroutineUseCase<TopRatedTvShowsParams, List<TvShowItem>>() {
     override suspend fun execute(params: TopRatedTvShowsParams): List<TvShowItem> {
-        val response = tvShowsRepository.getTopRatedTvShows(
+        /*val response = tvShowsRepository.getTopRatedTvShows(
             language = params.language,
             page = params.page,
             forceUpdate = params.forceUpdate
         )
         return mapper.map(response)
             .filterNot { it.overview.isNullOrEmpty() }
-            .sortedByDescending { it.releaseYear }
+            .sortedByDescending { it.releaseYear }*/
+        return emptyList()
     }
 }
 

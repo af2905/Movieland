@@ -2,8 +2,17 @@ package com.github.af2905.movieland.core.repository.impl
 
 import com.github.af2905.movieland.core.data.api.TrendingApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
+import com.github.af2905.movieland.core.data.database.dao.PersonDao
+import com.github.af2905.movieland.core.data.database.dao.TvShowDao
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.Person
+import com.github.af2905.movieland.core.data.database.entity.PersonType
+import com.github.af2905.movieland.core.data.database.entity.TvShow
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
+import com.github.af2905.movieland.core.data.mapper.PersonMapper
+import com.github.af2905.movieland.core.data.mapper.TvShowMapper
 import com.github.af2905.movieland.core.repository.TrendingRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,42 +24,119 @@ import javax.inject.Inject
 class TrendingRepositoryImpl @Inject constructor(
     private val trendingApi: TrendingApi,
     private val movieDao: MovieDao,
-    private val mapper: MovieMapper
+    private val tvShowDao: TvShowDao,
+    private val personDao: PersonDao,
+    private val tvShowMapper: TvShowMapper,
+    private val personMapper: PersonMapper,
+    private val movieMapper: MovieMapper
 ) : TrendingRepository {
 
     companion object {
-        private const val CACHE_VALIDITY_PERIOD = 4 * 60 * 60 * 1000 // 4 hours in milliseconds
+        private const val CACHE_VALIDITY_PERIOD = 8 * 60 * 60 * 1000 // 8 hours in milliseconds
     }
 
-    override fun getTrendingMovies(timeWindow: String, language: String?): Flow<List<Movie>> = flow {
-        val movieType = "TRENDING_$timeWindow"
-
-        // Check cached movies
-        val cachedMovies = movieDao.getMoviesByType(movieType).firstOrNull()
-        val lastUpdated = cachedMovies?.firstOrNull()?.timeStamp ?: 0L
+    override fun getTrendingMovies(
+        movieType: MovieType,
+        language: String?,
+        page: Int?
+    ): Flow<List<Movie>> = flow {
+        val cachedItems = movieDao.getMoviesByType(movieType).firstOrNull()
+        val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
         val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
 
-        // Fetch fresh data if cache is stale or not available
-        if (cachedMovies.isNullOrEmpty() || isCacheStale) {
+        if (cachedItems.isNullOrEmpty() || isCacheStale) {
             try {
-                val response = trendingApi.getTrendingMovies(language = language, timeWindow = timeWindow)
-                val movies = mapper.map(response.movies).map {
+                val timeWindow = when (movieType) {
+                    MovieType.TRENDING_WEEK -> "week"
+                    else -> "day"
+                }
+
+                val response =
+                    trendingApi.getTrendingMovies(language = language, timeWindow = timeWindow)
+                val items = movieMapper.map(response.movies).map {
                     it.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
                 }
-
-                if (movies.isNotEmpty()) {
+                if (items.isNotEmpty()) {
                     movieDao.deleteMoviesByType(movieType)
-                    movieDao.insertMovies(movies)
+                    movieDao.insertMovies(items)
                 }
             } catch (e: Exception) {
-                emit(emptyList()) // Emit empty list if API fails and no cache is available
-                return@flow
+                // Handle API errors (e.g., log or fallback)
             }
         }
-
-        // Emit cached movies (updated or existing)
         emitAll(movieDao.getMoviesByType(movieType))
     }.catch {
-        emit(emptyList()) // Fallback to empty list in case of any errors
+        emit(emptyList())
+    }
+
+    override fun getTrendingTvShows(
+        tvShowType: TvShowType,
+        language: String?,
+        page: Int?
+    ): Flow<List<TvShow>> {
+        return flow {
+            val cachedItems = tvShowDao.getTvShowsByType(tvShowType).firstOrNull()
+            val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
+
+            if (cachedItems.isNullOrEmpty() || isCacheStale) {
+                try {
+                    val timeWindow = when (tvShowType) {
+                        TvShowType.TRENDING_WEEK -> "week"
+                        else -> "day"
+                    }
+
+                    val response =
+                        trendingApi.getTrendingTvShows(language = language, timeWindow = timeWindow)
+                    val items = tvShowMapper.map(response.tvShows).map {
+                        it.copy(tvShowType = tvShowType, timeStamp = System.currentTimeMillis())
+                    }
+                    if (items.isNotEmpty()) {
+                        tvShowDao.deleteTvShowsByType(tvShowType)
+                        tvShowDao.insertTvShows(items)
+                    }
+                } catch (e: Exception) {
+                    // Handle API errors (e.g., log or fallback)
+                }
+            }
+            emitAll(tvShowDao.getTvShowsByType(tvShowType))
+        }.catch {
+            emit(emptyList())
+        }
+    }
+
+    override fun getTrendingPeople(
+        personType: PersonType,
+        language: String?,
+        page: Int?
+    ): Flow<List<Person>> {
+        return flow {
+            val cachedItems = personDao.getPeopleByType(personType).firstOrNull()
+            val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
+
+            if (cachedItems.isNullOrEmpty() || isCacheStale) {
+                try {
+                    val timeWindow = when (personType) {
+                        PersonType.TRENDING_WEEK -> "week"
+                        else -> "day"
+                    }
+                    val response =
+                        trendingApi.getTrendingPeople(language = language, timeWindow = timeWindow)
+                    val items = personMapper.map(response.results).map {
+                        it.copy(personType = personType, timeStamp = System.currentTimeMillis())
+                    }
+                    if (items.isNotEmpty()) {
+                        personDao.deletePeopleByType(personType)
+                        personDao.insertPeople(items)
+                    }
+                } catch (e: Exception) {
+                    // Handle API errors (e.g., log or fallback)
+                }
+            }
+            emitAll(personDao.getPeopleByType(personType))
+        }.catch {
+            emit(emptyList())
+        }
     }
 }

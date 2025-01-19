@@ -15,7 +15,7 @@ import com.github.af2905.movieland.core.data.database.entity.*
         MovieDetail::class,
         PersonDetail::class,
         Person::class,
-        Genres::class
+        Genre::class
     ],
     version = 2,
     exportSchema = false
