@@ -3,7 +3,7 @@ androidBuildTools = "34.0.0"
 androidCompileSdk = "34"
 androidMinSdk = "23"
 androidTargetSdk = "34"
-datastorePreferences = "1.1.1"
+datastorePreferences = "1.1.2"
 kotlinCompilerExtensionVersion = "1.5.11"
 
 hiltNavigationCompose = "1.2.0"
