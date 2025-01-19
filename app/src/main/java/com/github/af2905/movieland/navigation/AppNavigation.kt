@@ -13,7 +13,8 @@ import com.github.af2905.movieland.compose.PersonDetailsScreen
 import com.github.af2905.movieland.compose.TVShowDetailsScreen
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
-import com.github.af2905.movieland.home.presentation.compose.HomeScreen
+import com.github.af2905.movieland.home.presentation.HomeScreen
+import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen
 import com.github.af2905.movieland.search.compose.SearchScreen
@@ -38,7 +39,7 @@ fun AppNavigation(
             route = "home/main"
         ) {
             composable(AppNavRoutes.Home.route) {
-                HomeScreen(
+                HomeScreenNavWrapper(
                     navController = navController,
                     isDarkTheme = isDarkTheme,
                     currentTheme = currentTheme,
