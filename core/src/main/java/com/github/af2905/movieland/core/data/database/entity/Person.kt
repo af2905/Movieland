@@ -27,8 +27,13 @@ data class Person(
     val name: String?,
     val profilePath: String?,
     val popularity: Double?,
+    val personType: PersonType? = null,
     val timeStamp: Long? = null
 )
+
+enum class PersonType {
+    POPULAR, TRENDING_DAY, TRENDING_WEEK
+}
 
 data class KnownFor(
     @ColumnInfo(name = KNOWN_FOR_ID) val id: Int,

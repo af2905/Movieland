@@ -9,7 +9,7 @@ data class MovieDetail(
     @PrimaryKey val id: Int,
     val adult: Boolean?,
     val budget: Int?,
-    val genres: List<Genre>?,
+    val genre: List<Genre>?,
     val homepage: String?,
     val imdbId: String?,
     val originalLanguage: String?,
@@ -33,8 +33,6 @@ data class MovieDetail(
     val creditsCasts: List<CreditsCast>,
     val similarMovies: List<Movie>
 )
-
-data class Genre(val id: Int, val name: String?)
 
 data class ProductionCompany(
     val id: Int,

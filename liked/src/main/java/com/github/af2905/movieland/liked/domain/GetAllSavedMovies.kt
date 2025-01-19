@@ -14,8 +14,9 @@ class GetAllSavedMovies @Inject constructor(
 ) : CoroutineUseCase<Unit, List<MovieItem>>() {
 
     override suspend fun execute(params: Unit): List<MovieItem> {
-        val response = moviesRepository.getAllSavedMovieDetail()
+        /*val response = moviesRepository.getAllSavedMovieDetail()
         val list: List<MovieDetailItem> = response.map { movieDetail -> mapper.map(movieDetail) }
-        return list.map { detailItem -> detailItem.mapToMovieItem() }
+        return list.map { detailItem -> detailItem.mapToMovieItem() }*/
+        return emptyList() //TODO remove after check
     }
 }
