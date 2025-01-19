@@ -9,15 +9,16 @@ import javax.inject.Inject
 class GetSimilarTvShows @Inject constructor(
     private val tvShowsRepository: TvShowsRepository,
     private val mapper: TvShowMapper
-) : CoroutineUseCase<SimilarTvShowsParams, List<TvShowItem>>() {
+) : CoroutineUseCase<SimilarTvShowsParams, List<TvShowItem>?>() {
 
-    override suspend fun execute(params: SimilarTvShowsParams): List<TvShowItem> {
-        val response = tvShowsRepository.getSimilarTvShows(
+    override suspend fun execute(params: SimilarTvShowsParams): List<TvShowItem>? {
+/*        val response = tvShowsRepository.getSimilarTvShows(
             tvShowId = params.tvShowId,
             language = params.language
         )
         val result = mapper.map(response)
-        return mapper.map(result).filterNot { tvShowItem -> tvShowItem.posterPath.isNullOrEmpty() }
+        return mapper.map(result).filterNot { tvShowItem -> tvShowItem.posterPath.isNullOrEmpty() }*/
+        return null
     }
 }
 

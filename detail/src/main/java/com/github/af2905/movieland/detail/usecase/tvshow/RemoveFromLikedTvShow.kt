@@ -12,7 +12,8 @@ class RemoveFromLikedTvShow @Inject constructor(
 ) : CoroutineUseCase<UnlikedTvShowDetailParams, Boolean>() {
 
     override suspend fun execute(params: UnlikedTvShowDetailParams): Boolean {
-        return tvShowsRepository.removeTvShowDetail(tvShowDetail = mapper.map(params.tvShowDetail))
+        //return tvShowsRepository.removeTvShowDetail(tvShowDetail = mapper.map(params.tvShowDetail))
+        return false
     }
 }
 

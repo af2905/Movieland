@@ -12,8 +12,8 @@ class GetCachedTvShowsByType @Inject constructor(
     private val mapper: TvShowMapper
 ) : CoroutineUseCase<CachedTvShowsParams, List<TvShowItem>>() {
     override suspend fun execute(params: CachedTvShowsParams): List<TvShowItem> {
-        val tvShows = tvShowsRepository.getCachedTvShowsByType(params.type)
-        return mapper.map(tvShows)
+        //val tvShows = tvShowsRepository.getCachedTvShowsByType(params.type)
+        return emptyList()
     }
 }
 

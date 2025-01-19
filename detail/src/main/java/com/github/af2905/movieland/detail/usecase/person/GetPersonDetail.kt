@@ -9,14 +9,15 @@ import javax.inject.Inject
 class GetPersonDetail @Inject constructor(
     private val peopleRepository: PeopleRepository,
     private val mapper: PersonDetailMapper
-) : CoroutineUseCase<PersonDetailParams, PersonDetailItem>() {
-    override suspend fun execute(params: PersonDetailParams): PersonDetailItem {
-        return mapper.map(
+) : CoroutineUseCase<PersonDetailParams, PersonDetailItem?>() {
+    override suspend fun execute(params: PersonDetailParams): PersonDetailItem? {
+        /*return mapper.map(
             peopleRepository.getPersonDetail(
                 personId = params.personId,
                 language = params.language
             )
-        )
+        )*/
+        return null
     }
 }
 
