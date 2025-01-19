@@ -12,7 +12,8 @@ class SaveToLikedTvShow @Inject constructor(
 ) : CoroutineUseCase<LikedTvShowDetailParams, Boolean>() {
 
     override suspend fun execute(params: LikedTvShowDetailParams): Boolean {
-        return tvShowsRepository.saveTvShowDetail(tvShowDetail = mapper.map(params.tvShowDetail))
+        //return tvShowsRepository.saveTvShowDetail(tvShowDetail = mapper.map(params.tvShowDetail))
+        return false
     }
 }
 

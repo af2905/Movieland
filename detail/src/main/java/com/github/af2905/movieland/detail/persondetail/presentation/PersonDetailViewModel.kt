@@ -96,17 +96,19 @@ class PersonDetailViewModel @Inject constructor(
 
             val casts = castsAsync.await().orEmpty()
             personDetailItem = personDetailAsync.await()
-            personDetailItem = personDetailItem.copy(personMovieCreditsCasts = casts)
+            personDetailItem = personDetailItem?.copy(personMovieCreditsCasts = casts)
 
-            list.add(personDetailItem)
+            if (personDetailItem != null) {
+                list.add(personDetailItem)
+            }
             list.addAll(createActorsAndCrewBlock(casts))
         } else {
             list.add(personDetailItem)
             list.addAll(createActorsAndCrewBlock(personDetailItem.personMovieCreditsCasts))
         }
-        container.reduce {
+       /* container.reduce {
             PersonDetailContract.State.Content(personDetailItem, list)
-        }
+        }*/
     }
 
     private fun createActorsAndCrewBlock(personMovieCreditsCasts: List<PersonMovieCreditsCastItem>): List<Model> {

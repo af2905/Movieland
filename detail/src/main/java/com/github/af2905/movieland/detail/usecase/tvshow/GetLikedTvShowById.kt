@@ -12,7 +12,8 @@ class GetLikedTvShowById @Inject constructor(
 ) : CoroutineUseCase<LikedTvShowByIdParams, TvShowDetailItem?>() {
 
     override suspend fun execute(params: LikedTvShowByIdParams): TvShowDetailItem? {
-        return tvShowsRepository.getTvShowDetailById(params.tvShowId)?.let { mapper.map(it) }
+        //return tvShowsRepository.getTvShowDetailById(params.tvShowId)?.let { mapper.map(it) }
+        return null
     }
 }
 

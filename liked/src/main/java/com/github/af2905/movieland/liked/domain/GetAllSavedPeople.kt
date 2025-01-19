@@ -12,11 +12,12 @@ import javax.inject.Inject
 class GetAllSavedPeople @Inject constructor(
     private val peopleRepository: PeopleRepository,
     private val mapper: PersonDetailMapper
-) : CoroutineUseCase<Unit, List<PersonItem>>() {
+) : CoroutineUseCase<Unit, List<PersonItem>?>() {
 
-    override suspend fun execute(params: Unit): List<PersonItem> {
-        val response = peopleRepository.getAllSavedPersonDetail()
+    override suspend fun execute(params: Unit): List<PersonItem>? {
+        /*val response = peopleRepository.getAllSavedPersonDetail()
         val list: List<PersonDetailItem> = response.map { personDetail -> mapper.map(personDetail) }
-        return list.map { detailItem -> detailItem.mapToPersonItem() }
+        return list.map { detailItem -> detailItem.mapToPersonItem() }*/
+        return null
     }
 }

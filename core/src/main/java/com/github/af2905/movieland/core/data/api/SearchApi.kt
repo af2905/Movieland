@@ -11,8 +11,8 @@ interface SearchApi {
     @GET("search/movie")
     suspend fun searchMovie(
         @Query(ApiParams.QUERY) query: String,
-        @Query(ApiParams.LANGUAGE) language: String? = null,
-        @Query(ApiParams.PAGE) page: Int? = null,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
         @Query(ApiParams.INCLUDE_ADULT) adult: String? = null,
         @Query(ApiParams.REGION) region: String? = null,
         @Query(ApiParams.YEAR) year: Int? = null
@@ -21,8 +21,8 @@ interface SearchApi {
     @GET("search/multi")
     suspend fun searchMulti(
         @Query(ApiParams.QUERY) query: String,
-        @Query(ApiParams.LANGUAGE) language: String? = null,
-        @Query(ApiParams.PAGE) page: Int? = null,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
         @Query(ApiParams.INCLUDE_ADULT) adult: String? = null,
         @Query(ApiParams.REGION) region: String? = null
     ): SearchMultiDto

@@ -4,21 +4,22 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.github.af2905.movieland.core.data.database.entity.Genres
+import com.github.af2905.movieland.core.data.database.entity.Genre
+import com.github.af2905.movieland.core.data.database.entity.GenreType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GenresDao {
 
+    @Query("SELECT * FROM Genre WHERE genreType = :genreType")
+    fun getGenresByType(genreType: GenreType): Flow<List<Genre>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGenres(genres: List<Genres>)
+    suspend fun insertGenres(genres: List<Genre>)
 
-    @Query("SELECT * FROM Genres ORDER BY name ASC")
-    fun getGenres(): Flow<List<Genres>>
+    @Query("DELETE FROM Genre WHERE genreType = :genreType")
+    suspend fun deleteGenresByType(genreType: GenreType)
 
-    @Query("SELECT * FROM Genres WHERE id = :genreId")
-    suspend fun getGenreById(genreId: Int): Genres?
-
-    @Query("DELETE FROM Genres")
-    suspend fun deleteAllGenres()
+    @Query("SELECT MAX(timeStamp) FROM Genre WHERE genreType = :genreType")
+    suspend fun getLastUpdated(genreType: GenreType): Long?
 }
