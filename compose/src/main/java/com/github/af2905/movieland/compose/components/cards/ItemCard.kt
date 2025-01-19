@@ -74,6 +74,7 @@ fun ItemCard(
             Text(
                 text = title.orEmpty(),
                 style = AppTheme.typography.caption1,
+                color = AppTheme.colors.type.secondary,
                 minLines = 1,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -114,7 +115,7 @@ fun ItemCardLarge(
             AsyncImage(
                 model = imageUrl,
                 contentDescription = null,
-                modifier = Modifier.height(180.dp),
+                modifier = Modifier.height(200.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.FillBounds
             )
@@ -136,6 +137,7 @@ fun ItemCardLarge(
                     style = AppTheme.typography.bodyMedium,
                     minLines = 1,
                     maxLines = 1,
+                    color = AppTheme.colors.type.secondary,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
@@ -236,6 +238,7 @@ fun ItemCardHorizontal(
                 Text(
                     text = title.orEmpty(),
                     style = AppTheme.typography.caption1,
+                    color = AppTheme.colors.type.secondary,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
