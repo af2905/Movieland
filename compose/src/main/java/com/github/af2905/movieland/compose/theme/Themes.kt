@@ -1,12 +1,17 @@
 package com.github.af2905.movieland.compose.theme
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
+import androidx.core.view.WindowCompat
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsDark
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsLight
 
@@ -24,6 +29,24 @@ fun AppTheme(
     val colors = if (darkTheme) palette.dark else palette.light
     val dimens = if (LocalConfiguration.current.screenWidthDp > 600) dimens600 else dimens
     val typography = Typography(fonts ?: defaultFontFamily, colors.type.primary)
+
+    val view = LocalView.current
+
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as ComponentActivity).window
+
+            // Set status bar and navigation bar colors
+            window.statusBarColor = colors.theme.tintBg.toArgb()
+            window.navigationBarColor = colors.background.inverse.toArgb()
+
+            WindowCompat.getInsetsController(window, window.decorView).apply {
+                // Adjust light/dark appearance for status and navigation bars
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = darkTheme
+            }
+        }
+    }
 
     CompositionLocalProvider(
         LocalAppColors provides colors,

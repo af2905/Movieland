@@ -9,15 +9,16 @@ import javax.inject.Inject
 class GetTvShowCredits @Inject constructor(
     private val tvShowsRepository: TvShowsRepository,
     private val mapper: CreditsCastMapper
-) : CoroutineUseCase<TvShowCreditsParams, List<CreditsCastItem>>() {
+) : CoroutineUseCase<TvShowCreditsParams, List<CreditsCastItem>?>() {
 
-    override suspend fun execute(params: TvShowCreditsParams): List<CreditsCastItem> {
-        val response = tvShowsRepository.getTvShowCredits(
+    override suspend fun execute(params: TvShowCreditsParams): List<CreditsCastItem>? {
+        /*val response = tvShowsRepository.getTvShowCredits(
             tvShowId = params.tvShowId,
             language = params.language
         )
         val result = mapper.map(response)
-        return result.filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }
+        return result.filterNot { actorItem -> actorItem.profilePath.isNullOrEmpty() }*/
+        return null
     }
 }
 

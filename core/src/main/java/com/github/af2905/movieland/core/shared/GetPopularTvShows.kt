@@ -12,14 +12,15 @@ class GetPopularTvShows @Inject constructor(
     private val mapper: TvShowMapper
 ) : CoroutineUseCase<PopularTvShowsParams, List<TvShowItem>>() {
     override suspend fun execute(params: PopularTvShowsParams): List<TvShowItem> {
-        val response = tvShowsRepository.getPopularTvShows(
+        /*val response = tvShowsRepository.getPopularTvShows(
             language = params.language,
             page = params.page,
             forceUpdate = params.forceUpdate
         )
         return mapper.map(response)
             .filter { !it.overview.isNullOrEmpty() && it.voteAverage != Double.empty && it.posterFullPathToImage != null }
-            .sortedByDescending { it.releaseYear }
+            .sortedByDescending { it.releaseYear }*/
+        return emptyList()
     }
 }
 

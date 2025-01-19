@@ -9,15 +9,16 @@ import javax.inject.Inject
 class GetTvShowDetail @Inject constructor(
     private val tvShowsRepository: TvShowsRepository,
     private val mapper: TvShowDetailMapper
-) : CoroutineUseCase<TvShowDetailParams, TvShowDetailItem>() {
+) : CoroutineUseCase<TvShowDetailParams, TvShowDetailItem?>() {
 
-    override suspend fun execute(params: TvShowDetailParams): TvShowDetailItem {
-        return mapper.map(
+    override suspend fun execute(params: TvShowDetailParams): TvShowDetailItem? {
+        /*return mapper.map(
             tvShowsRepository.getTvShowDetail(
                 tvShowId = params.tvShowId,
                 language = params.language
             )
-        )
+        )*/
+        return null
     }
 }
 

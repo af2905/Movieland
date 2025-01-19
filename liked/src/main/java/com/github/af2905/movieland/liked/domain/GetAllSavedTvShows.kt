@@ -11,10 +11,11 @@ import javax.inject.Inject
 class GetAllSavedTvShows @Inject constructor(
     private val tvShowsRepository: TvShowsRepository,
     private val mapper: TvShowDetailMapper
-) : CoroutineUseCase<Unit, List<TvShowItem>>() {
-    override suspend fun execute(params: Unit): List<TvShowItem> {
-        val response = tvShowsRepository.getAllSavedTvShowDetail()
+) : CoroutineUseCase<Unit, List<TvShowItem>?>() {
+    override suspend fun execute(params: Unit): List<TvShowItem>? {
+       /* val response = tvShowsRepository.getAllSavedTvShowDetail()
         val list: List<TvShowDetailItem> = response.map { tvShowDetail -> mapper.map(tvShowDetail) }
-        return list.map { detailItem -> detailItem.mapToTvShowItem() }
+        return list.map { detailItem -> detailItem.mapToTvShowItem() }*/
+        return null
     }
 }

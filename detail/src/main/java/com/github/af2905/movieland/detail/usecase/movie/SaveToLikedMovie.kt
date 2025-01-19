@@ -12,7 +12,8 @@ class SaveToLikedMovie @Inject constructor(
 ) : CoroutineUseCase<LikedMovieDetailParams, Boolean>() {
 
     override suspend fun execute(params: LikedMovieDetailParams): Boolean {
-        return moviesRepository.saveMovieDetail(movieDetail = mapper.map(params.movieDetail))
+        //return moviesRepository.saveMovieDetail(movieDetail = mapper.map(params.movieDetail))
+        return false //TODO remove after check
     }
 }
 
