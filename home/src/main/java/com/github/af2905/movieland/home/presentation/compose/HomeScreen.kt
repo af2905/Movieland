@@ -70,6 +70,7 @@ fun HomeScreen(
     val viewModel: HomeViewModel = hiltViewModel()
 
     val movies by viewModel.getTrendingMovies().collectAsState(initial = emptyList())
+    val genres by viewModel.getGenres().collectAsState(initial = emptyList())
 
     val pagerState = rememberPagerState(
         pageCount = { movies.size }
@@ -143,6 +144,25 @@ fun HomeScreen(
                         .padding(4.dp)
                         .background(animatedColor, CircleShape)
                         .size(if(pagerState.currentPage == iteration) 10.dp else 6.dp)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.spaceM)
+                .horizontalScroll((rememberScrollState()))
+                .padding(horizontal = AppTheme.dimens.spaceM),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceXS)
+        ) {
+            for (genre in genres) {
+                ChipView(
+                    text = genre.name,
+                    isLarge = true,
+                    style = ChipViewStyle.FadeTint,
+                    onClick = {  }
                 )
             }
         }
