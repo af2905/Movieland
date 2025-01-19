@@ -109,24 +109,24 @@ class TvShowDetailViewModel @Inject constructor(
             val tvShowCreditsCasts = tvShowCreditsCastAsync.await()
             val similarTvShows = similarTvShowsAsync.await()
 
-            val movieCreditCastsBlock = createActorsAndCrewBlock(tvShowCreditsCasts)
-            val similarMoviesBlock = createSimilarTvShowsBlock(similarTvShows)
+            //val movieCreditCastsBlock = createActorsAndCrewBlock(tvShowCreditsCasts)
+            //val similarMoviesBlock = createSimilarTvShowsBlock(similarTvShows)
 
-            list.add(TvShowDetailDescItem(tvShowDetailItem))
-            list.addAll(movieCreditCastsBlock)
-            list.addAll(similarMoviesBlock)
-            tvShowDetailItem = tvShowDetailItem.copy(
-                creditsCasts = tvShowCreditsCasts,
-                similarTvShows = similarTvShows
-            )
+            //list.add(TvShowDetailDescItem(tvShowDetailItem))
+            //list.addAll(movieCreditCastsBlock)
+            //list.addAll(similarMoviesBlock)
+            /*tvShowDetailItem = tvShowDetailItem.copy(
+                creditsCasts = emptyList(),
+                similarTvShows = emptyList()
+            )*/
         } else {
             list.add(TvShowDetailDescItem(tvShowDetailItem))
             list.addAll(createActorsAndCrewBlock(tvShowDetailItem.creditsCasts))
             list.addAll(createSimilarTvShowsBlock(tvShowDetailItem.similarTvShows))
         }
-        container.reduce {
+        /*container.reduce {
             TvShowDetailContract.State.Content(tvShowDetailItem = tvShowDetailItem, list = list)
-        }
+        }*/
     }
 
     private fun createActorsAndCrewBlock(tvShowCreditsCasts: List<CreditsCastItem>): List<Model> {

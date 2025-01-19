@@ -4,21 +4,9 @@ import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.PersonDetail
 import com.github.af2905.movieland.core.data.dto.people.PersonDetailDto
 import com.github.af2905.movieland.core.data.dto.people.PersonMovieCreditsCastDto
+import kotlinx.coroutines.flow.Flow
 
 interface PeopleRepository {
 
-    suspend fun getPersonDetail(personId: Int, language: String?): PersonDetailDto
-    suspend fun getPersonMovieCredits(
-        personId: Int,
-        language: String?
-    ): List<PersonMovieCreditsCastDto>
-
-    suspend fun getPopularPeople(language: String?, page: Int?, forceUpdate: Boolean): List<Person>
-
-    suspend fun savePersonDetail(personDetail: PersonDetail): Boolean
-    suspend fun removePersonDetail(personDetail: PersonDetail): Boolean
-    suspend fun getPersonDetailById(id: Int): PersonDetail?
-    suspend fun getAllSavedPersonDetail(): List<PersonDetail>
-
-    suspend fun getCachedPopularPeople(): List<Person>
+    suspend fun getPopularPeople(language: String?): Flow<List<Person>>
 }

@@ -70,7 +70,6 @@ class StorageModule {
             networkConverter: NetworkConverter,
             seasonConverter: SeasonConverter
         ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-            .addMigrations(MIGRATION_1_2)
             .addTypeConverter(listIntConverter)
             .addTypeConverter(listStringConverter)
             .addTypeConverter(genreConverter)
@@ -85,20 +84,5 @@ class StorageModule {
             .addTypeConverter(networkConverter)
             .addTypeConverter(seasonConverter)
             .build()
-    }
-}
-
-val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        // Add the Genres table
-        db.execSQL(
-            """
-            CREATE TABLE IF NOT EXISTS Genres (
-                id INTEGER PRIMARY KEY NOT NULL,
-                name TEXT NOT NULL,
-                timeStamp INTEGER
-            )
-            """.trimIndent()
-        )
     }
 }

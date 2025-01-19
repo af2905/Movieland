@@ -11,14 +11,15 @@ class GetPopularPeople @Inject constructor(
     private val mapper: PersonMapper
 ) : CoroutineUseCase<PeopleParams, List<PersonItem>>() {
     override suspend fun execute(params: PeopleParams): List<PersonItem> {
-        val response = peopleRepository.getPopularPeople(
+       /* val response = peopleRepository.getPopularPeople(
             language = params.language,
             page = params.page,
             forceUpdate = params.forceUpdate
         )
         return mapper.map(response).filterNot {
             it.profilePath.isNullOrEmpty()
-        }
+        }*/
+        return emptyList()
     }
 }
 
