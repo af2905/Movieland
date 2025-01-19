@@ -116,7 +116,7 @@ fun HomeScreen(
         HorizontalPager(
             modifier = Modifier.padding(top = AppTheme.dimens.spaceM),
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-            pageSpacing = AppTheme.dimens.spaceM,
+            pageSpacing = AppTheme.dimens.space2XS,
             state = pagerState
         ) { page ->
             val movie = movies[page]
