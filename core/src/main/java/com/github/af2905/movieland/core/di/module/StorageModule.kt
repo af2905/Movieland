@@ -2,12 +2,13 @@ package com.github.af2905.movieland.core.di.module
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.github.af2905.movieland.core.data.database.AppDatabase
 import com.github.af2905.movieland.core.data.database.converter.*
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
 import com.github.af2905.movieland.core.data.database.dao.TvShowDao
 import com.github.af2905.movieland.core.data.database.dao.TvShowDetailDao
-import com.github.af2905.movieland.core.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,6 +50,10 @@ class StorageModule {
 
         @Singleton
         @Provides
+        fun provideGenresDao(database: AppDatabase) = database.genresDao()
+
+        @Singleton
+        @Provides
         fun provideRoomDatabase(
             @ApplicationContext context: Context,
             listIntConverter: ListIntConverter,
@@ -65,6 +70,7 @@ class StorageModule {
             networkConverter: NetworkConverter,
             seasonConverter: SeasonConverter
         ): AppDatabase = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+            .addMigrations(MIGRATION_1_2)
             .addTypeConverter(listIntConverter)
             .addTypeConverter(listStringConverter)
             .addTypeConverter(genreConverter)
@@ -79,5 +85,20 @@ class StorageModule {
             .addTypeConverter(networkConverter)
             .addTypeConverter(seasonConverter)
             .build()
+    }
+}
+
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Add the Genres table
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS Genres (
+                id INTEGER PRIMARY KEY NOT NULL,
+                name TEXT NOT NULL,
+                timeStamp INTEGER
+            )
+            """.trimIndent()
+        )
     }
 }
