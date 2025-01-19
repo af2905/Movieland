@@ -9,15 +9,16 @@ import javax.inject.Inject
 class GetPersonMovieCredits @Inject constructor(
     private val peopleRepository: PeopleRepository,
     private val mapper: PersonMovieCreditsCastMapper
-) : CoroutineUseCase<PersonMovieCreditsParams, List<PersonMovieCreditsCastItem>>() {
-    override suspend fun execute(params: PersonMovieCreditsParams): List<PersonMovieCreditsCastItem> {
-        val response = peopleRepository.getPersonMovieCredits(params.personId, params.language)
+) : CoroutineUseCase<PersonMovieCreditsParams, List<PersonMovieCreditsCastItem>?>() {
+    override suspend fun execute(params: PersonMovieCreditsParams): List<PersonMovieCreditsCastItem>? {
+        /*val response = peopleRepository.getPersonMovieCredits(params.personId, params.language)
         return mapper.map(response).filterNot {
             it.releaseDate.isNullOrEmpty()
                     || it.character.isNullOrEmpty()
                     || (it.posterPath.isNullOrEmpty() && it.backdropPath.isNullOrEmpty())
         }
-            .sortedByDescending { it.releaseDate }
+            .sortedByDescending { it.releaseDate }*/
+        return emptyList()
     }
 }
 

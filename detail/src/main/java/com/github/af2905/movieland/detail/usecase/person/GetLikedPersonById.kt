@@ -12,7 +12,8 @@ class GetLikedPersonById @Inject constructor(
 ) : CoroutineUseCase<GetLikedPersonDetailByIdParams, PersonDetailItem?>() {
 
     override suspend fun execute(params: GetLikedPersonDetailByIdParams): PersonDetailItem? {
-        return peopleRepository.getPersonDetailById(params.personId)?.let { mapper.map(it) }
+        //return peopleRepository.getPersonDetailById(params.personId)?.let { mapper.map(it) }
+        return null
     }
 }
 

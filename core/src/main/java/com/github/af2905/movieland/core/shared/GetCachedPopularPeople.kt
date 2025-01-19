@@ -11,7 +11,7 @@ class GetCachedPopularPeople @Inject constructor(
     private val mapper: PersonMapper
 ) : CoroutineUseCase<Unit, List<PersonItem>>() {
     override suspend fun execute(params: Unit): List<PersonItem> {
-        val people = peopleRepository.getCachedPopularPeople()
-        return mapper.map(people)
+        //val people = peopleRepository.getCachedPopularPeople()
+        return emptyList()
     }
 }

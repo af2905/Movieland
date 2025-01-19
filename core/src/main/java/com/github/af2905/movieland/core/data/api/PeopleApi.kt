@@ -15,18 +15,18 @@ interface PeopleApi {
     @GET("person/{$PERSON_ID}")
     suspend fun getPersonDetail(
         @Path(PERSON_ID) personId: Int,
-        @Query(LANGUAGE) language: String? = null
+        @Query("language") language: String? = null
     ): PersonDetailDto
 
     @GET("person/popular")
     suspend fun getPersonPopular(
-        @Query(LANGUAGE) language: String? = null,
-        @Query(ApiParams.PAGE) page: Int? = null,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
     ): PeopleDto
 
     @GET("person/{$PERSON_ID}/movie_credits")
     suspend fun getPersonMovieCredits(
         @Path(PERSON_ID) personId: Int,
-        @Query(LANGUAGE) language: String? = null
+        @Query("language") language: String? = null
     ): PersonMovieCreditsDto
 }

@@ -12,7 +12,8 @@ class SaveToLikedPerson @Inject constructor(
 ) : CoroutineUseCase<LikedPersonDetailParams, Boolean>() {
 
     override suspend fun execute(params: LikedPersonDetailParams): Boolean {
-        return peopleRepository.savePersonDetail(personDetail = mapper.map(params.personDetail))
+        //return peopleRepository.savePersonDetail(personDetail = mapper.map(params.personDetail))
+        return false
     }
 }
 
