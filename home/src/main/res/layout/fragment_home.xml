@@ -41,7 +41,6 @@
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
                     app:scrimAnimationDuration="0"
-                    app:title="@string/app_name"
                     app:titleEnabled="true"
                     app:toolbarId="@+id/toolbar">
 
@@ -60,13 +59,13 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+            <!--<androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 linearLayoutManager="@{false}"
                 recyclerSetData="@{viewModel.container.state.list}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </com.github.af2905.movieland.core.common.view.OnlyVerticalSwipeRefreshLayout>

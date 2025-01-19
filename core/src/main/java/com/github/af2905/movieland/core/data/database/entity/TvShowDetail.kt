@@ -25,7 +25,7 @@ data class TvShowDetail(
     val createdBy: List<CreatedBy>?,
     val episodeRunTime: List<Int>?,
     val firstAirDate: String?,
-    val genres: List<Genre>?,
+    val genre: List<Genre>?,
     val homepage: String?,
     val inProduction: Boolean?,
     val languages: List<String>,

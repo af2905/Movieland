@@ -6,13 +6,17 @@ import com.github.af2905.movieland.core.di.scope.AppScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-
+import javax.inject.Singleton
+//TODO should be deleted
 @Module
 @InstallIn(SingletonComponent::class)
 class ResourceModule {
 
-    @AppScope
+    @Singleton
     @Provides
-    fun provideResourceDatastore(context: Context) = ResourceDatastore(context)
+    fun provideResourceDatastore(@ApplicationContext context: Context): ResourceDatastore {
+        return ResourceDatastore(context)
+    }
 }

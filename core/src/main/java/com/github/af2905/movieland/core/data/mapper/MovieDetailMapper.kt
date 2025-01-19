@@ -2,6 +2,7 @@ package com.github.af2905.movieland.core.data.mapper
 
 import com.github.af2905.movieland.core.common.model.item.MovieDetailItem
 import com.github.af2905.movieland.core.data.database.entity.Genre
+import com.github.af2905.movieland.core.data.database.entity.GenreType
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.ProductionCountry
@@ -58,7 +59,7 @@ class MovieDetailMapper @Inject constructor(
             id = id,
             adult = adult,
             budget = budget,
-            genres = genres?.let { genreMapper.map(it) },
+            genres = genre?.let { genreMapper.map(it) },
             homepage = homepage,
             imdbId = imdbId,
             originalLanguage = originalLanguage,
@@ -91,7 +92,7 @@ class MovieDetailMapper @Inject constructor(
             id = id,
             adult = adult,
             budget = budget,
-            genres = genres?.let { genreMapper.map(it) },
+            genre = genres?.let { genreMapper.map(it, GenreType.MOVIE) },
             homepage = homepage,
             imdbId = imdbId,
             originalLanguage = originalLanguage,
@@ -126,13 +127,13 @@ class GenreMapper @Inject constructor() {
     fun map(input: List<Genre>): List<UiGenre> = input.map { entity -> map(entity) }
 
     @JvmName(UI_ITEM_TO_ENTITY_MAPPER)
-    fun map(input: List<UiGenre>): List<Genre> = input.map { item -> map(item) }
+    fun map(input: List<UiGenre>,genreType: GenreType): List<Genre> = input.map { item -> map(item, genreType) }
 
     private fun map(input: GenreDto): UiGenre = with(input) { UiGenre(id = id, name = name) }
 
     private fun map(input: Genre): UiGenre = with(input) { UiGenre(id = id, name = name) }
 
-    private fun map(input: UiGenre): Genre = with(input) { Genre(id = id, name = name) }
+    private fun map(input: UiGenre, genreType: GenreType): Genre = with(input) { Genre(id = id, name = name.orEmpty(), genreType = genreType) }
 }
 
 class ProductionCompanyMapper @Inject constructor() {

@@ -12,7 +12,8 @@ class RemoveFromLikedPerson @Inject constructor(
 ) : CoroutineUseCase<UnlikedPersonDetailParams, Boolean>() {
 
     override suspend fun execute(params: UnlikedPersonDetailParams): Boolean {
-        return peopleRepository.removePersonDetail(personDetail = mapper.map(params.personDetail))
+        //return peopleRepository.removePersonDetail(personDetail = mapper.map(params.personDetail))
+        return false
     }
 }
 

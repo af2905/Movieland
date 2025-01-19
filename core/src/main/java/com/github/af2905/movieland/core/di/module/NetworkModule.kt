@@ -1,14 +1,15 @@
 package com.github.af2905.movieland.core.di.module
 
 import com.github.af2905.movieland.core.BuildConfig
+import com.github.af2905.movieland.core.data.api.GenresApi
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.api.PeopleApi
 import com.github.af2905.movieland.core.data.api.SearchApi
+import com.github.af2905.movieland.core.data.api.TrendingApi
 import com.github.af2905.movieland.core.data.api.TvShowsApi
 import com.github.af2905.movieland.core.data.interceptor.ApiKeyInterceptor
 import com.github.af2905.movieland.core.data.interceptor.ErrorInterceptor
 import com.github.af2905.movieland.core.data.interceptor.HttpLoggerInterceptor
-import com.github.af2905.movieland.core.di.scope.AppScope
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -21,6 +22,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 const val DEFAULT_TIMEOUT = 30L
 const val MAX_IDLE_CONNECTION = 5
@@ -30,23 +32,32 @@ const val KEEP_ALIVE_DURATION = 30L
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    @AppScope
+    @Singleton
     @Provides
     fun providePeopleApi(retrofit: Retrofit): PeopleApi = retrofit.create(PeopleApi::class.java)
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideSearchApi(retrofit: Retrofit): SearchApi = retrofit.create(SearchApi::class.java)
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create(MoviesApi::class.java)
 
-    @AppScope
+    @Singleton
+    @Provides
+    fun provideTrendingApi(retrofit: Retrofit): TrendingApi =
+        retrofit.create(TrendingApi::class.java)
+
+    @Singleton
     @Provides
     fun provideTvApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)
 
-    @AppScope
+    @Singleton
+    @Provides
+    fun provideGenresApi(retrofit: Retrofit): GenresApi = retrofit.create(GenresApi::class.java)
+
+    @Singleton
     @Provides
     fun provideRetrofitClient(client: OkHttpClient, converter: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
@@ -56,16 +67,16 @@ class NetworkModule {
             .build()
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideConverterFactory(gson: Gson): GsonConverterFactory =
         GsonConverterFactory.create(gson)
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideGson(): Gson = GsonBuilder().create()
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -85,21 +96,21 @@ class NetworkModule {
             .build()
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideApiKeyInterceptor(): ApiKeyInterceptor = ApiKeyInterceptor()
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideErrorInterceptor(gson: Gson): ErrorInterceptor = ErrorInterceptor(gson)
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideHttpLoggingInterceptor(logger: HttpLoggingInterceptor.Logger): HttpLoggingInterceptor {
         return HttpLoggingInterceptor(logger).setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
-    @AppScope
+    @Singleton
     @Provides
     fun provideHttpLoggerInterceptor(): HttpLoggingInterceptor.Logger = HttpLoggerInterceptor()
 }

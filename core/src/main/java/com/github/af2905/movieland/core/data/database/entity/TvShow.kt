@@ -18,10 +18,10 @@ data class TvShow(
     val voteCount: Int?,
     val name: String?,
     val originalName: String?,
-    val tvShowType: String = "",
+    val tvShowType: TvShowType? = null,
     val timeStamp: Long? = null
 )
 
 enum class TvShowType {
-    POPULAR, TOP_RATED
+    POPULAR, TOP_RATED, AIRING_TODAY, ON_THE_AIR, TRENDING_DAY, TRENDING_WEEK
 }
