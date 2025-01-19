@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.di.module
 
 import com.github.af2905.movieland.core.BuildConfig
+import com.github.af2905.movieland.core.data.api.GenresApi
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.api.PeopleApi
 import com.github.af2905.movieland.core.data.api.SearchApi
@@ -45,11 +46,16 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTrendingApi(retrofit: Retrofit): TrendingApi = retrofit.create(TrendingApi::class.java)
+    fun provideTrendingApi(retrofit: Retrofit): TrendingApi =
+        retrofit.create(TrendingApi::class.java)
 
     @Singleton
     @Provides
     fun provideTvApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideGenresApi(retrofit: Retrofit): GenresApi = retrofit.create(GenresApi::class.java)
 
     @Singleton
     @Provides
