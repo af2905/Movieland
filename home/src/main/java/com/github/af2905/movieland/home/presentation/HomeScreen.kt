@@ -30,6 +30,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
+import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.home.presentation.models.getMovieGenreItems
 import com.github.af2905.movieland.home.presentation.models.getTvShowGenreItems
 
@@ -125,6 +126,7 @@ fun HomeScreen(
                             title = tvShow.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
                             rating = tvShow.voteAverage,
+                            mediaType = MediaType.TV,
                             onItemClick = {}
                         )
                     }
@@ -149,7 +151,7 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = person.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
-                            rating = null,
+                            mediaType = MediaType.PERSON,
                             onItemClick = {}
                         )
                     }
@@ -193,7 +195,8 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = null,
+                            rating = movie.voteAverage,
+                            mediaType = MediaType.MOVIE,
                             onItemClick = {}
                         )
                     }
@@ -218,7 +221,8 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = null,
+                            rating = movie.voteAverage,
+                            mediaType = MediaType.MOVIE,
                             onItemClick = {}
                         )
                     }
@@ -242,7 +246,8 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = null,
+                            rating = movie.voteAverage,
+                            mediaType = MediaType.MOVIE,
                             onItemClick = {}
                         )
                     }
@@ -267,7 +272,8 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = null,
+                            rating = movie.voteAverage,
+                            mediaType = MediaType.MOVIE,
                             onItemClick = {}
                         )
                     }
@@ -300,7 +306,7 @@ fun HomeScreen(
                     onClick = { /* Handle click */ })
             }
 
-            // Popular Movies LazyRow
+            // Popular TV Shows LazyRow
             item {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
@@ -311,7 +317,8 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = tvShow.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
-                            rating = null,
+                            rating = tvShow.voteAverage,
+                            mediaType = MediaType.TV,
                             onItemClick = {}
                         )
                     }
@@ -336,7 +343,33 @@ fun HomeScreen(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = tvShow.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
-                            rating = null,
+                            rating = tvShow.voteAverage,
+                            mediaType = MediaType.TV,
+                            onItemClick = {}
+                        )
+                    }
+                }
+            }
+
+            item {
+                HeadlinePrimaryActionView(
+                    text = "Popular People",
+                    action = "View All",
+                    onClick = { /* Handle click */ })
+            }
+
+            // Popular people Shows LazyRow
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(state.popularPeople) { person ->
+                        ItemCard(
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                            title = person.name,
+                            imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
+                            mediaType = MediaType.PERSON,
                             onItemClick = {}
                         )
                     }

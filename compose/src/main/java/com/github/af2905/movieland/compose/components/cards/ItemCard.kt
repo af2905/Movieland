@@ -27,15 +27,17 @@ import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.chips.ChipView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
 import com.github.af2905.movieland.compose.theme.AppTheme
+import com.github.af2905.movieland.core.data.MediaType
 
 private fun Double?.orDefault(): Double = this ?: 0.0
 
 @Composable
 fun ItemCard(
     modifier: Modifier = Modifier,
+    mediaType: MediaType,
     title: String?,
     imageUrl: String?,
-    rating: Double?,
+    rating: Double? = null,
     onItemClick: () -> Unit
 ) {
     ElevatedCard(
@@ -59,13 +61,15 @@ fun ItemCard(
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
-            RatingBar(
-                rating = rating.orDefault(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.dimens.spaceXS)
-                        then (if (rating == null) Modifier.alpha(0.0f) else Modifier)
-            )
+            if(mediaType != MediaType.PERSON) {
+                RatingBar(
+                    rating = rating.orDefault(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.dimens.spaceXS)
+                            then (if (rating == null) Modifier.alpha(0.0f) else Modifier)
+                )
+            }
 
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
@@ -314,7 +318,8 @@ fun PreviewItemCard() {
                 title = "Lion King",
                 imageUrl = "https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
                 rating = 6.7,
-                onItemClick = {}
+                onItemClick = {},
+                mediaType = MediaType.MOVIE
             )
         }
     }
