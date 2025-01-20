@@ -21,27 +21,8 @@ data class HomeState(
     val moviesGenres: List<Genre> = emptyList(),
     val tvShowsGenres: List<Genre> = emptyList(),
 
-    val popularPeople: List<Person> = emptyList(),
-
-    val horrorMovies: List<Movie> = emptyList(),
-    val comedyMovies: List<Movie> = emptyList(),
-    val actionMovies: List<Movie> = emptyList(),
-    val dramaMovies: List<Movie> = emptyList(),
-    val thrillerMovies: List<Movie> = emptyList(),
-    val romanceMovies: List<Movie> = emptyList(),
-    val adventureMovies: List<Movie> = emptyList(),
-    val scienceFictionMovies: List<Movie> = emptyList(),
-
-    val horrorTvShows: List<TvShow> = emptyList(),
-    val comedyTvShows: List<TvShow> = emptyList(),
-    val actionTvShows: List<TvShow> = emptyList(),
-    val dramaTvShows: List<TvShow> = emptyList(),
-    val thrillerTvShows: List<TvShow> = emptyList(),
-    val romanceTvShows: List<TvShow> = emptyList(),
-    val adventureTvShows: List<TvShow> = emptyList(),
-    val scienceFictionTvShows: List<TvShow> = emptyList(),
-
-    )
+    val popularPeople: List<Person> = emptyList()
+)
 
 sealed interface HomeAction {
     data class OpenMovieDetail(val movieId: Int) : HomeAction
