@@ -11,6 +11,7 @@ import com.github.af2905.movieland.core.data.database.entity.PersonType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.core.repository.GenresRepository
 import com.github.af2905.movieland.core.repository.MoviesRepository
+import com.github.af2905.movieland.core.repository.PeopleRepository
 import com.github.af2905.movieland.core.repository.TrendingRepository
 import com.github.af2905.movieland.core.repository.TvShowsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,8 @@ class HomeViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val tvShowsRepository: TvShowsRepository,
     private val trendingRepository: TrendingRepository,
-    private val genresRepository: GenresRepository
+    private val genresRepository: GenresRepository,
+    private val peopleRepository: PeopleRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(HomeState())
@@ -76,13 +78,16 @@ class HomeViewModel @Inject constructor(
                 Pair(movieGenres, tvGenres)
             }
 
+            val peopleData = peopleRepository.getPopularPeople(null)
+
             // Combine all grouped data
             combine(
                 trendingData,
                 movieData,
                 tvShowData,
-                genresData
-            ) { trending, movies, tvShows, genres ->
+                genresData,
+                peopleData
+            ) { trending, movies, tvShows, genres, popularPeople ->
                 val (trendingMovies, trendingTvShows, trendingPeople) = trending
                 val (popularMovies, topRatedMovies, upcomingMovies, nowPlayingMovies) = movies
                 val (popularTvShows, topRatedTvShows) = tvShows
@@ -98,10 +103,11 @@ class HomeViewModel @Inject constructor(
                     nowPlayingMovies = nowPlayingMovies,
                     moviesGenres = movieGenres,
                     tvShowsGenres = tvGenres,
-                    popularPeople = trendingPeople,
+                    popularPeople = popularPeople,
                     popularTvShows = popularTvShows,
-                    topRatedTvShows = topRatedTvShows
-                )
+                    topRatedTvShows = topRatedTvShows,
+
+                    )
             }
                 .catch { throwable ->
                     // Handle errors
