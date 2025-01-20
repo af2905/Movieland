@@ -2,7 +2,6 @@ package com.github.af2905.movieland.home.presentation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,34 +15,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.cards.ItemCardLarge
-import com.github.af2905.movieland.compose.components.chips.ChipIconView
-import com.github.af2905.movieland.compose.components.chips.ChipIconViewStyle
 import com.github.af2905.movieland.compose.components.chips.ChipView
-import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.theme.AppTheme
-import com.github.af2905.movieland.compose.theme.Themes
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.res.stringResource
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
-import com.github.af2905.movieland.home.R
+import com.github.af2905.movieland.home.presentation.models.getMovieGenreItems
 
 
 @Composable
@@ -57,11 +44,11 @@ fun HomeScreen(
     Column {
         // Top App Bar
 
-            AppCenterAlignedTopAppBar(
-                title = "",
-                onBackClick = { },
-                endButtons = { }
-            )
+        AppCenterAlignedTopAppBar(
+            title = "",
+            onBackClick = { },
+            endButtons = { }
+        )
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -177,11 +164,10 @@ fun HomeScreen(
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(state.moviesGenres) { genre ->
+                    items(state.moviesGenres.getMovieGenreItems()) { item ->
                         ChipView(
-                            text = genre.name,
+                            text = "${item.icon}  ${item.title}",
                             isLarge = true,
-                            //style = ChipViewStyle.FadeTint,
                             onClick = { }
                         )
                     }
@@ -193,3 +179,4 @@ fun HomeScreen(
         }
     }
 }
+
