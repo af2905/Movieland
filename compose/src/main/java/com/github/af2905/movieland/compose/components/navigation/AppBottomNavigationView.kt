@@ -57,7 +57,7 @@ fun AppBottomNavigationView(
                             }
                         }
                     },
-                    icon = { TabIcon(item) },
+                    icon = { TabIcon(item = item, selected = currentTab == item.route) },
                     label = {
                         Text(
                             text = item.text,
@@ -79,10 +79,10 @@ fun AppBottomNavigationView(
 }
 
 @Composable
-private fun TabIcon(item: BottomNavItem) {
+private fun TabIcon(item: BottomNavItem, selected: Boolean) {
     Box(modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)) {
         Icon(
-            imageVector = item.icon,
+            imageVector = if (selected) item.selectedIcon else item.icon,
             contentDescription = item.text,
             modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)
         )

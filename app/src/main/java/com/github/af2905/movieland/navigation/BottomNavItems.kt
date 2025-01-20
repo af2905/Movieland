@@ -1,6 +1,10 @@
 package com.github.af2905.movieland.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmarks
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -10,8 +14,28 @@ import com.github.af2905.movieland.core.compose.AppNavRoutes
 
 //TODO localize strings
 val bottomNavItems = listOf(
-    BottomNavItem("Home", Icons.Outlined.Home, AppNavRoutes.Home.route),
-    BottomNavItem("Search", Icons.Outlined.Search, AppNavRoutes.Search.route),
-    BottomNavItem("Library", Icons.Outlined.Bookmarks, AppNavRoutes.Library.route),
-    BottomNavItem("Profile", Icons.Outlined.Person, AppNavRoutes.Profile.route)
+    BottomNavItem(
+        text = "Home",
+        icon = Icons.Outlined.Home,
+        selectedIcon = Icons.Default.Home,
+        route = AppNavRoutes.Home.route
+    ),
+    BottomNavItem(
+        text = "Search",
+        icon = Icons.Outlined.Search,
+        selectedIcon = Icons.Default.Search,
+        route = AppNavRoutes.Search.route
+    ),
+    BottomNavItem(
+        text = "Library",
+        icon = Icons.Outlined.Bookmarks,
+        selectedIcon = Icons.Default.Bookmarks,
+        route = AppNavRoutes.Library.route
+    ),
+    BottomNavItem(
+        text = "Profile",
+        icon = Icons.Outlined.Person,
+        selectedIcon = Icons.Default.Person,
+        route = AppNavRoutes.Profile.route
+    )
 )
