@@ -3,7 +3,8 @@ package com.github.af2905.movieland.home.presentation.models
 import com.github.af2905.movieland.core.data.database.entity.Genre
 
 data class GenreItem(
-    val icon: String, // Emoji for the genre
+    val id: Int,
+    val icon: String,
     val title: String
 )
 
@@ -50,6 +51,7 @@ object GenreItemMapper {
     fun mapGenresToGenreItems(genres: List<Genre>): List<GenreItem> {
         return genres.map { genre ->
             GenreItem(
+                id = genre.id,
                 icon = genreEmojiMap[genre.name] ?: "❓", // Default icon for unknown genres
                 title = genre.name
             )
