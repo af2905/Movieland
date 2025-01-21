@@ -8,12 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.github.af2905.movieland.compose.MovieDetailsScreen
-import com.github.af2905.movieland.compose.PersonDetailsScreen
-import com.github.af2905.movieland.compose.TVShowDetailsScreen
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
-import com.github.af2905.movieland.home.presentation.HomeScreen
+import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsScreen
+import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailsScreen
+import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetailsScreen
 import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen

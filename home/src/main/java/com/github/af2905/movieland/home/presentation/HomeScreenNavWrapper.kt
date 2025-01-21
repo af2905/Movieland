@@ -4,9 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.github.af2905.movieland.compose.MovieDetailsScreen
-import com.github.af2905.movieland.compose.PersonDetailsScreen
-import com.github.af2905.movieland.compose.TVShowDetailsScreen
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 
@@ -54,50 +51,3 @@ fun HomeScreenNavWrapper(
         onAction = viewModel::onAction
     )
 }
-
-
-/*
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                is HomeEffect.NavigateToSettings -> {
-                    navController.navigate(SettingsDestination)
-                }
-
-                is HomeEffect.NavigateToBookAppointment -> {
-                    navController.navigate(AppointmentBookingDestination)
-                }
-
-                is HomeEffect.NavigateToUpcomingAppointments -> {
-                    navController.navigate(NavGraphs.appointment.startAppDestination as DirectionDestination)
-                }
-
-                is HomeEffect.NavigateToMedicalDataItem -> {
-                    effect.navigationDestination?.let { destination ->
-                        navController.navigate(destination)
-                    }
-                }
-
-                is HomeEffect.NavigateToAdditionalFeaturesItem -> {
-                    effect.navigationDestination?.let { destination ->
-                        navController.navigate(destination)
-                    }
-                }
-
-                is HomeEffect.NavigateToAppointmentDetail -> {
-                    navController.navigate(
-                        AppointmentDetailsDestination(
-                            clinicId = effect.clinicId,
-                            appointmentId = effect.appointmentId,
-                            appointmentMode = effect.appointmentMode
-                        )
-                    )
-                }
-
-                is HomeEffect.NavigateToNotifications -> {
-                    //TODO not implemented yet
-                }
-            }
-        }
-    }
-*/

@@ -3,7 +3,6 @@ package com.github.af2905.movieland.tvshows.presentation
 import androidx.navigation.NavController
 import com.github.af2905.movieland.core.base.navigator.NavOptions
 import com.github.af2905.movieland.core.base.navigator.Navigator
-import com.github.af2905.movieland.detail.tvshowdetail.presentation.TvShowDetailFragment.Companion.TV_SHOW_ID_ARG
 import javax.inject.Inject
 
 class TvShowsNavigator @Inject constructor(
