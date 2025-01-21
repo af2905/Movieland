@@ -119,7 +119,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
     fun onAction(action: HomeAction) = when (action) {
         is HomeAction.OpenMovieDetail -> {
             viewModelScope.launch {
