@@ -34,7 +34,6 @@ import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.home.presentation.models.getMovieGenreItems
 import com.github.af2905.movieland.home.presentation.models.getTvShowGenreItems
 
-
 @Composable
 fun HomeScreen(
     state: HomeState,
@@ -79,7 +78,9 @@ fun HomeScreen(
                         title = movie.title,
                         imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
                         rating = movie.voteAverage,
-                        onItemClick = {}
+                        onItemClick = {
+                            onAction(HomeAction.OpenMovieDetail(movie.id))
+                        }
                     )
                 }
             }
@@ -127,7 +128,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                            }
                         )
                     }
                 }
@@ -152,7 +155,9 @@ fun HomeScreen(
                             title = person.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
                             mediaType = MediaType.PERSON,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenPersonDetail(person.id))
+                            }
                         )
                     }
                 }
@@ -171,7 +176,9 @@ fun HomeScreen(
                         ChipView(
                             text = "${item.icon}  ${item.title}",
                             isLarge = true,
-                            onClick = { }
+                            onClick = {
+                                onAction(HomeAction.OpenGenre(item.id))
+                            }
                         )
                     }
                 }
@@ -197,7 +204,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenMovieDetail(movie.id))
+                            }
                         )
                     }
                 }
@@ -223,7 +232,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenMovieDetail(movie.id))
+                            }
                         )
                     }
                 }
@@ -248,7 +259,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenMovieDetail(movie.id))
+                            }
                         )
                     }
                 }
@@ -274,7 +287,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenMovieDetail(movie.id))
+                            }
                         )
                     }
                 }
@@ -293,7 +308,9 @@ fun HomeScreen(
                         ChipView(
                             text = "${item.icon}  ${item.title}",
                             isLarge = true,
-                            onClick = { }
+                            onClick = {
+                                onAction(HomeAction.OpenGenre(item.id))
+                            }
                         )
                     }
                 }
@@ -319,7 +336,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                            }
                         )
                     }
                 }
@@ -345,7 +364,9 @@ fun HomeScreen(
                             imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                            }
                         )
                     }
                 }
@@ -370,7 +391,9 @@ fun HomeScreen(
                             title = person.name,
                             imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
                             mediaType = MediaType.PERSON,
-                            onItemClick = {}
+                            onItemClick = {
+                                onAction(HomeAction.OpenPersonDetail(person.id))
+                            }
                         )
                     }
                 }

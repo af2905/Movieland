@@ -33,7 +33,10 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-fun PersonDetailsScreen(personId: Int) {
+fun PersonDetailsScreen(
+    personId: Int,
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -43,7 +46,10 @@ fun PersonDetailsScreen(personId: Int) {
 }
 
 @Composable
-fun TVShowDetailsScreen(tvShowId: Int) {
+fun TVShowDetailsScreen(
+    tvShowId: Int,
+    navController: NavHostController
+) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = "TV Show Details Screen for ID: $tvShowId")
     }

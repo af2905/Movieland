@@ -59,14 +59,14 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId) }
+                itemId?.let { PersonDetailsScreen(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId) }
+                itemId?.let { TVShowDetailsScreen(itemId, navController) }
             }
         }
 
@@ -90,14 +90,14 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId) }
+                itemId?.let { PersonDetailsScreen(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId) }
+                itemId?.let { TVShowDetailsScreen(itemId, navController) }
             }
         }
 
@@ -121,14 +121,14 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId) }
+                itemId?.let { PersonDetailsScreen(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId) }
+                itemId?.let { TVShowDetailsScreen(itemId, navController) }
             }
         }
 
