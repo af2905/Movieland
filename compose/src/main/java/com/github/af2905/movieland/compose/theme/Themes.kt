@@ -37,7 +37,7 @@ fun AppTheme(
             val window = (view.context as ComponentActivity).window
 
             // Set status bar and navigation bar colors
-            window.statusBarColor = colors.theme.tintBg.toArgb()
+            window.statusBarColor = colors.theme.tint.toArgb()
             window.navigationBarColor = colors.background.inverse.toArgb()
 
             WindowCompat.getInsetsController(window, window.decorView).apply {
