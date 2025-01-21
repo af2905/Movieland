@@ -38,7 +38,7 @@ fun AppCenterAlignedTopAppBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AppTheme.colors.theme.tintBg)
+            .background(AppTheme.colors.theme.tint)
             .shadow(elevation, shape = RectangleShape)
     ) {
         CenterAlignedTopAppBar(
@@ -47,13 +47,13 @@ fun AppCenterAlignedTopAppBar(
                 Text(
                     text = title,
                     style = AppTheme.typography.title3,
-                    color = AppTheme.colors.theme.tint
+                    color = AppTheme.colors.type.inverse
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors().copy(
-                containerColor = AppTheme.colors.theme.tintBg,
-                navigationIconContentColor = AppTheme.colors.theme.tint,
-                actionIconContentColor = AppTheme.colors.theme.tint,
+                containerColor = AppTheme.colors.theme.tint,
+                navigationIconContentColor = AppTheme.colors.type.inverse,
+                actionIconContentColor = AppTheme.colors.type.inverse,
             ),
             navigationIcon = {
                 if (hasNavigationBack) {

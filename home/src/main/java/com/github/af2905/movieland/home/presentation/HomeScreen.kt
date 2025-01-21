@@ -44,12 +44,12 @@ fun HomeScreen(
         pageCount = { state.trendingMovies.size }
     )
     Column {
-        // Top App Bar
-
         AppCenterAlignedTopAppBar(
-            title = "",
+            title = "Movieland",
             onBackClick = { },
-            endButtons = { }
+            endButtons = {
+
+            }
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
