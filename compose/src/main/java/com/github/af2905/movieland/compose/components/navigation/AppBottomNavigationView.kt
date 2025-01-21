@@ -28,7 +28,7 @@ fun AppBottomNavigationView(
     navController: NavController,
     currentTab: String,
     items: List<BottomNavItem>,
-    backgroundColor: Color = AppTheme.colors.theme.tintBg,
+    backgroundColor: Color = AppTheme.colors.theme.tintCard,
     alwaysShowLabel: Boolean = true,
     elevation: Dp = AppTheme.dimens.elevationS,
     onTabSelected: (String) -> Unit
@@ -82,7 +82,7 @@ fun AppBottomNavigationView(
 private fun TabIcon(item: BottomNavItem, selected: Boolean) {
     Box(modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)) {
         Icon(
-            imageVector = if (selected) item.selectedIcon else item.icon,
+            imageVector = if(selected) item.selectedIcon else item.icon,
             contentDescription = item.text,
             modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)
         )
