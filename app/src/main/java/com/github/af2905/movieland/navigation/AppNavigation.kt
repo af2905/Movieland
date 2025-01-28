@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
+import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsNavWrapper
 import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsScreen
 import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailsScreen
 import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetailsScreen
@@ -51,7 +52,7 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsScreen(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,
@@ -82,7 +83,7 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsScreen(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,
@@ -113,7 +114,7 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsScreen(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,

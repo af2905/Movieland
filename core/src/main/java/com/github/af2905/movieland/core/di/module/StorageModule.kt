@@ -64,7 +64,7 @@ class StorageModule {
             personMovieCreditsCastConverter: PersonMovieCreditsCastConverter,
             movieCreditsCastConverter: MovieCreditsCastConverter,
             knownForConverter: KnownForConverter,
-            movieConverter: MovieConverter,
+            //movieConverter: MovieConverter,
             tvShowConverter: TvShowConverter,
             createdByConverter: CreatedByConverter,
             networkConverter: NetworkConverter,
@@ -78,7 +78,7 @@ class StorageModule {
             .addTypeConverter(personMovieCreditsCastConverter)
             .addTypeConverter(movieCreditsCastConverter)
             .addTypeConverter(knownForConverter)
-            .addTypeConverter(movieConverter)
+            //.addTypeConverter(movieConverter)
             .addTypeConverter(tvShowConverter)
             .addTypeConverter(createdByConverter)
             .addTypeConverter(networkConverter)
