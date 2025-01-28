@@ -64,6 +64,7 @@ dependencies {
     // Project modules
     implementation(project(":core"))
     implementation(project(":util"))
+    implementation(project(":compose"))
 
     // Libraries from version catalog
     implementation(libs.kotlin.stdlib)
