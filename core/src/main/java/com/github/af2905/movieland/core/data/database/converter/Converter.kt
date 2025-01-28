@@ -3,7 +3,7 @@ package com.github.af2905.movieland.core.data.database.converter
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.github.af2905.movieland.core.data.database.entity.*
-import com.github.af2905.movieland.core.data.database.entity.plain.CreditsCast
+import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject

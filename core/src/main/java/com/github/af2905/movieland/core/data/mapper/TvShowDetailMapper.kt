@@ -11,17 +11,17 @@ import com.github.af2905.movieland.core.common.model.item.Network as UiNetwork
 import com.github.af2905.movieland.core.common.model.item.Season as UiSeason
 
 class TvShowDetailMapper @Inject constructor(
-    private val lastEpisodeToAirMapper: LastEpisodeToAirMapper,
+    //private val lastEpisodeToAirMapper: LastEpisodeToAirMapper,
     private val createdByMapper: CreatedByMapper,
     private val networkMapper: NetworkMapper,
     private val seasonMapper: SeasonMapper,
     private val creditsCastMapper: CreditsCastMapper,
-    private val genreMapper: GenreMapper,
+/*    private val genreMapper: GenreMapper,
     private val productionCompanyMapper: ProductionCompanyMapper,
-    private val productionCountryMapper: ProductionCountryMapper,
+    private val productionCountryMapper: ProductionCountryMapper,*/
     private val tvShowMapper: TvShowMapper
 ) {
-    @JvmName(DTO_TO_UI_ITEM_MAPPER)
+    /*@JvmName(DTO_TO_UI_ITEM_MAPPER)
     fun map(input: TvShowDetailDto): TvShowDetailItem = with(input) {
         TvShowDetailItem(
             id = id,
@@ -182,7 +182,7 @@ class LastEpisodeToAirMapper @Inject constructor() {
             voteAverage = voteAverage,
             voteCount = voteCount
         )
-    }
+    }*/
 }
 
 class CreatedByMapper @Inject constructor() {

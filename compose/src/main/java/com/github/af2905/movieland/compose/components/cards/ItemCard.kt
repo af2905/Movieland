@@ -57,7 +57,7 @@ fun ItemCard(
                     .fillMaxWidth()
                     .height(200.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
@@ -119,7 +119,7 @@ fun ItemCardLarge(
                 contentDescription = null,
                 modifier = Modifier.height(200.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
@@ -183,7 +183,7 @@ fun ItemCardHorizontal(
                     .width(120.dp)
                     .height(150.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Crop
             )
 
             Column(Modifier.padding(all = AppTheme.dimens.spaceS)) {
