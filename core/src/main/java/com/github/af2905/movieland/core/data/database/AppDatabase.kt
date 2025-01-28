@@ -15,9 +15,12 @@ import com.github.af2905.movieland.core.data.database.entity.*
         MovieDetail::class,
         PersonDetail::class,
         Person::class,
-        Genre::class
+        Genre::class,
+        ProductionCompany::class,
+        ProductionCountry::class,
+        CreditsCast::class,
     ],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(
@@ -30,7 +33,7 @@ import com.github.af2905.movieland.core.data.database.entity.*
         PersonMovieCreditsCastConverter::class,
         MovieCreditsCastConverter::class,
         KnownForConverter::class,
-        MovieConverter::class,
+        //MovieConverter::class,
         TvShowConverter::class,
         CreatedByConverter::class,
         NetworkConverter::class,

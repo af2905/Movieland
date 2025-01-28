@@ -2,8 +2,12 @@ package com.github.af2905.movieland.core.repository.impl
 
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
+import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
+import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +21,9 @@ import javax.inject.Inject
 class MoviesRepositoryImpl @Inject constructor(
     private val movieDao: MovieDao,
     private val moviesApi: MoviesApi,
-    private val mapper: MovieMapper
+    private val movieMapper: MovieMapper,
+    private val creditsMapper: CreditsCastMapper,
+    private val movieDetailMapper: MovieDetailMapper
 ) : MoviesRepository {
 
     override fun getMovies(
@@ -56,7 +62,7 @@ class MoviesRepositoryImpl @Inject constructor(
                 }
 
                 val movies = response?.movies?.let {
-                    mapper.map(it).map { movie ->
+                    movieMapper.map(it).map { movie ->
                         movie.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
                     }
                 }
@@ -71,4 +77,57 @@ class MoviesRepositoryImpl @Inject constructor(
         }
         emitAll(movieDao.getMoviesByType(movieType))
     }.catch { emit(emptyList()) }
+
+    override suspend fun getMovieDetails(
+        movieId: Int,
+        language: String?
+    ): MovieDetail {
+        return try {
+            val movieDetailDto = moviesApi.getMovieDetails(movieId, language)
+            movieDetailMapper.map(movieDetailDto)
+        } catch (e: Exception) {
+            // Handle errors, e.g., log them or rethrow as a custom exception
+            throw RuntimeException("Failed to fetch movie details: ${e.message}", e)
+        }
+    }
+
+    override fun getRecommendedMovies(
+        movieId: Int,
+        language: String?,
+        page: Int?
+    ): Flow<List<Movie>> = flow {
+        try {
+            val response = moviesApi.getRecommendedMovies(movieId, language, page)
+            val movies = response.movies.let { movieMapper.map(it) }
+            emit(movies)
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
+    }
+
+    override fun getSimilarMovies(
+        movieId: Int,
+        language: String?,
+        page: Int?
+    ): Flow<List<Movie>> = flow {
+        try {
+            val response = moviesApi.getSimilarMovies(movieId, language, page)
+            val movies = response.movies.let { movieMapper.map(it) }
+            emit(movies)
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
+    }
+
+    override fun getMovieCredits(movieId: Int, language: String?): Flow<List<CreditsCast>> = flow {
+        try {
+            val response = moviesApi.getMovieCredits(movieId, language)
+            val cast = response.cast?.map {
+                creditsMapper.map(it, movieId)
+            }
+            emit(cast ?: emptyList())
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
+    }
 }
