@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,10 +36,12 @@ fun MainApp(
     onThemeClick: (Themes) -> Unit
 ) {
     val navController = rememberNavController()
-
-    // Track the current selected tab
     val currentTab = rememberSaveable { mutableStateOf(AppNavRoutes.Home.route) }
     val activity = LocalContext.current as? Activity
+
+    val currentDestination by navController.currentBackStackEntryFlow.collectAsState(initial = null)
+
+    val showBottomBar = currentDestination?.destination?.route?.startsWith(AppNavRoutes.YouTubePlayer.route) != true
 
     BackHandler {
         handleBackPress(navController, currentTab, activity)
@@ -46,19 +49,21 @@ fun MainApp(
 
     Scaffold(
         bottomBar = {
-            AppBottomNavigationView(
-                navController = navController,
-                items = bottomNavItems,
-                currentTab = currentTab.value,
-                onTabSelected = { tab ->
-                    currentTab.value = tab
-                    navController.navigate(tab) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
+            if (showBottomBar) {
+                AppBottomNavigationView(
+                    navController = navController,
+                    items = bottomNavItems,
+                    currentTab = currentTab.value,
+                    onTabSelected = { tab ->
+                        currentTab.value = tab
+                        navController.navigate(tab) {
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
-                }
-            )
+                )
+            }
         },
         contentColor = AppTheme.colors.theme.tintGhost,
         containerColor = AppTheme.colors.background.default
