@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.github.af2905.movieland.compose.components.video_player.YouTubePlayerScreen
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 
 @Composable
@@ -35,6 +36,10 @@ fun MovieDetailsNavWrapper(
                         AppNavRoutes.Genre.createRoute(effect.genreId)
                     )*/
 
+                }
+
+                is MovieDetailsEffect.NavigateToVideo -> {
+                    navController.navigate(AppNavRoutes.YouTubePlayer.createRoute(effect.videoId))
                 }
             }
         }

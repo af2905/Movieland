@@ -61,6 +61,10 @@ class MovieDetailsViewModel @AssistedInject constructor(
             is MovieDetailsAction.OpenGenre -> {
                 viewModelScope.launch { _effect.send(MovieDetailsEffect.NavigateToGenre(action.genreId)) }
             }
+
+            is MovieDetailsAction.OpenVideo -> {
+                viewModelScope.launch { _effect.send(MovieDetailsEffect.NavigateToVideo(action.videoId)) }
+            }
         }
     }
 
