@@ -11,6 +11,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -30,6 +31,12 @@ class MovieDetailsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val result = moviesRepository.getMovieDetails(movieId, null)
             state = state.copy(movie = result)
+        }
+        viewModelScope.launch {
+            moviesRepository.getSimilarMovies(movieId = movieId, language = null, page = null)
+                .collectLatest {
+                    state = state.copy(similarMovies = it)
+                }
         }
     }
 
