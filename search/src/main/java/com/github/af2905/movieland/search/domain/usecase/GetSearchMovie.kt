@@ -12,7 +12,7 @@ class GetSearchMovie @Inject constructor(
     private val mapper: MovieMapper
 ) : CoroutineUseCase<SearchMovieParams, List<MovieItem>>() {
     override suspend fun execute(params: SearchMovieParams): List<MovieItem> {
-        val response = searchRepository.getSearchMovie(
+        /*val response = searchRepository.getSearchMovie(
             query = params.query,
             language = params.language,
             page = params.page,
@@ -21,6 +21,7 @@ class GetSearchMovie @Inject constructor(
             year = params.year
         )
         val list = mapper.map(response)
-        return mapper.map(list)
+        return mapper.map(list)*/
+        return emptyList()
     }
 }
