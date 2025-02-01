@@ -63,4 +63,6 @@ dependencies {
     implementation(libs.compose.animation)
     implementation(libs.compose.material.icons)
     implementation(libs.coil.compose)
+
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 }
