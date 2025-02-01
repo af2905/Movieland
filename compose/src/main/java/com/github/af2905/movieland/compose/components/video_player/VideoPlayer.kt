@@ -95,8 +95,7 @@ fun YouTubePlayer(videoId: String) {
                     displayZoomControls = false
                     mediaPlaybackRequiresUserGesture = false
                     mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-
-                    // Enable Safe Browsing only on API 26+
+                    
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         safeBrowsingEnabled = true
                     }
