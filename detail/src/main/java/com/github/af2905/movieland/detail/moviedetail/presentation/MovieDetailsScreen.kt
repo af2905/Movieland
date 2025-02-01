@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,8 @@ import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivid
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
+import com.github.af2905.movieland.compose.components.video_player.YouTubePlayerScreen
+import com.github.af2905.movieland.compose.components.video_player.YouTubeThumbnail
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
@@ -51,6 +54,15 @@ fun MovieDetailsScreen(
     state: MovieDetailsState,
     onAction: (MovieDetailsAction) -> Unit,
 ) {
+
+    var selectedVideoId by rememberSaveable { mutableStateOf<String?>(null) } // ✅ Saves videoId on rotation
+
+    // Show YouTube Player if a video is selected
+    selectedVideoId?.let { videoId ->
+        YouTubePlayerScreen(videoId) { selectedVideoId = null }
+        return
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         // Top App Bar
         AppCenterAlignedTopAppBar(
@@ -64,7 +76,6 @@ fun MovieDetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(AppTheme.colors.theme.tint),
-            //contentPadding = PaddingValues(bottom = 16.dp),
         ) {
             // Backdrop Image
             item {
@@ -168,9 +179,39 @@ fun MovieDetailsScreen(
                 }
             }
 
+            if (state.videos.isNotEmpty()) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(AppTheme.colors.background.default)
+                    ) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        HeadlinePrimaryActionView(
+                            text = "Videos",
+                            action = "View All",
+                            onClick = { /* Handle View All Click */ }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        LazyRow(
+                            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(state.videos) { video ->
+                                YouTubeThumbnail(
+                                    videoId = video.key,
+                                    videoName = video.name,
+                                    onVideoClick = { videoId -> selectedVideoId = videoId }
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(32.dp))
+                    }
+                }
+            }
+
             // Similar Movies Section
             item {
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -205,43 +246,6 @@ fun MovieDetailsScreen(
             }
         }
     }
-}
-
-
-@Preview(showBackground = true, widthDp = 360)
-@Composable
-private fun MovieDetailsScreenPreview() {
-    val sampleMovie = MovieDetail(
-        id = 1,
-        title = "The Shawshank Redemption",
-        originalTitle = "The Shawshank Redemption",
-        originalLanguage = "en",
-        overview = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-        tagline = "Fear can hold you prisoner. Hope can set you free.",
-        budget = 25000000,
-        revenue = 28341469,
-        runtime = 142,
-        releaseDate = "1994-09-23",
-        status = "Released",
-        adult = false,
-        popularity = 196.193,
-        voteAverage = 8.7,
-        voteCount = 27548,
-        homepage = "https://www.warnerbros.com/movies/shawshank-redemption",
-        backdropPath = "https://image.tmdb.org/t/p/original/oHPoF0Gzu8xwK4CtdXDaWdcuZxZ.jpg",
-        posterPath = "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-        video = false,
-        genres = emptyList(),
-        productionCompanies = emptyList(),
-        productionCountries = emptyList(),
-    )
-
-    val sampleState = MovieDetailsState(movie = sampleMovie)
-
-    MovieDetailsScreen(
-        state = sampleState,
-        onAction = {}
-    )
 }
 
 

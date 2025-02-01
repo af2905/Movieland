@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel(assistedFactory = MovieDetailsViewModel.Factory::class)
 class MovieDetailsViewModel @AssistedInject constructor(
     @Assisted private val movieId: Int,
-    moviesRepository: MoviesRepository
+    private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(MovieDetailsState())
@@ -33,9 +33,15 @@ class MovieDetailsViewModel @AssistedInject constructor(
             state = state.copy(movie = result)
         }
         viewModelScope.launch {
-            moviesRepository.getSimilarMovies(movieId = movieId, language = null, page = null)
+            moviesRepository.getSimilarMovies(movieId, language = null, page = null)
                 .collectLatest {
                     state = state.copy(similarMovies = it)
+                }
+        }
+        viewModelScope.launch {
+            moviesRepository.getMovieVideos(movieId, language = null)
+                .collectLatest { videoList ->
+                    state = state.copy(videos = videoList)
                 }
         }
     }
@@ -48,11 +54,7 @@ class MovieDetailsViewModel @AssistedInject constructor(
 
             is MovieDetailsAction.OpenMovieDetail -> {
                 viewModelScope.launch {
-                    _effect.send(
-                        MovieDetailsEffect.NavigateToMovieDetail(
-                            action.movieId
-                        )
-                    )
+                    _effect.send(MovieDetailsEffect.NavigateToMovieDetail(action.movieId))
                 }
             }
 
