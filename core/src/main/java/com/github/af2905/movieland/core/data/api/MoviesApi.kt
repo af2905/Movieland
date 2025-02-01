@@ -1,9 +1,6 @@
 package com.github.af2905.movieland.core.data.api
 
-import com.github.af2905.movieland.core.data.ApiParams.LANGUAGE
-import com.github.af2905.movieland.core.data.ApiParams.MOVIE_ID
-import com.github.af2905.movieland.core.data.ApiParams.PAGE
-import com.github.af2905.movieland.core.data.dto.CreditsDto
+import com.github.af2905.movieland.core.data.dto.credits.CreditsDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
 import com.github.af2905.movieland.core.data.dto.movie.MoviesDto
 
@@ -37,29 +34,29 @@ interface MoviesApi {
         @Query("page") page: Int? = null,
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}")
+    @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
-        @Path(MOVIE_ID) movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query("language") language: String? = null
     ): MovieDetailDto
 
-    @GET("movie/{$MOVIE_ID}/recommendations")
+    @GET("movie/{movie_id}/recommendations")
     suspend fun getRecommendedMovies(
-        @Path(MOVIE_ID) movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query("language") language: String? = null,
         @Query("page") page: Int? = null
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}/similar")
+    @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
-        @Path(MOVIE_ID) movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query("language") language: String? = null,
         @Query("page") page: Int? = null
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}/credits")
+    @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(
-        @Path(MOVIE_ID) movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query("language") language: String? = null
     ): CreditsDto
 }
