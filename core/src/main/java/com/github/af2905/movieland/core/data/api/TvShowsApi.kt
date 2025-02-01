@@ -1,7 +1,6 @@
 package com.github.af2905.movieland.core.data.api
 
-import com.github.af2905.movieland.core.data.ApiParams.TV_ID
-import com.github.af2905.movieland.core.data.dto.CreditsDto
+import com.github.af2905.movieland.core.data.dto.credits.CreditsDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowDetailDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowsDto
 import retrofit2.http.GET
@@ -34,19 +33,19 @@ interface TvShowsApi {
         @Query("page") page: Int? = null
     ): TvShowsDto
 
-    @GET("tv/{$TV_ID}") //TODO check
+    @GET("tv/{tv_id}")
     suspend fun getTvShowDetail(
         @Path("tv_id") tvId: Int,
         @Query("language") language: String? = null
     ): TvShowDetailDto
 
-    @GET("tv/{$TV_ID}/similar")
+    @GET("tv/{tv_id}/similar")
     suspend fun getSimilarTvShows(
         @Path("tv_id") tvId: Int,
         @Query("language") language: String? = null
     ): TvShowsDto
 
-    @GET("tv/{$TV_ID}/credits")
+    @GET("tv/{tv_id}/credits")
     suspend fun getTvShowCredits(
         @Path("tv_id") tvId: Int,
         @Query("language") language: String? = null
