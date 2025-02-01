@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.github.af2905.movieland.compose.components.video_player.YouTubePlayerScreen
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsNavWrapper
@@ -67,6 +68,17 @@ fun AppNavigation(
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 itemId?.let { TVShowDetailsScreen(itemId, navController) }
+            }
+            composable(
+                route = AppNavRoutes.YouTubePlayer.route,
+                arguments = listOf(navArgument("videoId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val videoId = backStackEntry.arguments?.getString("videoId")
+                videoId?.let {
+                    YouTubePlayerScreen(videoId) {
+                        navController.popBackStack() // Back when exiting
+                    }
+                }
             }
         }
 
