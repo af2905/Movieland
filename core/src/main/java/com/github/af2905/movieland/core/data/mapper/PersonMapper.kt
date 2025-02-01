@@ -1,6 +1,8 @@
 package com.github.af2905.movieland.core.data.mapper
 
+import com.github.af2905.movieland.core.data.database.entity.KnownFor
 import com.github.af2905.movieland.core.data.database.entity.Person
+import com.github.af2905.movieland.core.data.dto.people.KnownForDto
 import com.github.af2905.movieland.core.data.dto.people.PersonDto
 import javax.inject.Inject
 
@@ -19,5 +21,30 @@ class PersonMapper @Inject constructor(
 
     fun map(input: List<PersonDto>): List<Person> {
         return input.map { map(it) }
+    }
+}
+
+class KnownForMapper @Inject constructor() {
+
+    fun map(input: List<KnownForDto>): List<KnownFor> = input.map { dto -> map(dto) }
+
+    private fun map(input: KnownForDto): KnownFor = with(input) {
+        KnownFor(
+            id = id,
+            name = name,
+            title = title,
+            backdropPath = backdropPath,
+            firstAirDate = firstAirDate,
+            genreIds = genreIds,
+            releaseDate = releaseDate,
+            mediaType = mediaType,
+            originCountry = originCountry,
+            originalLanguage = originalLanguage,
+            originalName = originalName,
+            overview = overview,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            voteCount = voteCount
+        )
     }
 }

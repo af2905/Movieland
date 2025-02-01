@@ -1,7 +1,7 @@
 package com.github.af2905.movieland.core.data.mapper
 
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
-import com.github.af2905.movieland.core.data.dto.CreditsCastDto
+import com.github.af2905.movieland.core.data.dto.credits.CreditsCastDto
 import javax.inject.Inject
 
 class CreditsCastMapper @Inject constructor() {
