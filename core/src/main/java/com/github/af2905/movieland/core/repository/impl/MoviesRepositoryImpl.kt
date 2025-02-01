@@ -6,9 +6,11 @@ import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
+import com.github.af2905.movieland.core.data.mapper.VideoMapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,7 +25,8 @@ class MoviesRepositoryImpl @Inject constructor(
     private val moviesApi: MoviesApi,
     private val movieMapper: MovieMapper,
     private val creditsMapper: CreditsCastMapper,
-    private val movieDetailMapper: MovieDetailMapper
+    private val movieDetailMapper: MovieDetailMapper,
+    private val videoMapper: VideoMapper
 ) : MoviesRepository {
 
     override fun getMovies(
@@ -126,6 +129,16 @@ class MoviesRepositoryImpl @Inject constructor(
                 creditsMapper.map(it, movieId)
             }
             emit(cast ?: emptyList())
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
+    }
+
+    override fun getMovieVideos(movieId: Int, language: String?): Flow<List<Video>> = flow {
+        try {
+            val response = moviesApi.getMovieVideos(movieId, language)
+            val videos = response.results.map { videoMapper.map(it) }
+            emit(videos)
         } catch (e: Exception) {
             emit(emptyList())
         }
