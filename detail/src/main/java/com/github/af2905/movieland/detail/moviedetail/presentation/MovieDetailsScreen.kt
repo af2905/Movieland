@@ -55,14 +55,6 @@ fun MovieDetailsScreen(
     onAction: (MovieDetailsAction) -> Unit,
 ) {
 
-    var selectedVideoId by rememberSaveable { mutableStateOf<String?>(null) } // ✅ Saves videoId on rotation
-
-    // Show YouTube Player if a video is selected
-    selectedVideoId?.let { videoId ->
-        YouTubePlayerScreen(videoId) { selectedVideoId = null }
-        return
-    }
-
     Column(modifier = Modifier.fillMaxSize()) {
         // Top App Bar
         AppCenterAlignedTopAppBar(
@@ -201,7 +193,9 @@ fun MovieDetailsScreen(
                                 YouTubeThumbnail(
                                     videoId = video.key,
                                     videoName = video.name,
-                                    onVideoClick = { videoId -> selectedVideoId = videoId }
+                                    onVideoClick = { videoId ->
+                                        onAction(MovieDetailsAction.OpenVideo(videoId))
+                                    }
                                 )
                             }
                         }

@@ -10,10 +10,16 @@ sealed class AppNavRoutes(val route: String) {
     data object MovieDetails : AppNavRoutes("movieDetails/{itemId}") {
         fun createRoute(itemId: Int) = "movieDetails/$itemId"
     }
+
     data object PersonDetails : AppNavRoutes("personDetails/{itemId}") {
         fun createRoute(itemId: Int) = "personDetails/$itemId"
     }
+
     data object TVShowDetails : AppNavRoutes("tvShowDetails/{itemId}") {
         fun createRoute(itemId: Int) = "tvShowDetails/$itemId"
+    }
+
+    data object YouTubePlayer : AppNavRoutes("youtubePlayer/{videoId}") {
+        fun createRoute(videoId: String) = "youtubePlayer/$videoId"
     }
 }
