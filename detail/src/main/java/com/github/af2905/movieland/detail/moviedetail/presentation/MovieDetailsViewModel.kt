@@ -39,6 +39,12 @@ class MovieDetailsViewModel @AssistedInject constructor(
                 }
         }
         viewModelScope.launch {
+            moviesRepository.getRecommendedMovies(movieId, language = null, page = null)
+                .collectLatest {
+                    state = state.copy(recommendedMovies = it)
+                }
+        }
+        viewModelScope.launch {
             moviesRepository.getMovieVideos(movieId, language = null)
                 .collectLatest { videoList ->
                     state = state.copy(videos = videoList)

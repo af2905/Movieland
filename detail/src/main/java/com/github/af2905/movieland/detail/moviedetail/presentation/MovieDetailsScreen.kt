@@ -93,6 +93,11 @@ fun MovieDetailsScreen(
                 item { MovieCasts(state.casts, onAction) }
             }
 
+            //Recommended Movies Section
+            if (state.recommendedMovies.isNotEmpty()) {
+                item { RecommendedMovies(state.recommendedMovies, onAction) }
+            }
+
             //Similar Movies Section
             if (state.similarMovies.isNotEmpty()) {
                 item { SimilarMovies(state.similarMovies, onAction) }
@@ -232,7 +237,7 @@ fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -269,10 +274,45 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
                 )
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
+@Composable
+fun RecommendedMovies(recommendedMovies: List<Movie>, onAction: (MovieDetailsAction) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default),
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = "Recommended Movies",
+            action = "View All",
+            onClick = { /* Handle click */ }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(recommendedMovies) { movie ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = movie.title,
+                    imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                    rating = movie.voteAverage,
+                    mediaType = MediaType.MOVIE,
+                    onItemClick = {
+                        onAction(MovieDetailsAction.OpenMovieDetail(movie.id))
+                    }
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
 
 @Composable
 fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> Unit) {
