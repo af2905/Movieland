@@ -90,9 +90,7 @@ fun MovieDetailsScreen(
 
             //Movie casts Section
             if (state.casts.isNotEmpty()) {
-                item {
-                    MovieCasts(state.casts, onAction)
-                }
+                item { MovieCasts(state.casts, onAction) }
             }
 
             //Similar Movies Section
@@ -261,6 +259,8 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
                 ItemCard(
                     modifier = Modifier.padding(horizontal = 6.dp),
                     title = cast.name,
+                    subtitle = cast.character,
+                    showSubtitle = true,
                     imageUrl = "https://image.tmdb.org/t/p/original/${cast.profilePath}",
                     mediaType = MediaType.PERSON,
                     onItemClick = {

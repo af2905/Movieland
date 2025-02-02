@@ -36,6 +36,8 @@ fun ItemCard(
     modifier: Modifier = Modifier,
     mediaType: MediaType,
     title: String?,
+    subtitle: String? = null,
+    showSubtitle: Boolean = false,
     imageUrl: String?,
     rating: Double? = null,
     onItemClick: () -> Unit
@@ -92,6 +94,28 @@ fun ItemCard(
                         if (title == null) Modifier.alpha(0.0f) else Modifier
                     )
             )
+
+            if(mediaType == MediaType.PERSON && showSubtitle) {
+                Text(
+                    text = subtitle.orEmpty(),
+                    style = AppTheme.typography.caption1,
+                    color = AppTheme.colors.type.ghost,
+                    minLines = 1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = AppTheme.dimens.spaceXS,
+                            end = AppTheme.dimens.spaceXS,
+                            bottom = AppTheme.dimens.spaceXS
+                        )
+                        .then(
+                            if (subtitle == null) Modifier.alpha(0.0f) else Modifier
+                        )
+                )
+            }
         }
     }
 }
