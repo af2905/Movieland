@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -111,7 +110,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            var currentTheme by rememberSaveable { mutableStateOf(Themes.MELODRAMA) }
+            var currentTheme by rememberSaveable { mutableStateOf(Themes.SCI_FI) }
             var darkTheme by rememberSaveable { mutableStateOf(false) }
             val currentPalette by remember(currentTheme) { mutableStateOf(currentTheme.getTheme()) }
 
