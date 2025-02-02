@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class PeopleRepositoryImpl @Inject constructor(
@@ -23,7 +24,7 @@ class PeopleRepositoryImpl @Inject constructor(
 
         val cachedPeople = personDao.getPeopleByType(PersonType.POPULAR).firstOrNull()
         val lastUpdated = cachedPeople?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > 8 * 60 * 60 * 1000 // 8 hours
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
         if (cachedPeople.isNullOrEmpty() || isCacheStale) {
             try {
@@ -35,7 +36,8 @@ class PeopleRepositoryImpl @Inject constructor(
                         personType = PersonType.POPULAR,
                         timeStamp = System.currentTimeMillis()
                     )
-                }
+                }.filter { person -> !person.profilePath.isNullOrEmpty() }
+
                 if (people.isNotEmpty()) {
                     personDao.deletePeopleByType(PersonType.POPULAR)
                     personDao.insertPeople(people)

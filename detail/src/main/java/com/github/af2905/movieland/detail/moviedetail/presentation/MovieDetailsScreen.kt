@@ -44,7 +44,9 @@ import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTop
 import com.github.af2905.movieland.compose.components.video_player.YouTubeThumbnail
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.data.MediaType
+import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.util.extension.convertMinutesToHoursAndMinutes
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
@@ -84,6 +86,13 @@ fun MovieDetailsScreen(
             //YouTube Videos Section
             if (state.videos.isNotEmpty()) {
                 item { MovieVideos(state.videos, onAction) }
+            }
+
+            //Movie casts Section
+            if (state.casts.isNotEmpty()) {
+                item {
+                    MovieCasts(state.casts, onAction)
+                }
             }
 
             //Similar Movies Section
@@ -228,6 +237,42 @@ fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
+
+@Composable
+fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = "Casts",
+            action = "View All",
+            onClick = { /* Handle View All Click */ }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(casts) { cast ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = cast.name,
+                    imageUrl = "https://image.tmdb.org/t/p/original/${cast.profilePath}",
+                    mediaType = MediaType.PERSON,
+                    onItemClick = {
+                        onAction(MovieDetailsAction.OpenPersonDetail(cast.id))
+                    }
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
 
 @Composable
 fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> Unit) {

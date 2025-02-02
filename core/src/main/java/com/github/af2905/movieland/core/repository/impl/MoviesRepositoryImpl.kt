@@ -68,6 +68,7 @@ class MoviesRepositoryImpl @Inject constructor(
                     movieMapper.map(it).map { movie ->
                         movie.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
                     }
+                        .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
                 }
 
                 if (movies != null) {
@@ -102,6 +103,7 @@ class MoviesRepositoryImpl @Inject constructor(
         try {
             val response = moviesApi.getRecommendedMovies(movieId, language, page)
             val movies = response.movies.let { movieMapper.map(it) }
+                .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
             emit(movies)
         } catch (e: Exception) {
             emit(emptyList())
@@ -116,6 +118,7 @@ class MoviesRepositoryImpl @Inject constructor(
         try {
             val response = moviesApi.getSimilarMovies(movieId, language, page)
             val movies = response.movies.let { movieMapper.map(it) }
+                .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
             emit(movies)
         } catch (e: Exception) {
             emit(emptyList())
@@ -127,7 +130,7 @@ class MoviesRepositoryImpl @Inject constructor(
             val response = moviesApi.getMovieCredits(movieId, language)
             val cast = response.cast?.map {
                 creditsMapper.map(it, movieId)
-            }
+            }?.filter { cast -> !cast.profilePath.isNullOrEmpty() }
             emit(cast ?: emptyList())
         } catch (e: Exception) {
             emit(emptyList())

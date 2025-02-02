@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class TrendingRepositoryImpl @Inject constructor(
@@ -31,10 +32,6 @@ class TrendingRepositoryImpl @Inject constructor(
     private val movieMapper: MovieMapper
 ) : TrendingRepository {
 
-    companion object {
-        private const val CACHE_VALIDITY_PERIOD = 8 * 60 * 60 * 1000 // 8 hours in milliseconds
-    }
-
     override fun getTrendingMovies(
         movieType: MovieType,
         language: String?,
@@ -42,7 +39,7 @@ class TrendingRepositoryImpl @Inject constructor(
     ): Flow<List<Movie>> = flow {
         val cachedItems = movieDao.getMoviesByType(movieType).firstOrNull()
         val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
         if (cachedItems.isNullOrEmpty() || isCacheStale) {
             try {
@@ -77,7 +74,7 @@ class TrendingRepositoryImpl @Inject constructor(
         return flow {
             val cachedItems = tvShowDao.getTvShowsByType(tvShowType).firstOrNull()
             val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-            val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
             if (cachedItems.isNullOrEmpty() || isCacheStale) {
                 try {
@@ -113,7 +110,7 @@ class TrendingRepositoryImpl @Inject constructor(
         return flow {
             val cachedItems = personDao.getPeopleByType(personType).firstOrNull()
             val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-            val isCacheStale = System.currentTimeMillis() - lastUpdated > CACHE_VALIDITY_PERIOD
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
             if (cachedItems.isNullOrEmpty() || isCacheStale) {
                 try {
