@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,7 +55,7 @@ fun HeadlinePrimaryActionView(
     maxLines: Int = Int.MAX_VALUE,
     onClick: () -> Unit = {},
 ) {
-    var rightElementMaxWidth by remember { mutableStateOf(Float.MAX_VALUE) }
+    var rightElementMaxWidth by remember { mutableFloatStateOf(Float.MAX_VALUE) }
     Headline(
         text = text,
         modifier = modifier,
