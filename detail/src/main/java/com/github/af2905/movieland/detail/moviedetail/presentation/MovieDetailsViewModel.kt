@@ -44,6 +44,11 @@ class MovieDetailsViewModel @AssistedInject constructor(
                     state = state.copy(videos = videoList)
                 }
         }
+        viewModelScope.launch {
+            moviesRepository.getMovieCredits(movieId, language = null).collectLatest { castList ->
+                state = state.copy(casts = castList)
+            }
+        }
     }
 
     fun onAction(action: MovieDetailsAction) {
@@ -58,8 +63,8 @@ class MovieDetailsViewModel @AssistedInject constructor(
                 }
             }
 
-            is MovieDetailsAction.OpenGenre -> {
-                viewModelScope.launch { _effect.send(MovieDetailsEffect.NavigateToGenre(action.genreId)) }
+            is MovieDetailsAction.OpenPersonDetail -> {
+                viewModelScope.launch { _effect.send(MovieDetailsEffect.NavigateToPerson(action.personId)) }
             }
 
             is MovieDetailsAction.OpenVideo -> {
