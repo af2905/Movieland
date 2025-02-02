@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.cards.ItemCard
+import com.github.af2905.movieland.compose.components.chips.ChipView
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
@@ -46,7 +47,7 @@ import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
-import com.github.af2905.movieland.core.data.database.entity.Person
+import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.util.extension.convertMinutesToHoursAndMinutes
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
@@ -91,6 +92,11 @@ fun MovieDetailsScreen(
             //Movie casts Section
             if (state.casts.isNotEmpty()) {
                 item { MovieCasts(state.casts, onAction) }
+            }
+
+            //Production companies
+            if (!state.movie?.productionCompanies.isNullOrEmpty()) {
+                item { ProductionCompanies(state.movie?.productionCompanies.orEmpty(), onAction) }
             }
 
             //Recommended Movies Section
@@ -270,6 +276,42 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
                     mediaType = MediaType.PERSON,
                     onItemClick = {
                         onAction(MovieDetailsAction.OpenPersonDetail(cast.id))
+                    }
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+fun ProductionCompanies(
+    companies: List<ProductionCompany>,
+    onAction: (MovieDetailsAction) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = "Production Companies",
+            action = "View All",
+            onClick = { /* Handle View All Click */ }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(companies) { item ->
+                ChipView(
+                    text = item.companyName,
+                    isLarge = true,
+                    onClick = {
+                        //TODO action
                     }
                 )
             }
