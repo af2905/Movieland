@@ -56,345 +56,371 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Trending Movies",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // Trending movies
+            if (state.trendingMovies.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Trending Movies",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Top Rated Movies Horizontal Pager
-            item {
-                HorizontalPager(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    pageSpacing = AppTheme.dimens.space2XS,
-                    state = pagerState
-                ) { page ->
-                    val movie = state.trendingMovies[page]
+                item {
+                    HorizontalPager(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        pageSpacing = AppTheme.dimens.space2XS,
+                        state = pagerState
+                    ) { page ->
+                        val movie = state.trendingMovies[page]
 
-                    ItemCardLarge(
-                        modifier = Modifier.padding(horizontal = AppTheme.dimens.space2XS),
-                        title = movie.title,
-                        imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
-                        rating = movie.voteAverage,
-                        onItemClick = {
-                            onAction(HomeAction.OpenMovieDetail(movie.id))
+                        ItemCardLarge(
+                            modifier = Modifier.padding(horizontal = AppTheme.dimens.space2XS),
+                            title = movie.title,
+                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                            rating = movie.voteAverage,
+                            onItemClick = {
+                                onAction(HomeAction.OpenMovieDetail(movie.id))
+                            }
+                        )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        repeat(state.trendingMovies.size) { iteration ->
+                            val animatedColor by animateColorAsState(
+                                if (pagerState.currentPage == iteration) AppTheme.colors.theme.tint else AppTheme.colors.background.border,
+                                label = "",
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .padding(4.dp)
+                                    .background(animatedColor, CircleShape)
+                                    .size(if (pagerState.currentPage == iteration) 10.dp else 6.dp)
+                            )
                         }
-                    )
-                }
-            }
-
-            // Pager Indicators
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    repeat(state.trendingMovies.size) { iteration ->
-                        val animatedColor by animateColorAsState(
-                            if (pagerState.currentPage == iteration) AppTheme.colors.theme.tint else AppTheme.colors.background.border,
-                            label = "",
-                        )
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(4.dp)
-                                .background(animatedColor, CircleShape)
-                                .size(if (pagerState.currentPage == iteration) 10.dp else 6.dp)
-                        )
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Trending TV Shows",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            //Trending TV Shows
+            if (state.trendingTvShows.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Trending TV Shows",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Trending TV Shows LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.trendingTvShows) { tvShow ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
-                            rating = tvShow.voteAverage,
-                            mediaType = MediaType.TV,
-                            onItemClick = {
-                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.trendingTvShows) { tvShow ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = tvShow.name,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                                rating = tvShow.voteAverage,
+                                mediaType = MediaType.TV,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Trending People",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // Trending people
+            if (state.trendingPeople.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Trending People",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Trending TV Shows LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.trendingPeople) { person ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = person.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
-                            mediaType = MediaType.PERSON,
-                            onItemClick = {
-                                onAction(HomeAction.OpenPersonDetail(person.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.trendingPeople) { person ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = person.name,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
+                                mediaType = MediaType.PERSON,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenPersonDetail(person.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(text = "Movies genres")
-            }
+            // Movies genres
+            if (state.moviesGenres.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(text = "Movies genres")
+                }
 
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.moviesGenres.getMovieGenreItems()) { item ->
-                        ChipView(
-                            text = "${item.icon}  ${item.title}",
-                            isLarge = true,
-                            onClick = {
-                                onAction(HomeAction.OpenGenre(item.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.moviesGenres.getMovieGenreItems()) { item ->
+                            ChipView(
+                                text = "${item.icon}  ${item.title}",
+                                isLarge = true,
+                                onClick = {
+                                    onAction(HomeAction.OpenGenre(item.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Now Playing Movies",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // Now Playing Movies
+            if (state.nowPlayingMovies.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Now Playing Movies",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Now Playing Movies LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.nowPlayingMovies) { movie ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = movie.voteAverage,
-                            mediaType = MediaType.MOVIE,
-                            onItemClick = {
-                                onAction(HomeAction.OpenMovieDetail(movie.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.nowPlayingMovies) { movie ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = movie.title,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                                rating = movie.voteAverage,
+                                mediaType = MediaType.MOVIE,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenMovieDetail(movie.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Popular Movies",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
-
-            // Popular Movies LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.popularMovies) { movie ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = movie.voteAverage,
-                            mediaType = MediaType.MOVIE,
-                            onItemClick = {
-                                onAction(HomeAction.OpenMovieDetail(movie.id))
-                            }
-                        )
-                    }
+            // Popular Movies
+            if (state.popularMovies.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Popular Movies",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
                 }
-            }
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Upcoming Movies",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
 
-            // Upcoming Movies LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.upcomingMovies) { movie ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = movie.voteAverage,
-                            mediaType = MediaType.MOVIE,
-                            onItemClick = {
-                                onAction(HomeAction.OpenMovieDetail(movie.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.popularMovies) { movie ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = movie.title,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                                rating = movie.voteAverage,
+                                mediaType = MediaType.MOVIE,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenMovieDetail(movie.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Top Rated Movies",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // Upcoming Movies
+            if (state.upcomingMovies.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Upcoming Movies",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Upcoming Movies LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.topRatedMovies) { movie ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
-                            rating = movie.voteAverage,
-                            mediaType = MediaType.MOVIE,
-                            onItemClick = {
-                                onAction(HomeAction.OpenMovieDetail(movie.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.upcomingMovies) { movie ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = movie.title,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                                rating = movie.voteAverage,
+                                mediaType = MediaType.MOVIE,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenMovieDetail(movie.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(text = "TV Shows genres")
-            }
+            // Top Rated Movies
+            if (state.topRatedMovies.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Top Rated Movies",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.tvShowsGenres.getTvShowGenreItems()) { item ->
-                        ChipView(
-                            text = "${item.icon}  ${item.title}",
-                            isLarge = true,
-                            onClick = {
-                                onAction(HomeAction.OpenGenre(item.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.topRatedMovies) { movie ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = movie.title,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                                rating = movie.voteAverage,
+                                mediaType = MediaType.MOVIE,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenMovieDetail(movie.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Popular TV Shows",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // TV Shows genres
+            if (state.tvShowsGenres.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(text = "TV Shows genres")
+                }
 
-            // Popular TV Shows LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.popularTvShows) { tvShow ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
-                            rating = tvShow.voteAverage,
-                            mediaType = MediaType.TV,
-                            onItemClick = {
-                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.tvShowsGenres.getTvShowGenreItems()) { item ->
+                            ChipView(
+                                text = "${item.icon}  ${item.title}",
+                                isLarge = true,
+                                onClick = {
+                                    onAction(HomeAction.OpenGenre(item.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Top rated TV Shows",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
-            }
+            // Popular TV Shows
+            if (state.popularTvShows.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Popular TV Shows",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
 
-            // Popular Movies LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.topRatedTvShows) { tvShow ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
-                            rating = tvShow.voteAverage,
-                            mediaType = MediaType.TV,
-                            onItemClick = {
-                                onAction(HomeAction.OpenTvShowDetail(tvShow.id))
-                            }
-                        )
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.popularTvShows) { tvShow ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = tvShow.name,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                                rating = tvShow.voteAverage,
+                                mediaType = MediaType.TV,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
 
-            item {
-                HeadlinePrimaryActionView(
-                    text = "Popular People",
-                    action = "View All",
-                    onClick = { /* Handle click */ })
+            // Top rated TV Shows
+            if (state.topRatedTvShows.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Top rated TV Shows",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
+
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.topRatedTvShows) { tvShow ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = tvShow.name,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                                rating = tvShow.voteAverage,
+                                mediaType = MediaType.TV,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenTvShowDetail(tvShow.id))
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
-            // Popular people Shows LazyRow
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.popularPeople) { person ->
-                        ItemCard(
-                            modifier = Modifier.padding(horizontal = 6.dp),
-                            title = person.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
-                            mediaType = MediaType.PERSON,
-                            onItemClick = {
-                                onAction(HomeAction.OpenPersonDetail(person.id))
-                            }
-                        )
+            // Popular People
+            if (state.popularPeople.isNotEmpty()) {
+                item {
+                    HeadlinePrimaryActionView(
+                        text = "Popular People",
+                        action = "View All",
+                        onClick = { /* Handle click */ })
+                }
+
+                item {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(state.popularPeople) { person ->
+                            ItemCard(
+                                modifier = Modifier.padding(horizontal = 6.dp),
+                                title = person.name,
+                                imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
+                                mediaType = MediaType.PERSON,
+                                onItemClick = {
+                                    onAction(HomeAction.OpenPersonDetail(person.id))
+                                }
+                            )
+                        }
                     }
                 }
             }
