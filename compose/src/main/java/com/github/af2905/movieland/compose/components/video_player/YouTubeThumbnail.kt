@@ -21,8 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import androidx.compose.ui.draw.clip
-import androidx.navigation.NavController
-import com.github.af2905.movieland.core.compose.AppNavRoutes
+
+import com.github.af2905.movieland.compose.theme.AppTheme
 
 @Composable
 fun YouTubeThumbnail(
@@ -36,7 +36,7 @@ fun YouTubeThumbnail(
         modifier = Modifier
             .width(200.dp)
             .aspectRatio(16f / 9f)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(AppTheme.dimens.radiusM))
             .background(Color.Black)
             .clickable { onVideoClick(videoId) }
     ) {
