@@ -50,11 +50,14 @@ fun AppBottomNavigationView(
                             onTabSelected(item.route)
                             navController.navigate(item.route) {
                                 popUpTo(navController.graph.startDestinationId) {
+                                    inclusive = true
                                     saveState = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true
                             }
+                        } else {
+                            navController.popBackStack(item.route, inclusive = false)
                         }
                     },
                     icon = { TabIcon(item = item, selected = currentTab == item.route) },
