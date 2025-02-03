@@ -76,7 +76,7 @@ fun AppNavigation(
                 val videoId = backStackEntry.arguments?.getString("videoId")
                 videoId?.let {
                     YouTubePlayerScreen(videoId) {
-                        navController.popBackStack() // Back when exiting
+                        navController.popBackStack()
                     }
                 }
             }
