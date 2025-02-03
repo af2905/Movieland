@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.core.data.MediaType
@@ -46,8 +47,15 @@ fun HomeScreen(
         AppCenterAlignedTopAppBar(
             title = "Movieland",
             onBackClick = { },
+            hasNavigationBack = false,
             endButtons = {
+                ChipView(
+                    text = "Change color",
+                    onClick = {
 
+                    },
+                    style = ChipViewStyle.Inverse
+                )
             }
         )
         LazyColumn(
