@@ -79,28 +79,17 @@ fun MainApp(
 }
 
 fun handleBackPress(navController: NavController, currentTab: MutableState<String>, activity: Activity?) {
-    when (currentTab.value) {
-        AppNavRoutes.Search.route,
-        AppNavRoutes.Library.route,
-        AppNavRoutes.Profile.route -> {
-            // If on a non-home root screen, navigate to Home
-            currentTab.value = AppNavRoutes.Home.route
-            navController.navigate(AppNavRoutes.Home.route) {
-                popUpTo(navController.graph.startDestinationId) { saveState = true }
-                launchSingleTop = true
-                restoreState = true
-            }
-        }
+    val homeRoute = AppNavRoutes.Home.route
 
-        AppNavRoutes.Home.route -> {
-            // If on Home root screen, close the app
-            activity?.finish()
+    if (currentTab.value != homeRoute) {
+        currentTab.value = homeRoute
+        navController.navigate(homeRoute) {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            launchSingleTop = true
+            restoreState = true
         }
-
-        else -> {
-            // Otherwise, pop the back stack
-            navController.popBackStack()
-        }
+    } else {
+        activity?.finish()
     }
 }
 
