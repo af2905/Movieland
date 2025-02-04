@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
+import com.github.af2905.movieland.home.presentation.screen.HomeScreen
 
 @Composable
 fun HomeScreenNavWrapper(
@@ -13,10 +14,9 @@ fun HomeScreenNavWrapper(
     isDarkTheme: Boolean,
     currentTheme: Themes,
     onDarkThemeClick: () -> Unit,
-    onThemeClick: (Themes) -> Unit
+    onThemeClick: (theme: Themes) -> Unit
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
-
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -40,13 +40,18 @@ fun HomeScreenNavWrapper(
                 }
 
                 is HomeEffect.NavigateToGenre -> {
+                    //TODO
+                }
 
+                is HomeEffect.ChangeAppColor -> {
+                    onThemeClick(effect.selectedTheme)
                 }
             }
         }
     }
 
     HomeScreen(
+        currentTheme = currentTheme,
         state = viewModel.state,
         onAction = viewModel::onAction
     )

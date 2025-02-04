@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation.models
+package com.github.af2905.movieland.home.domain.models
 
 import com.github.af2905.movieland.core.data.database.entity.Genre
 

@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation
+package com.github.af2905.movieland.home.presentation.screen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -28,21 +28,55 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.rememberCoroutineScope
+import com.github.af2905.movieland.compose.components.bottomsheet.AppModalBottomSheet
 import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
+import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.data.MediaType
-import com.github.af2905.movieland.home.presentation.models.getMovieGenreItems
-import com.github.af2905.movieland.home.presentation.models.getTvShowGenreItems
+import com.github.af2905.movieland.home.domain.models.getMovieGenreItems
+import com.github.af2905.movieland.home.domain.models.getTvShowGenreItems
+import com.github.af2905.movieland.home.presentation.HomeAction
+import com.github.af2905.movieland.home.presentation.HomeState
+import com.github.af2905.movieland.home.presentation.screen.bottomsheet.SelectAppColorBottomSheetComponent
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    currentTheme: Themes,
     state: HomeState,
     onAction: (HomeAction) -> Unit
 ) {
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
+
     val pagerState = rememberPagerState(
         pageCount = { state.trendingMovies.size }
     )
+
+    if (sheetState.isVisible) {
+        AppModalBottomSheet(
+            sheetState = sheetState,
+            content = {
+                SelectAppColorBottomSheetComponent(
+                    list = Themes.entries,
+                    currentTheme = currentTheme,
+                    onItemClick = { theme ->
+                        coroutineScope.launch {
+                            sheetState.hide()
+                        }
+                        onAction(HomeAction.ChangeAppColor(selectedTheme = theme))
+                    }
+                )
+            }
+        )
+    }
+
     Column {
         AppCenterAlignedTopAppBar(
             title = "Movieland",
@@ -52,7 +86,9 @@ fun HomeScreen(
                 ChipView(
                     text = "Change color",
                     onClick = {
-
+                        coroutineScope.launch {
+                            sheetState.show()
+                        }
                     },
                     style = ChipViewStyle.Inverse
                 )
