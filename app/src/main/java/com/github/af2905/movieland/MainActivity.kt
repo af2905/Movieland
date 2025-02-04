@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            var currentTheme by rememberSaveable { mutableStateOf(Themes.SCI_FI) }
+            var currentTheme by rememberSaveable { mutableStateOf(Themes.FANTASY) }
             var darkTheme by rememberSaveable { mutableStateOf(false) }
             val currentPalette by remember(currentTheme) { mutableStateOf(currentTheme.getTheme()) }
 
