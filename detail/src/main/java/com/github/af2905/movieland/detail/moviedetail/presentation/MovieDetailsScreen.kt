@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.chips.ChipView
+import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
@@ -93,7 +94,7 @@ fun MovieDetailsScreen(
             state = lazyListState,
             modifier = Modifier
                 .fillMaxSize()
-                .background(AppTheme.colors.theme.tint),
+                .background(AppTheme.colors.theme.tintCard),
         ) {
             //Backdrop Image
             item { MovieBackdrop(state) }
@@ -328,6 +329,7 @@ fun ProductionCompanies(
         ) {
             items(companies) { item ->
                 ChipView(
+                    style = ChipViewStyle.FadeTint,
                     text = item.companyName,
                     isLarge = true,
                     onClick = {

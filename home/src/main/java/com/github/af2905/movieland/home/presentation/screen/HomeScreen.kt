@@ -90,7 +90,7 @@ fun HomeScreen(
                             sheetState.show()
                         }
                     },
-                    style = ChipViewStyle.Inverse
+                    style = ChipViewStyle.FadeTint
                 )
             }
         )
@@ -225,6 +225,7 @@ fun HomeScreen(
                     ) {
                         items(state.moviesGenres.getMovieGenreItems()) { item ->
                             ChipView(
+                                style = ChipViewStyle.FadeTint,
                                 text = "${item.icon}  ${item.title}",
                                 isLarge = true,
                                 onClick = {
@@ -369,6 +370,7 @@ fun HomeScreen(
                     ) {
                         items(state.tvShowsGenres.getTvShowGenreItems()) { item ->
                             ChipView(
+                                style = ChipViewStyle.FadeTint,
                                 text = "${item.icon}  ${item.title}",
                                 isLarge = true,
                                 onClick = {
