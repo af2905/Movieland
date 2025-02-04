@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalFocusManager
+import com.github.af2905.movieland.compose.theme.AppTheme
 import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,7 @@ fun AppModalBottomSheet(
         },
         sheetState = sheetState,
         content = { content() },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = AppTheme.colors.background.default,
         dragHandle = { BottomSheetDefaults.DragHandle(color = MaterialTheme.colorScheme.onSurfaceVariant) }
     )
 }

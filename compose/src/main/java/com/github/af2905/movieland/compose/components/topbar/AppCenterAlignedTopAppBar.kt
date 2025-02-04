@@ -47,13 +47,13 @@ fun AppCenterAlignedTopAppBar(
                 Text(
                     text = title,
                     style = AppTheme.typography.title3,
-                    color = AppTheme.colors.type.inverse
+                    color = AppTheme.colors.type.secondary
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors().copy(
-                containerColor = AppTheme.colors.theme.tint,
-                navigationIconContentColor = AppTheme.colors.type.inverse,
-                actionIconContentColor = AppTheme.colors.type.inverse,
+                containerColor = AppTheme.colors.theme.tintCard,
+                navigationIconContentColor = AppTheme.colors.type.secondary,
+                actionIconContentColor = AppTheme.colors.type.secondary,
             ),
             navigationIcon = {
                 if (hasNavigationBack) {
