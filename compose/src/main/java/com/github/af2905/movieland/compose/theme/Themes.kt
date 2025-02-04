@@ -37,7 +37,7 @@ fun AppTheme(
             val window = (view.context as ComponentActivity).window
 
             // Set status bar and navigation bar colors
-            window.statusBarColor = colors.theme.tint.toArgb()
+            window.statusBarColor = colors.theme.tintCard.toArgb()
             window.navigationBarColor = colors.background.inverse.toArgb()
 
             WindowCompat.getInsetsController(window, window.decorView).apply {
@@ -70,51 +70,80 @@ object AppTheme {
 }
 
 enum class Themes {
-    FANTASY,
-    ROMANCE,
+    CLASSIC,
     SCI_FI,
-    COMEDY,
-    THRILLER,
-    ACTION,
-    ADVENTURE,
-    DRAMA,
-    MYSTERY,
-    WESTERN,
     HORROR,
-    ANIMATION,
-    WAR;
+    ADVENTURE,
+    FANTASY,
+    WESTERN,
+    DRAMA,
+    MELODRAMA,
+    DETECTIVE,
+    THRILLER,
+    ROMANCE;
 
     fun getTheme(): Palette = when (this) {
-        ACTION -> actionTheme
-        ADVENTURE -> adventureTheme
-        COMEDY -> comedyTheme
-        DRAMA -> dramaTheme
-        FANTASY -> fantasyTheme
-        MYSTERY -> mysteryTheme
-        ROMANCE -> romanceTheme
-        THRILLER -> thrillerTheme
-        WESTERN -> westernTheme
+        CLASSIC -> classicTheme
         SCI_FI -> sciFiTheme
         HORROR -> horrorTheme
-        ANIMATION -> animationTheme
-        WAR -> warTheme
+        ADVENTURE -> adventureTheme
+        FANTASY -> fantasyTheme
+        WESTERN -> westernTheme
+        DRAMA -> dramaTheme
+        MELODRAMA -> melodramaTheme
+        DETECTIVE -> detectiveTheme
+        THRILLER -> thrillerTheme
+        ROMANCE -> romanceTheme
     }
 }
 
-
-private val actionTheme = Palette(
+private val classicTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFF757575), // Steel Gray
-            tintBg = Color(0xFFD50000), // Intense Red
-            tintCard = Color(0xFFFFFFFF) // Pure White
+            tint = Color(0xFFf9a825),
+            tintBg = Color(0xFFECEDEA),
+            tintCard = Color(0xFFFAFAFA)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFF757575), // Metallic Steel
-            tintBg = Color(0xFF1C1C1C), // Dark Gunmetal
-            tintCard = Color(0xFF2B2B2B) // Charcoal Gray
+            tint = Color(0xFFf9a825),
+            tintBg = Color(0xFF1C1C1C),
+            tintCard = Color(0xFF383838)
+        )
+    )
+)
+
+private val sciFiTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFFECE8F0),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF8B3FFD),
+            tintBg = Color(0xFF17181F),
+            tintCard = Color(0xFF303240)
+        )
+    )
+)
+
+private val horrorTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFFD553F),
+            tintBg = Color(0xFFF3F1F0),
+            tintCard = Color(0xFFFFFFFF)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFFD553F),
+            tintBg = Color(0xFF1E1619),
+            tintCard = Color(0xFF403037)
         )
     )
 )
@@ -122,33 +151,50 @@ private val actionTheme = Palette(
 private val adventureTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFF1B5E20),
+            tint = Color(0xFF58C537),
             tintBg = Color(0xFFEEF3EC),
             tintCard = Color(0xFFFFFFFF)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFF2E7D32),
-            tintBg = Color(0xFF162D12),
-            tintCard = Color(0xFF253823)
+            tint = Color(0xFF5FC241),
+            tintBg = Color(0xFF141613),
+            tintCard = Color(0xFF242922)
         )
     )
 )
 
-private val comedyTheme = Palette(
+private val fantasyTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFFFFA000),
-            tintBg = Color(0xFFFFF3E0),
+            tint = Color(0xFF54A0ED),
+            tintBg = Color(0xFFE5EAF1),
             tintCard = Color(0xFFFFFFFF)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFFFFA726),
-            tintBg = Color(0xFF332212),
-            tintCard = Color(0xFF403828)
+            tint = Color(0xFF54A0ED),
+            tintBg = Color(0xFF161A1B),
+            tintCard = Color(0xFF3D424A)
+        )
+    )
+)
+
+private val westernTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFBFA973),
+            tintBg = Color(0xFFECEDEA),
+            tintCard = Color(0xFFFAFAFA)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFFBEA17E),
+            tintBg = Color(0xFF1C1C1C),
+            tintCard = Color(0xFF383838)
         )
     )
 )
@@ -156,51 +202,67 @@ private val comedyTheme = Palette(
 private val dramaTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFF303F9F), // Royal Deep Blue
-            tintBg = Color(0xFFB0BEC5), // Soft Cool Gray
-            tintCard = Color(0xFFFFFFFF) // Classic White
+            tint = Color(0xFF6FC1C0),
+            tintBg = Color(0xFFE9EBF3),
+            tintCard = Color(0xFFFCFDFC)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFF1A237E), // Dark Midnight Blue
-            tintBg = Color(0xFF1A1A2E), // Midnight Drama Background
-            tintCard = Color(0xFF424A5B) // Cool Blue-Gray for Depth
+            tint = Color(0xFF74C3C8),
+            tintBg = Color(0xFF1B1C1D),
+            tintCard = Color(0xFF322A2C)
         )
     )
 )
 
-
-private val fantasyTheme = Palette(
+private val melodramaTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFF7E57C2),
-            tintBg = Color(0xFFEBE5FA),
+            tint = Color(0xFFA6C874),
+            tintBg = Color(0xFFEFF3F0),
             tintCard = Color(0xFFFFFFFF)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFF9575CD),
-            tintBg = Color(0xFF2A1A42),
-            tintCard = Color(0xFF3A2C5A)
+            tint = Color(0xFFA6C874),
+            tintBg = Color(0xFF1B1D1C),
+            tintCard = Color(0xFF383838)
         )
     )
 )
 
-private val mysteryTheme = Palette(
+private val detectiveTheme = Palette(
     light = defaultColorsLight.copy(
         theme = ThemeColors(
-            tint = Color(0xFF37474F),
-            tintBg = Color(0xFFECEFF1),
+            tint = Color(0xFF7398BF),
+            tintBg = Color(0xFFDFE3E8),
+            tintCard = Color(0xFFFAFAFA)
+        )
+    ),
+    dark = defaultColorsDark.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF819BBB),
+            tintBg = Color(0xFF1F2228),
+            tintCard = Color(0xFF424957)
+        )
+    )
+)
+
+private val thrillerTheme = Palette(
+    light = defaultColorsLight.copy(
+        theme = ThemeColors(
+            tint = Color(0xFF865138),
+            tintBg = Color(0xFFEFDFDB),
             tintCard = Color(0xFFFFFFFF)
         )
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFF546E7A),
-            tintBg = Color(0xFF212B30),
-            tintCard = Color(0xFF37474F)
+            tint = Color(0xFFE4A058),
+            tintBg = Color(0xFF271112),
+            tintCard = Color(0xFF4E2224)
         )
     )
 )
@@ -215,111 +277,9 @@ private val romanceTheme = Palette(
     ),
     dark = defaultColorsDark.copy(
         theme = ThemeColors(
-            tint = Color(0xFFF06292),
-            tintBg = Color(0xFF3B2B2D),
-            tintCard = Color(0xFF512D3A)
-        )
-    )
-)
-
-private val thrillerTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFFBF360C),
-            tintBg = Color(0xFFFFE0B2),
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFFD84315),
-            tintBg = Color(0xFF3D1B0C),
-            tintCard = Color(0xFF5A2E22)
-        )
-    )
-)
-
-private val westernTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF795548),
-            tintBg = Color(0xFFEFEBE9),
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF8D6E63),
-            tintBg = Color(0xFF3E2723),
-            tintCard = Color(0xFF5D4037)
-        )
-    )
-)
-
-private val sciFiTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF00BCD4),
-            tintBg = Color(0xFFE0F7FA),
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF26C6DA),
-            tintBg = Color(0xFF0D253F),
-            tintCard = Color(0xFF183A5C)
-        )
-    )
-)
-
-private val horrorTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFFB71C1C),
-            tintBg = Color(0xFFFFEBEE),
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFFD32F2F),
-            tintBg = Color(0xFF1B1B1B),
-            tintCard = Color(0xFF3A272A)
-        )
-    )
-)
-
-private val animationTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF42A5F5), // Playful sky blue (like animated skies)
-            tintBg = Color(0xFFE1F5FE), // Soft pastel background
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF64B5F6), // Soft bright blue
-            tintBg = Color(0xFF1E3A5F), // Deep night-sky blue
-            tintCard = Color(0xFF2A4978) // Animated blue shades
-        )
-    )
-)
-
-private val warTheme = Palette(
-    light = defaultColorsLight.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF4E5D3E),
-            tintBg = Color(0xFFE8E5DA),
-            tintCard = Color(0xFFFFFFFF)
-        )
-    ),
-    dark = defaultColorsDark.copy(
-        theme = ThemeColors(
-            tint = Color(0xFF5D6D40),
-            tintBg = Color(0xFF2C2F24),
-            tintCard = Color(0xFF3D4130)
+            tint = Color(0xFFE91E63),
+            tintBg = Color(0xFF1E1619),
+            tintCard = Color(0xFF403037)
         )
     )
 )
