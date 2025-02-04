@@ -122,25 +122,31 @@ class HomeViewModel @Inject constructor(
     fun onAction(action: HomeAction) = when (action) {
         is HomeAction.OpenMovieDetail -> {
             viewModelScope.launch {
-                _effect.send(HomeEffect.NavigateToMovieDetail(action.movieId))
+                _effect.send(HomeEffect.NavigateToMovieDetail(movieId = action.movieId))
             }
         }
 
         is HomeAction.OpenTvShowDetail -> {
             viewModelScope.launch {
-                _effect.send(HomeEffect.NavigateToTvShowDetail(action.tvShowId))
+                _effect.send(HomeEffect.NavigateToTvShowDetail(tvShowId = action.tvShowId))
             }
         }
 
         is HomeAction.OpenPersonDetail -> {
             viewModelScope.launch {
-                _effect.send(HomeEffect.NavigateToPersonDetail(action.personId))
+                _effect.send(HomeEffect.NavigateToPersonDetail(personId = action.personId))
             }
         }
 
         is HomeAction.OpenGenre -> {
             viewModelScope.launch {
-                _effect.send(HomeEffect.NavigateToGenre(action.genreId))
+                _effect.send(HomeEffect.NavigateToGenre(genreId = action.genreId))
+            }
+        }
+
+        is HomeAction.ChangeAppColor -> {
+            viewModelScope.launch {
+                _effect.send(HomeEffect.ChangeAppColor(selectedTheme = action.selectedTheme))
             }
         }
     }
