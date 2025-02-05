@@ -12,13 +12,13 @@ import com.github.af2905.movieland.compose.components.video_player.YouTubePlayer
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsNavWrapper
-import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsScreen
 import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailsScreen
 import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetailsScreen
 import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen
-import com.github.af2905.movieland.search.compose.SearchScreen
+import com.github.af2905.movieland.search.presentation.SearchNavWrapper
+import com.github.af2905.movieland.search.presentation.SearchScreen
 
 @Composable
 fun AppNavigation(
@@ -88,7 +88,7 @@ fun AppNavigation(
             route = "search/main"
         ) {
             composable(AppNavRoutes.Search.route) {
-                SearchScreen(navController)
+                SearchNavWrapper(navController)
             }
             composable(
                 route = AppNavRoutes.MovieDetails.route,
