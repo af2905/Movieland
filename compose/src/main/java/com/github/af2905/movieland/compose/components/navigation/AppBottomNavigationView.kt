@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.af2905.movieland.compose.theme.AppTheme
 
@@ -28,9 +29,9 @@ fun AppBottomNavigationView(
     navController: NavController,
     currentTab: String,
     items: List<BottomNavItem>,
-    backgroundColor: Color = AppTheme.colors.theme.tintCard,
+    backgroundColor: Color = AppTheme.colors.background.default,
     alwaysShowLabel: Boolean = true,
-    elevation: Dp = AppTheme.dimens.elevationS,
+    elevation: Dp = 0.dp,
     onTabSelected: (String) -> Unit
 ) {
 
