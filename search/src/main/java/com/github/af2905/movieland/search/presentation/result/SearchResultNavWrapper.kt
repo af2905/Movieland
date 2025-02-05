@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.search.presentation
+package com.github.af2905.movieland.search.presentation.result
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -6,22 +6,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun SearchNavWrapper(
+fun SearchResultNavWrapper(
     navController: NavHostController
 ) {
-    val viewModel: SearchViewModel = hiltViewModel()
+    val viewModel: SearchResultViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SearchEffect.NavigateToResults -> {
+                is SearchResultEffect.NavigateToResults -> {
                     // TODO: Navigate to search results screen
                 }
             }
         }
     }
 
-    SearchScreen(
+    SearchResultScreen(
         state = viewModel.state,
         onAction = viewModel::onAction
     )

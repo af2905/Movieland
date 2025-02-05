@@ -22,4 +22,6 @@ sealed class AppNavRoutes(val route: String) {
     data object YouTubePlayer : AppNavRoutes("youtubePlayer/{videoId}") {
         fun createRoute(videoId: String) = "youtubePlayer/$videoId"
     }
+
+    data object SearchResult : AppNavRoutes("search/result")
 }
