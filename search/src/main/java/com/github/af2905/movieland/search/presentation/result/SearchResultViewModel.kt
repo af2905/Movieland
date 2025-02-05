@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.search.presentation
+package com.github.af2905.movieland.search.presentation.result
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,25 +12,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor() : ViewModel() {
+class SearchResultViewModel @Inject constructor() : ViewModel() {
 
-    var state by mutableStateOf(SearchState())
+    var state by mutableStateOf(SearchResultState())
         private set
 
-    private val _effect = Channel<SearchEffect>()
+    private val _effect = Channel<SearchResultEffect>()
     val effect = _effect.receiveAsFlow()
 
-    fun onAction(action: SearchAction) {
+    fun onAction(action: SearchResultAction) {
         when (action) {
-            is SearchAction.UpdateQuery -> {
+            is SearchResultAction.UpdateQuery -> {
                 state = state.copy(query = action.query)
             }
-            SearchAction.ClearQuery -> {
+            is SearchResultAction.ClearQuery -> {
                 state = state.copy(query = "")
             }
-            SearchAction.SubmitSearch -> {
+            is SearchResultAction.SubmitSearch -> {
                 viewModelScope.launch {
-                    _effect.send(SearchEffect.NavigateToResults(state.query))
+                    _effect.send(SearchResultEffect.NavigateToResults(state.query))
                 }
             }
         }
