@@ -17,8 +17,8 @@ import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetail
 import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen
-import com.github.af2905.movieland.search.presentation.SearchNavWrapper
-import com.github.af2905.movieland.search.presentation.SearchScreen
+import com.github.af2905.movieland.search.presentation.result.SearchResultNavWrapper
+import com.github.af2905.movieland.search.presentation.search.SearchNavWrapper
 
 @Composable
 fun AppNavigation(
@@ -53,21 +53,21 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId, navController) }
+                itemId?.let { PersonDetailsScreen(personId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId, navController) }
+                itemId?.let { TVShowDetailsScreen(tvShowId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.YouTubePlayer.route,
@@ -75,7 +75,7 @@ fun AppNavigation(
             ) { backStackEntry ->
                 val videoId = backStackEntry.arguments?.getString("videoId")
                 videoId?.let {
-                    YouTubePlayerScreen(videoId) {
+                    YouTubePlayerScreen(videoId = videoId) {
                         navController.popBackStack()
                     }
                 }
@@ -88,28 +88,31 @@ fun AppNavigation(
             route = "search/main"
         ) {
             composable(AppNavRoutes.Search.route) {
-                SearchNavWrapper(navController)
+                SearchNavWrapper(navController = navController)
+            }
+            composable(AppNavRoutes.SearchResult.route) {
+                SearchResultNavWrapper(navController = navController)
             }
             composable(
                 route = AppNavRoutes.MovieDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId, navController) }
+                itemId?.let { PersonDetailsScreen(personId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId, navController) }
+                itemId?.let { TVShowDetailsScreen(tvShowId = itemId, navController = navController) }
             }
         }
 
@@ -126,21 +129,21 @@ fun AppNavigation(
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { MovieDetailsNavWrapper(itemId, navController) }
+                itemId?.let { MovieDetailsNavWrapper(itemId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.PersonDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { PersonDetailsScreen(itemId, navController) }
+                itemId?.let { PersonDetailsScreen(personId = itemId, navController = navController) }
             }
             composable(
                 route = AppNavRoutes.TVShowDetails.route,
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                itemId?.let { TVShowDetailsScreen(itemId, navController) }
+                itemId?.let { TVShowDetailsScreen(tvShowId = itemId, navController = navController) }
             }
         }
 
@@ -149,7 +152,7 @@ fun AppNavigation(
             startDestination = AppNavRoutes.Profile.route,
             route = "profile/main"
         ) {
-            composable(AppNavRoutes.Profile.route) { ProfileScreen(navController) }
+            composable(AppNavRoutes.Profile.route) { ProfileScreen(navController = navController) }
         }
     }
 }
