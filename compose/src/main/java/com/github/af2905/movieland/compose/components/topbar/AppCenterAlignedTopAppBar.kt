@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.modifier.clickableUnbounded
 import com.github.af2905.movieland.compose.theme.AppTheme
 
@@ -32,7 +33,7 @@ fun AppCenterAlignedTopAppBar(
     title: String,
     onBackClick: () -> Unit,
     hasNavigationBack: Boolean = true,
-    elevation: Dp = AppTheme.dimens.elevationXS,
+    elevation: Dp = 0.dp,
     endButtons: @Composable (RowScope.() -> Unit) = {}
 ) {
     Box(
