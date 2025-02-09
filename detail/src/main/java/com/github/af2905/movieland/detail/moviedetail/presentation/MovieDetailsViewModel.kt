@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -28,32 +29,55 @@ class MovieDetailsViewModel @AssistedInject constructor(
     val effect = _effect.receiveAsFlow()
 
     init {
+        fetchMovieDetails()
+    }
+
+    private fun fetchMovieDetails() {
         viewModelScope.launch {
-            val result = moviesRepository.getMovieDetails(movieId, null)
-            state = state.copy(movie = result)
-        }
-        viewModelScope.launch {
-            moviesRepository.getSimilarMovies(movieId, language = null, page = null)
-                .collectLatest {
-                    state = state.copy(similarMovies = it)
-                }
-        }
-        viewModelScope.launch {
-            moviesRepository.getRecommendedMovies(movieId, language = null, page = null)
-                .collectLatest {
-                    state = state.copy(recommendedMovies = it)
-                }
-        }
-        viewModelScope.launch {
-            moviesRepository.getMovieVideos(movieId, language = null)
-                .collectLatest { videoList ->
-                    state = state.copy(videos = videoList)
-                }
-        }
-        viewModelScope.launch {
-            moviesRepository.getMovieCredits(movieId, language = null).collectLatest { castList ->
-                state = state.copy(casts = castList)
+            state = state.copy(isLoading = true)
+
+            // Fetch Movie Details (Suspended Call - No Flow)
+            val movieDetailsResult = moviesRepository.getMovieDetails(movieId, null)
+
+            // Update state with movie details
+            state = state.copy(
+                movie = (movieDetailsResult as? ResultWrapper.Success)?.data,
+                isError = movieDetailsResult is ResultWrapper.Error
+            )
+
+            // Collect Similar Movies as Flow
+            launch {
+                moviesRepository.getSimilarMovies(movieId, null, null)
+                    .collectLatest { result ->
+                        state = state.copy(similarMovies = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                    }
             }
+
+            // Collect Recommended Movies as Flow
+            launch {
+                moviesRepository.getRecommendedMovies(movieId, null, null)
+                    .collectLatest { result ->
+                        state = state.copy(recommendedMovies = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                    }
+            }
+
+            // Collect Videos as Flow
+            launch {
+                moviesRepository.getMovieVideos(movieId, null)
+                    .collectLatest { result ->
+                        state = state.copy(videos = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                    }
+            }
+
+            // Collect Casts as Flow
+            launch {
+                moviesRepository.getMovieCredits(movieId, null)
+                    .collectLatest { result ->
+                        state = state.copy(casts = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                    }
+            }
+
+            state = state.copy(isLoading = false)
         }
     }
 

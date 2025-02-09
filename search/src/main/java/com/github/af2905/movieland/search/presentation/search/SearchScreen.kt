@@ -12,9 +12,11 @@ fun SearchScreen(
     Surface {
         SearchLine(
             searchText = state.query,
-            placeholder = "Search...",
-            onValueChange = { newValue ->
-                onAction(SearchAction.UpdateQuery(newValue))
+            placeholder = "Search...1",
+            onValueChange = {},
+            onClick = {
+                println("SEARCH_TAG click")
+                onAction(SearchAction.StartSearch)
             }
         )
     }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.database.entity.GenreType
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.PersonType
@@ -43,42 +44,54 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchHomeData() {
         viewModelScope.launch {
-            // Combine trending data
+            // Fetch Trending Data
             val trendingData = combine(
-                trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, 1),
-                trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, 1),
+                trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, 1)
+                    .catch { emit(emptyList()) },
+                trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, 1)
+                    .catch { emit(emptyList()) },
                 trendingRepository.getTrendingPeople(PersonType.TRENDING_DAY, null, 1)
+                    .catch { emit(emptyList()) }
             ) { trendingMovies, trendingTvShows, trendingPeople ->
                 Triple(trendingMovies, trendingTvShows, trendingPeople)
             }
 
-            // Combine movie data
+            // Fetch Movies Data
             val movieData = combine(
-                moviesRepository.getMovies(MovieType.POPULAR, null, 1),
-                moviesRepository.getMovies(MovieType.TOP_RATED, null, 1),
-                moviesRepository.getMovies(MovieType.UPCOMING, null, 1),
+                moviesRepository.getMovies(MovieType.POPULAR, null, 1)
+                    .catch { emit(ResultWrapper.Error("Failed to load popular movies")) },
+                moviesRepository.getMovies(MovieType.TOP_RATED, null, 1)
+                    .catch { emit(ResultWrapper.Error("Failed to load top rated movies")) },
+                moviesRepository.getMovies(MovieType.UPCOMING, null, 1)
+                    .catch { emit(ResultWrapper.Error("Failed to load upcoming movies")) },
                 moviesRepository.getMovies(MovieType.NOW_PLAYING, null, 1)
-            ) { popularMovies, topRatedMovies, upcomingMovies, nowPlayingMovies ->
-                listOf(popularMovies, topRatedMovies, upcomingMovies, nowPlayingMovies)
+                    .catch { emit(ResultWrapper.Error("Failed to load now playing movies")) }
+            ) { popular, topRated, upcoming, nowPlaying ->
+                listOf(popular, topRated, upcoming, nowPlaying)
             }
 
-            // Combine TV show data
+            // Fetch TV Show Data
             val tvShowData = combine(
-                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, 1),
+                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, 1)
+                    .catch { emit(emptyList()) },
                 tvShowsRepository.getTvShows(TvShowType.TOP_RATED, null, 1)
+                    .catch { emit(emptyList()) }
             ) { popularTvShows, topRatedTvShows ->
                 Pair(popularTvShows, topRatedTvShows)
             }
 
-            // Combine genres
+            // Fetch Genres
             val genresData = combine(
-                genresRepository.getGenres(GenreType.MOVIE, null),
+                genresRepository.getGenres(GenreType.MOVIE, null)
+                    .catch { emit(emptyList()) },
                 genresRepository.getGenres(GenreType.TV_SHOW, null)
+                    .catch { emit(emptyList()) }
             ) { movieGenres, tvGenres ->
                 Pair(movieGenres, tvGenres)
             }
 
             val peopleData = peopleRepository.getPopularPeople(null)
+                .catch { emit(emptyList()) }
 
             // Combine all grouped data
             combine(
@@ -93,31 +106,40 @@ class HomeViewModel @Inject constructor(
                 val (popularTvShows, topRatedTvShows) = tvShows
                 val (movieGenres, tvGenres) = genres
 
-                state.copy(
-                    trendingMovies = trendingMovies,
-                    trendingTvShows = trendingTvShows,
-                    trendingPeople = trendingPeople,
-                    popularMovies = popularMovies,
-                    topRatedMovies = topRatedMovies,
-                    upcomingMovies = upcomingMovies,
-                    nowPlayingMovies = nowPlayingMovies,
-                    moviesGenres = movieGenres,
-                    tvShowsGenres = tvGenres,
-                    popularPeople = popularPeople,
-                    popularTvShows = popularTvShows,
-                    topRatedTvShows = topRatedTvShows,
+                val allMoviesEmpty =
+                    (popularMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
+                            (topRatedMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
+                            (upcomingMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
+                            (nowPlayingMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true
 
+
+                state = if (allMoviesEmpty) {
+                    state.copy(
+                        isError = true, // Show error screen if nothing is available
+                        errorMessage = "No movies available. Please check your internet connection."
                     )
-            }
-                .catch { throwable ->
-                    // Handle errors
-                    state = state.copy(/* Add error handling here */)
+                } else {
+                    state.copy(
+                        trendingMovies = trendingMovies,
+                        trendingTvShows = trendingTvShows,
+                        trendingPeople = trendingPeople,
+                        popularMovies = if (popularMovies is ResultWrapper.Success) popularMovies.data else state.popularMovies,
+                        topRatedMovies = if (topRatedMovies is ResultWrapper.Success) topRatedMovies.data else state.topRatedMovies,
+                        upcomingMovies = if (upcomingMovies is ResultWrapper.Success) upcomingMovies.data else state.upcomingMovies,
+                        nowPlayingMovies = if (nowPlayingMovies is ResultWrapper.Success) nowPlayingMovies.data else state.nowPlayingMovies,
+                        moviesGenres = movieGenres,
+                        tvShowsGenres = tvGenres,
+                        popularPeople = popularPeople,
+                        popularTvShows = popularTvShows,
+                        topRatedTvShows = topRatedTvShows,
+                        isError = false, // If at least one category has movies, don't show error
+                        errorMessage = null
+                    )
                 }
-                .collect { updatedState ->
-                    state = updatedState
-                }
+            }.collect {}
         }
     }
+
 
     fun onAction(action: HomeAction) = when (action) {
         is HomeAction.OpenMovieDetail -> {

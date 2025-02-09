@@ -49,9 +49,9 @@ fun SearchLine(
     searchText: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
-    queryFilters: ((String) -> String)? = null
+    queryFilters: ((String) -> String)? = null,
+    onClick: (() -> Unit)? = null
 ) {
-
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -67,10 +67,10 @@ fun SearchLine(
                 .clip(RoundedCornerShape(8.dp))
                 .height(40.dp)
                 .background(color = AppTheme.colors.theme.tintGhost)
-                .padding(start = 10.dp, end = 10.dp),
+                .padding(start = 10.dp, end = 10.dp)
+                .clickable(enabled = onClick != null) { onClick?.invoke() },
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Image(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
@@ -78,43 +78,55 @@ fun SearchLine(
                 modifier = Modifier.size(20.dp)
             )
 
-            BasicTextField(
-                value = searchText,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
-                onValueChange = {
-                    val query = queryFilters?.invoke(it) ?: it
-                    onValueChange(query)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(Color.Transparent)
-                    .focusRequester(focusRequester),
-                textStyle = AppTheme.typography.bodyMedium.copy(
-                    color = AppTheme.colors.theme.tint
-                ),
-                cursorBrush = SolidColor(AppTheme.colors.theme.tint),
-                decorationBox = { innerTextField ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 15.dp, 0.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (searchText.isBlank()) {
-                            Text(
-                                text = placeholder,
-                                style = TextStyle(color = AppTheme.colors.theme.tintFade),
-
+            if (onClick == null) {
+                BasicTextField(
+                    value = searchText,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
+                    onValueChange = {
+                        val query = queryFilters?.invoke(it) ?: it
+                        onValueChange(query)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .background(Color.Transparent)
+                        .focusRequester(focusRequester),
+                    textStyle = AppTheme.typography.bodyMedium.copy(
+                        color = AppTheme.colors.theme.tint
+                    ),
+                    cursorBrush = SolidColor(AppTheme.colors.theme.tint),
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 15.dp, 0.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (searchText.isBlank()) {
+                                Text(
+                                    text = placeholder,
+                                    style = TextStyle(color = AppTheme.colors.theme.tintFade)
                                 )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
                     }
-                }
-            )
-            if (searchText.isNotBlank()) {
+                )
+            } else {
+                Text(
+                    text = searchText.ifBlank { placeholder },
+                    style = TextStyle(color = AppTheme.colors.theme.tintFade),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .background(Color.Transparent)
+                        .padding(horizontal = 15.dp, vertical = 0.dp)
+                )
+            }
+
+            if (searchText.isNotBlank() && onClick == null) {
                 IconButton(onClick = { onValueChange("") }) {
                     Image(
                         imageVector = Icons.Default.Clear,
@@ -123,14 +135,12 @@ fun SearchLine(
                         modifier = Modifier.size(20.dp)
                     )
                 }
-
             }
         }
     }
 
-
     LaunchedEffect(Unit) {
-        if (requestFocusOnShow) {
+        if (requestFocusOnShow && onClick == null) {
             scope.launch {
                 focusRequester.requestFocus()
             }

@@ -22,15 +22,9 @@ class SearchViewModel @Inject constructor() : ViewModel() {
 
     fun onAction(action: SearchAction) {
         when (action) {
-            is SearchAction.UpdateQuery -> {
-                state = state.copy(query = action.query)
-            }
-            SearchAction.ClearQuery -> {
-                state = state.copy(query = "")
-            }
-            SearchAction.SubmitSearch -> {
+            SearchAction.StartSearch -> {
                 viewModelScope.launch {
-                    _effect.send(SearchEffect.NavigateToResults(state.query))
+                    _effect.send(SearchEffect.NavigateToResults)
                 }
             }
         }
