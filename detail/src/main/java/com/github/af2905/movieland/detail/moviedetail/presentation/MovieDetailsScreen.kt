@@ -11,11 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -50,6 +54,7 @@ import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivid
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
+import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.compose.components.video_player.YouTubeThumbnail
 import com.github.af2905.movieland.compose.theme.AppTheme
@@ -97,64 +102,59 @@ fun MovieDetailsScreen(
 
         when {
             state.isLoading -> {
-                // Loading State
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = AppTheme.colors.theme.tint)
-                }
+                // **Shimmer Loading Screen**
+                ShimmerMovieDetailsScreen()
             }
 
             state.isError -> {
-                // Error State
+                // **Error Screen**
                 EmptyStateView(
-                    modifier = Modifier
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     icon = Icons.Outlined.ErrorOutline,
                     title = "Oops! Something went wrong.",
                     action = "Retry",
-                    onClick = {}
+                    onClick = { /* Retry Action */ }
                 )
             }
 
             else -> {
-                // Success State (Content)
+                // **Success Screen**
                 LazyColumn(
                     state = lazyListState,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(AppTheme.colors.theme.tintCard),
                 ) {
-                    //Backdrop Image
+                    // Backdrop Image
                     item { MovieBackdrop(state) }
 
+                    // Movie Information
                     item { MovieInformation(state) }
 
-                    //Movie Details Section
+                    // Movie Details Section
                     item { MovieDetails(state) }
 
-                    //YouTube Videos Section
+                    // YouTube Videos Section
                     if (state.videos.isNotEmpty()) {
                         item { MovieVideos(state.videos, onAction) }
                     }
 
-                    //Movie casts Section
+                    // Movie Casts Section
                     if (state.casts.isNotEmpty()) {
                         item { MovieCasts(state.casts, onAction) }
                     }
 
-                    //Production companies
+                    // Production Companies
                     if (!state.movie?.productionCompanies.isNullOrEmpty()) {
                         item { ProductionCompanies(state.movie?.productionCompanies.orEmpty(), onAction) }
                     }
 
-                    //Recommended Movies Section
+                    // Recommended Movies Section
                     if (state.recommendedMovies.isNotEmpty()) {
                         item { RecommendedMovies(state.recommendedMovies, onAction) }
                     }
 
-                    //Similar Movies Section
+                    // Similar Movies Section
                     if (state.similarMovies.isNotEmpty()) {
                         item { SimilarMovies(state.similarMovies, onAction) }
                     }
@@ -163,6 +163,115 @@ fun MovieDetailsScreen(
         }
     }
 }
+
+@Composable
+fun ShimmerMovieDetailsScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(AppTheme.dimens.spaceM)
+    ) {
+        // **Backdrop Shimmer**
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
+        )
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Title & Info Shimmer**
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(AppTheme.colors.background.default)
+                .padding(horizontal = 16.dp)
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .height(24.dp)
+                    .width(200.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+                    .width(150.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.7f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.5f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            AppHorizontalDivider()
+        }
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Movie Details Shimmer**
+        repeat(3) {
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+                    .fillMaxWidth()
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+        }
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Shimmer for Movie Casts**
+        ShimmerHorizontalList()
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Shimmer for Recommended Movies**
+        ShimmerHorizontalList()
+    }
+}
+
+/**
+ * Generic shimmer row to simulate cast/recommendations/similar movies.
+ */
+@Composable
+fun ShimmerHorizontalList() {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(5) {
+            Spacer(
+                modifier = Modifier
+                    .size(120.dp, 180.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
+            )
+        }
+    }
+}
+
 
 @Composable
 fun MovieBackdrop(state: MovieDetailsState) {
