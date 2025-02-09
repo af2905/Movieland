@@ -22,8 +22,13 @@ data class HomeState(
     val moviesGenres: List<Genre> = emptyList(),
     val tvShowsGenres: List<Genre> = emptyList(),
 
-    val popularPeople: List<Person> = emptyList()
+    val popularPeople: List<Person> = emptyList(),
+
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMessage: String? = null
 )
+
 
 sealed interface HomeAction {
     data class OpenMovieDetail(val movieId: Int) : HomeAction

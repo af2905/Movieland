@@ -5,11 +5,9 @@ data class SearchState(
 )
 
 sealed interface SearchAction {
-    data class UpdateQuery(val query: String) : SearchAction
-    data object ClearQuery : SearchAction
-    data object SubmitSearch : SearchAction
+    data object StartSearch : SearchAction
 }
 
 sealed interface SearchEffect {
-    data class NavigateToResults(val query: String) : SearchEffect
+    data object NavigateToResults : SearchEffect
 }

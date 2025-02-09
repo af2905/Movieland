@@ -18,9 +18,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +47,7 @@ import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.chips.ChipView
 import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
+import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
@@ -73,61 +76,89 @@ fun MovieDetailsScreen(
             title = if (showTitle) state.movie?.title.orEmpty() else "",
             onBackClick = { onAction(MovieDetailsAction.BackClick) },
             endButtons = {
-                Row {
-                    IconButton(onClick = { /* Handle action */ }) {
-                        Icon(
-                            imageVector = Icons.Outlined.BookmarkBorder,
-                            contentDescription = ""
-                        )
-                    }
-                    IconButton(onClick = { /* Handle action */ }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Share,
-                            contentDescription = ""
-                        )
+                if (!state.isError && !state.isLoading) {
+                    Row {
+                        IconButton(onClick = { /* Handle action */ }) {
+                            Icon(
+                                imageVector = Icons.Outlined.BookmarkBorder,
+                                contentDescription = ""
+                            )
+                        }
+                        IconButton(onClick = { /* Handle action */ }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Share,
+                                contentDescription = ""
+                            )
+                        }
                     }
                 }
             }
         )
 
-        LazyColumn(
-            state = lazyListState,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(AppTheme.colors.theme.tintCard),
-        ) {
-            //Backdrop Image
-            item { MovieBackdrop(state) }
-
-            //Movie Information (This contains the title, so we track when it disappears)
-            item { MovieInformation(state) }
-
-            //Movie Details Section
-            item { MovieDetails(state) }
-
-            //YouTube Videos Section
-            if (state.videos.isNotEmpty()) {
-                item { MovieVideos(state.videos, onAction) }
+        when {
+            state.isLoading -> {
+                // Loading State
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = AppTheme.colors.theme.tint)
+                }
             }
 
-            //Movie casts Section
-            if (state.casts.isNotEmpty()) {
-                item { MovieCasts(state.casts, onAction) }
+            state.isError -> {
+                // Error State
+                EmptyStateView(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    icon = Icons.Outlined.ErrorOutline,
+                    title = "Oops! Something went wrong.",
+                    action = "Retry",
+                    onClick = {}
+                )
             }
 
-            //Production companies
-            if (!state.movie?.productionCompanies.isNullOrEmpty()) {
-                item { ProductionCompanies(state.movie?.productionCompanies.orEmpty(), onAction) }
-            }
+            else -> {
+                // Success State (Content)
+                LazyColumn(
+                    state = lazyListState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(AppTheme.colors.theme.tintCard),
+                ) {
+                    //Backdrop Image
+                    item { MovieBackdrop(state) }
 
-            //Recommended Movies Section
-            if (state.recommendedMovies.isNotEmpty()) {
-                item { RecommendedMovies(state.recommendedMovies, onAction) }
-            }
+                    item { MovieInformation(state) }
 
-            //Similar Movies Section
-            if (state.similarMovies.isNotEmpty()) {
-                item { SimilarMovies(state.similarMovies, onAction) }
+                    //Movie Details Section
+                    item { MovieDetails(state) }
+
+                    //YouTube Videos Section
+                    if (state.videos.isNotEmpty()) {
+                        item { MovieVideos(state.videos, onAction) }
+                    }
+
+                    //Movie casts Section
+                    if (state.casts.isNotEmpty()) {
+                        item { MovieCasts(state.casts, onAction) }
+                    }
+
+                    //Production companies
+                    if (!state.movie?.productionCompanies.isNullOrEmpty()) {
+                        item { ProductionCompanies(state.movie?.productionCompanies.orEmpty(), onAction) }
+                    }
+
+                    //Recommended Movies Section
+                    if (state.recommendedMovies.isNotEmpty()) {
+                        item { RecommendedMovies(state.recommendedMovies, onAction) }
+                    }
+
+                    //Similar Movies Section
+                    if (state.similarMovies.isNotEmpty()) {
+                        item { SimilarMovies(state.similarMovies, onAction) }
+                    }
+                }
             }
         }
     }
