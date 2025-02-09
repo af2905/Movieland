@@ -6,6 +6,8 @@ import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.Video
 
 data class MovieDetailsState(
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val movie: MovieDetail? = null,
     val similarMovies: List<Movie> = emptyList(),
     val recommendedMovies: List<Movie> = emptyList(),

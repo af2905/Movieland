@@ -12,7 +12,8 @@ fun SearchResultScreen(
     Surface {
         SearchLine(
             searchText = state.query,
-            placeholder = "Search...",
+            placeholder = "Search...2",
+            requestFocusOnShow = true,
             onValueChange = { newValue ->
                 onAction(SearchResultAction.UpdateQuery(newValue))
             }

@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.github.af2905.movieland.compose.components.buttons.FlatButtonView
 import com.github.af2905.movieland.compose.components.icons.IconVectorFadeView
@@ -19,31 +19,29 @@ import com.github.af2905.movieland.compose.theme.AppTheme
 @Composable
 fun EmptyStateView(
     modifier: Modifier = Modifier,
-    painter: Painter? = null,
+    icon: ImageVector? = null,
     title: String? = null,
     subtitle: String? = null,
     action: String? = null,
     onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        painter?.let {
-            IconVectorFadeView(painter = it)
+        icon?.let {
+            IconVectorFadeView(icon = it)
         }
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
         title?.let {
             Text(
                 text = it,
-                modifier = Modifier
-                    .padding(
-                        start = AppTheme.dimens.spaceM,
-                        end = AppTheme.dimens.spaceM,
-                        bottom = AppTheme.dimens.space2XS
-                    ),
+                modifier = Modifier.padding(
+                    start = AppTheme.dimens.spaceM,
+                    end = AppTheme.dimens.spaceM,
+                    bottom = AppTheme.dimens.space2XS
+                ),
                 textAlign = TextAlign.Center,
                 style = AppTheme.typography.bodyMedium
             )
@@ -51,12 +49,11 @@ fun EmptyStateView(
         subtitle?.let {
             Text(
                 text = it,
-                modifier = Modifier
-                    .padding(
-                        start = AppTheme.dimens.spaceM,
-                        end = AppTheme.dimens.spaceM,
-                        top = AppTheme.dimens.space2XS
-                    ),
+                modifier = Modifier.padding(
+                    start = AppTheme.dimens.spaceM,
+                    end = AppTheme.dimens.spaceM,
+                    top = AppTheme.dimens.space2XS
+                ),
                 color = AppTheme.colors.type.ghost,
                 textAlign = TextAlign.Center,
                 style = AppTheme.typography.caption1
