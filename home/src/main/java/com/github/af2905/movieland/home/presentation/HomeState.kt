@@ -7,26 +7,20 @@ import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.TvShow
 
 data class HomeState(
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val trendingMovies: List<Movie> = emptyList(),
     val trendingTvShows: List<TvShow> = emptyList(),
     val trendingPeople: List<Person> = emptyList(),
-
     val popularMovies: List<Movie> = emptyList(),
     val topRatedMovies: List<Movie> = emptyList(),
     val upcomingMovies: List<Movie> = emptyList(),
     val nowPlayingMovies: List<Movie> = emptyList(),
-
     val popularTvShows: List<TvShow> = emptyList(),
     val topRatedTvShows: List<TvShow> = emptyList(),
-
     val moviesGenres: List<Genre> = emptyList(),
     val tvShowsGenres: List<Genre> = emptyList(),
-
-    val popularPeople: List<Person> = emptyList(),
-
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val errorMessage: String? = null
+    val popularPeople: List<Person> = emptyList()
 )
 
 
