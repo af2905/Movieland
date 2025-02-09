@@ -44,6 +44,8 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchHomeData() {
         viewModelScope.launch {
+            state = state.copy(isLoading = true)
+
             // Fetch Trending Data
             val trendingData = combine(
                 trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, 1)
@@ -116,7 +118,6 @@ class HomeViewModel @Inject constructor(
                 state = if (allMoviesEmpty) {
                     state.copy(
                         isError = true, // Show error screen if nothing is available
-                        errorMessage = "No movies available. Please check your internet connection."
                     )
                 } else {
                     state.copy(
@@ -132,8 +133,8 @@ class HomeViewModel @Inject constructor(
                         popularPeople = popularPeople,
                         popularTvShows = popularTvShows,
                         topRatedTvShows = topRatedTvShows,
+                        isLoading = false,
                         isError = false, // If at least one category has movies, don't show error
-                        errorMessage = null
                     )
                 }
             }.collect {}
