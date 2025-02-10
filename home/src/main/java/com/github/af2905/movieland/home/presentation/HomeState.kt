@@ -30,6 +30,7 @@ sealed interface HomeAction {
     data class OpenPersonDetail(val personId: Int) : HomeAction
     data class OpenGenre(val genreId: Int) : HomeAction
     data class ChangeAppColor(val selectedTheme: Themes) : HomeAction
+    data object RetryFetch : HomeAction
 }
 
 sealed interface HomeEffect {

@@ -1,63 +1,26 @@
 <resources>
+    <string name="app_name">Movieland</string>
+
+    <!--errors-->
     <string name="error_server">Server error: %1$d - %2$s</string>
     <string name="error_network">Network error. Please check your internet connection.</string>
     <string name="error_unexpected">Unexpected error occurred.</string>
+    <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
 
-    <!---->
-
-    <string name="language">en</string>
-
-    //BottomNavMenu
-    <string name="bottom_nav_menu_home_title">Home</string>
-    <string name="bottom_nav_menu_search_title">Search</string>
-    <string name="bottom_nav_menu_profile_title">Profile</string>
-
-    <string name="action_search">Search</string>
-
-    <string name="any_screen_more">more…</string>
-    <string name="any_screen_show_all">show all</string>
-    <string name="hint_search_query">Enter search query…</string>
-
-    //Headers
-    <string name="header">Header</string>
-
-    <string name="recommended">Recommended</string>
-    <string name="similar">Similar</string>
-
-    //Movie detail
-    <string name="actors_and_crew_title">Actors</string>
-
-    //Fail to connect
-    <string name="message_fail_to_connect">Failed to connect</string>
-    <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
-
-    <string name="any_screen_try_again">try again</string>
-    <string name="any_screen_view_all">view all</string>
-    <string name="any_screen_movies">Movies</string>
-    <string name="any_screen_tv_shows">TV shows</string>
-    <string name="any_screen_people">People</string>
-
-    //Menu item
-    <string name="menu_item_recently_viewed_title">Recently viewed</string>
-    <string name="menu_item_liked_title">My Favorites</string>
-    <string name="menu_item_settings_title">Settings</string>
-
-    //Profile
-    <string name="profile_title">Profile</string>
-
-    <string name="search_empty_result">No results matching your query</string>
-
-    <string name="media_type_tv">tv show</string>
-    <string name="media_type_movie">movie</string>
-    <string name="media_type_person">person</string>
-
-    <string name="birthday_title">Birthday</string>
-    <string name="deathday_title">Death day</string>
-    <string name="place_of_birth_title">Place of birth</string>
-    <string name="biography_title">Biography</string>
-
-    <string name="first_air_date_title">First air date: %1$s</string>
-    <string name="last_air_date_title">Last air date: %1$s</string>
-    <string name="number_of_seasons_title">Number of seasons: %1$s</string>
+    <string name="change_color">Change color</string>
+    <string name="retry">Retry</string>
+    <string name="trending_movies">Trending Movies</string>
+    <string name="view_all">View All</string>
+    <string name="trending_tv_shows">Trending TV Shows</string>
+    <string name="trending_people">Trending People</string>
+    <string name="movies_genres">Movies genres</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="tv_shows_genres">TV Shows genres</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="top_rated_tv_shows">Top Rated TV Shows</string>
+    <string name="popular_people">Popular People</string>
 
 </resources>

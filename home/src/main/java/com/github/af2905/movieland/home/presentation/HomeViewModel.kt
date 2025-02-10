@@ -167,5 +167,11 @@ class HomeViewModel @Inject constructor(
                 _effect.send(HomeEffect.ChangeAppColor(selectedTheme = action.selectedTheme))
             }
         }
+
+        is HomeAction.RetryFetch -> {
+            viewModelScope.launch {
+                fetchHomeData()
+            }
+        }
     }
 }
