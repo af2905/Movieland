@@ -49,7 +49,9 @@ class MovieDetailsViewModel @AssistedInject constructor(
             launch {
                 moviesRepository.getSimilarMovies(movieId, null, null)
                     .collectLatest { result ->
-                        state = state.copy(similarMovies = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                        state = state.copy(
+                            similarMovies = (result as? ResultWrapper.Success)?.data ?: emptyList()
+                        )
                     }
             }
 
@@ -57,7 +59,10 @@ class MovieDetailsViewModel @AssistedInject constructor(
             launch {
                 moviesRepository.getRecommendedMovies(movieId, null, null)
                     .collectLatest { result ->
-                        state = state.copy(recommendedMovies = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                        state = state.copy(
+                            recommendedMovies = (result as? ResultWrapper.Success)?.data
+                                ?: emptyList()
+                        )
                     }
             }
 
@@ -65,7 +70,9 @@ class MovieDetailsViewModel @AssistedInject constructor(
             launch {
                 moviesRepository.getMovieVideos(movieId, null)
                     .collectLatest { result ->
-                        state = state.copy(videos = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                        state = state.copy(
+                            videos = (result as? ResultWrapper.Success)?.data ?: emptyList()
+                        )
                     }
             }
 
@@ -73,8 +80,27 @@ class MovieDetailsViewModel @AssistedInject constructor(
             launch {
                 moviesRepository.getMovieCredits(movieId, null)
                     .collectLatest { result ->
-                        state = state.copy(casts = (result as? ResultWrapper.Success)?.data ?: emptyList())
+                        state = state.copy(
+                            casts = (result as? ResultWrapper.Success)?.data ?: emptyList()
+                        )
                     }
+            }
+
+            launch {
+                val externalIds = (moviesRepository.getMovieExternalIds(
+                    movieId,
+                    null
+                ) as? ResultWrapper.Success)?.data
+                externalIds?.let { socialIds ->
+                    state = state.copy(
+                        movieSocialIds = state.movieSocialIds.copy(
+                            wikidataId = socialIds.wikidataId,
+                            facebookId = socialIds.facebookId,
+                            instagramId = socialIds.instagramId,
+                            twitterId = socialIds.twitterId
+                        )
+                    )
+                }
             }
 
             state = state.copy(isLoading = false)

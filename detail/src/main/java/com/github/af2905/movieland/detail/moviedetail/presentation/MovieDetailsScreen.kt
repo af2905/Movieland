@@ -343,6 +343,8 @@ fun MovieInformation(state: MovieDetailsState) {
             color = AppTheme.colors.type.secondary
         )
         Spacer(modifier = Modifier.height(16.dp))
+
+        //I want to apply them here in a row align center with padding
         AppHorizontalDivider()
     }
 }
