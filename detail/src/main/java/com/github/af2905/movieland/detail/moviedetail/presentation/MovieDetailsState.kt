@@ -12,8 +12,16 @@ data class MovieDetailsState(
     val similarMovies: List<Movie> = emptyList(),
     val recommendedMovies: List<Movie> = emptyList(),
     val videos: List<Video> = emptyList(),
-    val casts: List<CreditsCast> = emptyList()
-)
+    val casts: List<CreditsCast> = emptyList(),
+    val movieSocialIds: MovieSocialIds = MovieSocialIds()
+) {
+    data class MovieSocialIds(
+        val wikidataId: String? = null,
+        val facebookId: String? = null,
+        val instagramId: String? = null,
+        val twitterId: String? = null
+    )
+}
 
 sealed interface MovieDetailsAction {
     data object BackClick : MovieDetailsAction
