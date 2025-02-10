@@ -51,6 +51,7 @@ import com.github.af2905.movieland.home.presentation.HomeState
 import com.github.af2905.movieland.home.presentation.screen.bottomsheet.SelectAppColorBottomSheetComponent
 import kotlinx.coroutines.launch
 import com.github.af2905.movieland.core.R
+import com.github.af2905.movieland.core.common.helper.ImageProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,7 +162,7 @@ private fun HomeContent(
                     ItemCardLarge(
                         modifier = Modifier.padding(horizontal = AppTheme.dimens.space2XS),
                         title = movie.title,
-                        imageUrl = "https://image.tmdb.org/t/p/original/${movie.backdropPath}",
+                        imageUrl = ImageProvider.getImageUrl(movie.backdropPath),
                         rating = movie.voteAverage,
                         onItemClick = {
                             onAction(HomeAction.OpenMovieDetail(movie.id))
@@ -211,7 +212,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
                             onItemClick = {
@@ -241,7 +242,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = person.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
+                            imageUrl = ImageProvider.getImageUrl(person.profilePath),
                             mediaType = MediaType.PERSON,
                             onItemClick = {
                                 onAction(HomeAction.OpenPersonDetail(person.id))
@@ -295,7 +296,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
                             onItemClick = {
@@ -325,7 +326,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
                             onItemClick = {
@@ -355,7 +356,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
                             onItemClick = {
@@ -385,7 +386,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = movie.title,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                             rating = movie.voteAverage,
                             mediaType = MediaType.MOVIE,
                             onItemClick = {
@@ -440,7 +441,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
                             onItemClick = {
@@ -470,7 +471,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = tvShow.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${tvShow.posterPath}",
+                            imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
                             rating = tvShow.voteAverage,
                             mediaType = MediaType.TV,
                             onItemClick = {
@@ -500,7 +501,7 @@ private fun HomeContent(
                         ItemCard(
                             modifier = Modifier.padding(horizontal = 6.dp),
                             title = person.name,
-                            imageUrl = "https://image.tmdb.org/t/p/original/${person.profilePath}",
+                            imageUrl = ImageProvider.getImageUrl(person.profilePath),
                             mediaType = MediaType.PERSON,
                             onItemClick = {
                                 onAction(HomeAction.OpenPersonDetail(person.id))
