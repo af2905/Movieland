@@ -35,6 +35,7 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.res.stringResource
 import com.github.af2905.movieland.compose.components.bottomsheet.AppModalBottomSheet
 import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
@@ -49,6 +50,7 @@ import com.github.af2905.movieland.home.presentation.HomeAction
 import com.github.af2905.movieland.home.presentation.HomeState
 import com.github.af2905.movieland.home.presentation.screen.bottomsheet.SelectAppColorBottomSheetComponent
 import kotlinx.coroutines.launch
+import com.github.af2905.movieland.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,12 +87,12 @@ fun HomeScreen(
 
     Column {
         AppCenterAlignedTopAppBar(
-            title = "Movieland",
+            title = stringResource(id = R.string.app_name),
             onBackClick = { },
             hasNavigationBack = false,
             endButtons = {
                 ChipView(
-                    text = "Change color",
+                    text = stringResource(id = R.string.change_color),
                     onClick = {
                         coroutineScope.launch {
                             sheetState.show()
@@ -106,16 +108,18 @@ fun HomeScreen(
                 // **Shimmer Loading Screen**
                 ShimmerHomeScreen()
             }
+
             state.isError -> {
                 // **Error Screen**
                 EmptyStateView(
                     modifier = Modifier.fillMaxSize(),
                     icon = Icons.Outlined.ErrorOutline,
-                    title = "Oops! Something went wrong.",
-                    action = "Retry",
-                    onClick = { /* Retry Action */ }
+                    title = stringResource(id = R.string.oops_something_went_wrong),
+                    action = stringResource(id = R.string.retry),
+                    onClick = { onAction(HomeAction.RetryFetch) }
                 )
             }
+
             else -> {
                 // **Content Screen**
                 HomeContent(state, onAction, pagerState)
@@ -140,8 +144,8 @@ private fun HomeContent(
         if (state.trendingMovies.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Trending Movies",
-                    action = "View All",
+                    text = stringResource(id = R.string.trending_movies),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -193,8 +197,8 @@ private fun HomeContent(
         if (state.trendingTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Trending TV Shows",
-                    action = "View All",
+                    text = stringResource(id = R.string.trending_tv_shows),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -223,8 +227,8 @@ private fun HomeContent(
         if (state.trendingPeople.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Trending People",
-                    action = "View All",
+                    text = stringResource(id = R.string.trending_people),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -251,7 +255,7 @@ private fun HomeContent(
         // Movies genres
         if (state.moviesGenres.isNotEmpty()) {
             item {
-                HeadlinePrimaryActionView(text = "Movies genres")
+                HeadlinePrimaryActionView(text = stringResource(id = R.string.movies_genres))
             }
 
             item {
@@ -277,8 +281,8 @@ private fun HomeContent(
         if (state.nowPlayingMovies.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Now Playing Movies",
-                    action = "View All",
+                    text = stringResource(id = R.string.now_playing_movies),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -307,8 +311,8 @@ private fun HomeContent(
         if (state.popularMovies.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Popular Movies",
-                    action = "View All",
+                    text = stringResource(id = R.string.popular_movies),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -337,8 +341,8 @@ private fun HomeContent(
         if (state.upcomingMovies.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Upcoming Movies",
-                    action = "View All",
+                    text = stringResource(id = R.string.upcoming_movies),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -367,8 +371,8 @@ private fun HomeContent(
         if (state.topRatedMovies.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Top Rated Movies",
-                    action = "View All",
+                    text = stringResource(id = R.string.top_rated_movies),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -396,7 +400,7 @@ private fun HomeContent(
         // TV Shows genres
         if (state.tvShowsGenres.isNotEmpty()) {
             item {
-                HeadlinePrimaryActionView(text = "TV Shows genres")
+                HeadlinePrimaryActionView(text = stringResource(id = R.string.tv_shows_genres))
             }
 
             item {
@@ -422,8 +426,8 @@ private fun HomeContent(
         if (state.popularTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Popular TV Shows",
-                    action = "View All",
+                    text = stringResource(id = R.string.popular_tv_shows),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -452,8 +456,8 @@ private fun HomeContent(
         if (state.topRatedTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Top rated TV Shows",
-                    action = "View All",
+                    text = stringResource(id = R.string.top_rated_tv_shows),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -482,8 +486,8 @@ private fun HomeContent(
         if (state.popularPeople.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = "Popular People",
-                    action = "View All",
+                    text = stringResource(id = R.string.popular_people),
+                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -513,16 +517,17 @@ private fun HomeContent(
 fun ShimmerHomeScreen() {
     LazyColumn(
         modifier = Modifier
-        .fillMaxSize()
-        .padding(AppTheme.dimens.spaceM)) {
+            .fillMaxSize()
+            .padding(AppTheme.dimens.spaceM)
+    ) {
         item {
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
             Spacer(
-            modifier = Modifier
-                .height(16.dp)
-                .fillMaxWidth(0.8f)
-                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
-        )
+                modifier = Modifier
+                    .height(16.dp)
+                    .fillMaxWidth(0.8f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
             Spacer(
                 modifier = Modifier
@@ -531,7 +536,8 @@ fun ShimmerHomeScreen() {
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM)) }
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+        }
         item {
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
             Spacer(
