@@ -26,7 +26,6 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +57,7 @@ import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.compose.components.video_player.YouTubeThumbnail
 import com.github.af2905.movieland.compose.theme.AppTheme
+import com.github.af2905.movieland.core.common.helper.ImageProvider
 import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
@@ -299,7 +299,7 @@ fun MovieBackdrop(state: MovieDetailsState) {
             elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
         ) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/original/${state.movie?.backdropPath}",
+                model = ImageProvider.getImageUrl(state.movie?.backdropPath),
                 contentDescription = null,
                 modifier = Modifier.height(200.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
@@ -433,7 +433,7 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
                     title = cast.name,
                     subtitle = cast.character,
                     showSubtitle = true,
-                    imageUrl = "https://image.tmdb.org/t/p/original/${cast.profilePath}",
+                    imageUrl = ImageProvider.getImageUrl(cast.profilePath),
                     mediaType = MediaType.PERSON,
                     onItemClick = {
                         onAction(MovieDetailsAction.OpenPersonDetail(cast.id))
@@ -505,7 +505,7 @@ fun RecommendedMovies(recommendedMovies: List<Movie>, onAction: (MovieDetailsAct
                 ItemCard(
                     modifier = Modifier.padding(horizontal = 6.dp),
                     title = movie.title,
-                    imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                     rating = movie.voteAverage,
                     mediaType = MediaType.MOVIE,
                     onItemClick = {
@@ -541,7 +541,7 @@ fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> 
                 ItemCard(
                     modifier = Modifier.padding(horizontal = 6.dp),
                     title = movie.title,
-                    imageUrl = "https://image.tmdb.org/t/p/original/${movie.posterPath}",
+                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
                     rating = movie.voteAverage,
                     mediaType = MediaType.MOVIE,
                     onItemClick = {
