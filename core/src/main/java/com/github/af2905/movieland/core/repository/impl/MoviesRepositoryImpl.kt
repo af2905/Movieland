@@ -10,6 +10,7 @@ import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Video
+import com.github.af2905.movieland.core.data.dto.movie.MovieExternalIds
 import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
@@ -70,7 +71,12 @@ class MoviesRepositoryImpl @Inject constructor(
     }.catch { e ->
         val errorMessage = when (e) {
             is IOException -> stringProvider.getString(R.string.error_network)
-            is HttpException -> stringProvider.getString(R.string.error_server, e.code(), e.message())
+            is HttpException -> stringProvider.getString(
+                R.string.error_server,
+                e.code(),
+                e.message()
+            )
+
             else -> stringProvider.getString(R.string.error_unexpected)
         }
         emit(ResultWrapper.Error(errorMessage, e))
@@ -81,13 +87,22 @@ class MoviesRepositoryImpl @Inject constructor(
         movieDao.insertMovies(movies)
     }
 
-    override suspend fun getMovieDetails(movieId: Int, language: String?): ResultWrapper<MovieDetail> {
+    override suspend fun getMovieDetails(
+        movieId: Int,
+        language: String?
+    ): ResultWrapper<MovieDetail> {
         return try {
             val movieDetailDto = moviesApi.getMovieDetails(movieId, language)
             val movieDetail = movieDetailMapper.map(movieDetailDto)
             ResultWrapper.Success(movieDetail)
         } catch (e: HttpException) {
-            ResultWrapper.Error(stringProvider.getString(R.string.error_server, e.code(), e.message()), e)
+            ResultWrapper.Error(
+                stringProvider.getString(
+                    R.string.error_server,
+                    e.code(),
+                    e.message()
+                ), e
+            )
         } catch (e: IOException) {
             ResultWrapper.Error(stringProvider.getString(R.string.error_network), e)
         } catch (e: Exception) {
@@ -127,7 +142,10 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovieCredits(movieId: Int, language: String?): Flow<ResultWrapper<List<CreditsCast>>> = flow {
+    override fun getMovieCredits(
+        movieId: Int,
+        language: String?
+    ): Flow<ResultWrapper<List<CreditsCast>>> = flow {
         emit(ResultWrapper.Loading)
         try {
             val response = moviesApi.getMovieCredits(movieId, language)
@@ -140,14 +158,27 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovieVideos(movieId: Int, language: String?): Flow<ResultWrapper<List<Video>>> = flow {
-        emit(ResultWrapper.Loading)
-        try {
-            val response = moviesApi.getMovieVideos(movieId, language)
-            val videos = response.results.map { videoMapper.map(it) }
-            emit(ResultWrapper.Success(videos))
+    override fun getMovieVideos(movieId: Int, language: String?): Flow<ResultWrapper<List<Video>>> =
+        flow {
+            emit(ResultWrapper.Loading)
+            try {
+                val response = moviesApi.getMovieVideos(movieId, language)
+                val videos = response.results.map { videoMapper.map(it) }
+                emit(ResultWrapper.Success(videos))
+            } catch (e: Exception) {
+                emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+            }
+        }
+
+    override suspend fun getMovieExternalIds(
+        movieId: Int,
+        language: String?
+    ): ResultWrapper<MovieExternalIds?> {
+        return try {
+            val movieExternalIds = moviesApi.getMovieExternalIds(movieId, language)
+            ResultWrapper.Success(movieExternalIds)
         } catch (e: Exception) {
-            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+            ResultWrapper.Success(null)
         }
     }
 }
