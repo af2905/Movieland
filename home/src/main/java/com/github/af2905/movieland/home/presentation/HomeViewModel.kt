@@ -60,14 +60,10 @@ class HomeViewModel @Inject constructor(
 
             // Fetch Movies Data
             val movieData = combine(
-                moviesRepository.getMovies(MovieType.POPULAR, null, 1)
-                    .catch { emit(ResultWrapper.Error("Failed to load popular movies")) },
-                moviesRepository.getMovies(MovieType.TOP_RATED, null, 1)
-                    .catch { emit(ResultWrapper.Error("Failed to load top rated movies")) },
-                moviesRepository.getMovies(MovieType.UPCOMING, null, 1)
-                    .catch { emit(ResultWrapper.Error("Failed to load upcoming movies")) },
+                moviesRepository.getMovies(MovieType.POPULAR, null, 1),
+                moviesRepository.getMovies(MovieType.TOP_RATED, null, 1),
+                moviesRepository.getMovies(MovieType.UPCOMING, null, 1),
                 moviesRepository.getMovies(MovieType.NOW_PLAYING, null, 1)
-                    .catch { emit(ResultWrapper.Error("Failed to load now playing movies")) }
             ) { popular, topRated, upcoming, nowPlaying ->
                 listOf(popular, topRated, upcoming, nowPlaying)
             }
@@ -109,15 +105,15 @@ class HomeViewModel @Inject constructor(
                 val (movieGenres, tvGenres) = genres
 
                 val allMoviesEmpty =
-                    (popularMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
-                            (topRatedMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
-                            (upcomingMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true &&
-                            (nowPlayingMovies as? ResultWrapper.Success)?.data?.isEmpty() ?: true
-
+                    (popularMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
+                            (topRatedMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
+                            (upcomingMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
+                            (nowPlayingMovies as? ResultWrapper.Success)?.data.isNullOrEmpty()
 
                 state = if (allMoviesEmpty) {
                     state.copy(
-                        isError = true, // Show error screen if nothing is available
+                        isLoading = false,
+                        isError = true
                     )
                 } else {
                     state.copy(
@@ -134,13 +130,12 @@ class HomeViewModel @Inject constructor(
                         popularTvShows = popularTvShows,
                         topRatedTvShows = topRatedTvShows,
                         isLoading = false,
-                        isError = false, // If at least one category has movies, don't show error
+                        isError = false,
                     )
                 }
             }.collect {}
         }
     }
-
 
     fun onAction(action: HomeAction) = when (action) {
         is HomeAction.OpenMovieDetail -> {
