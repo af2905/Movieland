@@ -50,6 +50,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -121,8 +122,8 @@ fun MovieDetailsScreen(
                 EmptyStateView(
                     modifier = Modifier.fillMaxSize(),
                     icon = Icons.Outlined.ErrorOutline,
-                    title = "Oops! Something went wrong.",
-                    action = "Retry",
+                    title = stringResource(R.string.oops_something_went_wrong),
+                    action = stringResource(R.string.retry),
                     onClick = { /* Retry Action */ }
                 )
             }
@@ -407,8 +408,8 @@ fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = "Videos",
-            action = "View All",
+            text = stringResource(R.string.videos),
+            action = stringResource(R.string.view_all),
             onClick = { /* Handle View All Click */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -440,8 +441,8 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = "Casts",
-            action = "View All",
+            text = stringResource(R.string.casts),
+            action = stringResource(R.string.view_all),
             onClick = { /* Handle View All Click */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -480,8 +481,8 @@ fun ProductionCompanies(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = "Production Companies",
-            action = "View All",
+            text = stringResource(R.string.production_companies),
+            action = stringResource(R.string.view_all),
             onClick = { /* Handle View All Click */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -514,8 +515,8 @@ fun RecommendedMovies(recommendedMovies: List<Movie>, onAction: (MovieDetailsAct
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = "Recommended Movies",
-            action = "View All",
+            text = stringResource(R.string.recommended_movies),
+            action = stringResource(R.string.view_all),
             onClick = { /* Handle click */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -550,8 +551,8 @@ fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> 
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = "Similar Movies",
-            action = "View All",
+            text = stringResource(R.string.similar_movies),
+            action = stringResource(R.string.view_all),
             onClick = { /* Handle click */ }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -584,16 +585,23 @@ fun SocialMediaRow(socialIds: MovieDetailsState.MovieSocialIds) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
-        // Open URLs only if IDs exist
         socialIds.instagramId?.let { id ->
             SocialMediaProvider.getInstagramUrl(id)?.let { url ->
-                SocialMediaIcon(iconRes = R.drawable.ic_instagram, url = url)
+                SocialMediaIcon(
+                    iconRes = R.drawable.ic_instagram,
+                    url = url,
+                    contentDescription = stringResource(R.string.instagram)
+                )
             }
         }
 
         socialIds.facebookId?.let { id ->
             SocialMediaProvider.getFacebookUrl(id)?.let { url ->
-                SocialMediaIcon(iconRes = R.drawable.ic_facebook, url = url)
+                SocialMediaIcon(
+                    iconRes = R.drawable.ic_facebook,
+                    url = url,
+                    contentDescription = stringResource(R.string.facebook)
+                )
             }
         }
 
@@ -602,7 +610,8 @@ fun SocialMediaRow(socialIds: MovieDetailsState.MovieSocialIds) {
                 SocialMediaIcon(
                     iconRes = R.drawable.ic_x_twitter,
                     tint = AppTheme.colors.type.secondary,
-                    url = url
+                    url = url,
+                    contentDescription = stringResource(R.string.twitter)
                 )
             }
         }
@@ -612,13 +621,13 @@ fun SocialMediaRow(socialIds: MovieDetailsState.MovieSocialIds) {
                 SocialMediaIcon(
                     iconRes = R.drawable.ic_wiki,
                     tint = AppTheme.colors.type.secondary,
-                    url = url
+                    url = url,
+                    contentDescription = stringResource(R.string.wikidata)
                 )
             }
         }
     }
 }
-
 
 @Composable
 fun SocialMediaIcon(
