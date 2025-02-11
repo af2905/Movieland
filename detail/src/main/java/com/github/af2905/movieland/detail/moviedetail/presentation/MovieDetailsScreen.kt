@@ -1,5 +1,9 @@
 package com.github.af2905.movieland.detail.moviedetail.presentation
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,10 +43,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
@@ -63,6 +71,8 @@ import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.Video
+import com.github.af2905.movieland.core.R
+import com.github.af2905.movieland.core.common.helper.SocialMediaProvider
 import com.github.af2905.movieland.util.extension.convertMinutesToHoursAndMinutes
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
 
@@ -146,7 +156,12 @@ fun MovieDetailsScreen(
 
                     // Production Companies
                     if (!state.movie?.productionCompanies.isNullOrEmpty()) {
-                        item { ProductionCompanies(state.movie?.productionCompanies.orEmpty(), onAction) }
+                        item {
+                            ProductionCompanies(
+                                state.movie?.productionCompanies.orEmpty(),
+                                onAction
+                            )
+                        }
                     }
 
                     // Recommended Movies Section
@@ -320,7 +335,9 @@ fun MovieInformation(state: MovieDetailsState) {
             .padding(horizontal = 16.dp)
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth(),
             text = state.movie?.title.orEmpty(),
+            textAlign = TextAlign.Center,
             style = AppTheme.typography.title2,
             color = AppTheme.colors.type.secondary
         )
@@ -328,23 +345,27 @@ fun MovieInformation(state: MovieDetailsState) {
             RatingBar(rating = state.movie.voteAverage ?: 0.0)
         }
         Text(
-            text = "${state.movie?.releaseDate?.getYearFromReleaseDate().orEmpty()}, ${
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = "${state.movie?.releaseDate?.getYearFromReleaseDate().orEmpty()} • ${
                 state.movie?.genres?.joinToString { it.name }.orEmpty()
             }",
             color = AppTheme.colors.type.secondary
         )
         Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
             text = "${
                 state.movie?.productionCountries?.joinToString { it.countryName }
                     .orEmpty()
-            }, ${
+            } • ${
                 state.movie?.runtime?.convertMinutesToHoursAndMinutes().orEmpty()
             }",
             color = AppTheme.colors.type.secondary
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        //I want to apply them here in a row align center with padding
+        SocialMediaRow(state.movieSocialIds)
+
         AppHorizontalDivider()
     }
 }
@@ -554,6 +575,76 @@ fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> 
         }
         Spacer(modifier = Modifier.height(32.dp))
     }
+}
+
+@Composable
+fun SocialMediaRow(socialIds: MovieDetailsState.MovieSocialIds) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 16.dp)
+    ) {
+        // Open URLs only if IDs exist
+        socialIds.instagramId?.let { id ->
+            SocialMediaProvider.getInstagramUrl(id)?.let { url ->
+                SocialMediaIcon(iconRes = R.drawable.ic_instagram, url = url)
+            }
+        }
+
+        socialIds.facebookId?.let { id ->
+            SocialMediaProvider.getFacebookUrl(id)?.let { url ->
+                SocialMediaIcon(iconRes = R.drawable.ic_facebook, url = url)
+            }
+        }
+
+        socialIds.twitterId?.let { id ->
+            SocialMediaProvider.getTwitterUrl(id)?.let { url ->
+                SocialMediaIcon(
+                    iconRes = R.drawable.ic_x_twitter,
+                    tint = AppTheme.colors.type.secondary,
+                    url = url
+                )
+            }
+        }
+
+        socialIds.wikidataId?.let { id ->
+            SocialMediaProvider.getWikidataUrl(id)?.let { url ->
+                SocialMediaIcon(
+                    iconRes = R.drawable.ic_wiki,
+                    tint = AppTheme.colors.type.secondary,
+                    url = url
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun SocialMediaIcon(
+    @DrawableRes iconRes: Int,
+    url: String,
+    contentDescription: String? = null,
+    tint: Color = Color.Unspecified,
+) {
+    val context = LocalContext.current
+
+    IconButton(
+        onClick = { openUrl(context, url) }
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescription,
+            tint = tint,
+            modifier = Modifier.size(30.dp)
+        )
+    }
+}
+
+// Helper function to open URLs
+fun openUrl(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(intent)
 }
 
 

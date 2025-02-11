@@ -104,13 +104,13 @@ class HomeViewModel @Inject constructor(
                 val (popularTvShows, topRatedTvShows) = tvShows
                 val (movieGenres, tvGenres) = genres
 
-                val allMoviesEmpty =
-                    (popularMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
-                            (topRatedMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
-                            (upcomingMovies as? ResultWrapper.Success)?.data.isNullOrEmpty() &&
-                            (nowPlayingMovies as? ResultWrapper.Success)?.data.isNullOrEmpty()
+                val allMoviesError =
+                    (popularMovies as? ResultWrapper.Error) != null &&
+                            (topRatedMovies as? ResultWrapper.Error) != null &&
+                            (upcomingMovies as? ResultWrapper.Error) != null &&
+                            (nowPlayingMovies as? ResultWrapper.Error) != null
 
-                state = if (allMoviesEmpty) {
+                state = if (allMoviesError) {
                     state.copy(
                         isLoading = false,
                         isError = true
