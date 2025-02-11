@@ -45,6 +45,7 @@ compose-junit = "1.7.6"
 compose-material-icons = "1.7.6"
 coilCompose = "2.6.0"
 hiltCommon = "1.2.0"
+foundationAndroid = "1.7.7"
 
 [libraries]
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
@@ -99,3 +100,4 @@ compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "
 compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icons" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
+foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }

@@ -1,8 +1,9 @@
-package com.github.af2905.movieland.home.presentation
+package com.github.af2905.movieland.home.presentation.state
 
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.data.database.entity.Genre
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.TvShow
 
@@ -23,7 +24,6 @@ data class HomeState(
     val popularPeople: List<Person> = emptyList()
 )
 
-
 sealed interface HomeAction {
     data class OpenMovieDetail(val movieId: Int) : HomeAction
     data class OpenTvShowDetail(val tvShowId: Int) : HomeAction
@@ -31,6 +31,7 @@ sealed interface HomeAction {
     data class OpenGenre(val genreId: Int) : HomeAction
     data class ChangeAppColor(val selectedTheme: Themes) : HomeAction
     data object RetryFetch : HomeAction
+    data class OpenMoviesByType(val movieType: MovieType) : HomeAction
 }
 
 sealed interface HomeEffect {
@@ -39,4 +40,5 @@ sealed interface HomeEffect {
     data class NavigateToPersonDetail(val personId: Int) : HomeEffect
     data class NavigateToGenre(val genreId: Int) : HomeEffect
     data class ChangeAppColor(val selectedTheme: Themes) : HomeEffect
+    data class NavigateToMovies(val movieType: MovieType) : HomeEffect
 }

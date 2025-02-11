@@ -7,6 +7,9 @@ import androidx.navigation.NavHostController
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 import com.github.af2905.movieland.home.presentation.screen.HomeScreen
+import com.github.af2905.movieland.home.presentation.state.HomeAction
+import com.github.af2905.movieland.home.presentation.state.HomeEffect
+import com.github.af2905.movieland.home.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreenNavWrapper(
@@ -45,6 +48,15 @@ fun HomeScreenNavWrapper(
 
                 is HomeEffect.ChangeAppColor -> {
                     onThemeClick(effect.selectedTheme)
+                }
+
+                is HomeEffect.NavigateToMovies -> {
+                    navController.navigate(
+                        AppNavRoutes.Movies.createRoute(
+                            movieId = null,
+                            movieType = effect.movieType
+                        )
+                    )
                 }
             }
         }

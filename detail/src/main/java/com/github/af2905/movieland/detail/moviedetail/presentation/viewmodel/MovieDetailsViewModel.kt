@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.detail.moviedetail.presentation
+package com.github.af2905.movieland.detail.moviedetail.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.repository.MoviesRepository
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsAction
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsEffect
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -125,6 +128,17 @@ class MovieDetailsViewModel @AssistedInject constructor(
 
             is MovieDetailsAction.OpenVideo -> {
                 viewModelScope.launch { _effect.send(MovieDetailsEffect.NavigateToVideo(action.videoId)) }
+            }
+
+            is MovieDetailsAction.OpenMoviesByType -> {
+                viewModelScope.launch {
+                    _effect.send(
+                        MovieDetailsEffect.NavigateToMovies(
+                            movieId = movieId,
+                            movieType = action.movieType
+                        )
+                    )
+                }
             }
         }
     }
