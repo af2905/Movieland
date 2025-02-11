@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.detail.moviedetail.presentation
+package com.github.af2905.movieland.detail.moviedetail.presentation.screen
 
 import android.content.Context
 import android.content.Intent
@@ -74,6 +74,9 @@ import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.SocialMediaProvider
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsAction
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsState
 import com.github.af2905.movieland.util.extension.convertMinutesToHoursAndMinutes
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
 
@@ -517,7 +520,7 @@ fun RecommendedMovies(recommendedMovies: List<Movie>, onAction: (MovieDetailsAct
         HeadlinePrimaryActionView(
             text = stringResource(R.string.recommended_movies),
             action = stringResource(R.string.view_all),
-            onClick = { /* Handle click */ }
+            onClick = { onAction(MovieDetailsAction.OpenMoviesByType(movieType = MovieType.RECOMMENDED)) }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -553,7 +556,7 @@ fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> 
         HeadlinePrimaryActionView(
             text = stringResource(R.string.similar_movies),
             action = stringResource(R.string.view_all),
-            onClick = { /* Handle click */ }
+            onClick = { onAction(MovieDetailsAction.OpenMoviesByType(movieType = MovieType.SIMILAR)) }
         )
         Spacer(modifier = Modifier.height(16.dp))
 

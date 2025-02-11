@@ -1,5 +1,7 @@
 package com.github.af2905.movieland.core.compose
 
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+
 sealed class AppNavRoutes(val route: String) {
 
     data object Home : AppNavRoutes("home")
@@ -24,4 +26,14 @@ sealed class AppNavRoutes(val route: String) {
     }
 
     data object SearchResult : AppNavRoutes("search/result")
+
+    data object Movies : AppNavRoutes("movies/{movieId}?movieType={movieType}") {
+        fun createRoute(movieId: Int?, movieType: MovieType): String {
+            return if (movieId != null) {
+                "movies/$movieId?movieType=${movieType.name}"
+            } else {
+                "movies/null?movieType=${movieType.name}"
+            }
+        }
+    }
 }

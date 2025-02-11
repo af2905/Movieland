@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.home.presentation
+package com.github.af2905.movieland.home.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +15,9 @@ import com.github.af2905.movieland.core.repository.MoviesRepository
 import com.github.af2905.movieland.core.repository.PeopleRepository
 import com.github.af2905.movieland.core.repository.TrendingRepository
 import com.github.af2905.movieland.core.repository.TvShowsRepository
+import com.github.af2905.movieland.home.presentation.state.HomeAction
+import com.github.af2905.movieland.home.presentation.state.HomeEffect
+import com.github.af2905.movieland.home.presentation.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
@@ -172,6 +175,10 @@ class HomeViewModel @Inject constructor(
             viewModelScope.launch {
                 fetchHomeData()
             }
+        }
+
+        is HomeAction.OpenMoviesByType -> {
+            viewModelScope.launch { _effect.send(HomeEffect.NavigateToMovies(movieType = action.movieType)) }
         }
     }
 }

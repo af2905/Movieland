@@ -1,8 +1,9 @@
-package com.github.af2905.movieland.detail.moviedetail.presentation
+package com.github.af2905.movieland.detail.moviedetail.presentation.state
 
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Video
 
 data class MovieDetailsState(
@@ -28,6 +29,7 @@ sealed interface MovieDetailsAction {
     data class OpenMovieDetail(val movieId: Int) : MovieDetailsAction
     data class OpenPersonDetail(val personId: Int) : MovieDetailsAction
     data class OpenVideo(val videoId: String) : MovieDetailsAction
+    data class OpenMoviesByType(val movieType: MovieType) : MovieDetailsAction
 }
 
 sealed interface MovieDetailsEffect {
@@ -35,4 +37,5 @@ sealed interface MovieDetailsEffect {
     data class NavigateToMovieDetail(val movieId: Int) : MovieDetailsEffect
     data class NavigateToPerson(val personId: Int) : MovieDetailsEffect
     data class NavigateToVideo(val videoId: String) : MovieDetailsEffect
+    data class NavigateToMovies(val movieId: Int, val movieType: MovieType) : MovieDetailsEffect
 }

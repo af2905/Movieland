@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":profile"))
     implementation(project(":home"))
     implementation(project(":liked"))
+    implementation(project(":movies"))
 
     // Libraries from version catalog
     implementation(libs.kotlin.stdlib)
