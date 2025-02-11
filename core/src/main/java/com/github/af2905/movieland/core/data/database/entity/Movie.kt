@@ -28,6 +28,10 @@ enum class MovieType {
     NOW_PLAYING,
     TOP_RATED,
     UPCOMING,
+    /*--------------*/
     TRENDING_DAY,
-    TRENDING_WEEK
+    TRENDING_WEEK,
+    /*--------------*/
+    SIMILAR,
+    RECOMMENDED
 }
