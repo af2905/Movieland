@@ -11,11 +11,13 @@ import androidx.navigation.navigation
 import com.github.af2905.movieland.compose.components.video_player.YouTubePlayerScreen
 import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.compose.AppNavRoutes
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsNavWrapper
 import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailsScreen
 import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetailsScreen
 import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
+import com.github.af2905.movieland.movies.presentation.MoviesNavWrapper
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen
 import com.github.af2905.movieland.search.presentation.result.SearchResultNavWrapper
 import com.github.af2905.movieland.search.presentation.search.SearchNavWrapper
@@ -80,6 +82,27 @@ fun AppNavigation(
                     }
                 }
             }
+            composable(
+                route = AppNavRoutes.Movies.route,
+                arguments = listOf(
+                    navArgument("movieId") {
+                        nullable = true
+                        type = NavType.StringType
+                        defaultValue = "null"
+                    },
+                    navArgument("movieType") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val movieIdArg = backStackEntry.arguments?.getString("movieId")
+                val movieId = movieIdArg?.toIntOrNull()
+                val movieType = backStackEntry.arguments?.getString("movieType")?.let { MovieType.valueOf(it) }
+
+                movieType?.let { type ->
+                    MoviesNavWrapper(movieId = movieId, movieType = type, navController = navController)
+                }
+            }
         }
 
         // Search Tab
@@ -114,6 +137,27 @@ fun AppNavigation(
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 itemId?.let { TVShowDetailsScreen(tvShowId = itemId, navController = navController) }
             }
+            composable(
+                route = AppNavRoutes.Movies.route,
+                arguments = listOf(
+                    navArgument("movieId") {
+                        nullable = true
+                        type = NavType.StringType
+                        defaultValue = "null"
+                    },
+                    navArgument("movieType") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val movieIdArg = backStackEntry.arguments?.getString("movieId")
+                val movieId = movieIdArg?.toIntOrNull()
+                val movieType = backStackEntry.arguments?.getString("movieType")?.let { MovieType.valueOf(it) }
+
+                movieType?.let { type ->
+                    MoviesNavWrapper(movieId = movieId, movieType = type, navController = navController)
+                }
+            }
         }
 
         // Library Tab
@@ -144,6 +188,27 @@ fun AppNavigation(
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 itemId?.let { TVShowDetailsScreen(tvShowId = itemId, navController = navController) }
+            }
+            composable(
+                route = AppNavRoutes.Movies.route,
+                arguments = listOf(
+                    navArgument("movieId") {
+                        nullable = true
+                        type = NavType.StringType
+                        defaultValue = "null"
+                    },
+                    navArgument("movieType") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val movieIdArg = backStackEntry.arguments?.getString("movieId")
+                val movieId = movieIdArg?.toIntOrNull()
+                val movieType = backStackEntry.arguments?.getString("movieType")?.let { MovieType.valueOf(it) }
+
+                movieType?.let { type ->
+                    MoviesNavWrapper(movieId = movieId, movieType = type, navController = navController)
+                }
             }
         }
 

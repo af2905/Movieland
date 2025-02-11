@@ -46,12 +46,13 @@ import com.github.af2905.movieland.compose.theme.Themes
 import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.home.domain.models.getMovieGenreItems
 import com.github.af2905.movieland.home.domain.models.getTvShowGenreItems
-import com.github.af2905.movieland.home.presentation.HomeAction
-import com.github.af2905.movieland.home.presentation.HomeState
+import com.github.af2905.movieland.home.presentation.state.HomeAction
+import com.github.af2905.movieland.home.presentation.state.HomeState
 import com.github.af2905.movieland.home.presentation.screen.bottomsheet.SelectAppColorBottomSheetComponent
 import kotlinx.coroutines.launch
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.ImageProvider
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,7 +148,8 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.trending_movies),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.TRENDING_DAY)) }
+                )
             }
 
             item {
@@ -284,7 +286,8 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.now_playing_movies),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.NOW_PLAYING)) }
+                )
             }
 
             item {
@@ -314,7 +317,8 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.popular_movies),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.POPULAR)) }
+                )
             }
 
             item {
@@ -344,7 +348,8 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.upcoming_movies),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.UPCOMING)) }
+                )
             }
 
             item {
@@ -374,7 +379,8 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.top_rated_movies),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.TOP_RATED)) }
+                )
             }
 
             item {

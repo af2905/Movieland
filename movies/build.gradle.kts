@@ -47,6 +47,11 @@ android {
 
     buildFeatures {
         dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
 
     kapt {
@@ -58,10 +63,11 @@ dependencies {
     // Project modules
     implementation(project(":core"))
     implementation(project(":util"))
-    implementation(project(":detail"))
+    implementation(project(":compose"))
 
     // Libraries from version catalog
     implementation(libs.dagger.android.support)
+    implementation(libs.foundation.android)
     kapt(libs.dagger.compiler)
     kapt(libs.dagger.android.processor)
     implementation(libs.navigation.fragment)
@@ -73,6 +79,17 @@ dependencies {
     implementation(libs.monitor)
     implementation(libs.junit.ext)
     androidTestImplementation(libs.junit)
+
+    // Compose
+    implementation(libs.activity.compose)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.foundation)
+    implementation(libs.compose.animation)
+    implementation(libs.compose.material.icons)
+    implementation(libs.coil.compose)
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
