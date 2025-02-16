@@ -18,7 +18,8 @@ import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.data.mapper.VideoMapper
-import com.github.af2905.movieland.core.pager.MoviesPagingSource
+import com.github.af2905.movieland.core.pager.movies.MoviesPagingSource
+import com.github.af2905.movieland.core.pager.movies.SimilarOrRecommendedMoviesPagingSource
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -165,14 +166,18 @@ class MoviesRepositoryImpl @Inject constructor(
         page: Int?
     ): Flow<ResultWrapper<List<Movie>>> = flow {
         emit(ResultWrapper.Loading)
+
         try {
             val response = moviesApi.getRecommendedMovies(movieId, language, page)
             val movies = response.movies.let { movieMapper.map(it) }
                 .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
-            emit(ResultWrapper.Success(movies))
+
+            emit(ResultWrapper.Success(movies)) // Ensure Flow emits before cancellation
         } catch (e: Exception) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
         }
+    }.catch { e ->
+        emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
     }
 
     override fun getSimilarMovies(
@@ -181,14 +186,41 @@ class MoviesRepositoryImpl @Inject constructor(
         page: Int?
     ): Flow<ResultWrapper<List<Movie>>> = flow {
         emit(ResultWrapper.Loading)
+
         try {
             val response = moviesApi.getSimilarMovies(movieId, language, page)
             val movies = response.movies.let { movieMapper.map(it) }
                 .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
+
             emit(ResultWrapper.Success(movies))
         } catch (e: Exception) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
         }
+    }.catch { e ->
+        emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+    }
+
+
+    override fun getSimilarOrRecommendedPaginated(
+        movieId: Int,
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                initialLoadSize = 40
+            ),
+            pagingSourceFactory = {
+                SimilarOrRecommendedMoviesPagingSource(
+                    moviesRepository = this,
+                    movieId = movieId,
+                    movieType = movieType,
+                    language = language
+                )
+            }
+        ).flow
     }
 
     override fun getMovieCredits(

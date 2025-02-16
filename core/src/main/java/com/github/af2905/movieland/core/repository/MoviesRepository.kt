@@ -45,6 +45,12 @@ interface MoviesRepository {
         page: Int?
     ): Flow<ResultWrapper<List<Movie>>>
 
+    fun getSimilarOrRecommendedPaginated(
+        movieId: Int,
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>>
+
     fun getMovieCredits(movieId: Int, language: String?): Flow<ResultWrapper<List<CreditsCast>>>
 
     fun getMovieVideos(movieId: Int, language: String?): Flow<ResultWrapper<List<Video>>>
