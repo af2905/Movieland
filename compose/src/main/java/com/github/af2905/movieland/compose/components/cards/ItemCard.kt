@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -49,7 +50,7 @@ fun ItemCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
         ),
-        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
+        elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
@@ -143,7 +144,7 @@ fun ItemCardLarge(
                 contentDescription = null,
                 modifier = Modifier.height(200.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
