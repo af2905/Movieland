@@ -51,11 +51,11 @@ class HomeViewModel @Inject constructor(
 
             // Fetch Trending Data
             val trendingData = combine(
-                trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, 1)
+                trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, null)
                     .catch { emit(emptyList()) },
-                trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, 1)
+                trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, null)
                     .catch { emit(emptyList()) },
-                trendingRepository.getTrendingPeople(PersonType.TRENDING_DAY, null, 1)
+                trendingRepository.getTrendingPeople(PersonType.TRENDING_DAY, null, null)
                     .catch { emit(emptyList()) }
             ) { trendingMovies, trendingTvShows, trendingPeople ->
                 Triple(trendingMovies, trendingTvShows, trendingPeople)
@@ -63,19 +63,19 @@ class HomeViewModel @Inject constructor(
 
             // Fetch Movies Data
             val movieData = combine(
-                moviesRepository.getMovies(MovieType.POPULAR, null, 1),
-                moviesRepository.getMovies(MovieType.TOP_RATED, null, 1),
-                moviesRepository.getMovies(MovieType.UPCOMING, null, 1),
-                moviesRepository.getMovies(MovieType.NOW_PLAYING, null, 1)
+                moviesRepository.getCachedFirstMovies(MovieType.POPULAR, null, null),
+                moviesRepository.getCachedFirstMovies(MovieType.TOP_RATED, null, null),
+                moviesRepository.getCachedFirstMovies(MovieType.UPCOMING, null, null),
+                moviesRepository.getCachedFirstMovies(MovieType.NOW_PLAYING, null, null)
             ) { popular, topRated, upcoming, nowPlaying ->
                 listOf(popular, topRated, upcoming, nowPlaying)
             }
 
             // Fetch TV Show Data
             val tvShowData = combine(
-                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, 1)
+                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, null)
                     .catch { emit(emptyList()) },
-                tvShowsRepository.getTvShows(TvShowType.TOP_RATED, null, 1)
+                tvShowsRepository.getTvShows(TvShowType.TOP_RATED, null, null)
                     .catch { emit(emptyList()) }
             ) { popularTvShows, topRatedTvShows ->
                 Pair(popularTvShows, topRatedTvShows)

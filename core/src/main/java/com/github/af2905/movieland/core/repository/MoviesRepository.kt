@@ -9,9 +9,14 @@ import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.core.data.dto.movie.MovieExternalIds
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 interface MoviesRepository {
+    fun getCachedFirstMovies(
+        movieType: MovieType,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>>
+
     fun getMovies(
         movieType: MovieType,
         language: String?,

@@ -1,11 +1,9 @@
 package com.github.af2905.movieland.movies.presentation
 
-import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 
 data class MoviesState(
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val movies: List<Movie> = emptyList()
+    val movieType: MovieType
 )
 
 sealed interface MoviesAction {

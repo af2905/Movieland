@@ -206,7 +206,7 @@ fun ItemCardHorizontal(
                 model = imageUrl,
                 contentDescription = null,
                 modifier = Modifier
-                    .width(90.dp)
+                    .width(80.dp)
                     .height(120.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.Crop
