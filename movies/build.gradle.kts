@@ -96,4 +96,8 @@ dependencies {
 
     // Hilt navigation for Jetpack Compose
     implementation(libs.hilt.navigation.compose)
+
+    // Paging Compose
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
 }
