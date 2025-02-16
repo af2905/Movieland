@@ -33,6 +33,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -90,97 +91,95 @@ fun MovieDetailsScreen(
         derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        AppCenterAlignedTopAppBar(
-            title = if (showTitle) state.movie?.title.orEmpty() else "",
-            onBackClick = { onAction(MovieDetailsAction.BackClick) },
-            endButtons = {
-                if (!state.isError && !state.isLoading) {
-                    Row {
-                        IconButton(onClick = { /* Handle action */ }) {
-                            Icon(
-                                imageVector = Icons.Outlined.BookmarkBorder,
-                                contentDescription = ""
-                            )
-                        }
-                        IconButton(onClick = { /* Handle action */ }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Share,
-                                contentDescription = ""
-                            )
+    Scaffold(
+        topBar = {
+            AppCenterAlignedTopAppBar(
+                title = if (showTitle) state.movie?.title.orEmpty() else "",
+                onBackClick = { onAction(MovieDetailsAction.BackClick) },
+                endButtons = {
+                    if (!state.isError && !state.isLoading) {
+                        Row {
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.BookmarkBorder,
+                                    contentDescription = ""
+                                )
+                            }
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Share,
+                                    contentDescription = ""
+                                )
+                            }
                         }
                     }
                 }
-            }
-        )
-
-        when {
-            state.isLoading -> {
-                // **Shimmer Loading Screen**
-                ShimmerMovieDetailsScreen()
-            }
-
-            state.isError -> {
-                // **Error Screen**
-                EmptyStateView(
-                    modifier = Modifier.fillMaxSize(),
-                    icon = Icons.Outlined.ErrorOutline,
-                    title = stringResource(R.string.oops_something_went_wrong),
-                    action = stringResource(R.string.retry),
-                    onClick = { /* Retry Action */ }
-                )
-            }
-
-            else -> {
-                // **Success Screen**
-                LazyColumn(
-                    state = lazyListState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(AppTheme.colors.theme.tintCard),
-                ) {
-                    // Backdrop Image
-                    item { MovieBackdrop(state) }
-
-                    // Movie Information
-                    item { MovieInformation(state) }
-
-                    // Movie Details Section
-                    item { MovieDetails(state) }
-
-                    // YouTube Videos Section
-                    if (state.videos.isNotEmpty()) {
-                        item { MovieVideos(state.videos, onAction) }
+            )
+        },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(AppTheme.colors.theme.tintCard)
+            ) {
+                when {
+                    state.isLoading -> {
+                        // **Shimmer Loading Screen**
+                        ShimmerMovieDetailsScreen()
                     }
 
-                    // Movie Casts Section
-                    if (state.casts.isNotEmpty()) {
-                        item { MovieCasts(state.casts, onAction) }
+                    state.isError -> {
+                        // **Error Screen**
+                        EmptyStateView(
+                            modifier = Modifier.fillMaxSize(),
+                            icon = Icons.Outlined.ErrorOutline,
+                            title = stringResource(R.string.oops_something_went_wrong),
+                            action = stringResource(R.string.retry),
+                            onClick = { /* Retry Action */ }
+                        )
                     }
 
-                    // Production Companies
-                    if (!state.movie?.productionCompanies.isNullOrEmpty()) {
-                        item {
-                            ProductionCompanies(
-                                state.movie?.productionCompanies.orEmpty(),
-                                onAction
-                            )
+                    else -> {
+                        // **Success Screen with LazyColumn**
+                        LazyColumn(
+                            state = lazyListState,
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            item { MovieBackdrop(state) }
+                            item { MovieInformation(state) }
+                            item { MovieDetails(state) }
+
+                            if (state.videos.isNotEmpty()) {
+                                item { MovieVideos(state.videos, onAction) }
+                            }
+
+                            if (state.casts.isNotEmpty()) {
+                                item { MovieCasts(state.casts, onAction) }
+                            }
+
+                            if (!state.movie?.productionCompanies.isNullOrEmpty()) {
+                                item {
+                                    ProductionCompanies(
+                                        state.movie?.productionCompanies.orEmpty(),
+                                        onAction
+                                    )
+                                }
+                            }
+
+                            if (state.recommendedMovies.isNotEmpty()) {
+                                item { RecommendedMovies(state.recommendedMovies, onAction) }
+                            }
+
+                            if (state.similarMovies.isNotEmpty()) {
+                                item { SimilarMovies(state.similarMovies, onAction) }
+                            }
                         }
-                    }
-
-                    // Recommended Movies Section
-                    if (state.recommendedMovies.isNotEmpty()) {
-                        item { RecommendedMovies(state.recommendedMovies, onAction) }
-                    }
-
-                    // Similar Movies Section
-                    if (state.similarMovies.isNotEmpty()) {
-                        item { SimilarMovies(state.similarMovies, onAction) }
                     }
                 }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -291,7 +290,6 @@ fun ShimmerHorizontalList() {
     }
 }
 
-
 @Composable
 fun MovieBackdrop(state: MovieDetailsState) {
     var dataGroupSize by remember { mutableStateOf(Size.Zero) }
@@ -308,6 +306,7 @@ fun MovieBackdrop(state: MovieDetailsState) {
             enabled = false,
             onClick = { },
             modifier = Modifier
+
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 10.dp)
                 .onGloballyPositioned { dataGroupSize = it.size.toSize() },
@@ -320,7 +319,8 @@ fun MovieBackdrop(state: MovieDetailsState) {
             AsyncImage(
                 model = ImageProvider.getImageUrl(state.movie?.backdropPath),
                 contentDescription = null,
-                modifier = Modifier.height(200.dp).background(AppTheme.colors.background.default),
+                modifier = Modifier.height(200.dp)
+                    .background(AppTheme.colors.background.default),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.Crop
             )
