@@ -1,5 +1,8 @@
 package com.github.af2905.movieland.core.repository.impl
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.StringProvider
 import com.github.af2905.movieland.core.common.network.ResultWrapper
@@ -15,6 +18,7 @@ import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
 import com.github.af2905.movieland.core.data.mapper.VideoMapper
+import com.github.af2905.movieland.core.pager.MoviesPagingSource
 import com.github.af2905.movieland.core.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -46,7 +50,7 @@ class MoviesRepositoryImpl @Inject constructor(
         val lastUpdated = cachedMovies?.firstOrNull()?.timeStamp ?: 0L
         val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
-        if (cachedMovies.isNullOrEmpty() || isCacheStale) {
+        if (page != null && page > 1 || cachedMovies.isNullOrEmpty() || isCacheStale) {
             val response = when (movieType) {
                 MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page)
                 MovieType.POPULAR -> moviesApi.getPopularMovies(language, page)
@@ -66,7 +70,9 @@ class MoviesRepositoryImpl @Inject constructor(
                 cacheMovies(movieType, movies)
             }
         }
+
         val result = movieDao.getMoviesByType(movieType).firstOrNull().orEmpty()
+
         emit(ResultWrapper.Success(result))
     }.catch { e ->
         val errorMessage = when (e) {
@@ -76,10 +82,22 @@ class MoviesRepositoryImpl @Inject constructor(
                 e.code(),
                 e.message()
             )
-
             else -> stringProvider.getString(R.string.error_unexpected)
         }
         emit(ResultWrapper.Error(errorMessage, e))
+    }
+
+    override fun getMoviesPaginated(
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { MoviesPagingSource(this, movieType, language) }
+        ).flow
     }
 
     private suspend fun cacheMovies(movieType: MovieType, movies: List<Movie>) {

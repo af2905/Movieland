@@ -31,12 +31,14 @@ class PeopleRepositoryImpl @Inject constructor(
                 val response = peopleApi.getPersonPopular(
                     language = language
                 )
-                val people = mapper.map(response.results).map { person ->
-                    person.copy(
-                        personType = PersonType.POPULAR,
-                        timeStamp = System.currentTimeMillis()
-                    )
-                }.filter { person -> !person.profilePath.isNullOrEmpty() }
+                val people = mapper.map(response.results)
+                    .map { person ->
+                        person.copy(
+                            personType = PersonType.POPULAR,
+                            timeStamp = System.currentTimeMillis()
+                        )
+                    }
+                    .filter { person -> !person.profilePath.isNullOrEmpty() }
 
                 if (people.isNotEmpty()) {
                     personDao.deletePeopleByType(PersonType.POPULAR)
