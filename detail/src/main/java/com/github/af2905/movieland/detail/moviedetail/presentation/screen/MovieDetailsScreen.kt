@@ -320,7 +320,7 @@ fun MovieBackdrop(state: MovieDetailsState) {
             AsyncImage(
                 model = ImageProvider.getImageUrl(state.movie?.backdropPath),
                 contentDescription = null,
-                modifier = Modifier.height(200.dp),
+                modifier = Modifier.height(200.dp).background(AppTheme.colors.background.default),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.Crop
             )
