@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.core.pager
+package com.github.af2905.movieland.core.pager.movies
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
