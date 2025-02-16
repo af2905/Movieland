@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 
@@ -36,8 +37,6 @@ fun MoviesNavWrapper(
         }
     }
 
-    MoviesScreen(
-        state = viewModel.state,
-        onAction = viewModel::onAction
-    )
+    val movies = viewModel.moviesPager.collectAsLazyPagingItems()
+    MoviesScreen(movies = movies, onAction = viewModel::onAction)
 }

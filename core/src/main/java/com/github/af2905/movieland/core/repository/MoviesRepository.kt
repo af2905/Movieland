@@ -1,5 +1,6 @@
 package com.github.af2905.movieland.core.repository
 
+import androidx.paging.PagingData
 import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
@@ -16,6 +17,11 @@ interface MoviesRepository {
         language: String?,
         page: Int?
     ): Flow<ResultWrapper<List<Movie>>>
+
+    fun getMoviesPaginated(
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>>
 
     suspend fun getMovieDetails(
         movieId: Int,
