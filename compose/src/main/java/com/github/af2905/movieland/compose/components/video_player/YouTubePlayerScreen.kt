@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.compose.components.video_player
 
 import android.content.Context
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.activity.ComponentActivity
@@ -42,6 +43,8 @@ fun YouTubePlayerScreen(videoId: String, onBack: () -> Unit) {
         orientation.intValue = configuration.orientation
     }
 
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     val window = (LocalView.current.context as ComponentActivity).window
     SideEffect {
         WindowCompat.getInsetsController(window, window.decorView).apply {
@@ -70,7 +73,14 @@ fun YouTubePlayerScreen(videoId: String, onBack: () -> Unit) {
     ) {
         AndroidView(
             modifier = Modifier
-                .fillMaxSize()
+                .then(
+                    if (isLandscape) {
+                        Modifier.fillMaxHeight()
+                    } else {
+                        Modifier
+                            .fillMaxWidth()
+                    }
+                )
                 .aspectRatio(16f / 9f)
                 .align(Alignment.Center),
             factory = { context ->
