@@ -1,5 +1,11 @@
 package com.github.af2905.movieland.navigation
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -34,7 +40,24 @@ fun AppNavigation(
     NavHost(
         navController = navController,
         startDestination = "home/main",
-        modifier = modifier
+        modifier = modifier,
+        enterTransition = {
+            fadeIn(animationSpec = tween(300)) +
+                    scaleIn(initialScale = 1.0f, animationSpec = tween(300, easing = FastOutSlowInEasing))
+        },
+        exitTransition = {
+            fadeOut(animationSpec = tween(250)) +
+                    scaleOut(targetScale = 1.05f, animationSpec = tween(250, easing = FastOutSlowInEasing))
+        },
+        popEnterTransition = {
+            fadeIn(animationSpec = tween(300)) +
+                    scaleIn(initialScale = 1.0f, animationSpec = tween(300, easing = FastOutSlowInEasing))
+        },
+        popExitTransition = {
+            fadeOut(animationSpec = tween(250)) +
+                    scaleOut(targetScale = 1.05f, animationSpec = tween(250, easing = FastOutSlowInEasing))
+        }
+
     ) {
         // Home Tab
         navigation(

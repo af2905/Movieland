@@ -33,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
@@ -87,44 +88,53 @@ fun HomeScreen(
         )
     }
 
-    Column {
-        AppCenterAlignedTopAppBar(
-            title = stringResource(id = R.string.app_name),
-            onBackClick = { },
-            hasNavigationBack = false,
-            endButtons = {
-                ChipView(
-                    text = stringResource(id = R.string.change_color),
-                    onClick = {
-                        coroutineScope.launch {
+    Scaffold(
+        topBar = {
+            AppCenterAlignedTopAppBar(
+                title = stringResource(id = R.string.app_name),
+                onBackClick = { },
+                hasNavigationBack = false,
+                endButtons = {
+                    ChipView(
+                        text = stringResource(id = R.string.change_color),
+                        onClick = {
+                            coroutineScope.launch {
                             sheetState.show()
-                        }
-                    },
-                    style = ChipViewStyle.FadeTint
-                )
-            }
-        )
+                        } },
+                        style = ChipViewStyle.FadeTint
+                    )
+                }
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .background(AppTheme.colors.background.default)
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
 
-        when {
-            state.isLoading -> {
-                // **Shimmer Loading Screen**
-                ShimmerHomeScreen()
-            }
+            when {
+                state.isLoading -> {
+                    // **Shimmer Loading Screen**
+                    ShimmerHomeScreen()
+                }
 
-            state.isError -> {
-                // **Error Screen**
-                EmptyStateView(
-                    modifier = Modifier.fillMaxSize(),
-                    icon = Icons.Outlined.ErrorOutline,
-                    title = stringResource(id = R.string.oops_something_went_wrong),
-                    action = stringResource(id = R.string.retry),
-                    onClick = { onAction(HomeAction.RetryFetch) }
-                )
-            }
+                state.isError -> {
+                    // **Error Screen**
+                    EmptyStateView(
+                        modifier = Modifier.fillMaxSize(),
+                        icon = Icons.Outlined.ErrorOutline,
+                        title = stringResource(id = R.string.oops_something_went_wrong),
+                        action = stringResource(id = R.string.retry),
+                        onClick = { onAction(HomeAction.RetryFetch) }
+                    )
+                }
 
-            else -> {
-                // **Content Screen**
-                HomeContent(state, onAction, pagerState)
+                else -> {
+                    // **Content Screen**
+                    HomeContent(state, onAction, pagerState)
+                }
             }
         }
     }
