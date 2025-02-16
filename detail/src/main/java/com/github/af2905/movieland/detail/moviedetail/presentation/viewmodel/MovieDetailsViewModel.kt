@@ -15,7 +15,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collectLatest
+
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -39,74 +40,43 @@ class MovieDetailsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
 
-            // Fetch Movie Details (Suspended Call - No Flow)
             val movieDetailsResult = moviesRepository.getMovieDetails(movieId, null)
 
-            // Update state with movie details
-            state = state.copy(
-                movie = (movieDetailsResult as? ResultWrapper.Success)?.data,
-                isError = movieDetailsResult is ResultWrapper.Error
-            )
+            val externalIds = (moviesRepository.getMovieExternalIds(
+                movieId,
+                null
+            ) as? ResultWrapper.Success)?.data
 
-            // Collect Similar Movies as Flow
-            launch {
-                moviesRepository.getSimilarMovies(movieId, null, null)
-                    .collectLatest { result ->
-                        state = state.copy(
-                            similarMovies = (result as? ResultWrapper.Success)?.data ?: emptyList()
-                        )
-                    }
-            }
-
-            // Collect Recommended Movies as Flow
-            launch {
-                moviesRepository.getRecommendedMovies(movieId, null, null)
-                    .collectLatest { result ->
-                        state = state.copy(
-                            recommendedMovies = (result as? ResultWrapper.Success)?.data
-                                ?: emptyList()
-                        )
-                    }
-            }
-
-            // Collect Videos as Flow
-            launch {
-                moviesRepository.getMovieVideos(movieId, null)
-                    .collectLatest { result ->
-                        state = state.copy(
-                            videos = (result as? ResultWrapper.Success)?.data ?: emptyList()
-                        )
-                    }
-            }
-
-            // Collect Casts as Flow
-            launch {
+            combine(
+                moviesRepository.getMovieVideos(movieId, null),
+                moviesRepository.getSimilarMovies(movieId, null, null),
+                moviesRepository.getRecommendedMovies(movieId, null, null),
                 moviesRepository.getMovieCredits(movieId, null)
-                    .collectLatest { result ->
-                        state = state.copy(
-                            casts = (result as? ResultWrapper.Success)?.data ?: emptyList()
-                        )
-                    }
-            }
+            ) { videosResult, similarResult, recommendedResult, castsResult ->
 
-            launch {
-                val externalIds = (moviesRepository.getMovieExternalIds(
-                    movieId,
-                    null
-                ) as? ResultWrapper.Success)?.data
-                externalIds?.let { socialIds ->
-                    state = state.copy(
-                        movieSocialIds = state.movieSocialIds.copy(
-                            wikidataId = socialIds.wikidataId,
-                            facebookId = socialIds.facebookId,
-                            instagramId = socialIds.instagramId,
-                            twitterId = socialIds.twitterId
-                        )
-                    )
-                }
-            }
 
-            state = state.copy(isLoading = false)
+                val videos = (videosResult as? ResultWrapper.Success)?.data ?: emptyList()
+                val similarMovies = (similarResult as? ResultWrapper.Success)?.data ?: emptyList()
+                val recommendedMovies =
+                    (recommendedResult as? ResultWrapper.Success)?.data ?: emptyList()
+                val casts = (castsResult as? ResultWrapper.Success)?.data ?: emptyList()
+                
+                state = state.copy(
+                    movie = (movieDetailsResult as? ResultWrapper.Success)?.data,
+                    isError = movieDetailsResult is ResultWrapper.Error,
+                    movieSocialIds = state.movieSocialIds.copy(
+                        wikidataId = externalIds?.wikidataId,
+                        facebookId = externalIds?.facebookId,
+                        instagramId = externalIds?.instagramId,
+                        twitterId = externalIds?.twitterId
+                    ),
+                    videos = videos,
+                    similarMovies = similarMovies,
+                    recommendedMovies = recommendedMovies,
+                    casts = casts,
+                    isLoading = false
+                )
+            }.collect {}
         }
     }
 
