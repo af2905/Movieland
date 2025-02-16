@@ -51,8 +51,7 @@ class HomeViewModel @Inject constructor(
 
             // Fetch Trending Data
             val trendingData = combine(
-                trendingRepository.getTrendingMovies(MovieType.TRENDING_DAY, null, null)
-                    .catch { emit(emptyList()) },
+                trendingRepository.getCachedFirstTrendingMovies(MovieType.TRENDING_DAY, null, null),
                 trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, null)
                     .catch { emit(emptyList()) },
                 trendingRepository.getTrendingPeople(PersonType.TRENDING_DAY, null, null)
@@ -120,7 +119,7 @@ class HomeViewModel @Inject constructor(
                     )
                 } else {
                     state.copy(
-                        trendingMovies = trendingMovies,
+                        trendingMovies = if(trendingMovies is ResultWrapper.Success) trendingMovies.data else state.trendingMovies,
                         trendingTvShows = trendingTvShows,
                         trendingPeople = trendingPeople,
                         popularMovies = if (popularMovies is ResultWrapper.Success) popularMovies.data else state.popularMovies,
