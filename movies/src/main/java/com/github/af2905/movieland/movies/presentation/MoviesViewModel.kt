@@ -1,5 +1,8 @@
 package com.github.af2905.movieland.movies.presentation
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -20,10 +23,13 @@ class MoviesViewModel @AssistedInject constructor(
     moviesRepository: MoviesRepository
 ) : ViewModel() {
 
+    var state by mutableStateOf(MoviesState(movieType = movieType))
+        private set
+
     private val _effect = Channel<MoviesEffect>()
     val effect = _effect.receiveAsFlow()
 
-    val moviesPager = moviesRepository.getMoviesPaginated(movieType, language = null)
+    val moviesPager = moviesRepository.getMoviesPaginated(movieType = movieType, language = null)
         .cachedIn(viewModelScope)
 
     fun onAction(action: MoviesAction) {

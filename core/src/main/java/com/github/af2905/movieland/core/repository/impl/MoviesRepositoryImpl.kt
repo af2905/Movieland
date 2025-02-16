@@ -39,7 +39,7 @@ class MoviesRepositoryImpl @Inject constructor(
     private val stringProvider: StringProvider
 ) : MoviesRepository {
 
-    override fun getMovies(
+    override fun getCachedFirstMovies(
         movieType: MovieType,
         language: String?,
         page: Int?
@@ -50,7 +50,7 @@ class MoviesRepositoryImpl @Inject constructor(
         val lastUpdated = cachedMovies?.firstOrNull()?.timeStamp ?: 0L
         val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
 
-        if (page != null && page > 1 || cachedMovies.isNullOrEmpty() || isCacheStale) {
+        if (cachedMovies.isNullOrEmpty() || isCacheStale) {
             val response = when (movieType) {
                 MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page)
                 MovieType.POPULAR -> moviesApi.getPopularMovies(language, page)
@@ -87,6 +87,36 @@ class MoviesRepositoryImpl @Inject constructor(
         emit(ResultWrapper.Error(errorMessage, e))
     }
 
+    override fun getMovies(
+        movieType: MovieType,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>> = flow {
+        try {
+            val response = when (movieType) {
+                MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page)
+                MovieType.POPULAR -> moviesApi.getPopularMovies(language, page)
+                MovieType.TOP_RATED -> moviesApi.getTopRatedMovies(language, page)
+                MovieType.UPCOMING -> moviesApi.getUpcomingMovies(language, page)
+                else -> null
+            }
+
+            if (response == null) {
+                throw Exception("Null response from API")
+            }
+
+            val movies = response.movies.let {
+                movieMapper.map(it).map { movie ->
+                    movie.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
+                }.filter { movie ->
+                    !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty()
+                }
+            }
+
+            emit(ResultWrapper.Success(movies))
+        } catch (e: Exception) { throw e }
+    }
+
     override fun getMoviesPaginated(
         movieType: MovieType,
         language: String?
@@ -94,7 +124,8 @@ class MoviesRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                initialLoadSize = 40
             ),
             pagingSourceFactory = { MoviesPagingSource(this, movieType, language) }
         ).flow
