@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.di.module
 
 import com.github.af2905.movieland.core.BuildConfig
+import com.github.af2905.movieland.core.data.api.DiscoverApi
 import com.github.af2905.movieland.core.data.api.GenresApi
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.api.PeopleApi
@@ -34,15 +35,18 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun providePeopleApi(retrofit: Retrofit): PeopleApi = retrofit.create(PeopleApi::class.java)
+    fun providePeopleApi(retrofit: Retrofit): PeopleApi =
+        retrofit.create(PeopleApi::class.java)
 
     @Singleton
     @Provides
-    fun provideSearchApi(retrofit: Retrofit): SearchApi = retrofit.create(SearchApi::class.java)
+    fun provideSearchApi(retrofit: Retrofit): SearchApi =
+        retrofit.create(SearchApi::class.java)
 
     @Singleton
     @Provides
-    fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create(MoviesApi::class.java)
+    fun provideMoviesApi(retrofit: Retrofit): MoviesApi =
+        retrofit.create(MoviesApi::class.java)
 
     @Singleton
     @Provides
@@ -51,11 +55,18 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTvApi(retrofit: Retrofit): TvShowsApi = retrofit.create(TvShowsApi::class.java)
+    fun provideTvApi(retrofit: Retrofit): TvShowsApi =
+        retrofit.create(TvShowsApi::class.java)
 
     @Singleton
     @Provides
-    fun provideGenresApi(retrofit: Retrofit): GenresApi = retrofit.create(GenresApi::class.java)
+    fun provideGenresApi(retrofit: Retrofit): GenresApi =
+        retrofit.create(GenresApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
+        retrofit.create(DiscoverApi::class.java)
 
     @Singleton
     @Provides
