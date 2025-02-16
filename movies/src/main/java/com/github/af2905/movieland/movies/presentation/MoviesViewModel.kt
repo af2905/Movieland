@@ -10,6 +10,7 @@ import androidx.paging.cachedIn
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.repository.MoviesRepository
+import com.github.af2905.movieland.core.repository.TrendingRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -18,12 +19,12 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-
 @HiltViewModel(assistedFactory = MoviesViewModel.Factory::class)
 class MoviesViewModel @AssistedInject constructor(
     @Assisted private val movieId: Int?,
     @Assisted private val movieType: MovieType,
-    private val moviesRepository: MoviesRepository
+    moviesRepository: MoviesRepository,
+    trendingRepository: TrendingRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(MoviesState(movieType = movieType))
@@ -47,10 +48,14 @@ class MoviesViewModel @AssistedInject constructor(
                 language = null
             )
         }
+        movieType == MovieType.TRENDING_DAY || movieType == MovieType.TRENDING_WEEK -> {
+            trendingRepository.getTrendingMoviesPaginated(movieType, language = null)
+        }
         else -> {
             moviesRepository.getMoviesPaginated(movieType = movieType, language = null)
         }
     }.cachedIn(viewModelScope)
+
 
     fun onAction(action: MoviesAction) {
         when (action) {
