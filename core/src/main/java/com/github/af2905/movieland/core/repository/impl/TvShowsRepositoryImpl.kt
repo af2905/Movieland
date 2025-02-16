@@ -31,7 +31,7 @@ class TvShowsRepositoryImpl @Inject constructor(
     ): Flow<List<TvShow>> = flow {
         val cachedTvShows = tvShowDao.getTvShowsByType(tvShowType).firstOrNull()
         val lastUpdated = cachedTvShows?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
         if (cachedTvShows.isNullOrEmpty() || isCacheStale) {
             try {

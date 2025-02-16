@@ -48,7 +48,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
         val cachedMovies = movieDao.getMoviesByType(movieType).firstOrNull()
         val lastUpdated = cachedMovies?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
         if (cachedMovies.isNullOrEmpty() || isCacheStale) {
             val response = when (movieType) {
