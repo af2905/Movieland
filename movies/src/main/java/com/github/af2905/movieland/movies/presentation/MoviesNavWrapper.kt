@@ -38,5 +38,9 @@ fun MoviesNavWrapper(
     }
 
     val movies = viewModel.moviesPager.collectAsLazyPagingItems()
-    MoviesScreen(movies = movies, onAction = viewModel::onAction)
+    MoviesScreen(
+        movieType = viewModel.state.movieType,
+        movies = movies,
+        onAction = viewModel::onAction
+    )
 }

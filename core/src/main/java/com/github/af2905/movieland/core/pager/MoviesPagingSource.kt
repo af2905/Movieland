@@ -17,6 +17,7 @@ class MoviesPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         return try {
             val currentPage = params.key ?: 1
+
             val response = moviesRepository.getMovies(movieType, language, currentPage)
                 .first { it is ResultWrapper.Success || it is ResultWrapper.Error }
 
@@ -29,11 +30,13 @@ class MoviesPagingSource(
                     )
                 }
 
-                is ResultWrapper.Error -> LoadResult.Error(
-                    response.throwable ?: Exception("Unknown error")
-                )
+                is ResultWrapper.Error -> {
+                    LoadResult.Error(response.throwable ?: Exception("Unknown error"))
+                }
 
-                else -> LoadResult.Error(Exception("Unexpected loading state"))
+                else -> {
+                    LoadResult.Error(Exception("Unexpected loading state"))
+                }
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
