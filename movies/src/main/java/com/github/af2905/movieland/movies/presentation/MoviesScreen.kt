@@ -27,16 +27,28 @@ import androidx.paging.compose.LazyPagingItems
 import com.github.af2905.movieland.compose.components.cards.ItemCardHorizontal
 import com.github.af2905.movieland.core.common.helper.ImageProvider
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
 
 @Composable
 fun MoviesScreen(
+    movieType: MovieType,
     movies: LazyPagingItems<Movie>,
     onAction: (MoviesAction) -> Unit
 ) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         AppCenterAlignedTopAppBar(
-            title = stringResource(R.string.popular_movies),
+            title = stringResource(
+                when (movieType) {
+                    MovieType.POPULAR -> R.string.popular_movies
+                    MovieType.NOW_PLAYING -> R.string.now_playing_movies
+                    MovieType.TOP_RATED -> R.string.top_rated_movies
+                    MovieType.UPCOMING -> R.string.upcoming_movies
+                    MovieType.TRENDING_DAY, MovieType.TRENDING_WEEK -> R.string.trending_movies
+                    MovieType.SIMILAR -> R.string.similar_movies
+                    MovieType.RECOMMENDED -> R.string.recommended_movies
+                }
+            ),
             onBackClick = { onAction(MoviesAction.BackClick) }
         )
 
@@ -63,9 +75,11 @@ fun MoviesScreen(
                     loadState.refresh is LoadState.Loading -> {
                         item { ShimmerMovieItem() }
                     }
+
                     loadState.append is LoadState.Loading -> {
                         item { LoadingIndicator() }
                     }
+
                     loadState.refresh is LoadState.Error -> {
                         item { ErrorRetryButton { retry() } }
                     }
