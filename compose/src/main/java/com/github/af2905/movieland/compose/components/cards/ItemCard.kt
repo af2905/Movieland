@@ -184,6 +184,7 @@ fun ItemCardLarge(
 fun ItemCardHorizontal(
     modifier: Modifier = Modifier,
     title: String?,
+    description: String?,
     imageUrl: String?,
     rating: Double?,
     icon: ImageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
@@ -193,7 +194,7 @@ fun ItemCardHorizontal(
     ElevatedCard(
         onClick = { onItemClick() },
         modifier = modifier
-            .height(150.dp),
+            .height(120.dp),
         shape = RoundedCornerShape(AppTheme.dimens.radiusM),
         colors = CardDefaults.elevatedCardColors(
             containerColor = AppTheme.colors.theme.tintCard
@@ -205,8 +206,8 @@ fun ItemCardHorizontal(
                 model = imageUrl,
                 contentDescription = null,
                 modifier = Modifier
-                    .width(120.dp)
-                    .height(150.dp),
+                    .width(90.dp)
+                    .height(120.dp),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.Crop
             )
@@ -263,7 +264,7 @@ fun ItemCardHorizontal(
                 Spacer(modifier = Modifier.height(AppTheme.dimens.spaceXS))
 
                 Text(
-                    text = title.orEmpty(),
+                    text = description.orEmpty(),
                     style = AppTheme.typography.caption1,
                     color = AppTheme.colors.type.secondary,
                     overflow = TextOverflow.Ellipsis,
@@ -295,7 +296,8 @@ fun PreviewItemCardHorizontal() {
                 title = "aaa Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King Lion King",
                 imageUrl = "https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
                 rating = 6.7,
-                onItemClick = {}
+                onItemClick = {},
+                description = "description"
             )
             ItemCardHorizontal(
                 modifier = Modifier.padding(all = 16.dp),
@@ -303,7 +305,8 @@ fun PreviewItemCardHorizontal() {
                 imageUrl = "https://image.tmdb.org/t/p/original/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
                 rating = 9.7,
                 itemTypeName = "Movie",
-                onItemClick = {}
+                onItemClick = {},
+                description = "description"
             )
         }
     }

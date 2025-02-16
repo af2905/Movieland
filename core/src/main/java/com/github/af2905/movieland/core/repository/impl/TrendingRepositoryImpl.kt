@@ -50,9 +50,11 @@ class TrendingRepositoryImpl @Inject constructor(
 
                 val response =
                     trendingApi.getTrendingMovies(language = language, timeWindow = timeWindow)
-                val items = movieMapper.map(response.movies).map {
-                    it.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
-                }
+                val items = movieMapper.map(response.movies)
+                    .map {
+                        it.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
+                    }
+                    .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
                 if (items.isNotEmpty()) {
                     movieDao.deleteMoviesByType(movieType)
                     movieDao.insertMovies(items)
@@ -85,9 +87,11 @@ class TrendingRepositoryImpl @Inject constructor(
 
                     val response =
                         trendingApi.getTrendingTvShows(language = language, timeWindow = timeWindow)
-                    val items = tvShowMapper.map(response.tvShows).map {
-                        it.copy(tvShowType = tvShowType, timeStamp = System.currentTimeMillis())
-                    }
+                    val items = tvShowMapper.map(response.tvShows)
+                        .map {
+                            it.copy(tvShowType = tvShowType, timeStamp = System.currentTimeMillis())
+                        }
+                        .filter { tvShow -> !tvShow.backdropPath.isNullOrEmpty() && !tvShow.posterPath.isNullOrEmpty() }
                     if (items.isNotEmpty()) {
                         tvShowDao.deleteTvShowsByType(tvShowType)
                         tvShowDao.insertTvShows(items)
@@ -120,9 +124,11 @@ class TrendingRepositoryImpl @Inject constructor(
                     }
                     val response =
                         trendingApi.getTrendingPeople(language = language, timeWindow = timeWindow)
-                    val items = personMapper.map(response.results).map {
-                        it.copy(personType = personType, timeStamp = System.currentTimeMillis())
-                    }
+                    val items = personMapper.map(response.results)
+                        .map {
+                            it.copy(personType = personType, timeStamp = System.currentTimeMillis())
+                        }
+                        .filter { person -> !person.profilePath.isNullOrEmpty() }
                     if (items.isNotEmpty()) {
                         personDao.deletePeopleByType(personType)
                         personDao.insertPeople(items)
