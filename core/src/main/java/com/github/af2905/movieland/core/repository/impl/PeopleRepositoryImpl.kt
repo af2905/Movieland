@@ -24,7 +24,7 @@ class PeopleRepositoryImpl @Inject constructor(
 
         val cachedPeople = personDao.getPeopleByType(PersonType.POPULAR).firstOrNull()
         val lastUpdated = cachedPeople?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
         if (cachedPeople.isNullOrEmpty() || isCacheStale) {
             try {

@@ -39,7 +39,7 @@ class TrendingRepositoryImpl @Inject constructor(
     ): Flow<List<Movie>> = flow {
         val cachedItems = movieDao.getMoviesByType(movieType).firstOrNull()
         val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
         if (cachedItems.isNullOrEmpty() || isCacheStale) {
             try {
@@ -76,8 +76,7 @@ class TrendingRepositoryImpl @Inject constructor(
         return flow {
             val cachedItems = tvShowDao.getTvShowsByType(tvShowType).firstOrNull()
             val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
-
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
             if (cachedItems.isNullOrEmpty() || isCacheStale) {
                 try {
                     val timeWindow = when (tvShowType) {
@@ -114,7 +113,7 @@ class TrendingRepositoryImpl @Inject constructor(
         return flow {
             val cachedItems = personDao.getPeopleByType(personType).firstOrNull()
             val lastUpdated = cachedItems?.firstOrNull()?.timeStamp ?: 0L
-            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(8)
+            val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
             if (cachedItems.isNullOrEmpty() || isCacheStale) {
                 try {
