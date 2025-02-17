@@ -66,7 +66,7 @@ fun SearchLine(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
                 .height(40.dp)
-                .background(color = AppTheme.colors.theme.tintGhost)
+                .background(color = AppTheme.colors.background.searchBar)
                 .padding(start = 10.dp, end = 10.dp)
                 .clickable(enabled = onClick != null) { onClick?.invoke() },
             verticalAlignment = Alignment.CenterVertically
@@ -74,7 +74,7 @@ fun SearchLine(
             Image(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(AppTheme.colors.theme.tintFade),
+                colorFilter = ColorFilter.tint(AppTheme.colors.type.secondary),
                 modifier = Modifier.size(20.dp)
             )
 
@@ -94,9 +94,9 @@ fun SearchLine(
                         .background(Color.Transparent)
                         .focusRequester(focusRequester),
                     textStyle = AppTheme.typography.bodyMedium.copy(
-                        color = AppTheme.colors.theme.tint
+                        color = AppTheme.colors.background.searchBarInverse
                     ),
-                    cursorBrush = SolidColor(AppTheme.colors.theme.tint),
+                    cursorBrush = SolidColor(AppTheme.colors.type.secondary),
                     decorationBox = { innerTextField ->
                         Box(
                             modifier = Modifier
@@ -107,7 +107,7 @@ fun SearchLine(
                             if (searchText.isBlank()) {
                                 Text(
                                     text = placeholder,
-                                    style = TextStyle(color = AppTheme.colors.theme.tintFade)
+                                    style = TextStyle(color = AppTheme.colors.type.secondary)
                                 )
                             }
                             innerTextField()
@@ -117,7 +117,7 @@ fun SearchLine(
             } else {
                 Text(
                     text = searchText.ifBlank { placeholder },
-                    style = TextStyle(color = AppTheme.colors.theme.tintFade),
+                    style = TextStyle(color = AppTheme.colors.type.secondary),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
@@ -130,7 +130,7 @@ fun SearchLine(
                 IconButton(onClick = { onValueChange("") }) {
                     Image(
                         imageVector = Icons.Default.Clear,
-                        colorFilter = ColorFilter.tint(AppTheme.colors.theme.tintFade),
+                        colorFilter = ColorFilter.tint(AppTheme.colors.type.secondary),
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
