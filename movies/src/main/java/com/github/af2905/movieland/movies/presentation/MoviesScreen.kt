@@ -1,6 +1,6 @@
 package com.github.af2905.movieland.movies.presentation
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.paging.LoadState
@@ -35,25 +36,29 @@ fun MoviesScreen(
     movies: LazyPagingItems<Movie>,
     onAction: (MoviesAction) -> Unit
 ) {
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        AppCenterAlignedTopAppBar(
-            title = stringResource(
-                when (movieType) {
-                    MovieType.POPULAR -> R.string.popular_movies
-                    MovieType.NOW_PLAYING -> R.string.now_playing_movies
-                    MovieType.TOP_RATED -> R.string.top_rated_movies
-                    MovieType.UPCOMING -> R.string.upcoming_movies
-                    MovieType.TRENDING_DAY, MovieType.TRENDING_WEEK -> R.string.trending_movies
-                    MovieType.SIMILAR -> R.string.similar_movies
-                    MovieType.RECOMMENDED -> R.string.recommended_movies
-                }
-            ),
-            onBackClick = { onAction(MoviesAction.BackClick) }
-        )
-
+    Scaffold(
+        topBar = {
+            AppCenterAlignedTopAppBar(
+                title = stringResource(
+                    when (movieType) {
+                        MovieType.POPULAR -> R.string.popular_movies
+                        MovieType.NOW_PLAYING -> R.string.now_playing_movies
+                        MovieType.TOP_RATED -> R.string.top_rated_movies
+                        MovieType.UPCOMING -> R.string.upcoming_movies
+                        MovieType.TRENDING_DAY, MovieType.TRENDING_WEEK -> R.string.trending_movies
+                        MovieType.SIMILAR -> R.string.similar_movies
+                        MovieType.RECOMMENDED -> R.string.recommended_movies
+                    }
+                ),
+                onBackClick = { onAction(MoviesAction.BackClick) }
+            )
+        }
+    ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(AppTheme.colors.background.default),
             contentPadding = PaddingValues(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {

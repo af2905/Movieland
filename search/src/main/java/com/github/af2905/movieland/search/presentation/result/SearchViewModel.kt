@@ -1,4 +1,4 @@
-package com.github.af2905.movieland.search.presentation.search
+package com.github.af2905.movieland.search.presentation.result
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,9 +22,15 @@ class SearchViewModel @Inject constructor() : ViewModel() {
 
     fun onAction(action: SearchAction) {
         when (action) {
-            SearchAction.StartSearch -> {
+            is SearchAction.UpdateQuery -> {
+                state = state.copy(query = action.query)
+            }
+            is SearchAction.ClearQuery -> {
+                state = state.copy(query = "")
+            }
+            is SearchAction.SubmitSearch -> {
                 viewModelScope.launch {
-                    _effect.send(SearchEffect.NavigateToResults)
+                    _effect.send(SearchEffect.NavigateToResults(state.query))
                 }
             }
         }
