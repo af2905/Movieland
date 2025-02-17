@@ -88,7 +88,9 @@ data class BackgroundColors(
     val white: Color = Color.Unspecified,
     val black: Color = Color.Unspecified,
     val cardInverse: Color = Color.Unspecified,
-    val iconBar: Color = Color.Unspecified
+    val iconBar: Color = Color.Unspecified,
+    val searchBar: Color = Color.Unspecified,
+    val searchBarInverse: Color = Color.Unspecified
 ) {
     companion object {
         val defaultColorsLight = BackgroundColors(
@@ -107,7 +109,9 @@ data class BackgroundColors(
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
-            iconBar = Color(0x44000000)
+            iconBar = Color(0x44000000),
+            searchBar = Color(0x1A000000),
+            searchBarInverse = Color(0xFF18191A)
         )
 
         val defaultColorsDark = BackgroundColors(
@@ -126,7 +130,9 @@ data class BackgroundColors(
             white = Color(0xFFFFFFFF),
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
-            iconBar = Color(0xFF5E5E5E)
+            iconBar = Color(0xFF5E5E5E),
+            searchBar = Color(0x1AFFFFFF),
+            searchBarInverse = Color(0xFFF7F7F7)
         )
     }
 }

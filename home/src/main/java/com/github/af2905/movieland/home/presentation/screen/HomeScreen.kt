@@ -4,7 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -157,7 +156,6 @@ private fun HomeContent(
             item {
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.trending_movies),
-                    action = stringResource(id = R.string.view_all),
                     onClick = { onAction(HomeAction.OpenMoviesByType(movieType = MovieType.TRENDING_DAY)) }
                 )
             }
@@ -211,7 +209,6 @@ private fun HomeContent(
             item {
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.trending_tv_shows),
-                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
@@ -241,7 +238,6 @@ private fun HomeContent(
             item {
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.trending_people),
-                    action = stringResource(id = R.string.view_all),
                     onClick = { /* Handle click */ })
             }
 
