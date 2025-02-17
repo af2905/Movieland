@@ -25,8 +25,7 @@ import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.movies.presentation.MoviesNavWrapper
 import com.github.af2905.movieland.profile.presentation.compose.ProfileScreen
-import com.github.af2905.movieland.search.presentation.result.SearchResultNavWrapper
-import com.github.af2905.movieland.search.presentation.search.SearchNavWrapper
+import com.github.af2905.movieland.search.presentation.result.SearchNavWrapper
 
 @Composable
 fun AppNavigation(
@@ -135,9 +134,6 @@ fun AppNavigation(
         ) {
             composable(AppNavRoutes.Search.route) {
                 SearchNavWrapper(navController = navController)
-            }
-            composable(AppNavRoutes.SearchResult.route) {
-                SearchResultNavWrapper(navController = navController)
             }
             composable(
                 route = AppNavRoutes.MovieDetails.route,

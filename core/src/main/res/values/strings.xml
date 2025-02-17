@@ -40,4 +40,9 @@
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
+
+    <!--Search-->
+    <string name="search">Search</string>
+    <string name="search_hint">Movies, TV shows, people</string>
+
 </resources>
