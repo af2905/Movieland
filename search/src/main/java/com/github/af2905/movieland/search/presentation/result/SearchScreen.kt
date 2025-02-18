@@ -66,7 +66,7 @@ fun SearchScreen(
                     ShimmerSearchResults()
                 }
 
-                state.isError -> {
+                state.query.isNotEmpty() && state.query.isNotBlank() && state.searchResult.isEmpty() && !state.isLoading -> {
                     // **Show "No results found" when search fails**
                     EmptyStateView(
                         modifier = Modifier.fillMaxSize(),
@@ -149,12 +149,13 @@ fun ShimmerSearchResults() {
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
         repeat(5) {
             Spacer(
                 modifier = Modifier
-                    .height(160.dp)
+                    .height(136.dp)
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                    .padding(vertical = 8.dp)
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
         }
