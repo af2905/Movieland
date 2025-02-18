@@ -4,6 +4,13 @@ import com.github.af2905.movieland.core.data.database.entity.MovieType
 
 sealed class AppNavRoutes(val route: String) {
 
+    // Parent Graphs for each tab
+    data object HomeGraph : AppNavRoutes("home/main")
+    data object SearchGraph : AppNavRoutes("search/main")
+    data object LibraryGraph : AppNavRoutes("library/main")
+    data object ProfileGraph : AppNavRoutes("profile/main")
+
+    // Individual screens inside tabs
     data object Home : AppNavRoutes("home")
     data object Search : AppNavRoutes("search")
     data object Library : AppNavRoutes("library")

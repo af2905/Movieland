@@ -80,16 +80,23 @@ class SearchViewModel @Inject constructor(
     private fun performSearch(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(300)
             state = state.copy(isLoading = true, isError = false)
+            delay(300)
 
             try {
                 val results = searchRepository.getSearchMulti(query = query, language = null)
+                    .filter { item ->
+                        when (item.mediaType) {
+                            "movie" -> item.posterPath != null
+                            "tv" -> item.posterPath != null
+                            "person" -> item.profilePath != null
+                            else -> item.posterPath != null && item.profilePath != null
+                        }
+                    }
 
                 state = state.copy(
                     searchResult = results,
-                    isLoading = false,
-                    isError = results.isEmpty() // **Show "No results found" if empty**
+                    isLoading = false
                 )
             } catch (e: Exception) {
                 state = state.copy(
