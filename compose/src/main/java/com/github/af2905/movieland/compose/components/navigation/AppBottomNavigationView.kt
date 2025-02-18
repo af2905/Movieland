@@ -37,6 +37,7 @@ fun AppBottomNavigationView(
 
     Box(
         modifier = Modifier
+            .background(backgroundColor)
             .fillMaxWidth()
             .shadow(elevation, shape = RectangleShape)
     ) {
