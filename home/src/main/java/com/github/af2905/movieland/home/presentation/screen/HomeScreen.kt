@@ -95,7 +95,7 @@ fun HomeScreen(
                 hasNavigationBack = false,
                 endButtons = {
                     ChipView(
-                        text = stringResource(id = R.string.change_color),
+                        text = stringResource(id = R.string.change_theme),
                         onClick = {
                             coroutineScope.launch {
                             sheetState.show()
