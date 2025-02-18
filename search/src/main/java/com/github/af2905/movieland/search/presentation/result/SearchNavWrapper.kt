@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.github.af2905.movieland.core.compose.AppNavRoutes
 
 @Composable
 fun SearchNavWrapper(
@@ -14,8 +15,14 @@ fun SearchNavWrapper(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SearchEffect.NavigateToResults -> {
-
+                is SearchEffect.NavigateToMovieDetail -> {
+                    navController.navigate(AppNavRoutes.MovieDetails.createRoute(effect.movieId))
+                }
+                is SearchEffect.NavigateToTvShowDetail -> {
+                    navController.navigate(AppNavRoutes.TVShowDetails.createRoute(effect.tvShowId))
+                }
+                is SearchEffect.NavigateToPersonDetail -> {
+                    navController.navigate(AppNavRoutes.PersonDetails.createRoute(effect.personId))
                 }
             }
         }
@@ -26,3 +33,4 @@ fun SearchNavWrapper(
         onAction = viewModel::onAction
     )
 }
+
