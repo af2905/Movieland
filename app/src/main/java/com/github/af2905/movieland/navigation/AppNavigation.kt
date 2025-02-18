@@ -27,15 +27,15 @@ import com.github.af2905.movieland.search.presentation.result.SearchNavWrapper
 @Composable
 fun AppNavigation(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
     isDarkTheme: Boolean,
     currentTheme: Themes,
     onDarkThemeClick: () -> Unit,
-    onThemeClick: (Themes) -> Unit
+    onThemeClick: (Themes) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home/main",
+        startDestination = AppNavRoutes.HomeGraph.route,
         modifier = modifier,
         enterTransition = { fadeIn(animationSpec = tween(200)) },
         exitTransition = { fadeOut(animationSpec = tween(200)) },
@@ -45,7 +45,7 @@ fun AppNavigation(
         // Home Tab
         navigation(
             startDestination = AppNavRoutes.Home.route,
-            route = "home/main"
+            route = AppNavRoutes.HomeGraph.route
         ) {
             composable(AppNavRoutes.Home.route) {
                 HomeScreenNavWrapper(
@@ -114,7 +114,7 @@ fun AppNavigation(
         // Search Tab
         navigation(
             startDestination = AppNavRoutes.Search.route,
-            route = "search/main"
+            route = AppNavRoutes.SearchGraph.route
         ) {
             composable(AppNavRoutes.Search.route) {
                 SearchNavWrapper(navController = navController)
@@ -166,7 +166,7 @@ fun AppNavigation(
         // Library Tab
         navigation(
             startDestination = AppNavRoutes.Library.route,
-            route = "library/main"
+            route = AppNavRoutes.LibraryGraph.route
         ) {
             composable(AppNavRoutes.Library.route) {
                 LibraryScreen(navController)
@@ -218,7 +218,7 @@ fun AppNavigation(
         // Profile Tab
         navigation(
             startDestination = AppNavRoutes.Profile.route,
-            route = "profile/main"
+            route = AppNavRoutes.ProfileGraph.route
         ) {
             composable(AppNavRoutes.Profile.route) { ProfileScreen(navController = navController) }
         }

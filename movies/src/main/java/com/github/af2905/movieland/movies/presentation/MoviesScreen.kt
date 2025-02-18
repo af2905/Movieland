@@ -16,6 +16,8 @@ import com.github.af2905.movieland.compose.theme.AppTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -97,12 +99,20 @@ fun MoviesScreen(
 
 @Composable
 fun ShimmerMovieItem() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
-    )
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+        repeat(5) {
+            Spacer(
+                modifier = Modifier
+                    .height(136.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
+            )
+        }
+    }
 }
 
 @Composable
