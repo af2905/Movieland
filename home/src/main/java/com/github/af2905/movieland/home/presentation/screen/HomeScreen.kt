@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import com.github.af2905.movieland.compose.components.cards.ItemCardLarge
 import com.github.af2905.movieland.compose.components.chips.ChipView
 import com.github.af2905.movieland.compose.theme.AppTheme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -68,6 +70,8 @@ fun HomeScreen(
     val pagerState = rememberPagerState(
         pageCount = { state.trendingMovies.size }
     )
+
+    val listState = rememberLazyListState()
 
     if (sheetState.isVisible) {
         AppModalBottomSheet(
@@ -132,7 +136,7 @@ fun HomeScreen(
 
                 else -> {
                     // **Content Screen**
-                    HomeContent(state, onAction, pagerState)
+                    HomeContent(listState, state, onAction, pagerState)
                 }
             }
         }
@@ -141,11 +145,13 @@ fun HomeScreen(
 
 @Composable
 private fun HomeContent(
+    listState: LazyListState,
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     pagerState: PagerState
 ) {
     LazyColumn(
+        state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
