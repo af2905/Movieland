@@ -144,16 +144,16 @@ data class ThemeColors(
     val tintGhost: Color = tint.copy(alpha = 0.15f),
     val tintBg: Color = Color.Unspecified,
     val tintCard: Color = Color.Unspecified,
-    val tintSelection: Color = getTintSelection(tint),
+    val tintSelection: Color = Color.Unspecified,
 ) {
     companion object {
         val defaultColorsLight = ThemeColors(
             tint = Color(0xFF8B3FFD),
             tintFade = Color(0xFFB08EE4),
             tintGhost = Color(0x268B3FFD),
-            tintBg = Color(0xFFECE8F0),
-            tintCard = Color(0xFFFFFFFF),
-            tintSelection = Color(0xFFBA8CFF)
+            tintBg = Color(0xFFFFFFFF),
+            tintCard = Color(0xFFECE8F0),
+            tintSelection = Color(0xFFFFFFFF)
         )
 
         val defaultColorsDark = ThemeColors(
@@ -162,7 +162,7 @@ data class ThemeColors(
             tintGhost = Color(0x268B3FFD),
             tintBg = Color(0xFF17181F),
             tintCard = Color(0xFF303240),
-            tintSelection = Color(0xFFBA8CFF)
+            tintSelection = Color(0xFFFFFFFF)
         )
     }
 }

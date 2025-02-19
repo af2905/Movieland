@@ -112,13 +112,13 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             val userPreferences by userPreferencesManager.userPreferencesFlow.collectAsState(initial = UserPreferences())
 
-            var currentTheme by rememberSaveable { mutableStateOf(Themes.FANTASY) }
+            var currentTheme by rememberSaveable { mutableStateOf(Themes.CLASSIC) }
             var darkTheme: Boolean? by rememberSaveable { mutableStateOf(null) }
 
             val systemDefaultDarkMode = isSystemInDarkTheme()
 
             LaunchedEffect(userPreferences) {
-                currentTheme = Themes.entries.find { it.name == userPreferences.theme } ?: Themes.FANTASY
+                currentTheme = Themes.entries.find { it.name == userPreferences.theme } ?: Themes.CLASSIC
                 darkTheme = if (userPreferences.isDarkMode) true else null // Null means use system default
             }
 
