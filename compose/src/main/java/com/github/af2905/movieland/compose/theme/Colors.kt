@@ -131,8 +131,8 @@ data class BackgroundColors(
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
             iconBar = Color(0xFF5E5E5E),
-            searchBar = Color(0x1AFFFFFF),
-            searchBarInverse = Color(0xFFF7F7F7)
+            searchBar = Color(0x33FFFFFF),
+            searchBarInverse = Color(0xFFFCFCFC)
         )
     }
 }
