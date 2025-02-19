@@ -58,7 +58,7 @@ fun SearchLine(
 
     Box(
         modifier = Modifier
-            .background(color = AppTheme.colors.theme.tintCard)
+            .background(color = AppTheme.colors.theme.tintSelection)
             .padding(horizontal = AppTheme.dimens.spaceM, vertical = AppTheme.dimens.spaceS)
     ) {
         Row(
