@@ -33,7 +33,7 @@ fun AppCenterAlignedTopAppBar(
     title: String,
     onBackClick: () -> Unit,
     hasNavigationBack: Boolean = true,
-    elevation: Dp = 0.dp,
+    elevation: Dp = 2.dp,
     endButtons: @Composable (RowScope.() -> Unit) = {}
 ) {
     Box(
@@ -52,7 +52,7 @@ fun AppCenterAlignedTopAppBar(
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors().copy(
-                containerColor = AppTheme.colors.theme.tintCard,
+                containerColor = AppTheme.colors.theme.tintSelection,
                 navigationIconContentColor = AppTheme.colors.type.secondary,
                 actionIconContentColor = AppTheme.colors.type.secondary,
             ),
