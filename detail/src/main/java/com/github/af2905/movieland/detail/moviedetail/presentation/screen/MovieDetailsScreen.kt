@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
@@ -188,6 +189,7 @@ fun ShimmerMovieDetailsScreen() {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .background(AppTheme.colors.background.default)
             .padding(AppTheme.dimens.spaceM)
     ) {
         // **Backdrop Shimmer**
@@ -202,24 +204,15 @@ fun ShimmerMovieDetailsScreen() {
 
         // **Title & Info Shimmer**
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(AppTheme.colors.background.default)
-                .padding(horizontal = 16.dp)
+
         ) {
             Spacer(
                 modifier = Modifier
                     .height(24.dp)
                     .width(200.dp)
-                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
-            )
-
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
-
-            Spacer(
-                modifier = Modifier
-                    .height(16.dp)
-                    .width(150.dp)
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
@@ -237,27 +230,48 @@ fun ShimmerMovieDetailsScreen() {
             Spacer(
                 modifier = Modifier
                     .height(12.dp)
-                    .fillMaxWidth(0.5f)
+                    .fillMaxWidth(0.7f)
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+            LazyRow(
+                contentPadding = PaddingValues(all = AppTheme.dimens.spaceM),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(4) {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(30.dp, 30.dp)
+                            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
-            AppHorizontalDivider()
+            Spacer(
+                modifier = Modifier
+                    .height(0.5.dp)
+                    .fillMaxWidth()
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
+            )
+
         }
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
         // **Movie Details Shimmer**
-        repeat(3) {
-            Spacer(
-                modifier = Modifier
-                    .height(16.dp)
-                    .fillMaxWidth()
-                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
-            )
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
-        }
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+        Spacer(
+            modifier = Modifier
+                .height(12.dp)
+                .fillMaxWidth(0.7f)
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+        )
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
@@ -277,7 +291,6 @@ fun ShimmerMovieDetailsScreen() {
 @Composable
 fun ShimmerHorizontalList() {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(5) {
@@ -319,7 +332,8 @@ fun MovieBackdrop(state: MovieDetailsState) {
             AsyncImage(
                 model = ImageProvider.getImageUrl(state.movie?.backdropPath),
                 contentDescription = null,
-                modifier = Modifier.height(200.dp)
+                modifier = Modifier
+                    .height(200.dp)
                     .background(AppTheme.colors.background.default),
                 error = rememberVectorPainter(image = Icons.Outlined.Image),
                 contentScale = ContentScale.Crop
@@ -348,23 +362,48 @@ fun MovieInformation(state: MovieDetailsState) {
         if (state.movie?.voteAverage != null && state.movie.voteAverage != 0.0) {
             RatingBar(rating = state.movie.voteAverage ?: 0.0)
         }
+
+        val releaseYear = state.movie?.releaseDate?.getYearFromReleaseDate()
+        val genres = state.movie?.genres?.joinToString { it.name }
+
+        val sb1 = StringBuilder()
+
+        if (releaseYear != null) {
+            sb1.append("$releaseYear")
+        }
+        if (releaseYear != null && genres != null) {
+            sb1.append(" • ")
+        }
+        if (genres != null) {
+            sb1.append(genres)
+        }
+
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            text = "${state.movie?.releaseDate?.getYearFromReleaseDate().orEmpty()} • ${
-                state.movie?.genres?.joinToString { it.name }.orEmpty()
-            }",
+            text = sb1.toString(),
             color = AppTheme.colors.type.secondary
         )
+
+        val productionCountries = state.movie?.productionCountries?.joinToString { it.countryName }
+        val runtime = state.movie?.runtime?.convertMinutesToHoursAndMinutes()
+
+        val sb2 = StringBuilder()
+
+        if (productionCountries != null) {
+            sb2.append("$productionCountries")
+        }
+        if (productionCountries != null && runtime != null) {
+            sb2.append(" • ")
+        }
+        if (runtime != null) {
+            sb2.append(runtime)
+        }
+
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            text = "${
-                state.movie?.productionCountries?.joinToString { it.countryName }
-                    .orEmpty()
-            } • ${
-                state.movie?.runtime?.convertMinutesToHoursAndMinutes().orEmpty()
-            }",
+            text = sb2.toString(),
             color = AppTheme.colors.type.secondary
         )
 
@@ -411,9 +450,7 @@ fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = stringResource(R.string.videos),
-            action = stringResource(R.string.view_all),
-            onClick = { /* Handle View All Click */ }
+            text = stringResource(R.string.videos)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -444,9 +481,7 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = stringResource(R.string.casts),
-            action = stringResource(R.string.view_all),
-            onClick = { /* Handle View All Click */ }
+            text = stringResource(R.string.casts)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -484,9 +519,7 @@ fun ProductionCompanies(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = stringResource(R.string.production_companies),
-            action = stringResource(R.string.view_all),
-            onClick = { /* Handle View All Click */ }
+            text = stringResource(R.string.production_companies)
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -496,12 +529,9 @@ fun ProductionCompanies(
         ) {
             items(companies) { item ->
                 ChipView(
-                    style = ChipViewStyle.FadeTint,
                     text = item.companyName,
                     isLarge = true,
-                    onClick = {
-                        //TODO action
-                    }
+                    enabled = false
                 )
             }
         }
@@ -657,6 +687,12 @@ fun SocialMediaIcon(
 fun openUrl(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     context.startActivity(intent)
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun ShimmerMovieDetailsScreenPreview() {
+    ShimmerMovieDetailsScreen()
 }
 
 
