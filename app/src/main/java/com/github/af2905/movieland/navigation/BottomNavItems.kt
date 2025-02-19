@@ -9,31 +9,31 @@ import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
+import com.github.af2905.movieland.R
 import com.github.af2905.movieland.compose.components.navigation.BottomNavItem
 import com.github.af2905.movieland.core.compose.AppNavRoutes
 
-//TODO localize strings
 val bottomNavItems = listOf(
     BottomNavItem(
-        text = "Home",
+        textRes = R.string.nav_home,
         icon = Icons.Outlined.Home,
         selectedIcon = Icons.Default.Home,
         route = AppNavRoutes.Home.route
     ),
     BottomNavItem(
-        text = "Search",
+        textRes = R.string.nav_search,
         icon = Icons.Outlined.Search,
         selectedIcon = Icons.Default.Search,
         route = AppNavRoutes.Search.route
     ),
     BottomNavItem(
-        text = "Library",
+        textRes = R.string.nav_library,
         icon = Icons.Outlined.Bookmarks,
         selectedIcon = Icons.Default.Bookmarks,
         route = AppNavRoutes.Library.route
     ),
     BottomNavItem(
-        text = "Profile",
+        textRes = R.string.nav_profile,
         icon = Icons.Outlined.Person,
         selectedIcon = Icons.Default.Person,
         route = AppNavRoutes.Profile.route

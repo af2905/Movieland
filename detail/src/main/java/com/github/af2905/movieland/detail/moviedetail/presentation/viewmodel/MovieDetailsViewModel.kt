@@ -49,6 +49,21 @@ class MovieDetailsViewModel @AssistedInject constructor(
                 isError = movieDetailsResult is ResultWrapper.Error
             )
 
+            val externalIds = (moviesRepository.getMovieExternalIds(
+                movieId,
+                null
+            ) as? ResultWrapper.Success)?.data
+            externalIds?.let { socialIds ->
+                state = state.copy(
+                    movieSocialIds = state.movieSocialIds.copy(
+                        wikidataId = socialIds.wikidataId,
+                        facebookId = socialIds.facebookId,
+                        instagramId = socialIds.instagramId,
+                        twitterId = socialIds.twitterId
+                    )
+                )
+            }
+
             // Collect Similar Movies as Flow
             launch {
                 moviesRepository.getSimilarMovies(movieId, null, null)
@@ -88,23 +103,6 @@ class MovieDetailsViewModel @AssistedInject constructor(
                             casts = (result as? ResultWrapper.Success)?.data ?: emptyList()
                         )
                     }
-            }
-
-            launch {
-                val externalIds = (moviesRepository.getMovieExternalIds(
-                    movieId,
-                    null
-                ) as? ResultWrapper.Success)?.data
-                externalIds?.let { socialIds ->
-                    state = state.copy(
-                        movieSocialIds = state.movieSocialIds.copy(
-                            wikidataId = socialIds.wikidataId,
-                            facebookId = socialIds.facebookId,
-                            instagramId = socialIds.instagramId,
-                            twitterId = socialIds.twitterId
-                        )
-                    )
-                }
             }
 
             state = state.copy(isLoading = false)
