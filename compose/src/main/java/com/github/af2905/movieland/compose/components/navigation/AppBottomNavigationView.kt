@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ fun AppBottomNavigationView(
                     icon = { TabIcon(item = item, selected = currentTab == item.route) },
                     label = {
                         Text(
-                            text = item.text,
+                            text = stringResource(id = item.textRes),
                             textAlign = TextAlign.Center
                         )
                     },
@@ -87,8 +88,8 @@ fun AppBottomNavigationView(
 private fun TabIcon(item: BottomNavItem, selected: Boolean) {
     Box(modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)) {
         Icon(
-            imageVector = if(selected) item.selectedIcon else item.icon,
-            contentDescription = item.text,
+            imageVector = if (selected) item.selectedIcon else item.icon,
+            contentDescription = stringResource(id = item.textRes),
             modifier = Modifier.size(AppTheme.dimens.iconBottomBarSize)
         )
         if (item.hasBadge) {
