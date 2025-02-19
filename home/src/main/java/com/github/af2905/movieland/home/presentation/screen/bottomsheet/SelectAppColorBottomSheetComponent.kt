@@ -13,13 +13,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.components.bottomsheet.SelectableItem
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.compose.theme.Themes
+import com.github.af2905.movieland.home.R
 
 @Composable
 fun SelectAppColorBottomSheetComponent(
@@ -28,14 +28,13 @@ fun SelectAppColorBottomSheetComponent(
     list: List<Themes>,
     onItemClick: (theme: Themes) -> Unit
 ) {
-    val locale = Locale.current
 
     Column(
         modifier = modifier.padding(bottom = 20.dp)
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Select color of application", //TODO hardcode
+            text = stringResource(id = R.string.select_theme_color),
             textAlign = TextAlign.Center,
             style = AppTheme.typography.title3,
             color = AppTheme.colors.type.secondary
@@ -49,7 +48,7 @@ fun SelectAppColorBottomSheetComponent(
                 key = { _, item -> item.name }
             ) { index, model ->
                 SelectableItem(
-                    title = model.name.toLowerCase(locale),
+                    title = stringResource(id = model.nameRes),
                     selected = model.name == currentTheme.name,
                     onClick = { onItemClick(model) },
                     leadingContent = {
