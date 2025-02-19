@@ -59,4 +59,20 @@
     <string name="person">Person</string>
     <string name="known_for">Known for: %1$s</string>
 
+    <!-- Movie Genre Names -->
+    <string name="genre_classic">Classic</string>
+    <string name="genre_sci_fi">Sci-Fi</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_western">Western</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_melodrama">Melodrama</string>
+    <string name="genre_detective">Detective</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_romance">Romance</string>
+
+    <!-- Theme Selection Title -->
+    <string name="select_theme_color">Select Theme Color</string>
+
 </resources>
