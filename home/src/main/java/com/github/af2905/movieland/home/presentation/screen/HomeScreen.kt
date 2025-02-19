@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.github.af2905.movieland.compose.components.bottomsheet.AppModalBottomSheet
 import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
@@ -540,32 +542,59 @@ fun ShimmerHomeScreen() {
             .padding(AppTheme.dimens.spaceM)
     ) {
         item {
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .heightIn(min = AppTheme.dimens.headlinePrimaryDefaultMinHeight)
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .height(18.dp)
+                        .fillMaxWidth(0.6f)
+                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+                )
+            }
+
             Spacer(
                 modifier = Modifier
-                    .height(16.dp)
-                    .fillMaxWidth(0.8f)
-                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
-            )
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
-            Spacer(
-                modifier = Modifier
-                    .height(230.dp)
+                    .height(250.dp)
                     .fillMaxWidth()
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
-
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
         }
         item {
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
-            Spacer(
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .height(16.dp)
-                    .fillMaxWidth(0.8f)
-                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
-            )
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 4.dp)
+                    .heightIn(min = AppTheme.dimens.headlinePrimaryDefaultMinHeight)
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .height(8.dp)
+                        .fillMaxWidth(0.8f)
+                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+                )
+            }
+        }
+        item {
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .heightIn(min = AppTheme.dimens.headlinePrimaryDefaultMinHeight)
+            ) {
+                Spacer(
+                    modifier = Modifier
+                        .height(18.dp)
+                        .fillMaxWidth(0.6f)
+                        .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+                )
+            }
             ShimmerHorizontalList()
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
             ShimmerHorizontalList()
@@ -581,11 +610,17 @@ fun ShimmerHorizontalList() {
         items(5) {
             Spacer(
                 modifier = Modifier
-                    .size(150.dp, 200.dp)
+                    .size(150.dp, 250.dp)
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
         }
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun ShimmerHomeScreenPreview() {
+    ShimmerHomeScreen()
 }
 
 
