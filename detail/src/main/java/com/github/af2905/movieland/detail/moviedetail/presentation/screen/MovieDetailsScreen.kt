@@ -97,6 +97,7 @@ fun MovieDetailsScreen(
             AppCenterAlignedTopAppBar(
                 title = if (showTitle) state.movie?.title.orEmpty() else "",
                 onBackClick = { onAction(MovieDetailsAction.BackClick) },
+                elevation = 0.dp,
                 endButtons = {
                     if (!state.isError && !state.isLoading) {
                         Row {
@@ -122,7 +123,7 @@ fun MovieDetailsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .background(AppTheme.colors.theme.tintCard)
+                    .background(AppTheme.colors.theme.tintSelection)
             ) {
                 when {
                     state.isLoading -> {
@@ -327,7 +328,7 @@ fun MovieBackdrop(state: MovieDetailsState) {
             colors = CardDefaults.elevatedCardColors(
                 containerColor = AppTheme.colors.theme.tintCard
             ),
-            elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
+            //elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
         ) {
             AsyncImage(
                 model = ImageProvider.getImageUrl(state.movie?.backdropPath),
