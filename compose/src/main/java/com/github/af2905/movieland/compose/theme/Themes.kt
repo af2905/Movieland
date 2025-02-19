@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.core.view.WindowCompat
+import com.github.af2905.movieland.compose.R
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsDark
 import com.github.af2905.movieland.compose.theme.AppColors.Companion.defaultColorsLight
 
@@ -69,18 +70,18 @@ object AppTheme {
         get() = LocalAppTypography.current
 }
 
-enum class Themes {
-    CLASSIC,
-    SCI_FI,
-    HORROR,
-    ADVENTURE,
-    FANTASY,
-    WESTERN,
-    DRAMA,
-    MELODRAMA,
-    DETECTIVE,
-    THRILLER,
-    ROMANCE;
+enum class Themes(val nameRes: Int) {
+    CLASSIC(R.string.genre_classic),
+    SCI_FI(R.string.genre_sci_fi),
+    HORROR(R.string.genre_horror),
+    ADVENTURE(R.string.genre_adventure),
+    FANTASY(R.string.genre_fantasy),
+    WESTERN(R.string.genre_western),
+    DRAMA(R.string.genre_drama),
+    MELODRAMA(R.string.genre_melodrama),
+    DETECTIVE(R.string.genre_detective),
+    THRILLER(R.string.genre_thriller),
+    ROMANCE(R.string.genre_romance);
 
     fun getTheme(): Palette = when (this) {
         CLASSIC -> classicTheme
