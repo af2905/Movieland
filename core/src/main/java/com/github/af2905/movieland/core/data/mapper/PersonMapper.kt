@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.data.mapper
 
 import com.github.af2905.movieland.core.data.database.entity.KnownFor
+import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.dto.people.KnownForDto
 import com.github.af2905.movieland.core.data.dto.people.PersonDto
@@ -37,7 +38,7 @@ class KnownForMapper @Inject constructor() {
             firstAirDate = firstAirDate,
             genreIds = genreIds,
             releaseDate = releaseDate,
-            mediaType = mediaType,
+            mediaType = MediaType.fromString(mediaType) ?: MediaType.MOVIE,
             originCountry = originCountry,
             originalLanguage = originalLanguage,
             originalName = originalName,

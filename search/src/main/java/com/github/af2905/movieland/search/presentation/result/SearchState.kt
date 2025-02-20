@@ -1,10 +1,10 @@
 package com.github.af2905.movieland.search.presentation.result
 
-import com.github.af2905.movieland.core.data.dto.search.SearchMultiResultDto
+import com.github.af2905.movieland.core.data.database.entity.SearchMultiResult
 
 data class SearchState(
     val query: String = "",
-    val searchResult: List<SearchMultiResultDto> = emptyList(),
+    val searchResult: List<SearchMultiResult> = emptyList(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val popularSearches: List<String> = emptyList()

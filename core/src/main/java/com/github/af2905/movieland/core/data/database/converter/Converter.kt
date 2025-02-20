@@ -76,15 +76,15 @@ class ProductionCountryConverter @Inject constructor(private val gson: Gson) {
 @ProvidedTypeConverter
 class PersonMovieCreditsCastConverter @Inject constructor(private val gson: Gson) {
     @TypeConverter
-    fun toList(value: String?): List<PersonMovieCreditsCast>? {
-        val listType = object : TypeToken<List<PersonMovieCreditsCast>>() {}.type
+    fun toList(value: String?): List<PersonCreditsCast>? {
+        val listType = object : TypeToken<List<PersonCreditsCast>>() {}.type
         return gson.fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromList(list: List<PersonMovieCreditsCast>?): String? {
+    fun fromList(list: List<PersonCreditsCast>?): String? {
         return if (list == null) null
-        else gson.toJson(list, object : TypeToken<List<PersonMovieCreditsCast>>() {}.type)
+        else gson.toJson(list, object : TypeToken<List<PersonCreditsCast>>() {}.type)
     }
 }
 

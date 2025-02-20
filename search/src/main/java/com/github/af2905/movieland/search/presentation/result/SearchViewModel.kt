@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.common.network.ResultWrapper
+import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.repository.SearchRepository
 import com.github.af2905.movieland.core.repository.TrendingRepository
@@ -87,9 +88,9 @@ class SearchViewModel @Inject constructor(
                 val results = searchRepository.getSearchMulti(query = query, language = null)
                     .filter { item ->
                         when (item.mediaType) {
-                            "movie" -> item.posterPath != null
-                            "tv" -> item.posterPath != null
-                            "person" -> item.profilePath != null
+                            MediaType.MOVIE -> item.posterPath != null
+                            MediaType.TV -> item.posterPath != null
+                            MediaType.PERSON -> item.profilePath != null
                             else -> item.posterPath != null && item.profilePath != null
                         }
                     }
