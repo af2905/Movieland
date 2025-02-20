@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,8 +37,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.af2905.movieland.compose.components.bottomsheet.AppModalBottomSheet
@@ -69,6 +74,8 @@ fun HomeScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     val pagerState = rememberPagerState(
         pageCount = { state.trendingMovies.size }
     )
@@ -94,25 +101,39 @@ fun HomeScreen(
     }
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            AppCenterAlignedTopAppBar(
-                title = stringResource(id = R.string.app_name),
-                onBackClick = { },
-                hasNavigationBack = false,
-                endButtons = {
-                    ChipView(
-                        text = stringResource(id = R.string.change_theme),
-                        onClick = {
-                            coroutineScope.launch {
-                            sheetState.show()
-                        } },
-                        style = ChipViewStyle.FadeTint
+            TopAppBar(
+                colors = TopAppBarDefaults.largeTopAppBarColors().copy(
+                    titleContentColor = AppTheme.colors.type.secondary,
+                    containerColor = AppTheme.colors.theme.tintSelection,
+                    scrolledContainerColor = AppTheme.colors.theme.tintSelection
+                ),
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.nav_home),
+                        style = AppTheme.typography.title3,
+                        color = AppTheme.colors.type.secondary
                     )
+                },
+                scrollBehavior = scrollBehavior,
+                actions = {
+                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        ChipView(
+                            text = stringResource(id = R.string.change_theme),
+                            onClick = {
+                                coroutineScope.launch {
+                                    sheetState.show()
+                                } },
+                            style = ChipViewStyle.FadeTint
+                        )
+                    }
+
                 }
             )
         }
     ) { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .background(AppTheme.colors.background.default)
                 .fillMaxSize()

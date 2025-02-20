@@ -110,7 +110,7 @@ data class BackgroundColors(
             black = Color(0xFF1A1A1A),
             cardInverse = Color(0xFF2B2633),
             iconBar = Color(0x44000000),
-            searchBar = Color(0x1A000000),
+            searchBar = Color(0x14000000),
             searchBarInverse = Color(0xFF18191A)
         )
 

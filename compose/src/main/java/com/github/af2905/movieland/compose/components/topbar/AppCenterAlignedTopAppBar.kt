@@ -39,7 +39,6 @@ fun AppCenterAlignedTopAppBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AppTheme.colors.theme.tint)
             .shadow(elevation, shape = RectangleShape)
     ) {
         CenterAlignedTopAppBar(

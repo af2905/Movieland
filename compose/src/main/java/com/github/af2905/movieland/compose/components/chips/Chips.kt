@@ -24,9 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,8 @@ enum class ChipViewStyle {
     FadeTint,
     Alert,
     Success,
-    Inverse;
+    Inverse,
+    Inform;
 
     @Composable
     internal fun getTextColor(): Color = when (this) {
@@ -46,6 +46,7 @@ enum class ChipViewStyle {
         Alert -> AppTheme.colors.type.inverse
         Success -> AppTheme.colors.type.inverse
         Inverse -> AppTheme.colors.theme.tint
+        Inform -> AppTheme.colors.type.secondary
     }
 
     @Composable
@@ -53,7 +54,8 @@ enum class ChipViewStyle {
         Tint,
         FadeTint,
         Alert,
-        Success -> AppTheme.colors.type.disable
+        Success,
+        Inform -> AppTheme.colors.type.disable
 
         Inverse -> AppTheme.colors.type.ghostInverse
     }
@@ -65,6 +67,7 @@ enum class ChipViewStyle {
         Alert -> AppTheme.colors.background.alert
         Success -> AppTheme.colors.background.success
         Inverse -> AppTheme.colors.background.card
+        Inform -> AppTheme.colors.background.searchBar
     }
 
     @Composable
@@ -75,6 +78,7 @@ enum class ChipViewStyle {
         Success -> AppTheme.colors.background.actionRipple
 
         Inverse -> AppTheme.colors.background.actionRippleInverse
+        Inform -> AppTheme.colors.type.ghost
     }
 }
 
@@ -117,6 +121,7 @@ fun ChipView(
     enabled: Boolean = true,
     isLarge: Boolean = false,
     style: ChipViewStyle = ChipViewStyle.Tint,
+    textStyle: TextStyle = AppTheme.typography.caption1Medium,
     onClick: (() -> Unit)? = null
 ) {
     Box(
@@ -149,7 +154,7 @@ fun ChipView(
             color = if (enabled) style.getTextColor() else style.getDisabledTextColor(),
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            style = AppTheme.typography.caption1Medium
+            style = textStyle
         )
     }
 }
