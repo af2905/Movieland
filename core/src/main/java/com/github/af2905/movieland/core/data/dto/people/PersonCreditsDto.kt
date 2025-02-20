@@ -2,12 +2,12 @@ package com.github.af2905.movieland.core.data.dto.people
 
 import com.google.gson.annotations.SerializedName
 
-data class PersonMovieCreditsDto(
+data class PersonCreditsDto(
     @SerializedName("id") val id: Int,
-    @SerializedName("cast") val cast: List<PersonMovieCreditsCastDto>?
+    @SerializedName("cast") val cast: List<PersonCreditsCastDto>?
 )
 
-data class PersonMovieCreditsCastDto(
+data class PersonCreditsCastDto(
     @SerializedName("id") val id: Int,
     @SerializedName("adult") val adult: Boolean?,
     @SerializedName("backdrop_path") val backdropPath: String?,
@@ -24,5 +24,6 @@ data class PersonMovieCreditsCastDto(
     @SerializedName("vote_count") val voteCount: Int?,
     @SerializedName("character") val character: String?,
     @SerializedName("credit_id") val creditId: String?,
-    @SerializedName("order") val order: Int?
+    @SerializedName("order") val order: Int?,
+    @SerializedName("media_type") val mediaType: String?
 )

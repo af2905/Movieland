@@ -36,7 +36,8 @@ import com.github.af2905.movieland.compose.components.search.SearchLine
 import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.common.helper.ImageProvider
-import com.github.af2905.movieland.core.data.dto.search.SearchMultiResultDto
+import com.github.af2905.movieland.core.data.database.entity.MediaType
+import com.github.af2905.movieland.core.data.database.entity.SearchMultiResult
 import com.github.af2905.movieland.search.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,9 +111,9 @@ fun SearchScreen(
                     ) {
                         items(state.searchResult) { item ->
                             when (item.mediaType) {
-                                "movie" -> MovieItem(item, onAction)
-                                "tv" -> TvShowItem(item, onAction)
-                                "person" -> PersonItem(item, onAction)
+                                MediaType.MOVIE -> MovieItem(item, onAction)
+                                MediaType.TV -> TvShowItem(item, onAction)
+                                MediaType.PERSON -> PersonItem(item, onAction)
                             }
                         }
                     }
@@ -187,7 +188,7 @@ fun ShimmerSearchResults() {
 
 @Composable
 fun MovieItem(
-    movie: SearchMultiResultDto,
+    movie: SearchMultiResult,
     onAction: (SearchAction) -> Unit
 ) {
     ItemCardHorizontal(
@@ -202,7 +203,7 @@ fun MovieItem(
 
 @Composable
 fun TvShowItem(
-    tvShow: SearchMultiResultDto,
+    tvShow: SearchMultiResult,
     onAction: (SearchAction) -> Unit
 ) {
     ItemCardHorizontal(
@@ -217,7 +218,7 @@ fun TvShowItem(
 
 @Composable
 fun PersonItem(
-    person: SearchMultiResultDto,
+    person: SearchMultiResult,
     onAction: (SearchAction) -> Unit
 ) {
     val knownForText = person.knownFor?.joinToString(", ") { it.title ?: it.name ?: "" }.orEmpty()

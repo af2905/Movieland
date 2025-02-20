@@ -2,7 +2,7 @@ package com.github.af2905.movieland.core.data.api
 
 import com.github.af2905.movieland.core.data.dto.people.PeopleDto
 import com.github.af2905.movieland.core.data.dto.people.PersonDetailDto
-import com.github.af2905.movieland.core.data.dto.people.PersonMovieCreditsDto
+import com.github.af2905.movieland.core.data.dto.people.PersonCreditsDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -21,9 +21,9 @@ interface PeopleApi {
         @Query("page") page: Int? = null,
     ): PeopleDto
 
-    @GET("person/{person_id}/movie_credits")
-    suspend fun getPersonMovieCredits(
+    @GET("person/{person_id}/combined_credits")
+    suspend fun getPersonCredits(
         @Path("person_id") personId: Int,
         @Query("language") language: String? = null
-    ): PersonMovieCreditsDto
+    ): PersonCreditsDto
 }
