@@ -1,9 +1,10 @@
 package com.github.af2905.movieland.search.presentation.result
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,38 +13,59 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SearchOff
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.af2905.movieland.compose.components.cards.ItemCardHorizontal
+import com.github.af2905.movieland.compose.components.chips.ChipView
+import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.search.SearchLine
 import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
-import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.common.helper.ImageProvider
 import com.github.af2905.movieland.core.data.dto.search.SearchMultiResultDto
 import com.github.af2905.movieland.search.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     state: SearchState,
     onAction: (SearchAction) -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(
-        /*topBar = {
-            AppCenterAlignedTopAppBar(
-                title = stringResource(R.string.search),
-                hasNavigationBack = false,
-                onBackClick = { }
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.largeTopAppBarColors().copy(
+                    titleContentColor = AppTheme.colors.type.secondary,
+                    containerColor = AppTheme.colors.theme.tintSelection,
+                    scrolledContainerColor = AppTheme.colors.theme.tintSelection
+                ),
+                title = {
+                    Text(
+                        text = stringResource(R.string.search),
+                        style = AppTheme.typography.title3,
+                        color = AppTheme.colors.type.secondary
+                    )
+                },
+                scrollBehavior = scrollBehavior
             )
-        }*/
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -51,7 +73,7 @@ fun SearchScreen(
                 .fillMaxSize()
                 .background(AppTheme.colors.background.default)
         ) {
-            // **Search Input**
+
             SearchLine(
                 searchText = state.query,
                 placeholder = stringResource(id = R.string.search_hint),
@@ -106,6 +128,7 @@ fun PopularSearches(popularResults: List<String>, onAction: (SearchAction) -> Un
         modifier = Modifier
             .fillMaxSize()
             .padding(all = 16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         if (popularResults.isNotEmpty()) {
             Text(
@@ -115,31 +138,31 @@ fun PopularSearches(popularResults: List<String>, onAction: (SearchAction) -> Un
                 modifier = Modifier.padding(bottom = 20.dp)
             )
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(popularResults) { title ->
-                    SearchSuggestionText(title, onAction)
-                }
-            }
+            SearchSuggestionChips(suggestions = popularResults, onAction = onAction)
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SearchSuggestionText(title: String, onAction: (SearchAction) -> Unit) {
-    Column {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
+fun SearchSuggestionChips(suggestions: List<String>, onAction: (SearchAction) -> Unit) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        suggestions.forEach { title ->
+            ChipView(
+                style = ChipViewStyle.Inform,
+                textStyle = AppTheme.typography.caption1,
+                text = title,
+                isLarge = true,
+                onClick = {
                     onAction(SearchAction.UpdateQuery(title))
-                },
-            text = title,
-            color = AppTheme.colors.type.secondary
-        )
+                }
+            )
+        }
     }
-
 }
 
 @Composable
