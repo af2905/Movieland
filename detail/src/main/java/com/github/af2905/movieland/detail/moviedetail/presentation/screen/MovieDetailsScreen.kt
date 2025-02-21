@@ -197,7 +197,7 @@ fun ShimmerMovieDetailsScreen() {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(194.dp)
                 .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
         )
 
@@ -217,7 +217,7 @@ fun ShimmerMovieDetailsScreen() {
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             Spacer(
                 modifier = Modifier
@@ -226,7 +226,7 @@ fun ShimmerMovieDetailsScreen() {
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             Spacer(
                 modifier = Modifier
@@ -235,7 +235,16 @@ fun ShimmerMovieDetailsScreen() {
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.7f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             LazyRow(
                 contentPadding = PaddingValues(all = AppTheme.dimens.spaceM),
