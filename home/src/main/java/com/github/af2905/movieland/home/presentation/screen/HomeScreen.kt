@@ -125,7 +125,8 @@ fun HomeScreen(
                             onClick = {
                                 coroutineScope.launch {
                                     sheetState.show()
-                                } },
+                                }
+                            },
                             style = ChipViewStyle.FadeTint
                         )
                     }
@@ -194,7 +195,7 @@ private fun HomeContent(
                 HorizontalPager(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .then(if(state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
+                        .then(if (state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     pageSpacing = AppTheme.dimens.space2XS,
                     state = pagerState
@@ -218,7 +219,7 @@ private fun HomeContent(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .then(if(state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
+                        .then(if (state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(state.trendingMovies.size) { iteration ->
@@ -242,14 +243,14 @@ private fun HomeContent(
         if (state.trendingTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    modifier = Modifier.then(if(state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
+                    modifier = Modifier.then(if (state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
                     text = stringResource(id = R.string.trending_tv_shows),
                     onClick = { /* Handle click */ })
             }
 
             item {
                 LazyRow(
-                    modifier = Modifier.then(if(state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
+                    modifier = Modifier.then(if (state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -565,32 +566,39 @@ private fun HomeContent(
 @Composable
 fun ShimmerHomeScreen() {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(AppTheme.dimens.spaceM)
+        modifier = Modifier.fillMaxSize()
     ) {
         item {
             Box(
                 contentAlignment = Alignment.CenterStart,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(
+                        start = AppTheme.dimens.spaceM,
+                        end = AppTheme.dimens.spaceM,
+                        top = AppTheme.dimens.spaceM
+                    )
                     .padding(vertical = 4.dp)
                     .heightIn(min = AppTheme.dimens.headlinePrimaryDefaultMinHeight)
             ) {
                 Spacer(
                     modifier = Modifier
                         .height(18.dp)
-                        .fillMaxWidth(0.6f)
+                        .fillMaxWidth(0.5f)
                         .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
                 )
             }
 
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
             Spacer(
                 modifier = Modifier
                     .height(250.dp)
+                    .padding(horizontal = AppTheme.dimens.spaceM)
                     .fillMaxWidth()
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
+            Spacer(modifier = Modifier.height(AppTheme.dimens.space2XS))
         }
         item {
             Box(
@@ -603,7 +611,7 @@ fun ShimmerHomeScreen() {
                 Spacer(
                     modifier = Modifier
                         .height(8.dp)
-                        .fillMaxWidth(0.8f)
+                        .fillMaxWidth(0.4f)
                         .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
                 )
             }
@@ -613,13 +621,14 @@ fun ShimmerHomeScreen() {
                 contentAlignment = Alignment.CenterStart,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.spaceM)
                     .padding(vertical = 4.dp)
                     .heightIn(min = AppTheme.dimens.headlinePrimaryDefaultMinHeight)
             ) {
                 Spacer(
                     modifier = Modifier
                         .height(18.dp)
-                        .fillMaxWidth(0.6f)
+                        .fillMaxWidth(0.5f)
                         .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
                 )
             }
@@ -633,12 +642,13 @@ fun ShimmerHomeScreen() {
 @Composable
 fun ShimmerHorizontalList() {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.padding(start = AppTheme.dimens.spaceM),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(5) {
             Spacer(
                 modifier = Modifier
-                    .size(150.dp, 250.dp)
+                    .size(160.dp, 250.dp)
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
         }
