@@ -42,6 +42,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -191,7 +192,9 @@ private fun HomeContent(
 
             item {
                 HorizontalPager(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(if(state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     pageSpacing = AppTheme.dimens.space2XS,
                     state = pagerState
@@ -213,7 +216,9 @@ private fun HomeContent(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(if(state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(state.trendingMovies.size) { iteration ->
@@ -237,12 +242,14 @@ private fun HomeContent(
         if (state.trendingTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
+                    modifier = Modifier.then(if(state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
                     text = stringResource(id = R.string.trending_tv_shows),
                     onClick = { /* Handle click */ })
             }
 
             item {
                 LazyRow(
+                    modifier = Modifier.then(if(state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
