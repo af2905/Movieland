@@ -256,7 +256,7 @@ class MoviesRepositoryImpl @Inject constructor(
         language: String?
     ): ResultWrapper<MovieExternalIds?> {
         return try {
-            val movieExternalIds = moviesApi.getMovieExternalIds(movieId, language)
+            val movieExternalIds = moviesApi.getMovieExternalIds(movieId)
             ResultWrapper.Success(movieExternalIds)
         } catch (e: Exception) {
             ResultWrapper.Success(null)
