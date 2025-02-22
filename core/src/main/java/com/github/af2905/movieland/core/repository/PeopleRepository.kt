@@ -4,6 +4,7 @@ import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.PersonCreditsCast
 import com.github.af2905.movieland.core.data.database.entity.PersonDetail
+import com.github.af2905.movieland.core.data.dto.people.PersonExternalIds
 import kotlinx.coroutines.flow.Flow
 
 interface PeopleRepository {
@@ -17,4 +18,8 @@ interface PeopleRepository {
         personId: Int,
         language: String?
     ): Flow<ResultWrapper<List<PersonCreditsCast>>>
+
+    suspend fun getPersonExternalIds(
+        personId: Int,
+    ): ResultWrapper<PersonExternalIds?>
 }
