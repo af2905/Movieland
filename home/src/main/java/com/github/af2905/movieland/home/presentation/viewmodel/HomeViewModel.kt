@@ -21,6 +21,7 @@ import com.github.af2905.movieland.home.presentation.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -46,18 +47,32 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchHomeData() {
+
         viewModelScope.launch {
             state = state.copy(isLoading = true)
 
-            // Fetch Trending Data
-            val trendingData = combine(
-                trendingRepository.getCachedFirstTrendingMovies(MovieType.TRENDING_DAY, null, null),
+            // Trending Data
+            launch {
+                trendingRepository.getCachedFirstTrendingMovies(MovieType.TRENDING_DAY, null, null)
+                    .collectLatest { result ->
+                        state = state.copy(
+                            trendingMovies = if (result is ResultWrapper.Success) result.data else state.trendingMovies
+                        )
+                    }
+            }
+
+            launch {
                 trendingRepository.getTrendingTvShows(TvShowType.TRENDING_DAY, null, null)
-                    .catch { emit(emptyList()) },
+                    .catch { emit(emptyList()) }.collectLatest { data ->
+                        state = state.copy(trendingTvShows = data)
+                    }
+            }
+
+            launch {
                 trendingRepository.getTrendingPeople(PersonType.TRENDING_DAY, null, null)
-                    .catch { emit(emptyList()) }
-            ) { trendingMovies, trendingTvShows, trendingPeople ->
-                Triple(trendingMovies, trendingTvShows, trendingPeople)
+                    .catch { emit(emptyList()) }.collectLatest { data ->
+                        state = state.copy(trendingPeople = data)
+                    }
             }
 
             // Fetch Movies Data
@@ -95,13 +110,12 @@ class HomeViewModel @Inject constructor(
 
             // Combine all grouped data
             combine(
-                trendingData,
                 movieData,
                 tvShowData,
                 genresData,
                 peopleData
-            ) { trending, movies, tvShows, genres, popularPeople ->
-                val (trendingMovies, trendingTvShows, trendingPeople) = trending
+            ) { movies, tvShows, genres, popularPeople ->
+
                 val (popularMovies, topRatedMovies, upcomingMovies, nowPlayingMovies) = movies
                 val (popularTvShows, topRatedTvShows) = tvShows
                 val (movieGenres, tvGenres) = genres
@@ -119,9 +133,6 @@ class HomeViewModel @Inject constructor(
                     )
                 } else {
                     state.copy(
-                        trendingMovies = if(trendingMovies is ResultWrapper.Success) trendingMovies.data else state.trendingMovies,
-                        trendingTvShows = trendingTvShows,
-                        trendingPeople = trendingPeople,
                         popularMovies = if (popularMovies is ResultWrapper.Success) popularMovies.data else state.popularMovies,
                         topRatedMovies = if (topRatedMovies is ResultWrapper.Success) topRatedMovies.data else state.topRatedMovies,
                         upcomingMovies = if (upcomingMovies is ResultWrapper.Success) upcomingMovies.data else state.upcomingMovies,
