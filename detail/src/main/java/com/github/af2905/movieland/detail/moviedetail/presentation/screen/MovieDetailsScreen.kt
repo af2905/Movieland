@@ -381,7 +381,7 @@ fun MovieInformation(state: MovieDetailsState) {
         if (releaseYear != null) {
             sb1.append("$releaseYear")
         }
-        if (releaseYear != null && genres != null) {
+        if (!releaseYear.isNullOrEmpty() && !genres.isNullOrEmpty()) {
             sb1.append(" • ")
         }
         if (genres != null) {
@@ -403,7 +403,7 @@ fun MovieInformation(state: MovieDetailsState) {
         if (productionCountries != null) {
             sb2.append("$productionCountries")
         }
-        if (productionCountries != null && runtime != null) {
+        if (!productionCountries.isNullOrEmpty() && !runtime.isNullOrEmpty()) {
             sb2.append(" • ")
         }
         if (runtime != null) {
