@@ -70,7 +70,6 @@ interface MoviesApi {
 
     @GET("movie/{movie_id}/external_ids")
     suspend fun getMovieExternalIds(
-        @Path("movie_id") movieId: Int,
-        @Query("language") language: String? = null
+        @Path("movie_id") movieId: Int
     ): MovieExternalIds
 }
