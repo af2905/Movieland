@@ -193,9 +193,7 @@ private fun HomeContent(
 
             item {
                 HorizontalPager(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .then(if (state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
+                    modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
                     pageSpacing = AppTheme.dimens.space2XS,
                     state = pagerState
@@ -217,9 +215,7 @@ private fun HomeContent(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .then(if (state.trendingMovies.isEmpty()) Modifier.alpha(0f) else Modifier),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(state.trendingMovies.size) { iteration ->
@@ -243,7 +239,6 @@ private fun HomeContent(
         if (state.trendingTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    modifier = Modifier.then(if (state.trendingTvShows.isEmpty()) Modifier.alpha(0f) else Modifier),
                     text = stringResource(id = R.string.trending_tv_shows),
                     onClick = { /* Handle click */ })
             }
