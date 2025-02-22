@@ -9,6 +9,7 @@ import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.PersonCreditsCast
 import com.github.af2905.movieland.core.data.database.entity.PersonDetail
 import com.github.af2905.movieland.core.data.database.entity.PersonType
+import com.github.af2905.movieland.core.data.dto.people.PersonExternalIds
 import com.github.af2905.movieland.core.data.mapper.PersonCreditMapper
 import com.github.af2905.movieland.core.data.mapper.PersonDetailMapper
 import com.github.af2905.movieland.core.data.mapper.PersonMapper
@@ -42,7 +43,10 @@ class PeopleRepositoryImpl @Inject constructor(
                 val response = peopleApi.getPersonPopular(language)
                 val people = personMapper.map(response.results)
                     .map { person ->
-                        person.copy(personType = PersonType.POPULAR, timeStamp = System.currentTimeMillis())
+                        person.copy(
+                            personType = PersonType.POPULAR,
+                            timeStamp = System.currentTimeMillis()
+                        )
                     }
                     .filter { person -> !person.profilePath.isNullOrEmpty() }
 
@@ -57,7 +61,10 @@ class PeopleRepositoryImpl @Inject constructor(
         emitAll(personDao.getPeopleByType(PersonType.POPULAR))
     }.catch { emit(emptyList()) }
 
-    override suspend fun getPersonDetails(personId: Int, language: String?): Flow<ResultWrapper<PersonDetail>> = flow {
+    override suspend fun getPersonDetails(
+        personId: Int,
+        language: String?
+    ): Flow<ResultWrapper<PersonDetail>> = flow {
         emit(ResultWrapper.Loading)
         try {
             val response = peopleApi.getPersonDetail(personId, language)
@@ -66,13 +73,24 @@ class PeopleRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_network), e))
         } catch (e: HttpException) {
-            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_server, e.code(), e.message()), e))
+            emit(
+                ResultWrapper.Error(
+                    stringProvider.getString(
+                        R.string.error_server,
+                        e.code(),
+                        e.message()
+                    ), e
+                )
+            )
         } catch (e: Exception) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
         }
     }
 
-    override suspend fun getPersonCredits(personId: Int, language: String?): Flow<ResultWrapper<List<PersonCreditsCast>>> = flow {
+    override suspend fun getPersonCredits(
+        personId: Int,
+        language: String?
+    ): Flow<ResultWrapper<List<PersonCreditsCast>>> = flow {
         emit(ResultWrapper.Loading)
         try {
             val response = peopleApi.getPersonCredits(personId, language)
@@ -82,9 +100,28 @@ class PeopleRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_network), e))
         } catch (e: HttpException) {
-            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_server, e.code(), e.message()), e))
+            emit(
+                ResultWrapper.Error(
+                    stringProvider.getString(
+                        R.string.error_server,
+                        e.code(),
+                        e.message()
+                    ), e
+                )
+            )
         } catch (e: Exception) {
             emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+        }
+    }
+
+    override suspend fun getPersonExternalIds(
+        personId: Int,
+    ): ResultWrapper<PersonExternalIds?> {
+        return try {
+            val personExternalIds = peopleApi.getPersonExternalIds(personId)
+            ResultWrapper.Success(personExternalIds)
+        } catch (e: Exception) {
+            ResultWrapper.Success(null)
         }
     }
 }
