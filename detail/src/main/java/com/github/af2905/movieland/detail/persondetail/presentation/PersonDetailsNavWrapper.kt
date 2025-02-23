@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun PersonDetailsScreen(
+fun PersonDetailsNavWrapper(
     personId: Int,
     navController: NavHostController
 ) {

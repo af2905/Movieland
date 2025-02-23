@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -28,7 +27,7 @@ import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.chips.ChipView
 import com.github.af2905.movieland.compose.components.rating.RatingBar
 import com.github.af2905.movieland.compose.theme.AppTheme
-import com.github.af2905.movieland.core.data.MediaType
+import com.github.af2905.movieland.core.data.database.entity.MediaType
 
 private fun Double?.orDefault(): Double = this ?: 0.0
 
