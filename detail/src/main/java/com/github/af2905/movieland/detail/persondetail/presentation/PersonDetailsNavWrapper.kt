@@ -1,23 +1,52 @@
 package com.github.af2905.movieland.detail.persondetail.presentation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.github.af2905.movieland.core.compose.AppNavRoutes
+import com.github.af2905.movieland.core.data.database.entity.MediaType
+import com.github.af2905.movieland.detail.persondetail.presentation.screen.PersonDetailsScreen
+import com.github.af2905.movieland.detail.persondetail.presentation.state.PersonDetailsEffect
+import com.github.af2905.movieland.detail.persondetail.presentation.viewmodel.PersonDetailsViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PersonDetailsNavWrapper(
     personId: Int,
     navController: NavHostController
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Text(text = "Person Details Screen for ID: $personId")
+    val viewModel = hiltViewModel<PersonDetailsViewModel, PersonDetailsViewModel.Factory>(
+        creationCallback = { factory ->
+            factory.create(personId)
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is PersonDetailsEffect.NavigateBack -> {
+                    navController.popBackStack()
+                }
+
+                is PersonDetailsEffect.NavigateToCredit -> {
+                    when(effect.type) {
+                        MediaType.MOVIE -> {
+                            AppNavRoutes.MovieDetails.createRoute(effect.creditId)
+                        }
+                        else -> {
+                            AppNavRoutes.TVShowDetails.createRoute(effect.creditId)
+                        }
+                    }
+                }
+            }
+        }
     }
+
+    PersonDetailsScreen(
+        state = viewModel.state,
+        onAction = viewModel::onAction
+    )
 }
