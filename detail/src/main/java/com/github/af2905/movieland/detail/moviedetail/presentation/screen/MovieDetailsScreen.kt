@@ -138,7 +138,9 @@ fun MovieDetailsScreen(
                     state.isError -> {
                         // **Error Screen**
                         EmptyStateView(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(AppTheme.colors.background.default),
                             icon = Icons.Outlined.ErrorOutline,
                             title = stringResource(R.string.oops_something_went_wrong),
                             action = stringResource(R.string.retry),
@@ -643,7 +645,7 @@ private fun SocialMediaRow(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if(!homepageUrl.isNullOrEmpty()) {
+            if (!homepageUrl.isNullOrEmpty()) {
                 TextButton(onClick = { openUrl(context, homepageUrl) }) {
                     Text(
                         text = AnnotatedString(stringResource(com.github.af2905.movieland.detail.R.string.official_website)),
