@@ -64,26 +64,23 @@ class PeopleRepositoryImpl @Inject constructor(
     override suspend fun getPersonDetails(
         personId: Int,
         language: String?
-    ): Flow<ResultWrapper<PersonDetail>> = flow {
-        emit(ResultWrapper.Loading)
-        try {
+    ): ResultWrapper<PersonDetail>  {
+        return try {
             val response = peopleApi.getPersonDetail(personId, language)
             val personDetail = personDetailMapper.map(response)
-            emit(ResultWrapper.Success(personDetail))
+            ResultWrapper.Success(personDetail)
         } catch (e: IOException) {
-            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_network), e))
+            ResultWrapper.Error(stringProvider.getString(R.string.error_network), e)
         } catch (e: HttpException) {
-            emit(
                 ResultWrapper.Error(
                     stringProvider.getString(
                         R.string.error_server,
                         e.code(),
                         e.message()
                     ), e
-                )
             )
         } catch (e: Exception) {
-            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+            ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e)
         }
     }
 
