@@ -51,9 +51,7 @@ import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
-import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.compose.theme.Themes
-import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.home.domain.models.getMovieGenreItems
 import com.github.af2905.movieland.home.domain.models.getTvShowGenreItems
 import com.github.af2905.movieland.home.presentation.state.HomeAction
@@ -62,6 +60,7 @@ import com.github.af2905.movieland.home.presentation.screen.bottomsheet.SelectAp
 import kotlinx.coroutines.launch
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.ImageProvider
+import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 
 @OptIn(ExperimentalMaterial3Api::class)

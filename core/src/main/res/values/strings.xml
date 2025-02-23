@@ -41,12 +41,15 @@
     <string name="production_companies">Production Companies</string>
     <string name="recommended_movies">Recommended Movies</string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="credits">Credits</string>
 
     <!-- Social Media Labels -->
     <string name="wikidata">Wikidata</string>
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="twitter">Twitter</string>
+    <string name="tiktok">TikTok</string>
+    <string name="youtube">YouTube</string>
 
     <!-- Search -->
     <string name="search">Search</string>
@@ -74,5 +77,13 @@
 
     <!-- Theme Selection Title -->
     <string name="select_theme_color">Select Theme Color</string>
+
+    <!--Person Details -->
+    <string name="years_old">%1$d years old</string>
+    <string name="date_one">%1$s</string>
+    <string name="date_range">%1$s - %2$s</string>
+    <string name="biography">Biography</string>
+
+    <string name="official_website">Official Website</string>
 
 </resources>
