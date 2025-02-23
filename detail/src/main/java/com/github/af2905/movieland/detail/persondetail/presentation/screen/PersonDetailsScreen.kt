@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -50,7 +52,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
-import com.github.af2905.movieland.compose.components.cards.ItemCardHorizontal
+import com.github.af2905.movieland.compose.components.cards.ItemCard
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.draw.alpha
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
@@ -87,7 +94,25 @@ fun PersonDetailsScreen(
             AppCenterAlignedTopAppBar(
                 title = if (showTitle) state.person?.name.orEmpty() else "",
                 onBackClick = { onAction(PersonDetailsAction.BackClick) },
-                elevation = 0.dp
+                elevation = 0.dp,
+                endButtons = {
+                    if (!state.isError && !state.isLoading) {
+                        Row {
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.BookmarkBorder,
+                                    contentDescription = ""
+                                )
+                            }
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Share,
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                    }
+                }
             )
         },
         content = { paddingValues ->
@@ -114,12 +139,7 @@ fun PersonDetailsScreen(
                         item { PersonBackdrop(state) }
                         item { PersonInformation(state) }
                         item { PersonBiography(state) }
-                        if (state.credits.isNotEmpty()) item {
-                            PersonCredits(
-                                state.credits,
-                                onAction
-                            )
-                        }
+                        item { PersonCredits(state.credits, onAction) }
                     }
                 }
             }
@@ -240,20 +260,27 @@ fun PersonCredits(credits: List<PersonCreditsCast>, onAction: (PersonDetailsActi
         modifier = Modifier
             .fillMaxWidth()
             .background(AppTheme.colors.background.default)
+            .then(
+                if (credits.isEmpty()) Modifier.alpha(0f) else Modifier
+            ),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        HeadlinePrimaryActionView(text = stringResource(R.string.credits))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.credits)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(all = 16.dp)
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            credits.forEach { credit ->
-                ItemCardHorizontal(
-                    title = credit.title.orEmpty(),
-                    description = credit.overview.orEmpty(),
-                    rating = credit.voteAverage,
+            items(credits) { credit ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = credit.title,
                     imageUrl = ImageProvider.getImageUrl(credit.posterPath),
+                    rating = credit.voteAverage,
+                    mediaType = credit.mediaType,
                     onItemClick = {
                         onAction(
                             PersonDetailsAction.OpenCredit(
@@ -265,6 +292,7 @@ fun PersonCredits(credits: List<PersonCreditsCast>, onAction: (PersonDetailsActi
                 )
             }
         }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -281,7 +309,7 @@ private fun SocialMediaRow(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if(!homepageUrl.isNullOrEmpty()) {
+            if (!homepageUrl.isNullOrEmpty()) {
                 TextButton(onClick = { openUrl(context, homepageUrl) }) {
                     Text(
                         text = AnnotatedString(stringResource(R.string.official_website)),
@@ -321,6 +349,17 @@ private fun SocialMediaRow(
                 }
             }
 
+            socialIds.tiktokId?.let { id ->
+                SocialMediaProvider.getTiktokUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_tiktok,
+                        tint = AppTheme.colors.type.secondary,
+                        url = url,
+                        contentDescription = stringResource(R.string.tiktok)
+                    )
+                }
+            }
+
             socialIds.facebookId?.let { id ->
                 SocialMediaProvider.getFacebookUrl(id)?.let { url ->
                     SocialMediaIcon(
@@ -349,17 +388,6 @@ private fun SocialMediaRow(
                         tint = AppTheme.colors.type.secondary,
                         url = url,
                         contentDescription = stringResource(R.string.wikidata)
-                    )
-                }
-            }
-
-            socialIds.tiktokId?.let { id ->
-                SocialMediaProvider.getTiktokUrl(id)?.let { url ->
-                    SocialMediaIcon(
-                        iconRes = R.drawable.ic_tiktok,
-                        tint = AppTheme.colors.type.secondary,
-                        url = url,
-                        contentDescription = stringResource(R.string.tiktok)
                     )
                 }
             }
@@ -485,9 +513,3 @@ fun Context.formatPersonAgeAndDates(
         birthday
     }
 }
-
-
-
-
-
-
