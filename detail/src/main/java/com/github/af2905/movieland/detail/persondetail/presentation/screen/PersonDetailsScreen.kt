@@ -281,7 +281,7 @@ private fun SocialMediaRow(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            homepageUrl?.let { homepageUrl ->
+            if(!homepageUrl.isNullOrEmpty()) {
                 TextButton(onClick = { openUrl(context, homepageUrl) }) {
                     Text(
                         text = AnnotatedString(stringResource(R.string.official_website)),
