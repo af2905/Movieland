@@ -38,7 +38,7 @@ class MovieDetailsViewModel @AssistedInject constructor(
 
     private fun fetchMovieDetails() {
         viewModelScope.launch {
-            state = state.copy(isLoading = true)
+            state = state.copy(isLoading = true, isError = false)
 
             // Fetch Movie Details (Suspended Call - No Flow)
             val movieDetailsResult = moviesRepository.getMovieDetails(movieId, null)

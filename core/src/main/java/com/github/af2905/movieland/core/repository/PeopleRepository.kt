@@ -12,7 +12,7 @@ interface PeopleRepository {
     suspend fun getPersonDetails(
         personId: Int,
         language: String?
-    ): Flow<ResultWrapper<PersonDetail>>
+    ): ResultWrapper<PersonDetail>
 
     suspend fun getPersonCredits(
         personId: Int,
