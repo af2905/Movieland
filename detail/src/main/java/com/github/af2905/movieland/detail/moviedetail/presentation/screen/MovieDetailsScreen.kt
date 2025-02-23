@@ -25,6 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Image
@@ -35,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -52,14 +54,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.chips.ChipView
-import com.github.af2905.movieland.compose.components.chips.ChipViewStyle
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
@@ -69,13 +73,13 @@ import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTop
 import com.github.af2905.movieland.compose.components.video_player.YouTubeThumbnail
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.common.helper.ImageProvider
-import com.github.af2905.movieland.core.data.MediaType
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.Video
 import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.SocialMediaProvider
+import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsAction
 import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsState
@@ -329,7 +333,6 @@ fun MovieBackdrop(state: MovieDetailsState) {
             enabled = false,
             onClick = { },
             modifier = Modifier
-
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 10.dp)
                 .onGloballyPositioned { dataGroupSize = it.size.toSize() },
@@ -354,6 +357,8 @@ fun MovieBackdrop(state: MovieDetailsState) {
 
 @Composable
 fun MovieInformation(state: MovieDetailsState) {
+    val context = LocalContext.current
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -417,7 +422,11 @@ fun MovieInformation(state: MovieDetailsState) {
             color = AppTheme.colors.type.secondary
         )
 
-        SocialMediaRow(state.movieSocialIds)
+        SocialMediaRow(
+            context = context,
+            homepageUrl = state.movie?.homepage,
+            socialIds = state.movieSocialIds
+        )
 
         AppHorizontalDivider()
     }
@@ -622,51 +631,83 @@ fun SimilarMovies(similarMovies: List<Movie>, onAction: (MovieDetailsAction) -> 
 }
 
 @Composable
-fun SocialMediaRow(socialIds: MovieDetailsState.MovieSocialIds) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 16.dp)
+private fun SocialMediaRow(
+    context: Context,
+    homepageUrl: String?,
+    socialIds: MovieDetailsState.MovieSocialIds
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        socialIds.instagramId?.let { id ->
-            SocialMediaProvider.getInstagramUrl(id)?.let { url ->
-                SocialMediaIcon(
-                    iconRes = R.drawable.ic_instagram,
-                    url = url,
-                    contentDescription = stringResource(R.string.instagram)
-                )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            homepageUrl?.let { homepageUrl ->
+                TextButton(onClick = { openUrl(context, homepageUrl) }) {
+                    Text(
+                        text = AnnotatedString(stringResource(com.github.af2905.movieland.detail.R.string.official_website)),
+                        style = TextStyle(
+                            color = AppTheme.colors.theme.tint,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(20.dp),
+                        tint = AppTheme.colors.theme.tint,
+                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                        contentDescription = null
+                    )
+                }
             }
         }
-
-        socialIds.facebookId?.let { id ->
-            SocialMediaProvider.getFacebookUrl(id)?.let { url ->
-                SocialMediaIcon(
-                    iconRes = R.drawable.ic_facebook,
-                    url = url,
-                    contentDescription = stringResource(R.string.facebook)
-                )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) {
+            socialIds.instagramId?.let { id ->
+                SocialMediaProvider.getInstagramUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_instagram,
+                        url = url,
+                        contentDescription = stringResource(R.string.instagram)
+                    )
+                }
             }
-        }
 
-        socialIds.twitterId?.let { id ->
-            SocialMediaProvider.getTwitterUrl(id)?.let { url ->
-                SocialMediaIcon(
-                    iconRes = R.drawable.ic_x_twitter,
-                    tint = AppTheme.colors.type.secondary,
-                    url = url,
-                    contentDescription = stringResource(R.string.twitter)
-                )
+            socialIds.facebookId?.let { id ->
+                SocialMediaProvider.getFacebookUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_facebook,
+                        url = url,
+                        contentDescription = stringResource(R.string.facebook)
+                    )
+                }
             }
-        }
 
-        socialIds.wikidataId?.let { id ->
-            SocialMediaProvider.getWikidataUrl(id)?.let { url ->
-                SocialMediaIcon(
-                    iconRes = R.drawable.ic_wiki,
-                    tint = AppTheme.colors.type.secondary,
-                    url = url,
-                    contentDescription = stringResource(R.string.wikidata)
-                )
+            socialIds.twitterId?.let { id ->
+                SocialMediaProvider.getTwitterUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_x_twitter,
+                        tint = AppTheme.colors.type.secondary,
+                        url = url,
+                        contentDescription = stringResource(R.string.twitter)
+                    )
+                }
+            }
+
+            socialIds.wikidataId?.let { id ->
+                SocialMediaProvider.getWikidataUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_wiki,
+                        tint = AppTheme.colors.type.secondary,
+                        url = url,
+                        contentDescription = stringResource(R.string.wikidata)
+                    )
+                }
             }
         }
     }
