@@ -32,13 +32,20 @@ fun PersonDetailsNavWrapper(
                 }
 
                 is PersonDetailsEffect.NavigateToCredit -> {
-                    when(effect.type) {
+                    when (effect.type) {
                         MediaType.MOVIE -> {
-                            AppNavRoutes.MovieDetails.createRoute(effect.creditId)
+                            navController.navigate(
+                                AppNavRoutes.MovieDetails.createRoute(effect.creditId)
+                            )
                         }
-                        else -> {
-                            AppNavRoutes.TVShowDetails.createRoute(effect.creditId)
+
+                        MediaType.TV -> {
+                            navController.navigate(
+                                AppNavRoutes.TVShowDetails.createRoute(effect.creditId)
+                            )
                         }
+
+                        else -> Unit
                     }
                 }
             }

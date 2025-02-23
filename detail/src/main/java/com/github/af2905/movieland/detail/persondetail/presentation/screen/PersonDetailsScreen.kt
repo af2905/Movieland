@@ -54,6 +54,8 @@ import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.IconButton
@@ -61,6 +63,7 @@ import androidx.compose.ui.draw.alpha
 import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.empty_state.EmptyStateView
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
+import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
 import com.github.af2905.movieland.compose.components.topbar.AppCenterAlignedTopAppBar
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.common.helper.ImageProvider
@@ -123,23 +126,27 @@ fun PersonDetailsScreen(
                     .background(AppTheme.colors.theme.tintSelection)
             ) {
                 when {
-                    //state.isLoading -> ShimmerPersonDetailsScreen()
+                    state.isLoading -> PersonDetailsShimmer()
                     state.isError -> EmptyStateView(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(AppTheme.colors.background.default),
                         icon = Icons.Outlined.ErrorOutline,
                         title = stringResource(R.string.oops_something_went_wrong),
                         action = stringResource(R.string.retry),
                         onClick = { /* Retry */ }
                     )
 
-                    else -> LazyColumn(
-                        state = lazyListState,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item { PersonBackdrop(state) }
-                        item { PersonInformation(state) }
-                        item { PersonBiography(state) }
-                        item { PersonCredits(state.credits, onAction) }
+                    else -> {
+                        LazyColumn(
+                            state = lazyListState,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            item { PersonBackdrop(state) }
+                            item { PersonInformation(state) }
+                            item { PersonBiography(state) }
+                            item { PersonCredits(state.credits, onAction) }
+                        }
                     }
                 }
             }
@@ -405,6 +412,131 @@ private fun SocialMediaRow(
     }
 }
 
+@Composable
+private fun PersonDetailsShimmer() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(AppTheme.colors.background.default)
+            .padding(AppTheme.dimens.spaceS)
+    ) {
+        // **Backdrop Shimmer**
+        Spacer(
+            modifier = Modifier
+                .width(180.dp)
+                .height(220.dp)
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
+        )
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+        // **Title & Info Shimmer**
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .height(24.dp)
+                    .width(200.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.6f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.4f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            LazyRow(
+                contentPadding = PaddingValues(all = AppTheme.dimens.spaceM),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(4) {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(30.dp, 30.dp)
+                            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            Spacer(
+                modifier = Modifier
+                    .height(0.5.dp)
+                    .fillMaxWidth()
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
+            )
+        }
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Biography Shimmer**
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+        Spacer(
+            modifier = Modifier
+                .align(Alignment.Start)
+                .height(16.dp)
+                .fillMaxWidth(0.4f)
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+        )
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+
+        repeat(10) {
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth()
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
+        }
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Shimmer for Person Credits**
+        ShimmerHorizontalList()
+    }
+}
+
+/**
+ * Generic shimmer row to simulate credits.
+ */
+@Composable
+private fun ShimmerHorizontalList() {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(5) {
+            Spacer(
+                modifier = Modifier
+                    .size(120.dp, 180.dp)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
+            )
+        }
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -485,7 +617,6 @@ private fun PreviewPersonDetailsScreen() {
         onAction = {}
     )
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun Context.formatPersonAgeAndDates(
