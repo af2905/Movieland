@@ -2,8 +2,8 @@ package com.github.af2905.movieland.core.data.api
 
 import com.github.af2905.movieland.core.data.dto.credits.CreditsDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
-import com.github.af2905.movieland.core.data.dto.movie.MovieExternalIds
-import com.github.af2905.movieland.core.data.dto.movie.MovieVideosDto
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
+import com.github.af2905.movieland.core.data.dto.movie.VideosDto
 import com.github.af2905.movieland.core.data.dto.movie.MoviesDto
 
 import retrofit2.http.GET
@@ -66,10 +66,10 @@ interface MoviesApi {
     suspend fun getMovieVideos(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String? = null
-    ): MovieVideosDto
+    ): VideosDto
 
     @GET("movie/{movie_id}/external_ids")
     suspend fun getMovieExternalIds(
         @Path("movie_id") movieId: Int
-    ): MovieExternalIds
+    ): ExternalIds
 }
