@@ -1,6 +1,8 @@
 package com.github.af2905.movieland.core.data.api
 
 import com.github.af2905.movieland.core.data.dto.credits.CreditsDto
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
+import com.github.af2905.movieland.core.data.dto.movie.VideosDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowDetailDto
 import com.github.af2905.movieland.core.data.dto.tv.TvShowsDto
 import retrofit2.http.GET
@@ -42,7 +44,15 @@ interface TvShowsApi {
     @GET("tv/{tv_id}/similar")
     suspend fun getSimilarTvShows(
         @Path("tv_id") tvId: Int,
-        @Query("language") language: String? = null
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null
+    ): TvShowsDto
+
+    @GET("tv/{tv_id}/recommendations")
+    suspend fun getRecommendedTvShows(
+        @Path("tv_id") tvId: Int,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null
     ): TvShowsDto
 
     @GET("tv/{tv_id}/credits")
@@ -50,4 +60,21 @@ interface TvShowsApi {
         @Path("tv_id") tvId: Int,
         @Query("language") language: String? = null
     ): CreditsDto
+
+    @GET("tv/{tv_id}/aggregate_credits")
+    suspend fun getTvShowAggregateCredits(
+        @Path("tv_id") tvId: Int,
+        @Query("language") language: String? = null
+    ): CreditsDto
+
+    @GET("tv/{tv_id}/videos")
+    suspend fun getTvShowVideos(
+        @Path("tv_id") tvId: Int,
+        @Query("language") language: String? = null
+    ): VideosDto
+
+    @GET("tv/{tv_id}/external_ids")
+    suspend fun getTvShowExternalIds(
+        @Path("tv_id") tvId: Int
+    ): ExternalIds
 }
