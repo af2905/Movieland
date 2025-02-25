@@ -13,7 +13,7 @@ import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Video
-import com.github.af2905.movieland.core.data.dto.movie.MovieExternalIds
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
 import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
 import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
@@ -254,7 +254,7 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getMovieExternalIds(
         movieId: Int,
         language: String?
-    ): ResultWrapper<MovieExternalIds?> {
+    ): ResultWrapper<ExternalIds?> {
         return try {
             val movieExternalIds = moviesApi.getMovieExternalIds(movieId)
             ResultWrapper.Success(movieExternalIds)

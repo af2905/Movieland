@@ -2,7 +2,7 @@ package com.github.af2905.movieland.core.data.dto.movie
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieVideosDto(
+data class VideosDto(
     @SerializedName("id") val id: Int,
     @SerializedName("results") val results: List<VideoDto>
 )

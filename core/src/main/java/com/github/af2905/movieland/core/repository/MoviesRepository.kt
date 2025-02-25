@@ -7,7 +7,7 @@ import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Video
-import com.github.af2905.movieland.core.data.dto.movie.MovieExternalIds
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
@@ -55,5 +55,5 @@ interface MoviesRepository {
 
     fun getMovieVideos(movieId: Int, language: String?): Flow<ResultWrapper<List<Video>>>
 
-    suspend fun getMovieExternalIds(movieId: Int, language: String?): ResultWrapper<MovieExternalIds?>
+    suspend fun getMovieExternalIds(movieId: Int, language: String?): ResultWrapper<ExternalIds?>
 }
