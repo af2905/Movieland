@@ -87,10 +87,8 @@ class HomeViewModel @Inject constructor(
 
             // Fetch TV Show Data
             val tvShowData = combine(
-                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, null)
-                    .catch { emit(emptyList()) },
+                tvShowsRepository.getTvShows(TvShowType.POPULAR, null, null),
                 tvShowsRepository.getTvShows(TvShowType.TOP_RATED, null, null)
-                    .catch { emit(emptyList()) }
             ) { popularTvShows, topRatedTvShows ->
                 Pair(popularTvShows, topRatedTvShows)
             }
@@ -140,8 +138,8 @@ class HomeViewModel @Inject constructor(
                         moviesGenres = movieGenres,
                         tvShowsGenres = tvGenres,
                         popularPeople = popularPeople,
-                        popularTvShows = popularTvShows,
-                        topRatedTvShows = topRatedTvShows,
+                        popularTvShows = if(popularTvShows is ResultWrapper.Success) popularTvShows.data else state.popularTvShows,
+                        topRatedTvShows = if(topRatedTvShows is ResultWrapper.Success) topRatedTvShows.data else state.topRatedTvShows,
                         isLoading = false,
                         isError = false,
                     )
