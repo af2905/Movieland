@@ -27,8 +27,13 @@ data class Person(
     val name: String?,
     val profilePath: String?,
     val popularity: Double?,
+    val personType: PersonType? = null,
     val timeStamp: Long? = null
 )
+
+enum class PersonType {
+    POPULAR, TRENDING_DAY, TRENDING_WEEK
+}
 
 data class KnownFor(
     @ColumnInfo(name = KNOWN_FOR_ID) val id: Int,
@@ -38,7 +43,7 @@ data class KnownFor(
     @ColumnInfo(name = KNOWN_FOR_FIRST_AIR_DATE) val firstAirDate: String?,
     @ColumnInfo(name = KNOWN_FOR_GENRE_IDS) val genreIds: List<Int>?,
     @ColumnInfo(name = KNOWN_FOR_RELEASE_DATE) val releaseDate: String?,
-    @ColumnInfo(name = KNOWN_FOR_MEDIA_TYPE) val mediaType: String,
+    @ColumnInfo(name = KNOWN_FOR_MEDIA_TYPE) val mediaType: MediaType,
     @ColumnInfo(name = KNOWN_FOR_ORIGIN_COUNTRY) val originCountry: List<String>?,
     @ColumnInfo(name = KNOWN_FOR_ORIGINAL_LANGUAGE) val originalLanguage: String?,
     @ColumnInfo(name = KNOWN_FOR_ORIGINAL_NAME) val originalName: String?,

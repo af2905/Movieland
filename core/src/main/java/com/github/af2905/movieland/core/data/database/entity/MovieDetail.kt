@@ -1,46 +1,48 @@
 package com.github.af2905.movieland.core.data.database.entity
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.af2905.movieland.core.data.database.entity.plain.CreditsCast
+import androidx.room.Relation
 
 @Entity
 data class MovieDetail(
     @PrimaryKey val id: Int,
-    val adult: Boolean?,
-    val budget: Int?,
-    val genres: List<Genre>?,
-    val homepage: String?,
-    val imdbId: String?,
-    val originalLanguage: String?,
+    val title: String?,
     val originalTitle: String?,
+    val originalLanguage: String?,
     val overview: String?,
-    val popularity: Double?,
-    val productionCompanies: List<ProductionCompany>?,
-    val productionCountries: List<ProductionCountry>?,
-    val releaseDate: String?,
+    val tagline: String?,
+    val budget: Int?,
     val revenue: Long?,
     val runtime: Int?,
+    val releaseDate: String?,
     val status: String?,
-    val tagline: String?,
-    val title: String?,
-    val video: Boolean?,
+    val adult: Boolean?,
+    val popularity: Double?,
     val voteAverage: Double?,
     val voteCount: Int?,
+    val homepage: String?,
     val backdropPath: String?,
     val posterPath: String?,
-    val liked: Boolean,
-    val creditsCasts: List<CreditsCast>,
-    val similarMovies: List<Movie>
+    val video: Boolean?,
+    val genres: List<Genre>?,
+    val productionCompanies: List<ProductionCompany>?,
+    val productionCountries: List<ProductionCountry>?,
 )
 
-data class Genre(val id: Int, val name: String?)
-
-data class ProductionCompany(
-    val id: Int,
-    val name: String?,
-    val originCountry: String?,
-    val logoPath: String?
+data class MovieDetailWithDetails(
+    @Embedded val movie: MovieDetail,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "movieId"
+    ) val productionCompanies: List<ProductionCompany>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "movieId"
+    ) val productionCountries: List<ProductionCountry>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "movieId"
+    ) val cast: List<CreditsCast>
 )
-
-data class ProductionCountry(val iso: String?, val name: String?)

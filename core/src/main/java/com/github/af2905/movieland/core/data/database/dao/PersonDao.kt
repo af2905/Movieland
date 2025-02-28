@@ -2,25 +2,21 @@ package com.github.af2905.movieland.core.data.database.dao
 
 import androidx.room.*
 import com.github.af2905.movieland.core.data.database.entity.Person
+import com.github.af2905.movieland.core.data.database.entity.PersonType
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PersonDao {
 
-    @Query("SELECT * FROM Person")
-    suspend fun get(): List<Person>?
-
-    @Query("SELECT COUNT(*) FROM Person")
-    suspend fun getCount(): Int?
-
-    @Query("SELECT timeStamp FROM Person LIMIT 1")
-    suspend fun getTimeStamp(): Long?
+    @Query("SELECT * FROM Person WHERE personType = :personType ORDER BY popularity DESC")
+    fun getPeopleByType(personType: PersonType): Flow<List<Person>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(person: Person)
+    suspend fun insertPeople(people: List<Person>)
 
-    @Delete
-    suspend fun delete(person: Person)
+    @Query("DELETE FROM Person WHERE personType = :personType")
+    suspend fun deletePeopleByType(personType: PersonType)
 
-    @Query("DELETE FROM Person")
-    suspend fun deleteAll()
+    @Query("SELECT MAX(timeStamp) FROM Person WHERE personType = :personType")
+    suspend fun getLastUpdated(personType: PersonType): Long?
 }

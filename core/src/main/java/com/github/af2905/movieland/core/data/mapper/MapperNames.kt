@@ -1,6 +1,0 @@
-package com.github.af2905.movieland.core.data.mapper
-
-const val DTO_TO_ENTITY_MAPPER = "DTO_TO_ENTITY_MAPPER"
-const val DTO_TO_UI_ITEM_MAPPER = "DTO_TO_UI_ITEM_MAPPER"
-const val ENTITY_TO_UI_ITEM_MAPPER = "ENTITY_TO_UI_ITEM_MAPPER"
-const val UI_ITEM_TO_ENTITY_MAPPER = "UI_ITEM_TO_ENTITY_MAPPER"

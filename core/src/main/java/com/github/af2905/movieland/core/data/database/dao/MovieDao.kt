@@ -2,26 +2,22 @@ package com.github.af2905.movieland.core.data.database.dao
 
 import androidx.room.*
 import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM Movie WHERE movieType =:movieType")
-    suspend fun getByType(movieType: String): List<Movie>?
-
-    @Query("SELECT COUNT(*) FROM Movie WHERE movieType =:movieType")
-    suspend fun getCountByType(movieType: String): Int?
-
-    @Query("SELECT timeStamp FROM Movie WHERE movieType =:movieType LIMIT 1")
-    suspend fun getTimeStampByType(movieType: String): Long?
+    @Query("SELECT * FROM Movie WHERE movieType = :movieType ORDER BY popularity DESC")
+    fun getMoviesByType(movieType: MovieType): Flow<List<Movie>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(movie: Movie)
+    suspend fun insertMovies(movies: List<Movie>)
 
-    @Delete
-    suspend fun delete(movie: Movie)
+    @Query("DELETE FROM Movie WHERE movieType = :movieType")
+    suspend fun deleteMoviesByType(movieType: MovieType)
 
-    @Query("DELETE FROM Movie")
-    suspend fun deleteAll()
+    @Query("SELECT MAX(timeStamp) FROM Movie WHERE movieType = :movieType")
+    suspend fun getLastUpdated(movieType: MovieType): Long?
 
 }

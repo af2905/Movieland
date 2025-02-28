@@ -24,7 +24,6 @@
         <item name="android:maxLines">@integer/max_lines_1</item>
         <item name="android:padding">@dimen/default_margin</item>
         <item name="android:textColorHint">@color/tintSearchBarDark</item>
-        <item name="android:hint">@string/hint_search_query</item>
         <item name="android:textSize">@dimen/default_text_normal</item>
         <item name="android:textColor">@android:color/white</item>
     </style>

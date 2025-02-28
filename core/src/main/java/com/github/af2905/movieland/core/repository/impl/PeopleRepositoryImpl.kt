@@ -1,103 +1,124 @@
 package com.github.af2905.movieland.core.repository.impl
 
+import com.github.af2905.movieland.core.R
+import com.github.af2905.movieland.core.common.helper.StringProvider
+import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.api.PeopleApi
 import com.github.af2905.movieland.core.data.database.dao.PersonDao
-import com.github.af2905.movieland.core.data.database.dao.PersonDetailDao
 import com.github.af2905.movieland.core.data.database.entity.Person
+import com.github.af2905.movieland.core.data.database.entity.PersonCreditsCast
 import com.github.af2905.movieland.core.data.database.entity.PersonDetail
-import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
-import com.github.af2905.movieland.core.data.dto.people.PersonDetailDto
-import com.github.af2905.movieland.core.data.dto.people.PersonMovieCreditsCastDto
+import com.github.af2905.movieland.core.data.database.entity.PersonType
+import com.github.af2905.movieland.core.data.dto.people.PersonExternalIds
+import com.github.af2905.movieland.core.data.mapper.PersonCreditMapper
+import com.github.af2905.movieland.core.data.mapper.PersonDetailMapper
 import com.github.af2905.movieland.core.data.mapper.PersonMapper
 import com.github.af2905.movieland.core.repository.PeopleRepository
-import com.github.af2905.movieland.util.extension.isNullOrEmpty
-import java.util.Calendar
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val DEFAULT_UPDATE_PEOPLE_HOURS = 4L
-
 class PeopleRepositoryImpl @Inject constructor(
-    private val peopleApi: PeopleApi,
     private val personDao: PersonDao,
-    private val personDetailDao: PersonDetailDao,
+    private val peopleApi: PeopleApi,
     private val personMapper: PersonMapper,
-    private val resourceDatastore: ResourceDatastore
+    private val personDetailMapper: PersonDetailMapper,
+    private val personCreditMapper: PersonCreditMapper,
+    private val stringProvider: StringProvider
 ) : PeopleRepository {
 
-    override suspend fun getPersonDetail(
+    override suspend fun getPopularPeople(language: String?): Flow<List<Person>> = flow {
+        val cachedPeople = personDao.getPeopleByType(PersonType.POPULAR).firstOrNull()
+        val lastUpdated = cachedPeople?.firstOrNull()?.timeStamp ?: 0L
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
+
+        if (cachedPeople.isNullOrEmpty() || isCacheStale) {
+            try {
+                val response = peopleApi.getPersonPopular(language)
+                val people = personMapper.map(response.results)
+                    .map { person ->
+                        person.copy(
+                            personType = PersonType.POPULAR,
+                            timeStamp = System.currentTimeMillis()
+                        )
+                    }
+                    .filter { person -> !person.profilePath.isNullOrEmpty() }
+
+                if (people.isNotEmpty()) {
+                    personDao.deletePeopleByType(PersonType.POPULAR)
+                    personDao.insertPeople(people)
+                }
+            } catch (e: Exception) {
+                // Handle API errors (log, analytics, fallback)
+            }
+        }
+        emitAll(personDao.getPeopleByType(PersonType.POPULAR))
+    }.catch { emit(emptyList()) }
+
+    override suspend fun getPersonDetails(
         personId: Int,
         language: String?
-    ): PersonDetailDto {
-        return peopleApi.getPersonDetail(
-            personId = personId,
-            language = language ?: resourceDatastore.getLanguage()
-        )
+    ): ResultWrapper<PersonDetail>  {
+        return try {
+            val response = peopleApi.getPersonDetail(personId, language)
+            val personDetail = personDetailMapper.map(response)
+            ResultWrapper.Success(personDetail)
+        } catch (e: IOException) {
+            ResultWrapper.Error(stringProvider.getString(R.string.error_network), e)
+        } catch (e: HttpException) {
+                ResultWrapper.Error(
+                    stringProvider.getString(
+                        R.string.error_server,
+                        e.code(),
+                        e.message()
+                    ), e
+            )
+        } catch (e: Exception) {
+            ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e)
+        }
     }
 
-    override suspend fun getPersonMovieCredits(
+    override suspend fun getPersonCredits(
         personId: Int,
         language: String?
-    ): List<PersonMovieCreditsCastDto> {
-        return peopleApi.getPersonMovieCredits(
-            personId = personId,
-            language = language ?: resourceDatastore.getLanguage()
-        ).cast.orEmpty()
-    }
-
-    override suspend fun getPopularPeople(
-        language: String?,
-        page: Int?,
-        forceUpdate: Boolean
-    ): List<Person> {
-
-        val count = personDao.getCount()
-
-        val timeStamp = count?.let { personDao.getTimeStamp() }
-
-        val currentTime = Calendar.getInstance().timeInMillis
-
-        val timeDiff = timeStamp?.let {
-            periodOfTimeInHours(
-                timeStamp = it,
-                currentTime = currentTime
+    ): Flow<ResultWrapper<List<PersonCreditsCast>>> = flow {
+        emit(ResultWrapper.Loading)
+        try {
+            val response = peopleApi.getPersonCredits(personId, language)
+            val credits = response.cast?.map { personCreditMapper.map(it) }
+                ?.filter { credit -> !credit.posterPath.isNullOrEmpty() }.orEmpty()
+            emit(ResultWrapper.Success(credits))
+        } catch (e: IOException) {
+            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_network), e))
+        } catch (e: HttpException) {
+            emit(
+                ResultWrapper.Error(
+                    stringProvider.getString(
+                        R.string.error_server,
+                        e.code(),
+                        e.message()
+                    ), e
+                )
             )
+        } catch (e: Exception) {
+            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
         }
+    }
 
-        val needToUpdate = timeDiff?.let {
-            it > TimeUnit.HOURS.toMillis(DEFAULT_UPDATE_PEOPLE_HOURS)
+    override suspend fun getPersonExternalIds(
+        personId: Int,
+    ): ResultWrapper<PersonExternalIds?> {
+        return try {
+            val personExternalIds = peopleApi.getPersonExternalIds(personId)
+            ResultWrapper.Success(personExternalIds)
+        } catch (e: Exception) {
+            ResultWrapper.Success(null)
         }
-
-        if (count.isNullOrEmpty() || needToUpdate == true || forceUpdate) {
-            val dto = peopleApi.getPersonPopular(
-                language = language ?: resourceDatastore.getLanguage(),
-                page = page
-            )
-            personMapper.map(dto.results, currentTime).forEach { personDao.save(it) }
-        }
-        return personDao.get().orEmpty()
     }
-
-    override suspend fun savePersonDetail(personDetail: PersonDetail): Boolean {
-        return personDetailDao.save(personDetail)?.let { true } ?: false
-    }
-
-    override suspend fun removePersonDetail(personDetail: PersonDetail): Boolean {
-        return personDetailDao.delete(personDetail)?.let { true } ?: false
-    }
-
-    override suspend fun getPersonDetailById(id: Int): PersonDetail? {
-        return personDetailDao.getById(id)
-    }
-
-    override suspend fun getAllSavedPersonDetail(): List<PersonDetail> {
-        return personDetailDao.getAll() ?: emptyList()
-    }
-
-    override suspend fun getCachedPopularPeople(): List<Person> {
-        return personDao.get().orEmpty()
-    }
-
-    private fun periodOfTimeInHours(timeStamp: Long, currentTime: Long) =
-        TimeUnit.MILLISECONDS.toHours(currentTime - timeStamp)
 }

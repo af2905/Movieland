@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" >@android:color/darker_gray</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
     <style name="Theme.Movieland.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

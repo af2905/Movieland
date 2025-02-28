@@ -18,10 +18,10 @@ data class PersonDetail(
     val adult: Boolean?,
     val homepage: String?,
     val liked: Boolean,
-    val personMovieCreditsCasts: List<PersonMovieCreditsCast> = emptyList()
+    val personCreditsCasts: List<PersonCreditsCast> = emptyList()
 )
 
-data class PersonMovieCreditsCast(
+data class PersonCreditsCast(
     val id: Int,
     val adult: Boolean?,
     val backdropPath: String?,
@@ -38,5 +38,6 @@ data class PersonMovieCreditsCast(
     val voteCount: Int?,
     val character: String?,
     val creditId: String?,
-    val order: Int?
+    val order: Int?,
+    val mediaType: MediaType
 )

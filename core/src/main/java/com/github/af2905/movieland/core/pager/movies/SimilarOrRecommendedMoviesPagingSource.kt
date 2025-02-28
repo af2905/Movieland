@@ -1,0 +1,68 @@
+package com.github.af2905.movieland.core.pager.movies
+
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import com.github.af2905.movieland.core.common.network.ResultWrapper
+import com.github.af2905.movieland.core.data.database.entity.Movie
+import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.repository.MoviesRepository
+
+class SimilarOrRecommendedMoviesPagingSource(
+    private val moviesRepository: MoviesRepository,
+    private val movieId: Int,
+    private val movieType: MovieType,
+    private val language: String?
+) : PagingSource<Int, Movie>() {
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+        return try {
+            val currentPage = params.key ?: 1
+
+            val responseFlow = when (movieType) {
+                MovieType.RECOMMENDED -> moviesRepository.getRecommendedMovies(movieId, language, currentPage)
+                MovieType.SIMILAR -> moviesRepository.getSimilarMovies(movieId, language, currentPage)
+                else -> throw IllegalArgumentException("Invalid movieType for recommended/similar")
+            }
+
+            var result: ResultWrapper<List<Movie>>? = null
+            responseFlow.collect { response ->
+                result = response
+            }
+
+            // Ensure we actually received data before proceeding
+            result?.let { response ->
+                when (response) {
+                    is ResultWrapper.Success -> {
+                        LoadResult.Page(
+                            data = response.data,
+                            prevKey = if (currentPage == 1) null else currentPage - 1,
+                            nextKey = if (response.data.isEmpty()) null else currentPage + 1
+                        )
+                    }
+
+                    is ResultWrapper.Error -> {
+                        LoadResult.Error(response.throwable ?: Exception("Unknown error"))
+                    }
+
+                    is ResultWrapper.Loading -> {
+                        LoadResult.Page(
+                            data = emptyList(),
+                            prevKey = null,
+                            nextKey = null
+                        )
+                    }
+                }
+            } ?: throw Exception("No response received") // If nothing was collected, fail explicitly
+
+        } catch (e: Exception) {
+            LoadResult.Error(e)
+        }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
+    }
+}

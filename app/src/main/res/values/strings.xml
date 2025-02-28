@@ -1,9 +1,4 @@
 <resources>
     <string name="app_name">Movieland</string>
 
-    <string name="bottom_nav_menu_home_title">Home</string>
-    <string name="bottom_nav_menu_search_title">Search</string>
-    <string name="bottom_nav_menu_profile_title">Profile</string>
-    <string name="bottom_nav_menu_liked_title">Favorites</string>
-
 </resources>

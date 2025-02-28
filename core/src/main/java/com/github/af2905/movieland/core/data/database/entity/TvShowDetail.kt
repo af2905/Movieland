@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.af2905.movieland.core.data.database.entity.plain.CreditsCast
 
 private const val LAST_EPISODE_TO_AIR_ID = "last_episode_to_air_id"
 private const val LAST_EPISODE_TO_AIR_DATE = "last_episode_to_air_date"
@@ -25,7 +24,7 @@ data class TvShowDetail(
     val createdBy: List<CreatedBy>?,
     val episodeRunTime: List<Int>?,
     val firstAirDate: String?,
-    val genres: List<Genre>?,
+    val genre: List<Genre>?,
     val homepage: String?,
     val inProduction: Boolean?,
     val languages: List<String>,

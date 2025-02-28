@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="popular">Популярные</string>
-    <string name="top_rated">Топ просмотров</string>
-    <string name="upcoming">Ожидаемые</string>
-    <string name="now_playing">Сейчас смотрят</string>
+
 </resources>
