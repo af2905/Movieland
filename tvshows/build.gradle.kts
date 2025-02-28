@@ -46,7 +46,11 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
 
     kapt {
@@ -58,7 +62,7 @@ dependencies {
     // Project modules
     implementation(project(":core"))
     implementation(project(":util"))
-    implementation(project(":detail"))
+    implementation(project(":compose"))
 
     // Libraries from version catalog
     implementation(libs.dagger.android.support)
@@ -77,6 +81,24 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
 
+    // Compose
+    implementation(libs.activity.compose)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.foundation)
+    implementation(libs.compose.animation)
+    implementation(libs.compose.material.icons)
+    implementation(libs.coil.compose)
+
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+
     // Hilt navigation for Jetpack Compose
     implementation(libs.hilt.navigation.compose)
+
+    // Paging Compose
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
 }
