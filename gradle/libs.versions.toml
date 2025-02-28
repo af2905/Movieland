@@ -47,6 +47,7 @@ compose-material-icons = "1.7.6"
 coilCompose = "2.6.0"
 hiltCommon = "1.2.0"
 foundationAndroid = "1.7.7"
+pagingComposeAndroid = "3.3.6"
 
 [libraries]
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
@@ -104,3 +105,4 @@ compose-material-icons = { module = "androidx.compose.material:material-icons-ex
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
 foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
+paging-compose-android = { group = "androidx.paging", name = "paging-compose-android", version.ref = "pagingComposeAndroid" }
