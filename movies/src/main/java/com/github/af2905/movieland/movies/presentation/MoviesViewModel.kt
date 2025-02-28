@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+
 @HiltViewModel(assistedFactory = MoviesViewModel.Factory::class)
 class MoviesViewModel @AssistedInject constructor(
     @Assisted private val movieId: Int?,
@@ -41,6 +42,7 @@ class MoviesViewModel @AssistedInject constructor(
                 language = null
             )
         }
+
         movieType == MovieType.RECOMMENDED && movieId != null -> {
             moviesRepository.getSimilarOrRecommendedPaginated(
                 movieId = movieId,
@@ -48,9 +50,11 @@ class MoviesViewModel @AssistedInject constructor(
                 language = null
             )
         }
+
         movieType == MovieType.TRENDING_DAY || movieType == MovieType.TRENDING_WEEK -> {
             trendingRepository.getTrendingMoviesPaginated(movieType, language = null)
         }
+
         else -> {
             moviesRepository.getMoviesPaginated(movieType = movieType, language = null)
         }
@@ -62,6 +66,7 @@ class MoviesViewModel @AssistedInject constructor(
             is MoviesAction.BackClick -> {
                 viewModelScope.launch { _effect.send(MoviesEffect.NavigateBack) }
             }
+
             is MoviesAction.OpenMovieDetail -> {
                 viewModelScope.launch { _effect.send(MoviesEffect.NavigateToMovieDetail(action.movieId)) }
             }
