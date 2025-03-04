@@ -62,6 +62,7 @@ import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.common.helper.ImageProvider
 import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -238,8 +239,8 @@ private fun HomeContent(
         if (state.trendingTvShows.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = stringResource(id = R.string.trending_tv_shows),
-                    onClick = { /* Handle click */ })
+                    text = stringResource(id = R.string.trending_tv_shows)
+                )
             }
 
             item {
@@ -268,8 +269,8 @@ private fun HomeContent(
         if (state.trendingPeople.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = stringResource(id = R.string.trending_people),
-                    onClick = { /* Handle click */ })
+                    text = stringResource(id = R.string.trending_people)
+                )
             }
 
             item {
@@ -472,7 +473,7 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.popular_tv_shows),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenTvShowsByType(tvShowType = TvShowType.POPULAR)) })
             }
 
             item {
@@ -502,7 +503,7 @@ private fun HomeContent(
                 HeadlinePrimaryActionView(
                     text = stringResource(id = R.string.top_rated_tv_shows),
                     action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    onClick = { onAction(HomeAction.OpenTvShowsByType(tvShowType = TvShowType.TOP_RATED)) })
             }
 
             item {
@@ -530,9 +531,8 @@ private fun HomeContent(
         if (state.popularPeople.isNotEmpty()) {
             item {
                 HeadlinePrimaryActionView(
-                    text = stringResource(id = R.string.popular_people),
-                    action = stringResource(id = R.string.view_all),
-                    onClick = { /* Handle click */ })
+                    text = stringResource(id = R.string.popular_people)
+                )
             }
 
             item {

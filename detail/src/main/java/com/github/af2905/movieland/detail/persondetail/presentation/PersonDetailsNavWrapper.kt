@@ -1,7 +1,5 @@
 package com.github.af2905.movieland.detail.persondetail.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -12,7 +10,6 @@ import com.github.af2905.movieland.detail.persondetail.presentation.screen.Perso
 import com.github.af2905.movieland.detail.persondetail.presentation.state.PersonDetailsEffect
 import com.github.af2905.movieland.detail.persondetail.presentation.viewmodel.PersonDetailsViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PersonDetailsNavWrapper(
     personId: Int,

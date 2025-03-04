@@ -58,6 +58,15 @@ fun HomeScreenNavWrapper(
                         )
                     )
                 }
+
+                is HomeEffect.NavigateToTvShows -> {
+                    navController.navigate(
+                        AppNavRoutes.TvShows.createRoute(
+                            tvShowId = null,
+                            tvShowType = effect.tvShowType
+                        )
+                    )
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.Person
 import com.github.af2905.movieland.core.data.database.entity.TvShow
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
 
 data class HomeState(
     val isLoading: Boolean = false,
@@ -32,6 +33,7 @@ sealed interface HomeAction {
     data class ChangeAppColor(val selectedTheme: Themes) : HomeAction
     data object RetryFetch : HomeAction
     data class OpenMoviesByType(val movieType: MovieType) : HomeAction
+    data class OpenTvShowsByType(val tvShowType: TvShowType) : HomeAction
 }
 
 sealed interface HomeEffect {
@@ -41,4 +43,5 @@ sealed interface HomeEffect {
     data class NavigateToGenre(val genreId: Int) : HomeEffect
     data class ChangeAppColor(val selectedTheme: Themes) : HomeEffect
     data class NavigateToMovies(val movieType: MovieType) : HomeEffect
+    data class NavigateToTvShows(val tvShowType: TvShowType) : HomeEffect
 }

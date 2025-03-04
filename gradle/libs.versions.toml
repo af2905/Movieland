@@ -1,7 +1,7 @@
 [versions]
 androidBuildTools = "34.0.0"
 androidCompileSdk = "34"
-androidMinSdk = "24"
+androidMinSdk = "26"
 androidTargetSdk = "34"
 datastorePreferences = "1.1.2"
 kotlinCompilerExtensionVersion = "1.5.11"

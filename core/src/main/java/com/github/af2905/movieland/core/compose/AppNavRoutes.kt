@@ -1,6 +1,7 @@
 package com.github.af2905.movieland.core.compose
 
 import com.github.af2905.movieland.core.data.database.entity.MovieType
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
 
 sealed class AppNavRoutes(val route: String) {
 
@@ -38,6 +39,16 @@ sealed class AppNavRoutes(val route: String) {
                 "movies/$movieId?movieType=${movieType.name}"
             } else {
                 "movies/null?movieType=${movieType.name}"
+            }
+        }
+    }
+
+    data object TvShows : AppNavRoutes("tvShows/{tvShowId}?tvShowType={tvShowType}") {
+        fun createRoute(tvShowId: Int?, tvShowType: TvShowType): String {
+            return if (tvShowId != null) {
+                "tvShows/$tvShowId?tvShowType=${tvShowType.name}"
+            } else {
+                "tvShows/null?tvShowType=${tvShowType.name}"
             }
         }
     }

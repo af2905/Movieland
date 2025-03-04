@@ -81,7 +81,6 @@ import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PersonDetailsScreen(
     state: PersonDetailsState,
@@ -190,7 +189,6 @@ fun PersonBackdrop(state: PersonDetailsState) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PersonInformation(state: PersonDetailsState) {
     val context = LocalContext.current
