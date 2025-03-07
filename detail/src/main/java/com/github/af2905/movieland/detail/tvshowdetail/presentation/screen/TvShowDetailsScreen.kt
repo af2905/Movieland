@@ -317,24 +317,26 @@ private fun TvShowInformation(state: TvShowDetailsState) {
 @Composable
 private fun TvShowDetails(state: TvShowDetailsState) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .background(AppTheme.colors.background.default)
+            .padding(horizontal = 16.dp)
     ) {
-        state.tvShow?.tagline?.let {
-            Text(
-                text = "\"$it\"",
-                //style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        state.tvShow?.overview?.let {
+        if (!state.tvShow?.tagline.isNullOrEmpty()) {
             Text(
-                text = it,
-                //style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colorScheme.onSurface
+                text = state.tvShow?.tagline.orEmpty(),
+                style = AppTheme.typography.title3,
+                color = AppTheme.colors.type.secondary
+            )
+        }
+        if (!state.tvShow?.overview.isNullOrEmpty()) {
+            Text(
+                text = state.tvShow?.overview.orEmpty(),
+                style = AppTheme.typography.body,
+                color = AppTheme.colors.type.secondary
             )
         }
     }
@@ -342,64 +344,100 @@ private fun TvShowDetails(state: TvShowDetailsState) {
 
 @Composable
 private fun TvShowVideos(videos: List<Video>, onAction: (TvShowDetailsAction) -> Unit) {
-    if (videos.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Videos",
-                //style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(16.dp)
-            )
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(videos) { video ->
-                    YouTubeThumbnail(
-                        videoId = video.key,
-                        videoName = video.name,
-                        onVideoClick = { videoId ->
-                            onAction(TvShowDetailsAction.OpenVideo(videoId))
-                        }
-                    )
-                }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.videos)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(videos) { video ->
+                YouTubeThumbnail(
+                    videoId = video.key,
+                    videoName = video.name,
+                    onVideoClick = { videoId ->
+                        onAction(TvShowDetailsAction.OpenVideo(videoId))
+                    }
+                )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 @Composable
 private fun TvShowCasts(casts: List<CreditsCast>, onAction: (TvShowDetailsAction) -> Unit) {
-    if (casts.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Cast",
-                //style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(16.dp)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.casts)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(casts) { cast ->
-                    ItemCard(
-                        title = cast.name,
-                        subtitle = cast.character,
-                        showSubtitle = true,
-                        imageUrl = ImageProvider.getImageUrl(cast.profilePath),
-                        mediaType = MediaType.PERSON,
-                        onItemClick = {
-                            onAction(TvShowDetailsAction.OpenPersonDetail(cast.id))
-                        }
-                    )
-                }
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(casts) { cast ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = cast.name,
+                    subtitle = cast.character,
+                    showSubtitle = true,
+                    imageUrl = ImageProvider.getImageUrl(cast.profilePath),
+                    mediaType = MediaType.PERSON,
+                    onItemClick = {
+                        onAction(TvShowDetailsAction.OpenPersonDetail(cast.id))
+                    }
+                )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun ProductionCompanies(
+    companies: List<ProductionCompany>,
+    onAction: (TvShowDetailsAction) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.production_companies)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(companies) { item ->
+                ChipView(
+                    text = item.companyName,
+                    isLarge = true,
+                    enabled = false
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -408,65 +446,73 @@ private fun RecommendedTvShows(
     recommendedTvShows: List<TvShow>,
     onAction: (TvShowDetailsAction) -> Unit
 ) {
-    if (recommendedTvShows.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Recommended TV Shows",
-                //style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(16.dp)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default),
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.recommended_tv_shows),
+            action = stringResource(R.string.view_all),
+            onClick = { onAction(TvShowDetailsAction.OpenTvShowsByType(tvShowType = TvShowType.RECOMMENDED)) }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(recommendedTvShows) { tvShow ->
-                    ItemCard(
-                        title = tvShow.name,
-                        imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
-                        rating = tvShow.voteAverage,
-                        mediaType = MediaType.TV,
-                        onItemClick = {
-                            onAction(TvShowDetailsAction.OpenTvShowsByType(TvShowType.RECOMMENDED))
-                        }
-                    )
-                }
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(recommendedTvShows) { movie ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = movie.name,
+                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
+                    rating = movie.voteAverage,
+                    mediaType = MediaType.TV,
+                    onItemClick = {
+                        onAction(TvShowDetailsAction.OpenTvShowDetail(movie.id))
+                    }
+                )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 @Composable
 private fun SimilarTvShows(similarTvShows: List<TvShow>, onAction: (TvShowDetailsAction) -> Unit) {
-    if (similarTvShows.isNotEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Similar TV Shows",
-                //style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(16.dp)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default),
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.similar_movies),
+            action = stringResource(R.string.view_all),
+            onClick = { onAction(TvShowDetailsAction.OpenTvShowsByType(tvShowType = TvShowType.SIMILAR)) }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(similarTvShows) { tvShow ->
-                    ItemCard(
-                        title = tvShow.name,
-                        imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
-                        rating = tvShow.voteAverage,
-                        mediaType = MediaType.TV,
-                        onItemClick = {
-                            onAction(TvShowDetailsAction.OpenTvShowsByType(TvShowType.SIMILAR))
-                        }
-                    )
-                }
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(similarTvShows) { movie ->
+                ItemCard(
+                    modifier = Modifier.padding(horizontal = 6.dp),
+                    title = movie.name,
+                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
+                    rating = movie.voteAverage,
+                    mediaType = MediaType.MOVIE,
+                    onItemClick = {
+                        onAction(TvShowDetailsAction.OpenTvShowDetail(movie.id))
+                    }
+                )
             }
         }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -593,38 +639,6 @@ private fun ShimmerHorizontalList() {
                     .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
         }
-    }
-}
-
-@Composable
-private fun ProductionCompanies(
-    companies: List<ProductionCompany>,
-    onAction: (TvShowDetailsAction) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(AppTheme.colors.background.default)
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        HeadlinePrimaryActionView(
-            text = stringResource(R.string.production_companies)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(companies) { item ->
-                ChipView(
-                    text = item.companyName,
-                    isLarge = true,
-                    enabled = false
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

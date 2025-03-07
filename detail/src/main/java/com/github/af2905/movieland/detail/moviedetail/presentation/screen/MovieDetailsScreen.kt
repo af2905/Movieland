@@ -358,7 +358,7 @@ private fun MovieBackdrop(state: MovieDetailsState) {
 }
 
 @Composable
-fun MovieInformation(state: MovieDetailsState) {
+private fun MovieInformation(state: MovieDetailsState) {
     val context = LocalContext.current
 
     Column(
@@ -435,7 +435,7 @@ fun MovieInformation(state: MovieDetailsState) {
 }
 
 @Composable
-fun MovieDetails(state: MovieDetailsState) {
+private fun MovieDetails(state: MovieDetailsState) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -463,7 +463,7 @@ fun MovieDetails(state: MovieDetailsState) {
 }
 
 @Composable
-fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
+private fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -494,7 +494,7 @@ fun MovieVideos(videos: List<Video>, onAction: (MovieDetailsAction) -> Unit) {
 }
 
 @Composable
-fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit) {
+private fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

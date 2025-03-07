@@ -26,6 +26,12 @@ fun TvShowDetailsNavWrapper(
                     navController.popBackStack()
                 }
 
+                is TvShowDetailsEffect.NavigateToTvShowDetail -> {
+                    navController.navigate(
+                        AppNavRoutes.TVShowDetails.createRoute(effect.tvShowId)
+                    )
+                }
+
                 is TvShowDetailsEffect.NavigateToPerson -> {
                     navController.navigate(
                         AppNavRoutes.PersonDetails.createRoute(effect.personId)

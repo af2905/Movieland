@@ -43,6 +43,10 @@
     <string name="similar_movies">Similar Movies</string>
     <string name="credits">Credits</string>
 
+    <!-- TV Shows Details -->
+    <string name="recommended_tv_shows">Recommended TV Shows</string>
+    <string name="similar_tv_shows">Similar TV Shows</string>
+
     <!-- Social Media Labels -->
     <string name="wikidata">Wikidata</string>
     <string name="facebook">Facebook</string>

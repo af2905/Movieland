@@ -26,6 +26,7 @@ data class TvShowDetailsState(
 
 sealed interface TvShowDetailsAction {
     data object BackClick : TvShowDetailsAction
+    data class OpenTvShowDetail(val tvShowId: Int) : TvShowDetailsAction
     data class OpenPersonDetail(val personId: Int) : TvShowDetailsAction
     data class OpenVideo(val videoId: String) : TvShowDetailsAction
     data class OpenTvShowsByType(val tvShowType: TvShowType) : TvShowDetailsAction
@@ -33,6 +34,7 @@ sealed interface TvShowDetailsAction {
 
 sealed interface TvShowDetailsEffect {
     data object NavigateBack : TvShowDetailsEffect
+    data class NavigateToTvShowDetail(val tvShowId: Int) : TvShowDetailsEffect
     data class NavigateToPerson(val personId: Int) : TvShowDetailsEffect
     data class NavigateToVideo(val videoId: String) : TvShowDetailsEffect
     data class NavigateToTvShows(val tvShowId: Int, val tvShowType: TvShowType) :

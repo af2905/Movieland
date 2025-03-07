@@ -110,6 +110,16 @@ class TvShowDetailsViewModel @AssistedInject constructor(
                 viewModelScope.launch { _effect.send(TvShowDetailsEffect.NavigateBack) }
             }
 
+            is TvShowDetailsAction.OpenTvShowDetail -> {
+                viewModelScope.launch {
+                    _effect.send(
+                        TvShowDetailsEffect.NavigateToTvShowDetail(
+                            action.tvShowId
+                        )
+                    )
+                }
+            }
+
             is TvShowDetailsAction.OpenPersonDetail -> {
                 viewModelScope.launch { _effect.send(TvShowDetailsEffect.NavigateToPerson(action.personId)) }
             }
