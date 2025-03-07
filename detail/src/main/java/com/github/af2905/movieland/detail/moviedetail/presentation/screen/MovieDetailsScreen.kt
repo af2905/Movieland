@@ -747,5 +747,3 @@ fun openUrl(context: Context, url: String) {
 private fun ShimmerMovieDetailsScreenPreview() {
     ShimmerMovieDetailsScreen()
 }
-
-

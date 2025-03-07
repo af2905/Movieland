@@ -18,7 +18,7 @@ import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.detail.moviedetail.presentation.MovieDetailsNavWrapper
 import com.github.af2905.movieland.detail.persondetail.presentation.PersonDetailsNavWrapper
-import com.github.af2905.movieland.detail.tvshowdetail.presentation.TVShowDetailsScreen
+import com.github.af2905.movieland.detail.tvshowdetail.presentation.TvShowDetailsNavWrapper
 import com.github.af2905.movieland.home.presentation.HomeScreenNavWrapper
 import com.github.af2905.movieland.liked.presentation.compose.LibraryScreen
 import com.github.af2905.movieland.movies.presentation.MoviesNavWrapper
@@ -88,7 +88,7 @@ fun AppNavigation(
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 itemId?.let {
-                    TVShowDetailsScreen(
+                    TvShowDetailsNavWrapper(
                         tvShowId = itemId,
                         navController = navController
                     )
@@ -200,7 +200,7 @@ fun AppNavigation(
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 itemId?.let {
-                    TVShowDetailsScreen(
+                    TvShowDetailsNavWrapper(
                         tvShowId = itemId,
                         navController = navController
                     )
