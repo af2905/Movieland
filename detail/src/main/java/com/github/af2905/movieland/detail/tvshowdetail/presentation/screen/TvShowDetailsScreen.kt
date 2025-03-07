@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,12 +43,33 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.toSize
 import com.github.af2905.movieland.compose.components.cards.ItemCard
+import com.github.af2905.movieland.compose.components.chips.ChipView
+import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
+import com.github.af2905.movieland.compose.theme.AppTheme
+import com.github.af2905.movieland.core.R
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.MediaType
+import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.TvShow
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
+import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsAction
 
 @Composable
 fun TvShowDetailsScreen(
@@ -64,7 +86,25 @@ fun TvShowDetailsScreen(
             AppCenterAlignedTopAppBar(
                 title = if (showTitle) state.tvShow?.name.orEmpty() else "",
                 onBackClick = { onAction(TvShowDetailsAction.BackClick) },
-                elevation = 0.dp
+                elevation = 0.dp,
+                endButtons = {
+                    if (!state.isError && !state.isLoading) {
+                        Row {
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.BookmarkBorder,
+                                    contentDescription = ""
+                                )
+                            }
+                            IconButton(onClick = { /* Handle action */ }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Share,
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                    }
+                }
             )
         },
         content = { paddingValues ->
@@ -72,6 +112,7 @@ fun TvShowDetailsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .background(AppTheme.colors.theme.tintSelection)
             ) {
                 when {
                     state.isLoading -> {
@@ -80,10 +121,12 @@ fun TvShowDetailsScreen(
 
                     state.isError -> {
                         EmptyStateView(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(AppTheme.colors.background.default),
                             icon = Icons.Outlined.ErrorOutline,
-                            title = "Oops! Something went wrong",
-                            action = "Retry",
+                            title = stringResource(R.string.oops_something_went_wrong),
+                            action = stringResource(R.string.retry),
                             onClick = { /* Retry Action */ }
                         )
                     }
@@ -105,6 +148,15 @@ fun TvShowDetailsScreen(
                                 item { TvShowCasts(state.casts, onAction) }
                             }
 
+                            if (!state.tvShow?.productionCompanies.isNullOrEmpty()) {
+                                item {
+                                    ProductionCompanies(
+                                        state.tvShow?.productionCompanies.orEmpty(),
+                                        onAction
+                                    )
+                                }
+                            }
+
                             if (state.recommendedTvShows.isNotEmpty()) {
                                 item { RecommendedTvShows(state.recommendedTvShows, onAction) }
                             }
@@ -122,15 +174,39 @@ fun TvShowDetailsScreen(
 
 @Composable
 private fun TvShowBackdrop(state: TvShowDetailsState) {
+    var dataGroupSize by remember { mutableStateOf(Size.Zero) }
+
     Box(contentAlignment = Alignment.BottomCenter) {
-        AsyncImage(
-            model = ImageProvider.getImageUrl(state.tvShow?.backdropPath),
-            contentDescription = null,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
-            contentScale = ContentScale.Crop
+                .height(with(LocalDensity.current) { (dataGroupSize.height / 2).toDp() })
+                .background(AppTheme.colors.background.default)
         )
+
+        ElevatedCard(
+            enabled = false,
+            onClick = { },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp)
+                .onGloballyPositioned { dataGroupSize = it.size.toSize() },
+            shape = RoundedCornerShape(AppTheme.dimens.radiusM),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = AppTheme.colors.theme.tintCard
+            ),
+            //elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
+        ) {
+            AsyncImage(
+                model = ImageProvider.getImageUrl(state.tvShow?.backdropPath),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(200.dp)
+                    .background(AppTheme.colors.background.default),
+                error = rememberVectorPainter(image = Icons.Outlined.Image),
+                contentScale = ContentScale.Crop
+            )
+        }
     }
 }
 
@@ -325,79 +401,107 @@ private fun ShimmerTvShowDetailsScreen() {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp)
+            .background(AppTheme.colors.background.default)
+            .padding(AppTheme.dimens.spaceM)
     ) {
         // **Backdrop Shimmer**
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .shimmerBackground(RoundedCornerShape(12.dp))
+                .height(194.dp)
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
         // **Title & Info Shimmer**
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+
         ) {
             Spacer(
                 modifier = Modifier
                     .height(24.dp)
                     .width(200.dp)
-                    .shimmerBackground(RoundedCornerShape(8.dp))
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             Spacer(
                 modifier = Modifier
                     .height(12.dp)
                     .fillMaxWidth(0.7f)
-                    .shimmerBackground(RoundedCornerShape(8.dp))
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             Spacer(
                 modifier = Modifier
                     .height(12.dp)
                     .fillMaxWidth(0.7f)
-                    .shimmerBackground(RoundedCornerShape(8.dp))
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            Spacer(
+                modifier = Modifier
+                    .height(12.dp)
+                    .fillMaxWidth(0.7f)
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+            LazyRow(
+                contentPadding = PaddingValues(all = AppTheme.dimens.spaceM),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                items(4) {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(30.dp, 30.dp)
+                            .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
             Spacer(
                 modifier = Modifier
                     .height(0.5.dp)
                     .fillMaxWidth()
-                    .shimmerBackground(RoundedCornerShape(4.dp))
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusXS))
             )
+
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
-        // **TV Show Details Shimmer**
-        Spacer(modifier = Modifier.height(16.dp))
+        // **TvShow Details Shimmer**
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
         Spacer(
             modifier = Modifier
                 .height(12.dp)
                 .fillMaxWidth(0.7f)
-                .shimmerBackground(RoundedCornerShape(8.dp))
+                .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusS))
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceS))
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // **Shimmer for TV Show Casts**
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
+
+        // **Shimmer for TvShows Casts**
         ShimmerHorizontalList()
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceM))
 
-        // **Shimmer for Recommended TV Shows**
+        // **Shimmer for Recommended TvShows**
         ShimmerHorizontalList()
     }
 }
@@ -405,15 +509,46 @@ private fun ShimmerTvShowDetailsScreen() {
 @Composable
 private fun ShimmerHorizontalList() {
     LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(5) {
             Spacer(
                 modifier = Modifier
                     .size(120.dp, 180.dp)
-                    .shimmerBackground(RoundedCornerShape(12.dp))
+                    .shimmerBackground(RoundedCornerShape(AppTheme.dimens.radiusM))
             )
         }
+    }
+}
+
+@Composable
+private fun ProductionCompanies(
+    companies: List<ProductionCompany>,
+    onAction: (TvShowDetailsAction) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppTheme.colors.background.default)
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HeadlinePrimaryActionView(
+            text = stringResource(R.string.production_companies)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(companies) { item ->
+                ChipView(
+                    text = item.companyName,
+                    isLarge = true,
+                    enabled = false
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

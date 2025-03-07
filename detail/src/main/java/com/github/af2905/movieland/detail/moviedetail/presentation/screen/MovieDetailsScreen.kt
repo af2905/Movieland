@@ -191,7 +191,7 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-fun ShimmerMovieDetailsScreen() {
+private fun ShimmerMovieDetailsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -305,7 +305,7 @@ fun ShimmerMovieDetailsScreen() {
  * Generic shimmer row to simulate cast/recommendations/similar movies.
  */
 @Composable
-fun ShimmerHorizontalList() {
+private fun ShimmerHorizontalList() {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -320,7 +320,7 @@ fun ShimmerHorizontalList() {
 }
 
 @Composable
-fun MovieBackdrop(state: MovieDetailsState) {
+private fun MovieBackdrop(state: MovieDetailsState) {
     var dataGroupSize by remember { mutableStateOf(Size.Zero) }
 
     Box(contentAlignment = Alignment.BottomCenter) {
@@ -529,7 +529,7 @@ fun MovieCasts(casts: List<CreditsCast>, onAction: (MovieDetailsAction) -> Unit)
 }
 
 @Composable
-fun ProductionCompanies(
+private fun ProductionCompanies(
     companies: List<ProductionCompany>,
     onAction: (MovieDetailsAction) -> Unit
 ) {
