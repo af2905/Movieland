@@ -14,7 +14,15 @@ data class TvShowDetailsState(
     val recommendedTvShows: List<TvShow> = emptyList(),
     val videos: List<Video> = emptyList(),
     val casts: List<CreditsCast> = emptyList(),
-)
+    val tvShowSocialIds: TvShowSocialIds = TvShowSocialIds()
+) {
+    data class TvShowSocialIds(
+        val wikidataId: String? = null,
+        val facebookId: String? = null,
+        val instagramId: String? = null,
+        val twitterId: String? = null
+    )
+}
 
 sealed interface TvShowDetailsAction {
     data object BackClick : TvShowDetailsAction
@@ -27,5 +35,6 @@ sealed interface TvShowDetailsEffect {
     data object NavigateBack : TvShowDetailsEffect
     data class NavigateToPerson(val personId: Int) : TvShowDetailsEffect
     data class NavigateToVideo(val videoId: String) : TvShowDetailsEffect
-    data class NavigateToTvShows(val tvShowId: Int, val tvShowType: TvShowType) : TvShowDetailsEffect
+    data class NavigateToTvShows(val tvShowId: Int, val tvShowType: TvShowType) :
+        TvShowDetailsEffect
 }

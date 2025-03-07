@@ -1,5 +1,9 @@
 package com.github.af2905.movieland.detail.tvshowdetail.presentation.screen
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +47,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
@@ -50,26 +55,35 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.toSize
 import com.github.af2905.movieland.compose.components.cards.ItemCard
 import com.github.af2905.movieland.compose.components.chips.ChipView
+import com.github.af2905.movieland.compose.components.divider.AppHorizontalDivider
 import com.github.af2905.movieland.compose.components.headlines.HeadlinePrimaryActionView
 import com.github.af2905.movieland.compose.components.shimmer.shimmerBackground
 import com.github.af2905.movieland.compose.theme.AppTheme
 import com.github.af2905.movieland.core.R
+import com.github.af2905.movieland.core.common.helper.SocialMediaProvider
 import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.MediaType
 import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.TvShow
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
-import com.github.af2905.movieland.detail.moviedetail.presentation.state.MovieDetailsAction
+import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
 
 @Composable
 fun TvShowDetailsScreen(
@@ -212,33 +226,91 @@ private fun TvShowBackdrop(state: TvShowDetailsState) {
 
 @Composable
 private fun TvShowInformation(state: TvShowDetailsState) {
+    val context = LocalContext.current
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .background(AppTheme.colors.background.default)
+            .padding(horizontal = 16.dp)
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth(),
             text = state.tvShow?.name.orEmpty(),
-            //style = MaterialTheme.typography.h5,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            style = AppTheme.typography.title2,
+            color = AppTheme.colors.type.secondary
         )
-
-        state.tvShow?.voteAverage?.let { rating ->
-            if (rating > 0) {
-                RatingBar(rating = rating)
-            }
+        if (state.tvShow?.voteAverage != null && state.tvShow.voteAverage != 0.0) {
+            RatingBar(rating = state.tvShow.voteAverage ?: 0.0)
         }
 
-        val releaseYear = state.tvShow?.firstAirDate?.take(4) // Extracts year
+        val firstDateYear = state.tvShow?.firstAirDate?.getYearFromReleaseDate()
+        val lastDateYear = state.tvShow?.lastAirDate?.getYearFromReleaseDate()
+
+        if (firstDateYear != null) {
+            val sb = StringBuilder()
+            sb.append("$firstDateYear")
+
+            if (lastDateYear != null && firstDateYear != lastDateYear) {
+                sb.append(" - ")
+                sb.append("$lastDateYear")
+            }
+
+            val numberOfSeasons = state.tvShow.numberOfSeasons
+
+            if (numberOfSeasons != null) {
+                val seasons = context.getString(R.string.seasons, numberOfSeasons)
+                sb.append(" • ")
+                sb.append(seasons)
+            }
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = sb.toString(),
+                textAlign = TextAlign.Center,
+                style = AppTheme.typography.bodyMedium,
+                color = AppTheme.colors.type.secondary
+            )
+        }
+
         val genres = state.tvShow?.genre?.joinToString { it.name }
 
+        if (genres != null) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = genres,
+                color = AppTheme.colors.type.secondary
+            )
+        }
+
+
+        val productionCountries = state.tvShow?.productionCountries?.joinToString { it.countryName }
+
+        val sb2 = StringBuilder()
+
+        if (productionCountries != null) {
+            sb2.append("$productionCountries")
+        }
+
+
         Text(
-            text = listOfNotNull(releaseYear, genres).joinToString(" • "),
-            //style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = sb2.toString(),
+            color = AppTheme.colors.type.secondary
         )
+
+        SocialMediaRow(
+            context = context,
+            homepageUrl = state.tvShow?.homepage,
+            socialIds = state.tvShowSocialIds
+        )
+
+        AppHorizontalDivider()
     }
 }
 
@@ -332,7 +404,10 @@ private fun TvShowCasts(casts: List<CreditsCast>, onAction: (TvShowDetailsAction
 }
 
 @Composable
-private fun RecommendedTvShows(recommendedTvShows: List<TvShow>, onAction: (TvShowDetailsAction) -> Unit) {
+private fun RecommendedTvShows(
+    recommendedTvShows: List<TvShow>,
+    onAction: (TvShowDetailsAction) -> Unit
+) {
     if (recommendedTvShows.isNotEmpty()) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -551,4 +626,114 @@ private fun ProductionCompanies(
         }
         Spacer(modifier = Modifier.height(16.dp))
     }
+}
+
+@Composable
+private fun SocialMediaRow(
+    context: Context,
+    homepageUrl: String?,
+    socialIds: TvShowDetailsState.TvShowSocialIds
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            if (!homepageUrl.isNullOrEmpty()) {
+                TextButton(onClick = { openUrl(context, homepageUrl) }) {
+                    Text(
+                        text = AnnotatedString(stringResource(com.github.af2905.movieland.detail.R.string.official_website)),
+                        style = TextStyle(
+                            color = AppTheme.colors.theme.tint,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(20.dp),
+                        tint = AppTheme.colors.theme.tint,
+                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 16.dp)
+        ) {
+            socialIds.instagramId?.let { id ->
+                SocialMediaProvider.getInstagramUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_instagram,
+                        url = url,
+                        contentDescription = stringResource(R.string.instagram)
+                    )
+                }
+            }
+
+            socialIds.facebookId?.let { id ->
+                SocialMediaProvider.getFacebookUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_facebook,
+                        url = url,
+                        contentDescription = stringResource(R.string.facebook)
+                    )
+                }
+            }
+
+            socialIds.twitterId?.let { id ->
+                SocialMediaProvider.getTwitterUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_x_twitter,
+                        tint = AppTheme.colors.type.secondary,
+                        url = url,
+                        contentDescription = stringResource(R.string.twitter)
+                    )
+                }
+            }
+
+            socialIds.wikidataId?.let { id ->
+                SocialMediaProvider.getWikidataUrl(id)?.let { url ->
+                    SocialMediaIcon(
+                        iconRes = R.drawable.ic_wiki,
+                        tint = AppTheme.colors.type.secondary,
+                        url = url,
+                        contentDescription = stringResource(R.string.wikidata)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SocialMediaIcon(
+    @DrawableRes iconRes: Int,
+    url: String,
+    contentDescription: String? = null,
+    tint: Color = Color.Unspecified,
+) {
+    val context = LocalContext.current
+
+    IconButton(
+        onClick = { openUrl(context, url) }
+    ) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescription,
+            tint = tint,
+            modifier = Modifier.size(30.dp)
+        )
+    }
+}
+
+// Helper function to open URLs
+private fun openUrl(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(intent)
 }

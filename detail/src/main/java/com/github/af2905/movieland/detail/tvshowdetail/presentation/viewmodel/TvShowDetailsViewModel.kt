@@ -46,6 +46,19 @@ class TvShowDetailsViewModel @AssistedInject constructor(
                 isError = tvShowDetailsResult is ResultWrapper.Error
             )
 
+            val externalIds =
+                (tvShowsRepository.getTvShowExternalIds(tvShowId) as? ResultWrapper.Success)?.data
+            externalIds?.let { socialIds ->
+                state = state.copy(
+                    tvShowSocialIds = state.tvShowSocialIds.copy(
+                        wikidataId = socialIds.wikidataId,
+                        facebookId = socialIds.facebookId,
+                        instagramId = socialIds.instagramId,
+                        twitterId = socialIds.twitterId
+                    )
+                )
+            }
+
             // Collect Similar TV Shows as Flow
             launch {
                 tvShowsRepository.getSimilarTvShows(tvShowId, null, null)
@@ -61,7 +74,8 @@ class TvShowDetailsViewModel @AssistedInject constructor(
                 tvShowsRepository.getRecommendedTvShows(tvShowId, null, null)
                     .collectLatest { result ->
                         state = state.copy(
-                            recommendedTvShows = (result as? ResultWrapper.Success)?.data ?: emptyList()
+                            recommendedTvShows = (result as? ResultWrapper.Success)?.data
+                                ?: emptyList()
                         )
                     }
             }

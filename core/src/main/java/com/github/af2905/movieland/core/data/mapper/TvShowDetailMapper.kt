@@ -5,6 +5,8 @@ import com.github.af2905.movieland.core.data.database.entity.Genre
 import com.github.af2905.movieland.core.data.database.entity.GenreType
 import com.github.af2905.movieland.core.data.database.entity.LastEpisodeToAir
 import com.github.af2905.movieland.core.data.database.entity.Network
+import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
+import com.github.af2905.movieland.core.data.database.entity.ProductionCountry
 import com.github.af2905.movieland.core.data.database.entity.Season
 import com.github.af2905.movieland.core.data.database.entity.TvShowDetail
 import com.github.af2905.movieland.core.data.dto.tv.CreatedByDto
@@ -39,8 +41,8 @@ class TvShowDetailMapper @Inject constructor() {
             overview = dto.overview,
             popularity = dto.popularity,
             posterPath = dto.posterPath,
-            productionCompanies = emptyList(),
-            productionCountries = emptyList(),
+            productionCompanies = mapProductionCompanies(dto),
+            productionCountries = mapProductionCountries(dto),
             seasons = dto.seasons?.map { mapSeason(it) } ?: emptyList(),
             status = dto.status,
             tagline = dto.tagline,
@@ -51,6 +53,29 @@ class TvShowDetailMapper @Inject constructor() {
             creditsCasts = emptyList(),
             liked = false
         )
+    }
+
+    private fun mapProductionCompanies(dto: TvShowDetailDto): List<ProductionCompany> {
+        return dto.productionCompanies?.map { companyDto ->
+            ProductionCompany(
+                companyId = companyDto.id,
+                movieId = dto.id,
+                companyName = companyDto.name.orEmpty(),
+                logoPath = companyDto.logoPath,
+                originCountry = companyDto.originCountry.orEmpty()
+            )
+        } ?: emptyList()
+    }
+
+    private fun mapProductionCountries(dto: TvShowDetailDto): List<ProductionCountry> {
+        return dto.productionCountries?.map { countryDto ->
+            ProductionCountry(
+                countryId = countryDto.iso.hashCode(),
+                movieId = dto.id,
+                countryName = countryDto.name.orEmpty(),
+                isoCode = countryDto.iso.orEmpty()
+            )
+        } ?: emptyList()
     }
 
     private fun mapCreatedBy(dto: CreatedByDto): CreatedBy {

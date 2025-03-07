@@ -86,4 +86,6 @@
 
     <string name="official_website">Official Website</string>
 
+    <string name="seasons">%1$d seasons</string>
+
 </resources>
