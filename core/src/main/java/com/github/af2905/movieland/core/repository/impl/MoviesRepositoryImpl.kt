@@ -70,11 +70,10 @@ class MoviesRepositoryImpl @Inject constructor(
             if (movies != null) {
                 cacheMovies(movieType, movies)
             }
+            emit(ResultWrapper.Success(movies ?: cachedMovies.orEmpty()))
+        } else {
+            emit(ResultWrapper.Success(cachedMovies))
         }
-
-        val result = movieDao.getMoviesByType(movieType).firstOrNull().orEmpty()
-
-        emit(ResultWrapper.Success(result))
     }.catch { e ->
         val errorMessage = when (e) {
             is IOException -> stringProvider.getString(R.string.error_network)
@@ -83,6 +82,7 @@ class MoviesRepositoryImpl @Inject constructor(
                 e.code(),
                 e.message()
             )
+
             else -> stringProvider.getString(R.string.error_unexpected)
         }
         emit(ResultWrapper.Error(errorMessage, e))
@@ -115,7 +115,9 @@ class MoviesRepositoryImpl @Inject constructor(
             }
 
             emit(ResultWrapper.Success(movies))
-        } catch (e: Exception) { throw e }
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getMoviesPaginated(

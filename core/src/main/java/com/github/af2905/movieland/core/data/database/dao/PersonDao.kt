@@ -19,4 +19,10 @@ interface PersonDao {
 
     @Query("SELECT MAX(timeStamp) FROM Person WHERE personType = :personType")
     suspend fun getLastUpdated(personType: PersonType): Long?
+
+    @Transaction
+    suspend fun replacePeople(personType: PersonType, people: List<Person>) {
+        deletePeopleByType(personType)
+        insertPeople(people)
+    }
 }

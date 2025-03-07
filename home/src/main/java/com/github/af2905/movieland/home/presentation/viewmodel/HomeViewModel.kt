@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.database.entity.GenreType
+import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieType
 import com.github.af2905.movieland.core.data.database.entity.PersonType
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
@@ -20,10 +21,13 @@ import com.github.af2905.movieland.home.presentation.state.HomeEffect
 import com.github.af2905.movieland.home.presentation.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,6 +46,12 @@ class HomeViewModel @Inject constructor(
     private val _effect = Channel<HomeEffect>()
     val effect = _effect.receiveAsFlow()
 
+    private val trendingMoviesSharedFlow: StateFlow<ResultWrapper<List<Movie>>> = trendingRepository.getCachedFirstTrendingMovies(
+        movieType = MovieType.TRENDING_DAY,
+        language = null,
+        page = null
+    ).stateIn(scope = viewModelScope, started = Eagerly, initialValue = ResultWrapper.Loading)
+
     init {
         fetchHomeData()
     }
@@ -53,12 +63,11 @@ class HomeViewModel @Inject constructor(
 
             // Trending Data
             launch {
-                trendingRepository.getCachedFirstTrendingMovies(MovieType.TRENDING_DAY, null, null)
-                    .collectLatest { result ->
-                        state = state.copy(
-                            trendingMovies = if (result is ResultWrapper.Success) result.data else state.trendingMovies
-                        )
-                    }
+                trendingMoviesSharedFlow.collectLatest { result ->
+                    state = state.copy(
+                        trendingMovies = if (result is ResultWrapper.Success) result.data else state.trendingMovies
+                    )
+                }
             }
 
             launch {

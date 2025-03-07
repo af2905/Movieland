@@ -70,8 +70,7 @@ class TrendingRepositoryImpl @Inject constructor(
                 }
 
                 if (movies.isNotEmpty()) {
-                    movieDao.deleteMoviesByType(movieType)
-                    movieDao.insertMovies(movies)
+                    movieDao.replaceMovies(movieType, movies)
                 }
 
                 emit(ResultWrapper.Success(movies))
@@ -160,8 +159,7 @@ class TrendingRepositoryImpl @Inject constructor(
                         }
                         .filter { tvShow -> !tvShow.backdropPath.isNullOrEmpty() && !tvShow.posterPath.isNullOrEmpty() }
                     if (items.isNotEmpty()) {
-                        tvShowDao.deleteTvShowsByType(tvShowType)
-                        tvShowDao.insertTvShows(items)
+                        tvShowDao.replaceTvShows(tvShowType, items)
                     }
                 } catch (e: Exception) {
                     // Handle API errors (e.g., log or fallback)
@@ -197,8 +195,7 @@ class TrendingRepositoryImpl @Inject constructor(
                         }
                         .filter { person -> !person.profilePath.isNullOrEmpty() }
                     if (items.isNotEmpty()) {
-                        personDao.deletePeopleByType(personType)
-                        personDao.insertPeople(items)
+                        personDao.replacePeople(personType, items)
                     }
                 } catch (e: Exception) {
                     // Handle API errors (e.g., log or fallback)

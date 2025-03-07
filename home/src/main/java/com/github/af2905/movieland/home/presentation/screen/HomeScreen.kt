@@ -41,6 +41,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -77,9 +78,9 @@ fun HomeScreen(
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
-    val pagerState = rememberPagerState(
-        pageCount = { state.trendingMovies.size }
-    )
+    val pagerState = remember(state.trendingMovies) {
+        PagerState(pageCount = { state.trendingMovies.size })
+    }
 
     val listState = rememberLazyListState()
 

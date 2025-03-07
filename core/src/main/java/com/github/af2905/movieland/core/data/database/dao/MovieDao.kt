@@ -20,4 +20,9 @@ interface MovieDao {
     @Query("SELECT MAX(timeStamp) FROM Movie WHERE movieType = :movieType")
     suspend fun getLastUpdated(movieType: MovieType): Long?
 
+    @Transaction
+    suspend fun replaceMovies(movieType: MovieType, movies: List<Movie>) {
+        deleteMoviesByType(movieType)
+        insertMovies(movies)
+    }
 }

@@ -19,4 +19,10 @@ interface TvShowDao {
 
     @Query("SELECT MAX(timeStamp) FROM TvShow WHERE tvShowType = :tvShowType")
     suspend fun getLastUpdated(tvShowType: TvShowType): Long?
+
+    @Transaction
+    suspend fun replaceTvShows(tvShowType: TvShowType, tvShows: List<TvShow>) {
+        deleteTvShowsByType(tvShowType)
+        insertTvShows(tvShows)
+    }
 }
