@@ -26,9 +26,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -47,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -322,6 +321,7 @@ private fun ShimmerHorizontalList() {
 @Composable
 private fun MovieBackdrop(state: MovieDetailsState) {
     var dataGroupSize by remember { mutableStateOf(Size.Zero) }
+    var imageError by remember { mutableStateOf(false) }
 
     Box(contentAlignment = Alignment.BottomCenter) {
         Box(
@@ -344,15 +344,34 @@ private fun MovieBackdrop(state: MovieDetailsState) {
             ),
             //elevation = CardDefaults.cardElevation(AppTheme.dimens.elevationXS)
         ) {
-            AsyncImage(
-                model = ImageProvider.getImageUrl(state.movie?.backdropPath),
-                contentDescription = null,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .height(200.dp)
-                    .background(AppTheme.colors.background.default),
-                error = rememberVectorPainter(image = Icons.Outlined.Image),
-                contentScale = ContentScale.Crop
-            )
+                    .fillMaxWidth()
+                    .background(AppTheme.colors.background.default)
+            ) {
+                AsyncImage(
+                    model = ImageProvider.getImageUrl(state.movie?.backdropPath),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .background(AppTheme.colors.background.card),
+                    //error = rememberVectorPainter(image = Icons.Outlined.Image),
+                    contentScale = ContentScale.Crop,
+                    onError = { imageError = true },
+                    onSuccess = { imageError = false },
+                    onLoading = { imageError = false }
+                )
+
+                if (imageError) {
+                    Icon(
+                        modifier = Modifier.size(64.dp),
+                        imageVector = Icons.Default.Image,
+                        contentDescription = null,
+                        tint = AppTheme.colors.type.secondary
+                    )
+                }
+            }
         }
     }
 }
