@@ -1,156 +1,267 @@
 package com.github.af2905.movieland.core.repository.impl
 
-import com.github.af2905.movieland.core.common.helper.DateTimeHelper
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.github.af2905.movieland.core.R
+import com.github.af2905.movieland.core.common.helper.StringProvider
+import com.github.af2905.movieland.core.common.network.ResultWrapper
 import com.github.af2905.movieland.core.data.api.MoviesApi
 import com.github.af2905.movieland.core.data.database.dao.MovieDao
-import com.github.af2905.movieland.core.data.database.dao.MovieDetailDao
+import com.github.af2905.movieland.core.data.database.entity.CreditsCast
 import com.github.af2905.movieland.core.data.database.entity.Movie
 import com.github.af2905.movieland.core.data.database.entity.MovieDetail
 import com.github.af2905.movieland.core.data.database.entity.MovieType
-import com.github.af2905.movieland.core.data.datastore.ResourceDatastore
-import com.github.af2905.movieland.core.data.dto.CreditsCastDto
-import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
-import com.github.af2905.movieland.core.data.dto.movie.MovieDto
+import com.github.af2905.movieland.core.data.database.entity.Video
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
+import com.github.af2905.movieland.core.data.mapper.CreditsCastMapper
+import com.github.af2905.movieland.core.data.mapper.MovieDetailMapper
 import com.github.af2905.movieland.core.data.mapper.MovieMapper
+import com.github.af2905.movieland.core.data.mapper.VideoMapper
+import com.github.af2905.movieland.core.pager.movies.MoviesPagingSource
+import com.github.af2905.movieland.core.pager.movies.SimilarOrRecommendedMoviesPagingSource
 import com.github.af2905.movieland.core.repository.MoviesRepository
-import com.github.af2905.movieland.util.extension.isNullOrEmpty
-import java.util.Calendar
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val DEFAULT_UPDATE_MOVIE_HOURS = 4L
-
 class MoviesRepositoryImpl @Inject constructor(
+    private val movieDao: MovieDao,
     private val moviesApi: MoviesApi,
     private val movieMapper: MovieMapper,
-    private val movieDao: MovieDao,
-    private val movieDetailDao: MovieDetailDao,
-    private val resourceDatastore: ResourceDatastore
+    private val creditsMapper: CreditsCastMapper,
+    private val movieDetailMapper: MovieDetailMapper,
+    private val videoMapper: VideoMapper,
+    private val stringProvider: StringProvider
 ) : MoviesRepository {
 
-    override suspend fun getNowPlayingMovies(
-        language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<Movie> = loadMovies(
-        type = MovieType.NOW_PLAYING,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page,
-        region = region,
-        forceUpdate = forceUpdate
-    )
+    override fun getCachedFirstMovies(
+        movieType: MovieType,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>> = flow {
+        emit(ResultWrapper.Loading)
 
-    override suspend fun getPopularMovies(
-        language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<Movie> = loadMovies(
-        type = MovieType.POPULAR,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page,
-        region = region,
-        forceUpdate = forceUpdate
-    )
+        val cachedMovies = movieDao.getMoviesByType(movieType).firstOrNull()
+        val lastUpdated = cachedMovies?.firstOrNull()?.timeStamp ?: 0L
+        val isCacheStale = System.currentTimeMillis() - lastUpdated > TimeUnit.HOURS.toMillis(4)
 
-    override suspend fun getTopRatedMovies(
-        language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<Movie> = loadMovies(
-        type = MovieType.TOP_RATED,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page,
-        region = region,
-        forceUpdate = forceUpdate
-    )
+        if (cachedMovies.isNullOrEmpty() || isCacheStale) {
+            val response = when (movieType) {
+                MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page)
+                MovieType.POPULAR -> moviesApi.getPopularMovies(language, page)
+                MovieType.TOP_RATED -> moviesApi.getTopRatedMovies(language, page)
+                MovieType.UPCOMING -> moviesApi.getUpcomingMovies(language, page)
+                else -> null
+            }
 
-    override suspend fun getUpcomingMovies(
-        language: String?, page: Int?, region: String?, forceUpdate: Boolean
-    ): List<Movie> = loadMovies(
-        type = MovieType.UPCOMING,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page,
-        region = region,
-        forceUpdate = forceUpdate
-    )
+            val movies = response?.movies?.let {
+                movieMapper.map(it).map { movie ->
+                    movie.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
+                }
+                    .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
+            }
 
-    override suspend fun getRecommendedMovies(
-        movieId: Int, language: String?, page: Int?
-    ): List<MovieDto> = moviesApi.getRecommendedMovies(
-        movieId = movieId,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page
-    ).movies
+            if (movies != null) {
+                cacheMovies(movieType, movies)
+            }
+            emit(ResultWrapper.Success(movies ?: cachedMovies.orEmpty()))
+        } else {
+            emit(ResultWrapper.Success(cachedMovies))
+        }
+    }.catch { e ->
+        val errorMessage = when (e) {
+            is IOException -> stringProvider.getString(R.string.error_network)
+            is HttpException -> stringProvider.getString(
+                R.string.error_server,
+                e.code(),
+                e.message()
+            )
 
-    override suspend fun getSimilarMovies(
-        movieId: Int, language: String?, page: Int?
-    ): List<MovieDto> = moviesApi.getSimilarMovies(
-        movieId = movieId,
-        language = language ?: resourceDatastore.getLanguage(),
-        page = page
-    ).movies
+            else -> stringProvider.getString(R.string.error_unexpected)
+        }
+        emit(ResultWrapper.Error(errorMessage, e))
+    }
 
-    override suspend fun getMovieCredits(
+    override fun getMovies(
+        movieType: MovieType,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>> = flow {
+        try {
+            val response = when (movieType) {
+                MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page)
+                MovieType.POPULAR -> moviesApi.getPopularMovies(language, page)
+                MovieType.TOP_RATED -> moviesApi.getTopRatedMovies(language, page)
+                MovieType.UPCOMING -> moviesApi.getUpcomingMovies(language, page)
+                else -> null
+            }
+
+            if (response == null) {
+                throw Exception("Null response from API")
+            }
+
+            val movies = response.movies.let {
+                movieMapper.map(it).map { movie ->
+                    movie.copy(movieType = movieType, timeStamp = System.currentTimeMillis())
+                }.filter { movie ->
+                    !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty()
+                }
+            }
+
+            emit(ResultWrapper.Success(movies))
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun getMoviesPaginated(
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                initialLoadSize = 40
+            ),
+            pagingSourceFactory = { MoviesPagingSource(this, movieType, language) }
+        ).flow
+    }
+
+    private suspend fun cacheMovies(movieType: MovieType, movies: List<Movie>) {
+        movieDao.deleteMoviesByType(movieType)
+        movieDao.insertMovies(movies)
+    }
+
+    override suspend fun getMovieDetails(
         movieId: Int,
         language: String?
-    ): List<CreditsCastDto> = moviesApi.getMovieCredits(
-        movieId = movieId,
-        language = language ?: resourceDatastore.getLanguage()
-    ).cast.orEmpty()
-
-    override suspend fun saveMovieDetail(movieDetail: MovieDetail): Boolean {
-        return movieDetailDao.save(movieDetail)?.let { true } ?: false
-    }
-
-    override suspend fun removeMovieDetail(movieDetail: MovieDetail): Boolean {
-        return movieDetailDao.delete(movieDetail)?.let { true } ?: false
-    }
-
-    override suspend fun getMovieDetailById(id: Int): MovieDetail? {
-        return movieDetailDao.getById(id)
-    }
-
-    override suspend fun getAllSavedMovieDetail(): List<MovieDetail> {
-        return movieDetailDao.getAll() ?: emptyList()
-    }
-
-    override suspend fun getMovieDetail(movieId: Int, language: String?): MovieDetailDto =
-        moviesApi.getMovieDetails(
-            movieId = movieId,
-            language = language ?: resourceDatastore.getLanguage()
-        )
-
-    override suspend fun getCachedMoviesByType(type: MovieType): List<Movie> =
-        movieDao.getByType(type.name).orEmpty()
-
-    private suspend fun loadMovies(
-        type: MovieType,
-        language: String?,
-        page: Int?,
-        region: String? = null,
-        forceUpdate: Boolean
-    ): List<Movie> {
-
-        val count = movieDao.getCountByType(type.name)
-
-        val timeStamp = count
-            ?.let { movieDao.getByType(type.name) }
-            ?.mapNotNull { it.timeStamp }
-            ?.maxOrNull()
-
-        val currentTime = Calendar.getInstance().timeInMillis
-
-        val timeDiff = timeStamp?.let {
-            DateTimeHelper.getHoursDifference(
-                timeStamp = it,
-                currentTime = currentTime
+    ): ResultWrapper<MovieDetail> {
+        return try {
+            val movieDetailDto = moviesApi.getMovieDetails(movieId, language)
+            val movieDetail = movieDetailMapper.map(movieDetailDto)
+            ResultWrapper.Success(movieDetail)
+        } catch (e: HttpException) {
+            ResultWrapper.Error(
+                stringProvider.getString(
+                    R.string.error_server,
+                    e.code(),
+                    e.message()
+                ), e
             )
+        } catch (e: IOException) {
+            ResultWrapper.Error(stringProvider.getString(R.string.error_network), e)
+        } catch (e: Exception) {
+            ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e)
         }
+    }
 
-        val needToUpdate = timeDiff?.let { it > DEFAULT_UPDATE_MOVIE_HOURS }
+    override fun getRecommendedMovies(
+        movieId: Int,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>> = flow {
+        emit(ResultWrapper.Loading)
 
-        if (count.isNullOrEmpty() || forceUpdate || needToUpdate == true) {
-            val dto = when (type) {
-                MovieType.NOW_PLAYING -> moviesApi.getNowPlayingMovies(language, page, region)
-                MovieType.POPULAR -> moviesApi.getPopularMovies(language, page, region)
-                MovieType.TOP_RATED -> moviesApi.getTopRatedMovies(language, page, region)
-                MovieType.UPCOMING -> moviesApi.getUpcomingMovies(language, page, region)
+        try {
+            val response = moviesApi.getRecommendedMovies(movieId, language, page)
+            val movies = response.movies.let { movieMapper.map(it) }
+                .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
+
+            emit(ResultWrapper.Success(movies)) // Ensure Flow emits before cancellation
+        } catch (e: Exception) {
+            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+        }
+    }.catch { e ->
+        emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+    }
+
+    override fun getSimilarMovies(
+        movieId: Int,
+        language: String?,
+        page: Int?
+    ): Flow<ResultWrapper<List<Movie>>> = flow {
+        emit(ResultWrapper.Loading)
+
+        try {
+            val response = moviesApi.getSimilarMovies(movieId, language, page)
+            val movies = response.movies.let { movieMapper.map(it) }
+                .filter { movie -> !movie.backdropPath.isNullOrEmpty() && !movie.posterPath.isNullOrEmpty() }
+
+            emit(ResultWrapper.Success(movies))
+        } catch (e: Exception) {
+            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+        }
+    }.catch { e ->
+        emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+    }
+
+
+    override fun getSimilarOrRecommendedPaginated(
+        movieId: Int,
+        movieType: MovieType,
+        language: String?
+    ): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false,
+                initialLoadSize = 40
+            ),
+            pagingSourceFactory = {
+                SimilarOrRecommendedMoviesPagingSource(
+                    moviesRepository = this,
+                    movieId = movieId,
+                    movieType = movieType,
+                    language = language
+                )
             }
-            movieMapper.map(dto.movies, type.name, currentTime).forEach { movieDao.save(it) }
+        ).flow
+    }
+
+    override fun getMovieCredits(
+        movieId: Int,
+        language: String?
+    ): Flow<ResultWrapper<List<CreditsCast>>> = flow {
+        emit(ResultWrapper.Loading)
+        try {
+            val response = moviesApi.getMovieCredits(movieId, language)
+            val cast = response.cast?.map {
+                creditsMapper.map(it, movieId)
+            }?.filter { cast -> !cast.profilePath.isNullOrEmpty() }
+            emit(ResultWrapper.Success(cast ?: emptyList()))
+        } catch (e: Exception) {
+            emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
         }
-        return movieDao.getByType(type.name).orEmpty()
+    }
+
+    override fun getMovieVideos(movieId: Int, language: String?): Flow<ResultWrapper<List<Video>>> =
+        flow {
+            emit(ResultWrapper.Loading)
+            try {
+                val response = moviesApi.getMovieVideos(movieId, language)
+                val videos = response.results.map { videoMapper.map(it) }
+                emit(ResultWrapper.Success(videos))
+            } catch (e: Exception) {
+                emit(ResultWrapper.Error(stringProvider.getString(R.string.error_unexpected), e))
+            }
+        }
+
+    override suspend fun getMovieExternalIds(
+        movieId: Int,
+        language: String?
+    ): ResultWrapper<ExternalIds?> {
+        return try {
+            val movieExternalIds = moviesApi.getMovieExternalIds(movieId)
+            ResultWrapper.Success(movieExternalIds)
+        } catch (e: Exception) {
+            ResultWrapper.Success(null)
+        }
     }
 }

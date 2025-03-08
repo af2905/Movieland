@@ -2,25 +2,27 @@ package com.github.af2905.movieland.core.data.database.dao
 
 import androidx.room.*
 import com.github.af2905.movieland.core.data.database.entity.TvShow
+import com.github.af2905.movieland.core.data.database.entity.TvShowType
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TvShowDao {
 
-    @Query("SELECT * FROM TvShow WHERE tvShowType =:tvShowType")
-    suspend fun getByType(tvShowType: String): List<TvShow>?
-
-    @Query("SELECT COUNT(*) FROM TvShow WHERE tvShowType =:tvShowType")
-    suspend fun getCountByType(tvShowType: String): Int?
-
-    @Query("SELECT timeStamp FROM TvShow WHERE tvShowType =:tvShowType LIMIT 1")
-    suspend fun getTimeStampByType(tvShowType: String): Long?
+    @Query("SELECT * FROM TvShow WHERE tvShowType = :tvShowType ORDER BY popularity DESC")
+    fun getTvShowsByType(tvShowType: TvShowType): Flow<List<TvShow>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(tvShow: TvShow)
+    suspend fun insertTvShows(tvShows: List<TvShow>)
 
-    @Delete
-    suspend fun delete(tvShow: TvShow)
+    @Query("DELETE FROM TvShow WHERE tvShowType = :tvShowType")
+    suspend fun deleteTvShowsByType(tvShowType: TvShowType)
 
-    @Query("DELETE FROM TvShow")
-    suspend fun deleteAll()
+    @Query("SELECT MAX(timeStamp) FROM TvShow WHERE tvShowType = :tvShowType")
+    suspend fun getLastUpdated(tvShowType: TvShowType): Long?
+
+    @Transaction
+    suspend fun replaceTvShows(tvShowType: TvShowType, tvShows: List<TvShow>) {
+        deleteTvShowsByType(tvShowType)
+        insertTvShows(tvShows)
+    }
 }

@@ -19,10 +19,19 @@ data class Movie(
     val voteCount: Int?,
     val backdropPath: String?,
     val posterPath: String?,
-    val movieType: String = "",
+    val movieType: MovieType? = null,
     val timeStamp: Long? = null
 )
 
 enum class MovieType {
-    POPULAR, NOW_PLAYING, TOP_RATED, UPCOMING
+    POPULAR,
+    NOW_PLAYING,
+    TOP_RATED,
+    UPCOMING,
+    /*--------------*/
+    TRENDING_DAY,
+    TRENDING_WEEK,
+    /*--------------*/
+    SIMILAR,
+    RECOMMENDED
 }

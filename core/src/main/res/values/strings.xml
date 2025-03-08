@@ -1,57 +1,101 @@
 <resources>
-    <string name="language">en</string>
+    <!-- App Name -->
+    <string name="app_name">Movieland</string>
 
-    //BottomNavMenu
-    <string name="bottom_nav_menu_home_title">Home</string>
-    <string name="bottom_nav_menu_search_title">Search</string>
-    <string name="bottom_nav_menu_profile_title">Profile</string>
+    <!-- Bottom Navigation Labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_profile">Profile</string>
 
-    <string name="action_search">Search</string>
+    <!-- Errors -->
+    <string name="error_server">Server error: %1$d - %2$s</string>
+    <string name="error_network">Network error. Please check your internet connection.</string>
+    <string name="error_unexpected">An unexpected error occurred. Please try again later.</string>
+    <string name="oops_something_went_wrong">Oops! Something went wrong.</string>
+    <string name="no_results_found">No results found matching your query</string>
 
-    <string name="any_screen_more">more…</string>
-    <string name="any_screen_show_all">show all</string>
-    <string name="hint_search_query">Enter search query…</string>
+    <!-- Common UI Labels -->
+    <string name="change_theme">Change Theme</string>
+    <string name="retry">Retry</string>
+    <string name="view_all">View All</string>
 
-    //Headers
-    <string name="header">Header</string>
+    <!-- Movie Categories -->
+    <string name="trending_movies">Trending Movies</string>
+    <string name="trending_tv_shows">Trending TV Shows</string>
+    <string name="trending_people">Trending Celebrities</string>
+    <string name="movies_genres">Movie Genres</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="upcoming_movies">Upcoming Movies</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="tv_shows_genres">TV Show Genres</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="top_rated_tv_shows">Top Rated TV Shows</string>
+    <string name="popular_people">Popular Celebrities</string>
 
-    <string name="recommended">Recommended</string>
-    <string name="similar">Similar</string>
+    <!-- Movie Details -->
+    <string name="movie_details">Movie Details</string>
+    <string name="casts">Cast</string>
+    <string name="videos">Videos</string>
+    <string name="production_companies">Production Companies</string>
+    <string name="recommended_movies">Recommended Movies</string>
+    <string name="similar_movies">Similar Movies</string>
+    <string name="credits">Credits</string>
 
-    //Movie detail
-    <string name="actors_and_crew_title">Actors</string>
+    <!-- TV Shows Details -->
+    <string name="recommended_tv_shows">Recommended TV Shows</string>
+    <string name="similar_tv_shows">Similar TV Shows</string>
 
-    //Fail to connect
-    <string name="message_fail_to_connect">Failed to connect</string>
-    <string name="message_no_internet_connection">Something went wrong, check your internet connection and try again</string>
+    <!-- Social Media Labels -->
+    <string name="wikidata">Wikidata</string>
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="twitter">Twitter</string>
+    <string name="tiktok">TikTok</string>
+    <string name="youtube">YouTube</string>
 
-    <string name="any_screen_try_again">try again</string>
-    <string name="any_screen_view_all">view all</string>
-    <string name="any_screen_movies">Movies</string>
-    <string name="any_screen_tv_shows">TV shows</string>
-    <string name="any_screen_people">People</string>
+    <!-- Search -->
+    <string name="search">Search</string>
+    <string name="search_hint">Search movies, TV shows, or people</string>
+    <string name="popular_searches">Popular Searches</string>
 
-    //Menu item
-    <string name="menu_item_recently_viewed_title">Recently viewed</string>
-    <string name="menu_item_liked_title">My Favorites</string>
-    <string name="menu_item_settings_title">Settings</string>
+    <!-- Search Item Labels -->
+    <string name="movie">Movie</string>
+    <string name="tv_show">TV Show</string>
+    <string name="person">Person</string>
+    <string name="known_for">Known for: %1$s</string>
 
-    //Profile
-    <string name="profile_title">Profile</string>
+    <!-- Movie Genre Names -->
+    <string name="genre_classic">Classic</string>
+    <string name="genre_sci_fi">Sci-Fi</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_western">Western</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_melodrama">Melodrama</string>
+    <string name="genre_detective">Detective</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_romance">Romance</string>
 
-    <string name="search_empty_result">No results matching your query</string>
+    <!-- Theme Selection Title -->
+    <string name="select_theme_color">Select Theme Color</string>
 
-    <string name="media_type_tv">tv show</string>
-    <string name="media_type_movie">movie</string>
-    <string name="media_type_person">person</string>
+    <!--Person Details -->
+    <string name="years_old">%1$d years old</string>
+    <string name="date_one">%1$s</string>
+    <string name="date_range">%1$s - %2$s</string>
+    <string name="biography">Biography</string>
 
-    <string name="birthday_title">Birthday</string>
-    <string name="deathday_title">Death day</string>
-    <string name="place_of_birth_title">Place of birth</string>
-    <string name="biography_title">Biography</string>
+    <string name="official_website">Official Website</string>
 
-    <string name="first_air_date_title">First air date: %1$s</string>
-    <string name="last_air_date_title">Last air date: %1$s</string>
-    <string name="number_of_seasons_title">Number of seasons: %1$s</string>
+    <plurals name="seasons">
+        <item quantity="one">%1$d season</item>
+        <item quantity="other">%1$d seasons</item>
+    </plurals>
+
+    <string name="added_to_favorites">%1$s added to favorites.</string>
+    <string name="removed_from_favorites">%1$s removed from favorites.</string>
 
 </resources>

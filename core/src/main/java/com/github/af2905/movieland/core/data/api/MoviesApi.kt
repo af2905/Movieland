@@ -1,11 +1,9 @@
 package com.github.af2905.movieland.core.data.api
 
-import com.github.af2905.movieland.core.data.ApiParams.LANGUAGE
-import com.github.af2905.movieland.core.data.ApiParams.MOVIE_ID
-import com.github.af2905.movieland.core.data.ApiParams.PAGE
-import com.github.af2905.movieland.core.data.ApiParams.REGION
-import com.github.af2905.movieland.core.data.dto.CreditsDto
+import com.github.af2905.movieland.core.data.dto.credits.CreditsDto
 import com.github.af2905.movieland.core.data.dto.movie.MovieDetailDto
+import com.github.af2905.movieland.core.data.dto.movie.ExternalIds
+import com.github.af2905.movieland.core.data.dto.movie.VideosDto
 import com.github.af2905.movieland.core.data.dto.movie.MoviesDto
 
 import retrofit2.http.GET
@@ -16,55 +14,62 @@ interface MoviesApi {
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null,
-        @Query(REGION) region: String? = null
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
     ): MoviesDto
 
     @GET("movie/popular")
     suspend fun getPopularMovies(
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null,
-        @Query(REGION) region: String? = null
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
     ): MoviesDto
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null,
-        @Query(REGION) region: String? = null
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
     ): MoviesDto
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null,
-        @Query(REGION) region: String? = null
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null,
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}")
+    @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
-        @Path(MOVIE_ID) movieId: Int,
-        @Query(LANGUAGE) language: String? = null
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String? = null
     ): MovieDetailDto
 
-    @GET("movie/{$MOVIE_ID}/recommendations")
+    @GET("movie/{movie_id}/recommendations")
     suspend fun getRecommendedMovies(
-        @Path(MOVIE_ID) movieId: Int,
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}/similar")
+    @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
-        @Path(MOVIE_ID) movieId: Int,
-        @Query(LANGUAGE) language: String? = null,
-        @Query(PAGE) page: Int? = null
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String? = null,
+        @Query("page") page: Int? = null
     ): MoviesDto
 
-    @GET("movie/{$MOVIE_ID}/credits")
+    @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(
-        @Path(MOVIE_ID) movieId: Int,
-        @Query(LANGUAGE) language: String? = null
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String? = null
     ): CreditsDto
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String? = null
+    ): VideosDto
+
+    @GET("movie/{movie_id}/external_ids")
+    suspend fun getMovieExternalIds(
+        @Path("movie_id") movieId: Int
+    ): ExternalIds
 }
