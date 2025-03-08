@@ -48,6 +48,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.BookmarkBorder
 
@@ -105,10 +106,14 @@ fun TvShowDetailsScreen(
                 endButtons = {
                     if (!state.isError && !state.isLoading) {
                         Row {
-                            IconButton(onClick = { /* Handle action */ }) {
+                            IconButton(onClick = { onAction(TvShowDetailsAction.ToggleLike) }) {
                                 Icon(
-                                    imageVector = Icons.Outlined.BookmarkBorder,
-                                    contentDescription = ""
+                                    imageVector = if (state.tvShow?.liked == true)
+                                        Icons.Filled.Bookmark
+                                    else
+                                        Icons.Outlined.BookmarkBorder,
+                                    contentDescription = "",
+                                    tint = if(state.tvShow?.liked == true) AppTheme.colors.theme.tint else AppTheme.colors.type.secondary
                                 )
                             }
                             IconButton(onClick = { /* Handle action */ }) {

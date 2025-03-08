@@ -41,10 +41,16 @@ class TvShowDetailsViewModel @AssistedInject constructor(
 
             val tvShowDetailsResult = tvShowsRepository.getTvShowDetails(tvShowId, null)
 
-            state = state.copy(
-                tvShow = (tvShowDetailsResult as? ResultWrapper.Success)?.data,
-                isError = tvShowDetailsResult is ResultWrapper.Error
-            )
+            val tvShow = (tvShowDetailsResult as? ResultWrapper.Success)?.data
+            if (tvShow != null) {
+                val isSaved = tvShowsRepository.isTvShowSaved(tvShow.id)
+                state = state.copy(
+                    tvShow = tvShow.copy(liked = isSaved),
+                    isError = false
+                )
+            } else {
+                state = state.copy(isError = true)
+            }
 
             val externalIds =
                 (tvShowsRepository.getTvShowExternalIds(tvShowId) as? ResultWrapper.Success)?.data
@@ -136,6 +142,15 @@ class TvShowDetailsViewModel @AssistedInject constructor(
                             tvShowType = action.tvShowType
                         )
                     )
+                }
+            }
+
+            is TvShowDetailsAction.ToggleLike -> {
+                viewModelScope.launch {
+                    state.tvShow?.let { tvShow ->
+                        tvShowsRepository.toggleTvShowLike(tvShow)
+                        state = state.copy(tvShow = tvShow.copy(liked = !tvShow.liked))
+                    }
                 }
             }
         }

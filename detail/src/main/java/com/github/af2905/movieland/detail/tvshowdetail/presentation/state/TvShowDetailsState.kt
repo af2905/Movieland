@@ -30,6 +30,7 @@ sealed interface TvShowDetailsAction {
     data class OpenPersonDetail(val personId: Int) : TvShowDetailsAction
     data class OpenVideo(val videoId: String) : TvShowDetailsAction
     data class OpenTvShowsByType(val tvShowType: TvShowType) : TvShowDetailsAction
+    data object ToggleLike : TvShowDetailsAction
 }
 
 sealed interface TvShowDetailsEffect {

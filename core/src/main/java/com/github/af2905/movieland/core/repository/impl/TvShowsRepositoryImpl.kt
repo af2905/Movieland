@@ -245,4 +245,20 @@ class TvShowsRepositoryImpl @Inject constructor(
         }
         return ResultWrapper.Error(errorMessage, e)
     }
+
+    override suspend fun saveTvShow(tvShow: TvShowDetail) {
+        tvShowDetailDao.save(tvShow)
+    }
+
+    override suspend fun removeTvShow(tvShow: TvShowDetail) {
+        tvShowDetailDao.delete(tvShow)
+    }
+
+    override suspend fun toggleTvShowLike(tvShow: TvShowDetail) {
+        tvShowDetailDao.toggleTvShowLike(tvShow)
+    }
+
+    override suspend fun isTvShowSaved(id: Int): Boolean {
+        return tvShowDetailDao.isTvShowSaved(id)
+    }
 }

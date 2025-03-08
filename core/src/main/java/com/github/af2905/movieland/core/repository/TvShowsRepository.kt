@@ -61,4 +61,12 @@ interface TvShowsRepository {
     suspend fun getTvShowExternalIds(
         tvShowId: Int
     ): ResultWrapper<ExternalIds?>
+
+    suspend fun saveTvShow(tvShow: TvShowDetail)
+
+    suspend fun removeTvShow(tvShow: TvShowDetail)
+
+    suspend fun toggleTvShowLike(tvShow: TvShowDetail)
+
+    suspend fun isTvShowSaved(id: Int): Boolean
 }
