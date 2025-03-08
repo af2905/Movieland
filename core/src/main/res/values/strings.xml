@@ -90,6 +90,10 @@
 
     <string name="official_website">Official Website</string>
 
-    <string name="seasons">%1$d seasons</string>
+    <plurals name="seasons">
+        <item quantity="one">%1$d season</item>
+        <item quantity="other">%1$d seasons</item>
+    </plurals>
+
 
 </resources>

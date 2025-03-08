@@ -249,6 +249,14 @@ private fun TvShowBackdrop(state: TvShowDetailsState) {
 private fun TvShowInformation(state: TvShowDetailsState) {
     val context = LocalContext.current
 
+    val seasonsText = remember(state.tvShow?.numberOfSeasons) {
+        context.resources.getQuantityString(
+            R.plurals.seasons,
+            state.tvShow?.numberOfSeasons ?: 0,
+            state.tvShow?.numberOfSeasons ?: 0
+        )
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -283,9 +291,8 @@ private fun TvShowInformation(state: TvShowDetailsState) {
             val numberOfSeasons = state.tvShow.numberOfSeasons
 
             if (numberOfSeasons != null) {
-                val seasons = context.getString(R.string.seasons, numberOfSeasons)
                 sb.append(" • ")
-                sb.append(seasons)
+                sb.append(seasonsText)
             }
 
             Text(
