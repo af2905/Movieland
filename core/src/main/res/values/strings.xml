@@ -95,5 +95,7 @@
         <item quantity="other">%1$d seasons</item>
     </plurals>
 
+    <string name="added_to_favorites">%1$s added to favorites.</string>
+    <string name="removed_from_favorites">%1$s removed from favorites.</string>
 
 </resources>

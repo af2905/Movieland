@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,18 +50,19 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.BookmarkBorder
-
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -86,6 +86,7 @@ import com.github.af2905.movieland.core.data.database.entity.ProductionCompany
 import com.github.af2905.movieland.core.data.database.entity.TvShow
 import com.github.af2905.movieland.core.data.database.entity.TvShowType
 import com.github.af2905.movieland.util.extension.getYearFromReleaseDate
+import kotlinx.coroutines.launch
 
 @Composable
 fun TvShowDetailsScreen(
@@ -97,6 +98,10 @@ fun TvShowDetailsScreen(
         derivedStateOf { lazyListState.firstVisibleItemIndex > 0 }
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             AppCenterAlignedTopAppBar(
@@ -106,27 +111,52 @@ fun TvShowDetailsScreen(
                 endButtons = {
                     if (!state.isError && !state.isLoading) {
                         Row {
-                            IconButton(onClick = { onAction(TvShowDetailsAction.ToggleLike) }) {
+                            IconButton(
+                                onClick = {
+                                    onAction(TvShowDetailsAction.ToggleLike)
+
+                                    state.tvShow?.liked?.let {
+                                        val liked = !state.tvShow.liked
+
+                                        val message = if (liked) {
+                                            context.getString(
+                                                R.string.added_to_favorites,
+                                                state.tvShow.name.orEmpty()
+                                            )
+                                        } else {
+                                            context.getString(
+                                                R.string.removed_from_favorites,
+                                                state.tvShow.name.orEmpty()
+                                            )
+                                        }
+                                        coroutineScope.launch {
+                                            snackbarHostState.showSnackbar(message)
+                                        }
+                                    }
+                                }
+                            ) {
                                 Icon(
                                     imageVector = if (state.tvShow?.liked == true)
                                         Icons.Filled.Bookmark
                                     else
                                         Icons.Outlined.BookmarkBorder,
                                     contentDescription = "",
-                                    tint = if(state.tvShow?.liked == true) AppTheme.colors.theme.tint else AppTheme.colors.type.secondary
+                                    tint = if (state.tvShow?.liked == true) AppTheme.colors.theme.tint else AppTheme.colors.type.secondary
                                 )
                             }
-                            IconButton(onClick = { /* Handle action */ }) {
+                            //TODO it will be next implementation
+                            /*IconButton(onClick = { *//* Handle action *//* }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Share,
                                     contentDescription = ""
                                 )
-                            }
+                            }*/
                         }
                     }
                 }
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
