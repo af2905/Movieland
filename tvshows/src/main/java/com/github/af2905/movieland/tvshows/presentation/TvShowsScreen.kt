@@ -48,8 +48,8 @@ fun TvShowsScreen(
                         //TvShowType.ON_THE_AIR -> R.string.on_the_air_tv_shows
                         //TvShowType.AIRING_TODAY -> R.string.airing_today_tv_shows
                         TvShowType.TRENDING_DAY, TvShowType.TRENDING_WEEK -> R.string.trending_tv_shows
-                        //TvShowType.SIMILAR -> R.string.similar_tv_shows
-                        //TvShowType.RECOMMENDED -> R.string.recommended_tv_shows
+                        TvShowType.SIMILAR -> R.string.similar_tv_shows
+                        TvShowType.RECOMMENDED -> R.string.recommended_tv_shows
                         else -> R.string.popular_tv_shows //TODO temp
                     }
                 ),

@@ -509,7 +509,7 @@ private fun SimilarTvShows(similarTvShows: List<TvShow>, onAction: (TvShowDetail
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         HeadlinePrimaryActionView(
-            text = stringResource(R.string.similar_movies),
+            text = stringResource(R.string.similar_tv_shows),
             action = stringResource(R.string.view_all),
             onClick = { onAction(TvShowDetailsAction.OpenTvShowsByType(tvShowType = TvShowType.SIMILAR)) }
         )
