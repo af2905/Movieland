@@ -18,7 +18,7 @@ class PersonCreditMapper @Inject constructor() {
             popularity = dto.popularity,
             posterPath = dto.posterPath,
             releaseDate = dto.releaseDate,
-            title = dto.title,
+            title = dto.title ?: dto.name,
             video = dto.video,
             voteAverage = dto.voteAverage,
             voteCount = dto.voteCount,

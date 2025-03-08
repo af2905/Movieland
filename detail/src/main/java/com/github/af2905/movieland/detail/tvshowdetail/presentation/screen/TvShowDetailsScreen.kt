@@ -525,15 +525,15 @@ private fun RecommendedTvShows(
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(recommendedTvShows) { movie ->
+            items(recommendedTvShows) { tvShow ->
                 ItemCard(
                     modifier = Modifier.padding(horizontal = 6.dp),
-                    title = movie.name,
-                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
-                    rating = movie.voteAverage,
+                    title = tvShow.name,
+                    imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
+                    rating = tvShow.voteAverage,
                     mediaType = MediaType.TV,
                     onItemClick = {
-                        onAction(TvShowDetailsAction.OpenTvShowDetail(movie.id))
+                        onAction(TvShowDetailsAction.OpenTvShowDetail(tvShow.id))
                     }
                 )
             }
@@ -561,15 +561,15 @@ private fun SimilarTvShows(similarTvShows: List<TvShow>, onAction: (TvShowDetail
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.spaceM),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(similarTvShows) { movie ->
+            items(similarTvShows) { tvShow ->
                 ItemCard(
                     modifier = Modifier.padding(horizontal = 6.dp),
-                    title = movie.name,
-                    imageUrl = ImageProvider.getImageUrl(movie.posterPath),
-                    rating = movie.voteAverage,
+                    title = tvShow.name,
+                    imageUrl = ImageProvider.getImageUrl(tvShow.posterPath),
+                    rating = tvShow.voteAverage,
                     mediaType = MediaType.MOVIE,
                     onItemClick = {
-                        onAction(TvShowDetailsAction.OpenTvShowDetail(movie.id))
+                        onAction(TvShowDetailsAction.OpenTvShowDetail(tvShow.id))
                     }
                 )
             }

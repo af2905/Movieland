@@ -98,22 +98,23 @@ fun PersonDetailsScreen(
                 onBackClick = { onAction(PersonDetailsAction.BackClick) },
                 elevation = 0.dp,
                 endButtons = {
-                    if (!state.isError && !state.isLoading) {
+                    //TODO it will be next implementation
+                    /*if (!state.isError && !state.isLoading) {
                         Row {
-                            IconButton(onClick = { /* Handle action */ }) {
+                            IconButton(onClick = { *//* Handle action *//* }) {
                                 Icon(
                                     imageVector = Icons.Outlined.BookmarkBorder,
                                     contentDescription = ""
                                 )
                             }
-                            IconButton(onClick = { /* Handle action */ }) {
+                            IconButton(onClick = { *//* Handle action *//* }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Share,
                                     contentDescription = ""
                                 )
                             }
                         }
-                    }
+                    }*/
                 }
             )
         },
